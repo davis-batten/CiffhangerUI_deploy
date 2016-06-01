@@ -3,3 +3,12 @@
     border-radius: 1em;
     margin: 1em;
 }
+
+.inline-list {
+    list-style-type: none;
+}
+
+.inline-list li {
+    display: inline;
+    margin: 0.25em;
+}

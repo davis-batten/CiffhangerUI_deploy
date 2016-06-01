@@ -13,19 +13,22 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
     $scope.data = [
         {
             name: 'DataSet1',
-            desc: 'desc1'
+            desc: 'desc1',
+            attributes: [
+                {name:'attr1', type:'int'},
+                {name:'attr2', type:'int'},
+                {name:'attr3', type:'string'}
+            ]
         },
         {
             name: 'DataSet2',
-            desc: 'desc2'
+            desc: 'desc2',
+            attributes : []
         },
         {
             name: 'DataSet3',
-            desc: 'desc3'
-        },
-        {
-            name: 'DataSet4',
-            desc: 'desc4'
+            desc: 'desc3',
+            attributes: []
         }
     ];
 
@@ -55,6 +58,20 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             if (d.checked == true) selected.push(d.name);
         }
         $log.log(selected);
+    }
+
+    $scope.displayInfo = function(d){
+        $log.log(d);
+        var modalInstance = $uibModal.open({
+            templateUrl: 'datasetInfo.html',
+            controller: 'DatasetInfoCtrl',
+            size: 'lg',
+            resolve: {
+                dataset : function() {
+                    return d;
+                }
+            }
+        });
     }
 
 
@@ -105,3 +122,13 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
     };
 
 });
+
+
+
+datasets.controller('DatasetInfoCtrl', function($scope, $uibModalInstance, $log, dataset) {
+    $scope.dataset = dataset;
+
+    $scope.close = function() {
+        $uibModalInstance.dismiss('close');
+    }
+})
