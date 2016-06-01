@@ -8,7 +8,7 @@ angular.module('cliffhanger.datasets', ['ngRoute'])
 
 var datasets = angular.module('cliffhanger.datasets');
 
-datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log) {
+datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService) {
 
     $scope.data = [
         {
@@ -42,6 +42,8 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log) {
             $log.info('Name : ' + input.name);
             $log.info('Description : ' + input.desc);
             $log.info(input);
+            //test json builder
+            datasetService.addDataset(input.name, input.desc, input.metatags);
         });
     };
 
@@ -54,6 +56,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log) {
         }
         $log.log(selected);
     }
+
 
 
 
@@ -76,6 +79,7 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
     };
 
     $scope.submit = function () {
+
         $uibModalInstance.close($scope.input);
     };
 
