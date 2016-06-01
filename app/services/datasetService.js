@@ -14,6 +14,7 @@ angular.module('cliffhanger.datasets')
                 .then(function (response) {
                     $log.info('Success!');
                     $log.info(response);
+                    //TODO return response
                 }, function (response) {
                     $log.warn('Failure!');
                     $log.warn(response);
