@@ -10,9 +10,9 @@ angular.module('cliffhanger.compare', ['ngRoute'])
 }])
 
 .controller('CompareCtrl', function ($scope, $log) {
-
+    //test metaTypes
     $scope.metaTypes = ['ZIP', 'SSN', 'Name', 'Country'].sort();
-
+    //test data
     $scope.data = [
         {
             name: 'DataSet1',
@@ -62,17 +62,20 @@ angular.module('cliffhanger.compare', ['ngRoute'])
         }
     ];
 
+    //format row for display in table
     $scope.buildRow = function (attributes, idx) {
-        $log.debug(idx);
+        //if row not built or changed
         if (rows[idx] == null || rows[idx].dirty) {
             var attr = attributes.sort(function (a, b) {
                 return (a.type).localeCompare(b.type);
             });
             var row = [];
-            $log.log($scope.metaTypes);
+
+            //add cells
             for (var mt in $scope.metaTypes) {
                 var found = false;
                 for (var a in attr) {
+                    //if column matches type
                     if (attr[a].type == $scope.metaTypes[mt]) {
                         row.push({
                             name: attr[a].name,
@@ -82,9 +85,10 @@ angular.module('cliffhanger.compare', ['ngRoute'])
                         found = true;
                     }
                 }
+                // no column of this type
                 if (!found) {
                     row.push({
-                        name: 'null',
+                        name: null,
                         type: $scope.metaTypes[mt],
                         class: 'danger'
                     });
@@ -100,8 +104,6 @@ angular.module('cliffhanger.compare', ['ngRoute'])
     };
 
     var rows = [];
-
-    $scope.buildRow($scope.data[0].attributes);
 
 
 });
