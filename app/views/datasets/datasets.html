@@ -1,0 +1,83 @@
+<!-- Add Dataset Modal Template -->
+<script type="text/ng-template" id="addDatasetModalContent.html">
+    <div ng-show="step == 1">
+        <div class="modal-header">
+            <h3 class="modal-title">New Dataset</h3>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="newDatasetName">Name</label>
+                <input type="text" class="form-control" id="newDatasetName" ng-model="input.name">
+            </div>
+            <div class="form-group">
+                <label for="newDatasetDesc">Description</label>
+                <input type="text" class="form-control" id="newDatasetDesc" ng-model="input.desc">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="next()">Next</button>
+            <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+    <div ng-show="step == 2">
+        <div class="modal-header">
+            <h3 class="modal-title">Add Attributes</h3>
+        </div>
+        <div class="modal-body row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="newAttributeName">Attribute Name</label>
+                    <input type="text" class="form-control" id="newAttributeName" ng-model="input.attribute.name">
+                </div>
+                <div class="form-group">
+                    <label for="newAttributeType">Attribute Type</label>
+                    <input type="text" class="form-control" id="newAttributeType" ng-model="input.attribute.type">
+                </div>
+                <button class="btn btn-primary" ng-click="addAttr()"><span class="glyphicon glyphicon-plus"></span></button>
+            </div>
+            <div class="col-md-6">
+                <ul ng-repeat="a in input.metatags track by a.name">
+                    <li>{{a.name}} // {{a.type}}
+                        <button class="btn btn-danger" type="button" ng-click="removeAttr($index)">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" ng-click="previous()">Previous</button>
+            <button class="btn btn-success" type="button" ng-click="submit()">Create</button>
+            <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+</script>
+
+<!-- Page Content -->
+
+<ul class="nav nav-pills">
+    <li><a href="#">Dashboard</a></li>
+    <li class="active"><a href="#/datasets">Datasets</a></li>
+    <li><a href="#/queries">Queries</a></li>
+</ul>
+
+<h3>My Datasets</h3>
+<br>
+<button class="btn btn-warning" type="button" ng-click="open()">
+    <span class="glyphicon glyphicon-plus"></span> Add Dataset
+</button>
+<a class="btn btn-primary" href="#/datasets/compare" role="button" ng-click="log()">Compare Datasets</a>
+
+<br>
+<br> Check all
+<input type="checkbox" ng-model="all">
+<br>
+<br>
+<ul class="list-group" ng-repeat="d in data">
+    <li class="list-group-item" id="dataset_item">
+        <input type="checkbox" ng-checked="all" ng-model="d.checked">
+        <div id="dataset_text">
+            <p><strong>{{d.name}}</strong> -- <small>{{d.desc}}</small>
+        </div>
+    </li>
+</ul>

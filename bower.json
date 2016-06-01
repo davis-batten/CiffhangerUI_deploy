@@ -1,0 +1,18 @@
+{
+  "name": "cliffhanger-front-end",
+  "authors": [
+    "Davis Batten <davis.batten@zirous.com>"
+  ],
+  "description": "front-end for cliffhanger",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
