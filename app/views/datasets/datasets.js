@@ -15,20 +15,47 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             name: 'DataSet1',
             desc: 'desc1',
             attributes: [
-                {name:'attr1', type:'int'},
-                {name:'attr2', type:'int'},
-                {name:'attr3', type:'string'}
+                {
+                    name: 'zippy',
+                    type: 'ZIP'
+                },
+                {
+                    name: 'id',
+                    type: 'SSN'
+                },
+                {
+                    name: 'legal_name',
+                    type: 'Name'
+                }
             ]
         },
         {
             name: 'DataSet2',
             desc: 'desc2',
-            attributes : []
+            attributes: [
+                {
+                    name: 'ssn',
+                    type: 'SSN'
+                },
+                {
+                    name: 'zip_code',
+                    type: 'ZIP'
+                }
+            ]
         },
         {
             name: 'DataSet3',
             desc: 'desc3',
-            attributes: []
+            attributes: [
+                {
+                    name: 'id',
+                    type: 'SSN'
+                },
+                {
+                    name: 'name',
+                    type: 'Name'
+                }
+            ]
         }
     ];
 
@@ -60,14 +87,14 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         $log.log(selected);
     }
 
-    $scope.displayInfo = function(d){
+    $scope.displayInfo = function (d) {
         $log.log(d);
         var modalInstance = $uibModal.open({
             templateUrl: 'datasetInfo.html',
             controller: 'DatasetInfoCtrl',
             size: 'lg',
             resolve: {
-                dataset : function() {
+                dataset: function () {
                     return d;
                 }
             }
@@ -125,10 +152,10 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
 
 
 
-datasets.controller('DatasetInfoCtrl', function($scope, $uibModalInstance, $log, dataset) {
+datasets.controller('DatasetInfoCtrl', function ($scope, $uibModalInstance, $log, dataset) {
     $scope.dataset = dataset;
 
-    $scope.close = function() {
+    $scope.close = function () {
         $uibModalInstance.dismiss('close');
     }
 })

@@ -66,7 +66,7 @@
         <br>
         <h4 class="">Attributes</h4>
         <ul class="inline-list">
-            <li ng-repeat="attr in dataset.attributes"><span class="badge">{{attr.name}}</span></li>
+            <li ng-repeat="attr in dataset.attributes"><span class="badge">{{attr.type}}</span></li>
         </ul>
     </div>
 
@@ -85,7 +85,7 @@
 <button class="btn btn-warning" type="button" ng-click="open()">
     <span class="glyphicon glyphicon-plus"></span> Add Dataset
 </button>
-<a class="btn btn-primary" href="#/datasets/compare" role="button" ng-click="log()">Compare Datasets</a>
+<a class="btn btn-primary" href="#/datasets/compare" role="button" ng-click="log()">Compare All Datasets</a>
 
 <br>
 <br> Check all
@@ -93,10 +93,11 @@
 <br>
 <br>
 <ul class="list-group" ng-repeat="d in data">
-    <li class="list-group-item" id="dataset_item" ng-click="displayInfo(d)">
-        <input type="checkbox" ng-checked="all" ng-model="d.checked">
+    <li class="list-group-item" id="dataset_item">
+        <input id="dataset_checkbox" type="checkbox" ng-checked="all" ng-model="d.checked">
         <div id="dataset_text">
-            <p><strong>{{d.name}}</strong> -- <small>{{d.desc}}</small>
+            <p><strong>{{d.name}}</strong></p>
         </div>
+        <button class="btn btn-default" type="button" ng-click="displayInfo(d)"><span class="glyphicon glyphicon-info-sign"></span></button>
     </li>
 </ul>

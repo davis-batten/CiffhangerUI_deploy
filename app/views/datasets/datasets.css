@@ -2,6 +2,30 @@
     background: lightgrey;
     border-radius: 1em;
     margin: 1em;
+    clear: both;
+    height: 4em;
+}
+
+#dataset_item button {
+    display: inline-block;
+    float: right;
+
+}
+
+#dataset_text {
+    display: inline-block;
+}
+
+#dataset_text p {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+
+#dataset_checkbox {
+    float:left;
+    display: inline-block;
+    margin: 0.5em;
 }
 
 .inline-list {
@@ -12,3 +36,4 @@
     display: inline;
     margin: 0.25em;
 }
+
