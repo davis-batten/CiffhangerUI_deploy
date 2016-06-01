@@ -9,6 +9,10 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
   });
 }])
 
-.controller('DashboardCtrl', [function() {
+.controller('DashboardCtrl', function($rootScope, $log, $scope) {
 
-}]);
+    $scope.testGlobal = function() {
+        $log.log($rootScope);
+    };
+
+});

@@ -17,4 +17,10 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
     $routeProvider.otherwise({
         redirectTo: '/dashboard'
     });
-}]);
+}])
+
+.run(function($rootScope) {
+    //set base Url for the REST API
+    $rootScope.baseUrl = 'localhost:8080'; //development
+
+});
