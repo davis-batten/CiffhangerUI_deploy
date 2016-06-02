@@ -99,7 +99,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         $log.log(d);
         var modalInstance = $uibModal.open({
             templateUrl: 'datasetInfo.html',
-            controller: 'DatasetInfoCtrl',
+            controller: 'DatasetInfoModalCtrl',
             size: 'lg',
             resolve: {
                 dataset: function () {
@@ -113,18 +113,18 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         $log.log(d);
         var modalInstance = $uibModal.open({
             templateUrl: 'datasetDelete.html',
-            controller: 'DatasetDeleteCtrl',
+            controller: 'DatasetDeleteModalCtrl',
             size: 'md',
             resolve: {
-                dataset: function() {
+                dataset: function () {
                     return d;
                 }
             }
         });
 
-        modalInstance.result.then(function(d) {
+        modalInstance.result.then(function (d) {
             $log.warn('Deleted' + d);
-            for(i in $scope.data){
+            for (i in $scope.data) {
                 if (d.name == $scope.data[i].name) {
                     $scope.data.splice(i, 1);
                 }
@@ -133,13 +133,13 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         });
     }
 
-    $scope.$watch('selectAll', function(v){
-        for(i in $scope.selected){
+    $scope.$watch('selectAll', function (v) {
+        for (i in $scope.selected) {
             $scope.selected[i] = v;
         }
     });
 
-    $scope.deselectAll= function() {
+    $scope.deselectAll = function () {
         $scope.selectAll = false;
     }
 
@@ -194,7 +194,7 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
 
 
 
-datasets.controller('DatasetInfoCtrl', function ($scope, $uibModalInstance, $log, dataset) {
+datasets.controller('DatasetInfoModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {
     $scope.dataset = dataset;
 
     $scope.close = function () {
@@ -202,7 +202,7 @@ datasets.controller('DatasetInfoCtrl', function ($scope, $uibModalInstance, $log
     }
 })
 
-datasets.controller('DatasetDeleteCtrl', function ($scope, $uibModalInstance, $log, dataset) {
+datasets.controller('DatasetDeleteModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {
 
     $scope.dataset = dataset;
 
