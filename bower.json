@@ -14,5 +14,8 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "angular-bootstrap-checkbox": "^0.5.0"
+  }
 }

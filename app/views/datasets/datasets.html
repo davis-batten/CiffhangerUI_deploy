@@ -26,11 +26,11 @@
         <div class="modal-body row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="newAttributeName">Attribute Name</label>
+                    <label for="newAttributeName">Column Name</label>
                     <input type="text" class="form-control" id="newAttributeName" ng-model="input.attribute.name">
                 </div>
                 <div class="form-group">
-                    <label for="newAttributeType">Attribute Type</label>
+                    <label for="newAttributeType">Attribute Meta-Type</label>
                     <input type="text" class="form-control" id="newAttributeType" ng-model="input.attribute.type">
                 </div>
                 <button class="btn btn-primary" ng-click="addAttr()"><span class="glyphicon glyphicon-plus"></span></button>
@@ -53,11 +53,12 @@
     </div>
 </script>
 
+<!-- Dataset Info Modal -->
 
 <script type="text/ng-template" id="datasetInfo.html">
     <div class="modal-header">
         <button type="button" class="close" ng-click="close()"><span aria-hidden="true">&times;</span></button>
-        <h3>{{dataset.name}}</h3>
+        <h3 class="modal-title">{{dataset.name}}</h3>
 
     </div>
     <div class="modal-body">
@@ -71,6 +72,25 @@
     </div>
 
 </script>
+
+
+<!-- Delete Dataset Modal -->
+
+<script type="text/ng-template" id="datasetDelete.html">
+    <div class="modal-header">
+        <h3 class="modal-title"> Delete Dataset</h3>
+
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete <em><strong>{{dataset.name}}</strong></em>? This action cannot be undone!</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
+        <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+
+</script>
+
 
 <!-- Page Content -->
 
@@ -89,13 +109,17 @@
 <a class="btn btn-default" href="#/datasets/metaTypes" role="button">Meta-Types</a>
 
 <br>
-<br> Check all
-<input type="checkbox" ng-model="all">
+<br>
+<label>Check all: </label>
+<checkbox ng-model="selectAll"></checkbox>
 <br>
 <br>
-<ul class="list-group">
+<ul class="list-group" id="dataset_list">
     <li class="list-group-item active" id="dataset_item" ng-repeat="d in data">
-        <input id="dataset_checkbox" type="checkbox" ng-checked="all" ng-model="d.checked">{{d.name}}
+        <checkbox id="dataset_checkbox" ng-model="selected[$index]" ng-change="deselectAll()"></checkbox>
+        <label>{{d.name}}</label>
+        <button class="btn btn-danger" type="button" ng-click="deleteDataset(d)"><span class="glyphicon glyphicon-trash"></span></button>
         <button class="btn btn-default" type="button" ng-click="displayInfo(d)"><span class="glyphicon glyphicon-info-sign"></span></button>
+
     </li>
 </ul>

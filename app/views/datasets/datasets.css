@@ -2,20 +2,31 @@
     margin: 1em;
     clear: both;
     height: 4em;
+    font-size: 1em;
+
+}
+
+#dataset_item label {
+    line-height: 2em;
+    vertical-align: middle;
+    margin-left: 0.75em;
 }
 
 #dataset_item button {
     display: inline-block;
     float: right;
+    margin-left: .5em;
 
 }
 
 
 #dataset_checkbox {
-    float:left;
+    float:left !important;
     display: inline-block;
-    margin: 0.5em;
+    margin: 0.25em;
 }
+
+input(typ)
 
 .inline-list {
     list-style-type: none;
@@ -25,4 +36,3 @@
     display: inline;
     margin: 0.25em;
 }
-

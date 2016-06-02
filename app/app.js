@@ -1,6 +1,7 @@
 // Declare app level module which depends on views, and components
 app = angular.module('cliffhanger', [
     'ui.bootstrap',
+    'ui.checkbox',
     'ngRoute',
     'cliffhanger.version',
 

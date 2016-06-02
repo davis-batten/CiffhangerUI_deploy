@@ -10,6 +10,8 @@ var datasets = angular.module('cliffhanger.datasets');
 
 datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService) {
 
+    $scope.selected = [];
+
     $scope.data = [
         {
             name: 'DataSet1',
@@ -101,6 +103,40 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         });
     }
 
+    $scope.deleteDataset = function (d) {
+        $log.log(d);
+        var modalInstance = $uibModal.open({
+            templateUrl: 'datasetDelete.html',
+            controller: 'DatasetDeleteCtrl',
+            size: 'sm',
+            resolve: {
+                dataset: function() {
+                    return d;
+                }
+            }
+        });
+
+        modalInstance.result.then(function(d) {
+            $log.warn('Deleted' + d);
+            for(i in $scope.data){
+                if (d.name == $scope.data[i].name) {
+                    $scope.data.splice(i, 1);
+                }
+            }
+            $log.log($scope.data);
+        });
+    }
+
+    $scope.$watch('selectAll', function(v){
+        for(i in $scope.selected){
+            $scope.selected[i] = v;
+        }
+    });
+
+    $scope.deselectAll= function() {
+        $scope.selectAll = false;
+    }
+
 
 
 
@@ -157,5 +193,18 @@ datasets.controller('DatasetInfoCtrl', function ($scope, $uibModalInstance, $log
 
     $scope.close = function () {
         $uibModalInstance.dismiss('close');
+    }
+})
+
+datasets.controller('DatasetDeleteCtrl', function ($scope, $uibModalInstance, $log, dataset) {
+
+    $scope.dataset = dataset;
+
+    $scope.delete = function () {
+        $uibModalInstance.close(dataset);
+    }
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
     }
 })
