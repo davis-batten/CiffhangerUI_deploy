@@ -1,6 +1,4 @@
 #dataset_item {
-    background: lightgray;
-    border-radius: 1em;
     margin: 1em;
     clear: both;
     height: 4em;
@@ -10,15 +8,6 @@
     display: inline-block;
     float: right;
 
-}
-
-#dataset_text {
-    display: inline-block;
-}
-
-#dataset_text p {
-    padding-top: 0;
-    padding-bottom: 0;
 }
 
 

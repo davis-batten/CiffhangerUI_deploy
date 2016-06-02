@@ -86,18 +86,16 @@
     <span class="glyphicon glyphicon-plus"></span> Add Dataset
 </button>
 <a class="btn btn-primary" href="#/datasets/compare" role="button" ng-click="log()">Compare All Datasets</a>
+<a class="btn btn-default" href="#/datasets/attributes" role="button">Attributes</a>
 
 <br>
 <br> Check all
 <input type="checkbox" ng-model="all">
 <br>
 <br>
-<ul class="list-group" ng-repeat="d in data">
-    <li class="list-group-item" id="dataset_item">
-        <input id="dataset_checkbox" type="checkbox" ng-checked="all" ng-model="d.checked">
-        <div id="dataset_text">
-            <p><strong>{{d.name}}</strong></p>
-        </div>
+<ul class="list-group">
+    <li class="list-group-item active" id="dataset_item" ng-repeat="d in data">
+        <input id="dataset_checkbox" type="checkbox" ng-checked="all" ng-model="d.checked">{{d.name}}
         <button class="btn btn-default" type="button" ng-click="displayInfo(d)"><span class="glyphicon glyphicon-info-sign"></span></button>
     </li>
 </ul>

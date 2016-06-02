@@ -1,0 +1,51 @@
+<!-- Page Content -->
+<div id="page_header">
+    <ul class="nav nav-pills">
+        <li><a href="#">Dashboard</a></li>
+        <li class="active"><a href="#/datasets">Datasets</a></li>
+        <li><a href="#/queries">Queries</a></li>
+    </ul>
+
+    <hr>
+    <ol class="breadcrumb">
+        <li><a href="#/datasets">My Datasets</a></li>
+        <li class="active">Attributes</li>
+    </ol>
+</div>
+<div class="col-md-4 panel panel-default" id="attrControls">
+    <h3>Attributes</h3>
+    <button class="btn btn-warning" ng-click="add()"><span class="glyphicon glyphicon-plus"></span> Add Attribute</button>
+    <h5>Search</h5>
+    <input type="text" size="40" ng-model="query" uib-typeahead="a for a in attributes | filter:$viewValue | limitTo:5" typeahead-no-results="noResults">
+</div>
+
+<br>
+<div class="col-md-8 pull-right" id="attrQueryResults">
+    <ul>
+        <li id="attribute_item" ng-repeat="a in attributes | filter:query" class="bg-primary">{{a}}</li>
+    </ul>
+    <div ng-show="noResults" id="noResults" class="bg-danger">
+        <i class="glyphicon glyphicon-remove"></i> No Results Found
+    </div>
+</div>
+
+<!-- Add Attribute Modal -->
+<script type="text/ng-template" id="addAttrModalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Add Attribute</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="newAttrName">Name</label>
+            <input type="text" class="form-control" id="newAttrName" ng-model="input.name">
+        </div>
+        <div class="form-group">
+            <label for="newAttrType">Type</label>
+            <input type="text" class="form-control" id="newAttrName" ng-model="input.type">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
+        <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

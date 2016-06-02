@@ -1,0 +1,24 @@
+#attrControls {
+    position: fixed;
+    padding: 1em;
+    padding-top: 0;
+}
+
+#attrQueryResults {
+    margin-right: .5em;
+    padding-top: .5em;
+    overflow: auto;
+}
+
+#attribute_item {
+    margin: .25em;
+    padding: 1em;
+    list-style-type: none;
+
+}
+
+#noResults {
+    margin: .25em;
+    padding: 1em;
+}
+
