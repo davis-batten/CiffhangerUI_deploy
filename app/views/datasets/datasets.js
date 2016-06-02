@@ -76,6 +76,12 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             $log.info(input);
             //test json builder
             datasetService.addDataset(input.name, input.desc, input.metatags);
+            $scope.data.push({
+                name: input.name,
+                desc: input.desc,
+                attributes: input.metatags
+            })
+
         });
     };
 
