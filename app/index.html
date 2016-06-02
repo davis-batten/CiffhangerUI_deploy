@@ -29,15 +29,17 @@
 </head>
 
 <body>
+    <div class="container-fluid">
 
-    <h1>Cliffhanger</h1>
+        <h1>Cliffhanger</h1>
 
-
-    <!--[if lt IE 7]>
+        <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
-    <div ng-view></div>
+        <div ng-view></div>
+
+    </div>
 
 
     <script src="app.js"></script>
@@ -53,9 +55,11 @@
     <script src="services/datasetService.js"></script>
 
 
+
     <footer>
         <div id="version-info">Cliffhanger app: v<span app-version></span></div>
     </footer>
+
 
 </body>
 

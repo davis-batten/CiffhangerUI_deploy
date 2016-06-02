@@ -108,7 +108,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         var modalInstance = $uibModal.open({
             templateUrl: 'datasetDelete.html',
             controller: 'DatasetDeleteCtrl',
-            size: 'sm',
+            size: 'md',
             resolve: {
                 dataset: function() {
                     return d;
