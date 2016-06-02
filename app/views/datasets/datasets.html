@@ -1,5 +1,6 @@
 <!-- Add Dataset Modal Template -->
 <script type="text/ng-template" id="addDatasetModalContent.html">
+    <!-- First step of modal -->
     <div ng-show="step == 1">
         <div class="modal-header">
             <h3 class="modal-title">New Dataset</h3>
@@ -19,6 +20,7 @@
             <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
         </div>
     </div>
+    <!-- Second step of modal -->
     <div ng-show="step == 2">
         <div class="modal-header">
             <h3 class="modal-title">Add Attributes</h3>
@@ -105,7 +107,7 @@
 <button class="btn btn-warning" type="button" ng-click="open()">
     <span class="glyphicon glyphicon-plus"></span> Add Dataset
 </button>
-<a class="btn btn-primary" href="#/datasets/compare" role="button" ng-click="log()">Compare All Datasets</a>
+<a class="btn btn-primary" href="#/datasets/compare" role="button">Compare All Datasets</a>
 <a class="btn btn-default" href="#/datasets/metaTypes" role="button">Meta-Types</a>
 
 <br>

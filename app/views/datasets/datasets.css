@@ -1,9 +1,10 @@
+/* custom CSS for #/datasets/ */
+
 #dataset_item {
     margin: 1em;
     clear: both;
     height: 4em;
     font-size: 1em;
-
 }
 
 #dataset_item label {
@@ -16,17 +17,13 @@
     display: inline-block;
     float: right;
     margin-left: .5em;
-
 }
 
-
 #dataset_checkbox {
-    float:left !important;
+    float: left !important;
     display: inline-block;
     margin: 0.25em;
 }
-
-input(typ)
 
 .inline-list {
     list-style-type: none;

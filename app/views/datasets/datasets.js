@@ -8,10 +8,12 @@ angular.module('cliffhanger.datasets', ['ngRoute'])
 
 var datasets = angular.module('cliffhanger.datasets');
 
+//main controller for dataset page
 datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService) {
 
     $scope.selected = [];
 
+    //test data
     $scope.data = [
         {
             name: 'DataSet1',
@@ -61,7 +63,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         }
     ];
 
-
+    //opens addDatasetModal
     $scope.open = function () {
         var modalInstance = $uibModal.open({
             templateUrl: 'addDatasetModalContent.html',
@@ -75,26 +77,19 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             $log.info('Description : ' + input.desc);
             $log.info(input);
             //test json builder
-            datasetService.addDataset(input.name, input.desc, input.metatags);
+            datasetService.addDataset(input.name, input.desc, input.attr);
+            //update local data
             $scope.data.push({
                 name: input.name,
                 desc: input.desc,
-                attributes: input.metatags
+                attributes: input.attr
             })
 
         });
     };
 
-    $scope.log = function () {
-        $log.log($scope.data);
-        var selected = [];
-        for (i in $scope.data) {
-            var d = $scope.data[i];
-            if (d.checked == true) selected.push(d.name);
-        }
-        $log.log(selected);
-    }
 
+    //opens displayInfo modal for dataset d
     $scope.displayInfo = function (d) {
         $log.log(d);
         var modalInstance = $uibModal.open({
@@ -109,6 +104,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         });
     }
 
+    //opnes deleteDataset modal for dataset d
     $scope.deleteDataset = function (d) {
         $log.log(d);
         var modalInstance = $uibModal.open({
@@ -122,6 +118,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             }
         });
 
+        //on modal completion
         modalInstance.result.then(function (d) {
             $log.warn('Deleted' + d);
             for (i in $scope.data) {
@@ -133,6 +130,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         });
     }
 
+    //watch for check all checkbox
     $scope.$watch('selectAll', function (v) {
         for (i in $scope.selected) {
             $scope.selected[i] = v;
@@ -149,67 +147,76 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
 });
 
 
-
+//controller for an instance of AddDatasetModal
 datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalInstance, $log) {
-    $scope.step = 1;
-    $scope.input = {};
-    $scope.input.metatags = [];
+    $scope.step = 1; //what step is the modal on
+    $scope.input = {}; //what is the input from the user
+    $scope.input.attr = [];
 
 
+    //advance the modal to the next step
     $scope.next = function () {
         $scope.step++;
     };
 
+    //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
     };
 
+    //complete the modal
     $scope.submit = function () {
-
         $uibModalInstance.close($scope.input);
     };
 
+    //dismiss the modal
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
 
 
 
+    //add an attribute to the input
     $scope.addAttr = function () {
         if ($scope.input.attribute.name != "" && $scope.input.attribute.type != "") {
             var temp = {};
             Object.assign(temp, $scope.input.attribute);
-            $scope.input.metatags.push(temp);
+            $scope.input.attr.push(temp);
             $scope.input.attribute.name = "";
             $scope.input.attribute.type = "";
         }
     };
 
+    //remove attribute from input
     $scope.removeAttr = function (selectedAttr) {
         $log.log(selectedAttr);
-        $scope.input.metatags.splice(selectedAttr, 1);
+        $scope.input.attr.splice(selectedAttr, 1);
     };
 
 });
 
 
-
+//controller for instance of DatasetInfoModal
 datasets.controller('DatasetInfoModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {
     $scope.dataset = dataset;
 
+    //dismiss modal
     $scope.close = function () {
         $uibModalInstance.dismiss('close');
     }
 })
 
+//controller for instance of DatasetDeleteModal
 datasets.controller('DatasetDeleteModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {
 
     $scope.dataset = dataset;
 
+    //complete modal
     $scope.delete = function () {
         $uibModalInstance.close(dataset);
     }
 
+    //dismiss modal
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     }

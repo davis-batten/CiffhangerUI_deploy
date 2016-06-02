@@ -14,6 +14,7 @@ app = angular.module('cliffhanger', [
 
 ]).
 config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+    //set up URL mapping/routing
     $locationProvider.hashPrefix('');
 
     $routeProvider.otherwise({
@@ -21,7 +22,7 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
     });
 }])
 
-.run(function($rootScope) {
+.run(function ($rootScope) {
     //set base Url for the REST API
     $rootScope.baseUrl = 'localhost:8080/cliffhanger'; //development
 
