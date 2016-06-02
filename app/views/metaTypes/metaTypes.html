@@ -9,20 +9,20 @@
     <hr>
     <ol class="breadcrumb">
         <li><a href="#/datasets">My Datasets</a></li>
-        <li class="active">Attributes</li>
+        <li class="active">Meta-Types</li>
     </ol>
 </div>
-<div class="col-md-4 panel panel-default" id="attrControls">
-    <h3>Attributes</h3>
-    <button class="btn btn-warning" ng-click="add()"><span class="glyphicon glyphicon-plus"></span> Add Attribute</button>
+<div class="col-md-4 panel panel-default" id="controls">
+    <h3>Meta-Types</h3>
+    <button class="btn btn-warning" ng-click="add()"><span class="glyphicon glyphicon-plus"></span> Add Meta-Type</button>
     <h5>Search</h5>
-    <input type="text" size="40" ng-model="query" uib-typeahead="a for a in attributes | filter:$viewValue | limitTo:5" typeahead-no-results="noResults">
+    <input type="text" size="40" ng-model="query" uib-typeahead="m for m in metaTypes | filter:$viewValue | limitTo:5" typeahead-no-results="noResults">
 </div>
 
 <br>
-<div class="col-md-8 pull-right" id="attrQueryResults">
+<div class="col-md-8 pull-right" id="metaQueryResults">
     <ul>
-        <li id="attribute_item" ng-repeat="a in attributes | filter:query" class="bg-primary">{{a}}</li>
+        <li id="list_item" ng-repeat="m in metaTypes | filter:query" class="bg-primary">{{m}}</li>
     </ul>
     <div ng-show="noResults" id="noResults" class="bg-danger">
         <i class="glyphicon glyphicon-remove"></i> No Results Found
@@ -30,18 +30,18 @@
 </div>
 
 <!-- Add Attribute Modal -->
-<script type="text/ng-template" id="addAttrModalContent.html">
+<script type="text/ng-template" id="addMetaModalContent.html">
     <div class="modal-header">
-        <h3 class="modal-title">Add Attribute</h3>
+        <h3 class="modal-title">Add New Meta-Type</h3>
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label for="newAttrName">Name</label>
-            <input type="text" class="form-control" id="newAttrName" ng-model="input.name">
+            <label for="newMetaName">Name</label>
+            <input type="text" class="form-control" id="newMetaName" ng-model="input.name">
         </div>
         <div class="form-group">
-            <label for="newAttrType">Type</label>
-            <input type="text" class="form-control" id="newAttrName" ng-model="input.type">
+            <label for="newMetaDesc">Description</label>
+            <input type="text" class="form-control" id="newMetaDesc" ng-model="input.description">
         </div>
     </div>
     <div class="modal-footer">

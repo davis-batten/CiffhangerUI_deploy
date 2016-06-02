@@ -1,29 +1,31 @@
 'use strict';
 
-var module = angular.module('cliffhanger.attributes', ['ngRoute'])
+var module = angular.module('cliffhanger.metaTypes', ['ngRoute'])
 
 .config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/datasets/attributes', {
-        templateUrl: 'views/attributes/attributes.html',
-        controller: 'AttributesCtrl'
+    $routeProvider.when('/datasets/metaTypes', {
+        templateUrl: 'views/metaTypes/metaTypes.html',
+        controller: 'MetaTypeCtrl'
     });
 }]);
 
-module.controller('AttributesCtrl', function ($scope, $uibModal, $log) {
+module.controller('MetaTypeCtrl', function ($scope, $uibModal, $log) {
 
     $scope.selected = undefined;
     $scope.noResults = false;
-
-    $scope.attributes = ['ZIP', 'Name', 'SSN', 'Country'].sort(ignoreCase);
 
     var ignoreCase = function (a, b) {
         return a.toLowerCase().localeCompare(b.toLowerCase());
     }
 
+    $scope.metaTypes = ['ZIP', 'Name', 'SSN', 'Country'].sort(ignoreCase);
+
+
+
     $scope.add = function () {
         var modalInstance = $uibModal.open({
-            templateUrl: 'addAttrModalContent.html',
-            controller: 'AddAttrModalInstanceCtrl',
+            templateUrl: 'addMetaModalContent.html',
+            controller: 'AddMetaModalInstanceCtrl',
             size: 'lg'
         });
 
@@ -32,8 +34,8 @@ module.controller('AttributesCtrl', function ($scope, $uibModal, $log) {
             $log.info(input);
 
             //TODO for testing only!!
-            $scope.attributes.push(input.name);
-            $scope.attributes.sort(ignoreCase);
+            $scope.metaTypes.push(input.name);
+            $scope.metaTypes.sort(ignoreCase);
         });
     };
 
@@ -42,7 +44,7 @@ module.controller('AttributesCtrl', function ($scope, $uibModal, $log) {
 
 });
 
-datasets.controller('AddAttrModalInstanceCtrl', function ($scope, $uibModalInstance, $log) {
+datasets.controller('AddMetaModalInstanceCtrl', function ($scope, $uibModalInstance, $log) {
 
     $scope.input = {};
 

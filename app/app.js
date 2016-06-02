@@ -9,7 +9,7 @@ app = angular.module('cliffhanger', [
     'cliffhanger.datasets',
     'cliffhanger.queries',
     'cliffhanger.compare',
-    'cliffhanger.attributes'
+    'cliffhanger.metaTypes'
 
 ]).
 config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {

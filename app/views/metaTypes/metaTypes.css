@@ -1,16 +1,16 @@
-#attrControls {
+#controls {
     position: fixed;
     padding: 1em;
     padding-top: 0;
 }
 
-#attrQueryResults {
+#metaQueryResults {
     margin-right: .5em;
     padding-top: .5em;
     overflow: auto;
 }
 
-#attribute_item {
+#list_item {
     margin: .25em;
     padding: 1em;
     list-style-type: none;
