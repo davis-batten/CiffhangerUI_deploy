@@ -25,7 +25,8 @@
         <div class="modal-header">
             <h3 class="modal-title">Add Attributes</h3>
         </div>
-        <div class="modal-body row">
+        <div class="modal-body">
+            <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="newAttributeName">Column Name</label>
@@ -57,7 +58,11 @@
                 </div>
                 <button class="btn btn-primary" ng-click="addAttr()"><span class="glyphicon glyphicon-plus"></span></button>
             </div>
-            <!-->
+                <!-- Working on list for attributes -->
+               <!-- <div class="col-md-6">
+                    <h2>Here is second column</h2>
+                </div> -->
+            <!--
             <div class="col-md-6">
                 <ul ng-repeat="a in input.metatags track by a.name">
                     <li>{{a.name}} // {{a.type}}
@@ -67,13 +72,15 @@
                     </li>
                 </ul>
             </div>
-            <!-->
+            -->
+        </div>
         </div>
         <div class="modal-footer">
             <button class="btn btn-default" type="button" ng-click="previous()">Previous</button>
             <button class="btn btn-success" type="button" ng-click="submit()">Create</button>
             <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
         </div>
+        
     </div>
 </script>
 
