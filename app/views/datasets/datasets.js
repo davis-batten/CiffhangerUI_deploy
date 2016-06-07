@@ -12,6 +12,7 @@ var datasets = angular.module('cliffhanger.datasets');
 datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService) {
 
     $scope.selected = [];
+    
 
     //test data
     $scope.data = [
@@ -71,19 +72,15 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             size: 'lg'
         });
 
-        modalInstance.result.then(function (input) {
+        modalInstance.result.then(function (newDataSet) {
             $log.info('Modal dismissed at: ' + new Date());
-            $log.info('Name : ' + input.name);
-            $log.info('Description : ' + input.desc);
-            $log.info(input);
+            $log.info('Name : ' + newDataSet.name);
+            $log.info('Description : ' + newDataSet.desc);
+            $log.info(newDataSet);
             //test json builder
-            datasetService.addDataset(input.name, input.desc, input.attr);
+            datasetService.addDataset(newDataSet);
             //update local data
-            $scope.data.push({
-                name: input.name,
-                desc: input.desc,
-                attributes: input.attr
-            })
+            $scope.data.push(newDataSet);
 
         });
     };
@@ -150,8 +147,35 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
 //controller for an instance of AddDatasetModal
 datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalInstance, $log) {
     $scope.step = 1; //what step is the modal on
-    $scope.input = {}; //what is the input from the user
-    $scope.input.attr = [];
+    $scope.input = { //what is the input from the user
+        name: "",
+        description: "",
+        attributes: []
+    }; 
+    $scope.newAttribute = {
+            col_name: "",
+            description: "",
+            data_type: "String",
+            meta_type: {
+                metatype_name: "",
+                metatype_description: ""
+            }
+    };
+    
+     $scope.tags = [
+        {
+            metatype_name: 'IA County',
+            metatype_description: 'An county of Iowa'
+        },
+        {
+            metatype_name: 'Zip Code',
+            metatype_description: ''
+        },
+         {
+            metatype_name: '',
+            metatype_description: ''
+        }
+    ];
 
 
     //advance the modal to the next step
@@ -166,6 +190,9 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
 
     //complete the modal
     $scope.submit = function () {
+        var temp = {};
+        Object.assign(temp, $scope.newAttribute);
+        $scope.input.attributes.push(temp);
         $uibModalInstance.close($scope.input);
     };
 
@@ -174,16 +201,24 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         $uibModalInstance.dismiss('cancel');
     };
 
-
+    $scope.selectType = function (selectedType) {
+        $scope.newAttribute.data_type = newSelectedType;
+    }
+    
+    $scope.selectTag = function (selectedTag) {
+        $scope.newAttribute.meta_type = selectedTag;
+    }
 
     //add an attribute to the input
     $scope.addAttr = function () {
-        if ($scope.input.attribute.name != "" && $scope.input.attribute.type != "") {
+        if ($scope.newAttribute.col_name != "" && $scope.newAttribute.data_type != "" ) {
             var temp = {};
-            Object.assign(temp, $scope.input.attribute);
-            $scope.input.attr.push(temp);
-            $scope.input.attribute.name = "";
-            $scope.input.attribute.type = "";
+            Object.assign(temp, $scope.newAttribute);
+            $scope.input.attributes.push(temp);
+            $scope.newAttribute.col_name = "";
+            $scope.newAttribute.description = "";
+            $scope.newAttribute.meta_type = "";
+            $scope.newAttribute.data_type = "String";
         }
     };
 
