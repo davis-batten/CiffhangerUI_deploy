@@ -24,6 +24,6 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
 
 .run(function ($rootScope) {
     //set base Url for the REST API
-    $rootScope.baseUrl = 'localhost:8080/cliffhanger'; //development
+    $rootScope.baseUrl = 'http://localhost:8080/cliffhanger'; //development
 
 });
