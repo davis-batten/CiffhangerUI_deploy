@@ -157,23 +157,23 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
             description: "",
             data_type: "String",
             meta_type: {
-                metatype_name: "",
-                metatype_description: ""
+                meta_name: "",
+                description: ""
             }
     };
     
      $scope.tags = [
         {
-            metatype_name: 'IA County',
-            metatype_description: 'An county of Iowa'
+            metaname: 'IA County',
+            description: 'An county of Iowa'
         },
         {
-            metatype_name: 'Zip Code',
-            metatype_description: ''
+            meta_name: 'Zip Code',
+            description: ''
         },
          {
-            metatype_name: '',
-            metatype_description: ''
+            meta_name: '',
+            description: ''
         }
     ];
 
@@ -217,7 +217,10 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
             $scope.input.attributes.push(temp);
             $scope.newAttribute.col_name = "";
             $scope.newAttribute.description = "";
-            $scope.newAttribute.meta_type = "";
+            $scope.newAttribute.meta_type =  {
+                meta_name: '',
+                description: ''
+            };
             $scope.newAttribute.data_type = "String";
         }
     };
