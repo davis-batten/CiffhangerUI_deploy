@@ -1,6 +1,6 @@
 //service for dealing with datasets on the Grails backend using REST API
 angular.module('cliffhanger.datasets')
-    .service('datasetService', function ($log, $http, $rootScope) {
+    .service('datasetService', function ($log, $http, $rootScope, $q) {
         
         //this service method creates a new Dataset on the backend
         this.addDataset = function (newDataset) {
@@ -13,7 +13,7 @@ angular.module('cliffhanger.datasets')
                     function (response) {
                         $log.info('Success!');
                         $log.info(response);
-                        //TODO return response
+                        
                     },
                     //error callback
                     function (response) {
@@ -22,7 +22,7 @@ angular.module('cliffhanger.datasets')
 
                     }
                 );
-        }
+        };
         
         
         
@@ -48,30 +48,33 @@ angular.module('cliffhanger.datasets')
 
                     }
                 );
-        }
+        };
 
         
         
          //this service method gets all existing Datasets from the backend
         this.getAllDatasets = function () {
 
-
-            $http.get($rootScope.baseUrl + '/dataset/list')
-                .then(
-                    //success callback
-                    function (response) {
-                        $log.info('Success!');
-                        $log.info(response);
-                        //list all data from response 
+           return $http.get($rootScope.baseUrl + '/dataset/list')
+                .then(function (response) {     //success callback
+                        $log.info(response); //list all data from response 
+                        if (response.data.status == 'Success') {
+                            $log.info('Successfully retrived datasets');
+//                            var datasetList = eval(response.data.obj);
+//                            $log.info(datasetList);
+//                            return datasetList;
+                            return response.data;
+                        } else {
+                            $log.warn('Failed to retrieve datasets');
+                            return $q.reject(response.data);
+                        }
                     },
-                    //error callback
-                    function (response) {
-                        $log.warn('Failure!');
+                    function (response) {     //error callback
                         $log.warn(response);
-
+                        return $q.reject(response.data);
                     }
                 );
-        }
+        };
         
 
         

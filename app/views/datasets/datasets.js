@@ -12,7 +12,9 @@ var datasets = angular.module('cliffhanger.datasets');
 datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService) {
 
     $scope.selected = [];
-    
+//    $scope.datasetList = datasetService.getAllDatasets();
+    $log.info("Scope DatasetList:");
+    $log.info($scope.datasetList);
 
     //test data
     $scope.data = [
@@ -63,7 +65,30 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             ]
         }
     ];
-
+    
+    var getDatasets = function() {
+        datasetService.getAllDatasets()
+            .then(function (data) {
+                if(data.status == 'Success') {
+                    $scope.datasetList = eval(data.obj);
+                } else {
+                    // show "No datasets"
+                }
+            })
+    };
+    getDatasets();    
+    
+    var createDataset = function(newDataSet) {
+        datasetService.addDataset(newDataSet)
+            .then(function (data) {
+                if(data.status == 'Success') {
+                    $scope.datasetList.push(newDataSet);
+                } else {
+                    // display failed
+                }
+            })
+    };
+    
     //opens addDatasetModal
     $scope.open = function () {
         var modalInstance = $uibModal.open({
@@ -79,9 +104,8 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             $log.info(newDataSet);
             //test json builder
             datasetService.addDataset(newDataSet);
-            //update local data
-            $scope.data.push(newDataSet);
-
+            //retrieve all datasets
+            //$scope.datasetList = datasetService.getAllDatasets();
         });
     };
 
@@ -99,7 +123,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
                 }
             }
         });
-    }
+    };
 
     //opnes deleteDataset modal for dataset d
     $scope.deleteDataset = function (d) {
@@ -125,7 +149,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             }
             $log.log($scope.data);
         });
-    }
+    };
 
     //watch for check all checkbox
     $scope.$watch('selectAll', function (v) {
@@ -136,7 +160,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
 
     $scope.deselectAll = function () {
         $scope.selectAll = false;
-    }
+    };
 
 
 
@@ -153,13 +177,13 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         attributes: []
     }; 
     $scope.newAttribute = {
-            col_name: "",
-            description: "",
-            data_type: "String",
-            meta_type: {
-                meta_name: "",
-                description: ""
-            }
+        col_name: "",
+        description: "",
+        data_type: "String",
+        meta_type: {
+            meta_name: "",
+            description: ""
+        }
     };
     
      $scope.tags = [
@@ -203,11 +227,11 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
 
     $scope.selectType = function (selectedType) {
         $scope.newAttribute.data_type = newSelectedType;
-    }
+    };
     
     $scope.selectTag = function (selectedTag) {
         $scope.newAttribute.meta_type = selectedTag;
-    }
+    };
 
     //add an attribute to the input
     $scope.addAttr = function () {
@@ -241,8 +265,8 @@ datasets.controller('DatasetInfoModalCtrl', function ($scope, $uibModalInstance,
     //dismiss modal
     $scope.close = function () {
         $uibModalInstance.dismiss('close');
-    }
-})
+    };
+});
 
 //controller for instance of DatasetDeleteModal
 datasets.controller('DatasetDeleteModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {
@@ -252,10 +276,10 @@ datasets.controller('DatasetDeleteModalCtrl', function ($scope, $uibModalInstanc
     //complete modal
     $scope.delete = function () {
         $uibModalInstance.close(dataset);
-    }
+    };
 
     //dismiss modal
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
-    }
-})
+    };
+});
