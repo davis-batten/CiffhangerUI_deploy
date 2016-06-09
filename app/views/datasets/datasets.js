@@ -15,6 +15,11 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
 //    $scope.datasetList = datasetService.getAllDatasets();
     $log.info("Scope DatasetList:");
     $log.info($scope.datasetList);
+    $scope.showLoadingDatasetsMessage = true;
+    $scope.showNoDatasetsMessage = false;
+    $scope.showAddingDatasetMessage = false;
+    $scope.showFailedAddDatasetMessage = false;
+    $scope.showFailedLoadDatasetsMessage = false;
 
     //test data
     $scope.data = [
@@ -67,25 +72,42 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
     ];
     
     var getDatasets = function() {
+        $scope.showFailedLoadDatasetsMessage = false;
+        $scope.showLoadingDatasetsMessage = true;
         datasetService.getAllDatasets()
             .then(function (data) {
                 if(data.status == 'Success') {
+                    $scope.showNoDatasetsMessage = false;
+                    $scope.showLoadingDatasetsMessage = false;
                     $scope.datasetList = eval(data.obj);
+                    if ($scope.datasetList.size() == 0) {
+                         $scope.showNoDatasetsMessage = true;
+                    }
                 } else {
-                    // show "No datasets"
+                    $scope.showLoadingDatasetsMessage = false;
+                    $scope.showFailedLoadDatasetsMessage = true;
                 }
+            }, function(data) {
+                    $scope.showLoadingDatasetsMessage = false;
+                    $scope.showFailedLoadDatasetsMessage = true;
             })
     };
     getDatasets();    
     
     var createDataset = function(newDataSet) {
+        $scope.showNoDatasetsMessage = false;
+        $scope.showFailedAddDatasetMessage = false;
+        $scope.showAddingDatasetMessage = true;
         datasetService.addDataset(newDataSet)
             .then(function (data) {
                 if(data.status == 'Success') {
-                    $scope.datasetList.push(newDataSet);
+                    $scope.showAddingDatasetMessage = false;
+                    $scope.datasetList.push(newDataSet);                        
                 } else {
-                    // display failed
+                    $scope.showFailedAddDatasetMessage = true;
                 }
+            },function (data) {
+                    $scope.showFailedAddDatasetMessage = true;
             })
     };
     

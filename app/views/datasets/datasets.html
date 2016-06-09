@@ -131,20 +131,25 @@
     <li><a href="#/queries">Queries</a></li>
 </ul>
 <hr>
-<h3>My Datasets</h3>
-<br>
 <button class="btn btn-warning" type="button" ng-click="open()">
     <span class="glyphicon glyphicon-plus"></span> Add Dataset
 </button>
 <a class="btn btn-primary" href="#/datasets/compare" role="button">Compare All Datasets</a>
 <a class="btn btn-default" href="#/datasets/metaTypes" role="button">Meta-Types</a>
 
-<br>
-<br>
-<label>Check all: </label>
+<label>Compare all: </label>
 <checkbox ng-model="selectAll"></checkbox>
+
 <br>
 <br>
+
+<div class="status-message" ng-show="showLoadingDatasetsMessage"> LOADING DATASETS </div>
+<div class="status-message" ng-show="showNoDatasetsMessage"> NO DATASETS </div>
+<div class="status-message" ng-show="showAddingDatasetMessage"> ADDING DATASET </div>
+<div class="error-message" ng-show="showFailedAddDatasetMessage"> FAILED TO ADD DATASET </div>
+<div class="error-message" ng-show="showFailedLoadDatasetsMessage"> FAILED TO LOAD DATASETS </div>
+
+
 <ul class="list-group" id="dataset_list">
     <li class="list-group-item active" id="dataset_item" ng-repeat="d in datasetList">
         <checkbox id="dataset_checkbox" ng-model="selected[$index]" ng-change="deselectAll()"></checkbox>

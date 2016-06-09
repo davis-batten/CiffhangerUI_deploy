@@ -33,3 +33,18 @@
     display: inline;
     margin: 0.25em;
 }
+
+.status-message {
+    width: max-width;
+    text-align: center;
+    font-size: 1.5em;
+    color: darkgray
+}
+
+.error-message {
+    width: max-width;
+    text-align: center;
+    font-size: 1.5em;
+    color: darkred
+
+}
