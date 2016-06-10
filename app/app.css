@@ -40,3 +40,8 @@ footer {
     left: 0;
 }
 
+.app-title {
+    font-size: 2em;
+    padding: .5em 0 0 0;
+}
+

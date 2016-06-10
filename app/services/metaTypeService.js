@@ -8,6 +8,7 @@ angular.module('cliffhanger.metaTypes')
 
             $log.log(JSON.stringify(newMetaType));
             $http.post($rootScope.baseUrl + '/metaType/create', newMetaType)
+            
                 .then(
                     //success callback
                     function (response) {
@@ -23,10 +24,10 @@ angular.module('cliffhanger.metaTypes')
                     }
                 );
         }
-        
-        
-        
-        
+
+
+
+
         //this service method gets an existing Meta-Type from the backend
         this.getMetaType = function (name) {
 
@@ -38,7 +39,7 @@ angular.module('cliffhanger.metaTypes')
                     function (response) {
                         $log.info('Success!');
                         $log.info(response);
-                        
+
                         //$scope.data = (reponse.data.);
                     },
                     //error callback
@@ -50,9 +51,9 @@ angular.module('cliffhanger.metaTypes')
                 );
         }
 
-        
-        
-         //this service method gets all existing Meta-Types from the backend
+
+
+        //this service method gets all existing Meta-Types from the backend
         this.getAllMetaTypes = function () {
 
 
@@ -79,6 +80,3 @@ angular.module('cliffhanger.metaTypes')
                 );
         }
     });
-        
-        
-        

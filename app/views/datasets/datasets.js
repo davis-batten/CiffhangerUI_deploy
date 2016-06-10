@@ -12,9 +12,14 @@ var datasets = angular.module('cliffhanger.datasets');
 datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService) {
 
     $scope.selected = [];
-//    $scope.datasetList = datasetService.getAllDatasets();
+    //    $scope.datasetList = datasetService.getAllDatasets();
     $log.info("Scope DatasetList:");
     $log.info($scope.datasetList);
+    $scope.showLoadingDatasetsMessage = true;
+    $scope.showNoDatasetsMessage = false;
+    $scope.showAddingDatasetMessage = false;
+    $scope.showFailedAddDatasetMessage = false;
+    $scope.showFailedLoadDatasetsMessage = false;
 
     //test data
     $scope.data = [
@@ -65,30 +70,47 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             ]
         }
     ];
-    
-    var getDatasets = function() {
+
+    var getDatasets = function () {
+        $scope.showFailedLoadDatasetsMessage = false;
+        $scope.showLoadingDatasetsMessage = true;
         datasetService.getAllDatasets()
             .then(function (data) {
-                if(data.status == 'Success') {
+                if (data.status == 'Success') {
+                    $scope.showNoDatasetsMessage = false;
+                    $scope.showLoadingDatasetsMessage = false;
                     $scope.datasetList = eval(data.obj);
+                    if ($scope.datasetList.length == 0) {
+                        $scope.showNoDatasetsMessage = true;
+                    }
                 } else {
-                    // show "No datasets"
+                    $scope.showLoadingDatasetsMessage = false;
+                    $scope.showFailedLoadDatasetsMessage = true;
                 }
+            }, function (data) {
+                $scope.showLoadingDatasetsMessage = false;
+                $scope.showFailedLoadDatasetsMessage = true;
             })
     };
-    getDatasets();    
-    
-    var createDataset = function(newDataSet) {
+    getDatasets();
+
+    var createDataset = function (newDataSet) {
+        $scope.showNoDatasetsMessage = false;
+        $scope.showFailedAddDatasetMessage = false;
+        $scope.showAddingDatasetMessage = true;
         datasetService.addDataset(newDataSet)
             .then(function (data) {
-                if(data.status == 'Success') {
+                if (data.status == 'Success') {
+                    $scope.showAddingDatasetMessage = false;
                     $scope.datasetList.push(newDataSet);
                 } else {
-                    // display failed
+                    $scope.showFailedAddDatasetMessage = true;
                 }
+            }, function (data) {
+                $scope.showFailedAddDatasetMessage = true;
             })
     };
-    
+
     //opens addDatasetModal
     $scope.open = function () {
         var modalInstance = $uibModal.open({
@@ -175,7 +197,7 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         name: "",
         description: "",
         attributes: []
-    }; 
+    };
     $scope.newAttribute = {
         col_name: "",
         description: "",
@@ -185,19 +207,19 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
             description: ""
         }
     };
-    
-     $scope.tags = [
+
+    $scope.tags = [
         {
-            metaname: 'IA County',
-            description: 'An county of Iowa'
+            meta_name: 'COUNTY',
+            description: 'A county of Iowa'
         },
         {
-            meta_name: 'Zip Code',
-            description: ''
+            meta_name: 'ZIP',
+            description: 'Zip Code'
         },
-         {
-            meta_name: '',
-            description: ''
+        {
+            meta_name: 'SSN',
+            description: 'Social Security Number'
         }
     ];
 
@@ -226,22 +248,23 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
     };
 
     $scope.selectType = function (selectedType) {
-        $scope.newAttribute.data_type = newSelectedType;
+        $scope.newAttribute.data_type = selectedType;
     };
-    
+
     $scope.selectTag = function (selectedTag) {
         $scope.newAttribute.meta_type = selectedTag;
     };
 
     //add an attribute to the input
     $scope.addAttr = function () {
-        if ($scope.newAttribute.col_name != "" && $scope.newAttribute.data_type != "" ) {
+        $log.debug($scope.newAttribute);
+        if ($scope.newAttribute.col_name != "" && $scope.newAttribute.data_type != "") {
             var temp = {};
             Object.assign(temp, $scope.newAttribute);
             $scope.input.attributes.push(temp);
             $scope.newAttribute.col_name = "";
             $scope.newAttribute.description = "";
-            $scope.newAttribute.meta_type =  {
+            $scope.newAttribute.meta_type = {
                 meta_name: '',
                 description: ''
             };
