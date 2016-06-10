@@ -26,4 +26,18 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
     //set base Url for the REST API
     $rootScope.baseUrl = 'http://localhost:8080/cliffhanger'; //development
 
+})
+
+.directive('prevent-default', function ($rootScope) {
+
+    var linkFn = function (scope, element, attrs) {
+        $(element).on("click", function (event) {
+            event.preventDefault();
+        });
+    };
+
+    return {
+        restrict: 'A',
+        link: linkFn
+    }
 });

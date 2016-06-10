@@ -1,18 +1,18 @@
 //service for dealing with Meta-Types on the Grails backend using REST API
 angular.module('cliffhanger.metaTypes')
     .service('metaTypeService', function ($log, $http, $rootScope, $scope) {
-        
-       
-         //this service method creates a new Meta-tag on the backend
+
+
+        //this service method creates a new Meta-tag on the backend
         this.addMetaType = function (name, desc) {
             var newMetaType = {
-                name: name,
+                meta_name: name,
                 description: desc
             }
 
             $log.log(JSON.stringify(newMetaType));
 
-            $http.post($rootScope.baseUrl + '/dataset/create', JSON.stringify(newDataset))
+            $http.post($rootScope.baseUrl + '/metaType/create', JSON.stringify(newMetaType))
                 .then(
                     //success callback
                     function (response) {
@@ -28,10 +28,10 @@ angular.module('cliffhanger.metaTypes')
                     }
                 );
         }
-        
-        
-        
-        
+
+
+
+
         //this service method gets an existing Meta-Type from the backend
         this.getMetaType = function (name) {
 
@@ -43,7 +43,7 @@ angular.module('cliffhanger.metaTypes')
                     function (response) {
                         $log.info('Success!');
                         $log.info(response);
-                        
+
                         //$scope.data = (reponse.data.);
                     },
                     //error callback
@@ -55,9 +55,9 @@ angular.module('cliffhanger.metaTypes')
                 );
         }
 
-        
-        
-         //this service method gets all existing Meta-Types from the backend
+
+
+        //this service method gets all existing Meta-Types from the backend
         this.getAllMetaTypes = function () {
 
 
@@ -78,6 +78,3 @@ angular.module('cliffhanger.metaTypes')
                 );
         }
     });
-        
-        
-        
