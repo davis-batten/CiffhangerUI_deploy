@@ -39,7 +39,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
                 });
     };
 
-    getMetaTypes();
+    // getMetaTypes();
 
     var getDatasets = function () {
         $scope.showFailedLoadDatasetsMessage = false;
@@ -134,10 +134,11 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
 
         //on modal completion
         modalInstance.result.then(function (d) {
-            $log.warn('Deleted' + d);
-            for (i in $scope.data) {
-                if (d.name == $scope.data[i].name) {
-                    $scope.data.splice(i, 1);
+            $log.warn('Deleted', d);
+            for (i in $scope.datasetList) {
+                if (d.name == $scope.datasetList[i].name) {
+                    $scope.datasetList.splice(i, 1);
+                    //TODO delete with service
                 }
             }
             $log.log($scope.data);
@@ -207,9 +208,11 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
 
     //complete the modal
     $scope.submit = function () {
-        var temp = {};
-        Object.assign(temp, $scope.newAttribute);
-        $scope.input.attributes.push(temp);
+        if ($scope.input.attributes == null) {
+            var temp = {};
+            Object.assign(temp, $scope.newAttribute);
+            $scope.input.attributes.push(temp);
+        }
         $uibModalInstance.close($scope.input);
     };
 
@@ -223,12 +226,13 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
     };
 
     $scope.selectTag = function (selectedTag) {
+        $log.log('selected', selectedTag);
         $scope.newAttribute.meta_type = selectedTag;
     };
 
     //add an attribute to the input
     $scope.addAttr = function () {
-        $log.debug($scope.newAttribute);
+        $log.debug('new attr', $scope.newAttribute);
         if ($scope.newAttribute.col_name != "" && $scope.newAttribute.data_type != "") {
             var temp = {};
             Object.assign(temp, $scope.newAttribute);
@@ -246,7 +250,8 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
     //remove attribute from input
     $scope.removeAttr = function (selectedAttr) {
         $log.log(selectedAttr);
-        $scope.input.attr.splice(selectedAttr, 1);
+        $scope.input.attributes.splice(selectedAttr, 1);
+
     };
 
 });
