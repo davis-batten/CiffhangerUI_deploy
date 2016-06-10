@@ -9,8 +9,10 @@ var module = angular.module('cliffhanger.metaTypes', ['ngRoute'])
     });
 }]);
 
+//var metaTypes = angular.module('cliffhanger.metaTypes');
+
 //main controller for /#/datasets/metaTypes
-module.controller('MetaTypeCtrl', function ($scope, $uibModal, $log) {
+module.controller('MetaTypeCtrl', function ($scope, $uibModal, $log, metaTypeService) {
 
     $scope.selected = undefined;
     $scope.noResults = false;
@@ -23,6 +25,28 @@ module.controller('MetaTypeCtrl', function ($scope, $uibModal, $log) {
     //test data
     $scope.metaTypes = ['ZIP', 'Name', 'SSN', 'Country'].sort(ignoreCase);
 
+    var getAllMetaTypes = function () {
+        metaTypeService.getAllMetaTypes()
+            .then(function (data) {
+                if (data.status == 'Success') {
+                    $scope.metaTypes = eval(data.obj);
+                } else {
+                    // show "No Meta Types"
+                }
+            })
+    };
+    getAllMetaTypes();
+
+    var createMetaType = function (newMetaType) {
+        metaTypeService.addMetaType(newMetaType)
+            .then(function (data) {
+                if (data.status == 'Success') {
+                    $scope.metaTypes.push(newMetaType);
+                } else {
+                    // display failed
+                }
+            })
+    };
 
     //opens addMetaModal
     $scope.add = function () {
@@ -35,15 +59,16 @@ module.controller('MetaTypeCtrl', function ($scope, $uibModal, $log) {
         modalInstance.result.then(function (input) {
             $log.info('Modal dismissed at: ' + new Date());
             $log.info(input);
-
-            //TODO for testing only!!
-            $scope.metaTypes.push(input.name);
+            
+            $scope.metaTypes.add();
+            metaDataService.createMetaType(input);
+            metaDataService.getAllMetaTypes();
             $scope.metaTypes.sort(ignoreCase);
         });
     };
 
 
-
+    
 
 });
 
