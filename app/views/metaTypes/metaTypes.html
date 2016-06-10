@@ -16,13 +16,13 @@
     <h3>Meta-Types</h3>
     <button class="btn btn-warning" ng-click="add()"><span class="glyphicon glyphicon-plus"></span> Add Meta-Type</button>
     <h5>Search</h5>
-    <input type="text" size="40" ng-model="query" uib-typeahead="m for m in metaTypes | filter:$viewValue | limitTo:5" typeahead-no-results="noResults">
+    <input type="text" size="40" ng-model="query.meta_name" uib-typeahead="m.meta_name for m in metaTypes | filter:{meta_name:$viewValue} | limitTo:5" typeahead-no-results="noResults">
 </div>
 
 <br>
 <div class="col-md-8 pull-right" id="metaQueryResults">
     <ul>
-        <li id="list_item" ng-repeat="m in metaTypes | filter:query" class="bg-primary">{{m}}</li>
+        <li id="list_item" ng-repeat="m in metaTypes | filter:query" class="bg-primary">{{m.meta_name}}</li>
     </ul>
     <div ng-show="noResults" id="noResults" class="bg-danger">
         <i class="glyphicon glyphicon-remove"></i> No Results Found

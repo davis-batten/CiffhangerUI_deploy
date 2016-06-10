@@ -19,17 +19,15 @@ module.controller('MetaTypeCtrl', function ($scope, $uibModal, $log, metaTypeSer
 
     //alphabetically compare two strings, ignoring case
     var ignoreCase = function (a, b) {
-        return a.toLowerCase().localeCompare(b.toLowerCase());
+        return a.meta_name.toLowerCase().localeCompare(b.meta_name.toLowerCase());
     }
-
-    //test data
-    $scope.metaTypes = ['ZIP', 'Name', 'SSN', 'Country'].sort(ignoreCase);
 
     var getAllMetaTypes = function () {
         metaTypeService.getAllMetaTypes()
             .then(function (data) {
                 if (data.status == 'Success') {
-                    $scope.metaTypes = eval(data.obj);
+                    $log.debug(eval(data.obj));
+                    $scope.metaTypes = (eval(data.obj)).sort(ignoreCase);
                 } else {
                     // show "No Meta Types"
                 }
@@ -59,16 +57,19 @@ module.controller('MetaTypeCtrl', function ($scope, $uibModal, $log, metaTypeSer
         modalInstance.result.then(function (input) {
             $log.info('Modal dismissed at: ' + new Date());
             $log.info(input);
-            
-            $scope.metaTypes.add();
-            metaDataService.createMetaType(input);
-            metaDataService.getAllMetaTypes();
+
+            metaTypeService.addMetaType(input.name, input.desc)
+                .then(function (response) {
+                        getAllMetaTypes();
+                    },
+                    function (response) {
+                        $log.error('Failure!');
+                    });
             $scope.metaTypes.sort(ignoreCase);
         });
     };
 
 
-    
 
 });
 
