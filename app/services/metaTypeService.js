@@ -66,6 +66,7 @@ angular.module('cliffhanger.metaTypes')
                 .then(
                     //success callback
                     function (response) {
+                        $log.debug(response);
                         if (response.data.status == 'Success') {
                             $log.info('Success!');
                             $log.info(response);

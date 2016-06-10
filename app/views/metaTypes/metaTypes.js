@@ -58,7 +58,7 @@ module.controller('MetaTypeCtrl', function ($scope, $uibModal, $log, metaTypeSer
             $log.info('Modal dismissed at: ' + new Date());
             $log.info(input);
 
-            metaTypeService.addMetaType(input.name, input.desc)
+            metaTypeService.addMetaType(input.name, input.description)
                 .then(function (response) {
                         getAllMetaTypes();
                     },

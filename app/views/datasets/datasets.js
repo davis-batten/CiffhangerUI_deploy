@@ -9,67 +9,37 @@ angular.module('cliffhanger.datasets', ['ngRoute'])
 var datasets = angular.module('cliffhanger.datasets');
 
 //main controller for dataset page
-datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService) {
+datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService, metaTypeService) {
 
     $scope.selected = [];
-    //    $scope.datasetList = datasetService.getAllDatasets();
-    $log.info("Scope DatasetList:");
-    $log.info($scope.datasetList);
     $scope.showLoadingDatasetsMessage = true;
     $scope.showNoDatasetsMessage = false;
     $scope.showAddingDatasetMessage = false;
     $scope.showFailedAddDatasetMessage = false;
     $scope.showFailedLoadDatasetsMessage = false;
 
-    //test data
-    $scope.data = [
-        {
-            name: 'DataSet1',
-            desc: 'desc1',
-            attributes: [
-                {
-                    name: 'zippy',
-                    type: 'ZIP'
+    //alphabetically compare two strings, ignoring case
+    var ignoreCase = function (a, b) {
+        return a.meta_name.toLowerCase().localeCompare(b.meta_name.toLowerCase());
+    }
+
+
+    var getMetaTypes = function () {
+        metaTypeService.getAllMetaTypes()
+            .then(
+                function (data) {
+                    if (data.status == 'Success') {
+                        $scope.metaTypes = eval(data.obj);
+                        $log.debug('metatypes', $scope.metaTypes);
+                    }
+
                 },
-                {
-                    name: 'id',
-                    type: 'SSN'
-                },
-                {
-                    name: 'legal_name',
-                    type: 'Name'
-                }
-            ]
-        },
-        {
-            name: 'DataSet2',
-            desc: 'desc2',
-            attributes: [
-                {
-                    name: 'ssn',
-                    type: 'SSN'
-                },
-                {
-                    name: 'zip_code',
-                    type: 'ZIP'
-                }
-            ]
-        },
-        {
-            name: 'DataSet3',
-            desc: 'desc3',
-            attributes: [
-                {
-                    name: 'id',
-                    type: 'SSN'
-                },
-                {
-                    name: 'name',
-                    type: 'Name'
-                }
-            ]
-        }
-    ];
+                function (data) {
+                    $log.error('Failed to load!');
+                });
+    };
+
+    getMetaTypes();
 
     var getDatasets = function () {
         $scope.showFailedLoadDatasetsMessage = false;
@@ -80,6 +50,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
                     $scope.showNoDatasetsMessage = false;
                     $scope.showLoadingDatasetsMessage = false;
                     $scope.datasetList = eval(data.obj);
+                    $log.debug($scope.datasetList);
                     if ($scope.datasetList.length == 0) {
                         $scope.showNoDatasetsMessage = true;
                     }
