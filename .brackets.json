@@ -1,5 +1,5 @@
 {
     "jscodehints.detectedExclusions": [
-        "C:/User/ckelley/Documents/git/CliffhangerUI/app/bower_components/jquery/src/event/alias.js"
+        "C:/Users/ckelley/Documents/Git/CliffhangerUI/app/bower_components/jquery/src/var/concat.js"
     ]
 }
