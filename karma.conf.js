@@ -7,9 +7,9 @@ module.exports = function (config) {
         files: [
       'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
+      'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js',
       'bower_components/angular-route/angular-route.js',
-      'bower_components/angular-mocks/angular-mocks.js',
       'app.js',
       'components/**/*.js',
       'views/**/*.js',

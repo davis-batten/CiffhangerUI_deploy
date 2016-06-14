@@ -2,13 +2,14 @@
 
 angular.module('cliffhanger.queries', ['ngRoute'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/queries', {
-    templateUrl: 'views/queries/queries.html',
-    controller: 'QueriesCtrl'
-  });
+.config(['$routeProvider', function ($routeProvider) {
+    $routeProvider.when('/queries', {
+        templateUrl: 'views/queries/queries.html',
+        controller: 'QueriesCtrl'
+    });
 }])
 
-.controller('QueriesCtrl', [function() {
+.controller('QueriesCtrl', function ($scope) {
+    $scope.query = null;
 
-}]);
+});
