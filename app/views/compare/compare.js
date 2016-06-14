@@ -10,8 +10,8 @@ angular.module('cliffhanger.compare', ['ngRoute'])
 }])
 
 .controller('CompareCtrl', function ($scope, $log) {
-    //test metaTypes
-    $scope.metaTypes = ['ZIP', 'SSN', 'Name', 'Country'].sort();
+    //test tag
+    $scope.tags = ['ZIP', 'SSN', 'Name', 'Country'].sort();
     //test data
     $scope.data = [
         {
@@ -72,11 +72,11 @@ angular.module('cliffhanger.compare', ['ngRoute'])
             var row = [];
 
             //add cells
-            for (var mt in $scope.metaTypes) {
+            for (var t in $scope.tags) {
                 var found = false;
                 for (var a in attr) {
                     //if column matches type
-                    if (attr[a].type == $scope.metaTypes[mt]) {
+                    if (attr[a].type == $scope.tags[t]) {
                         row.push({
                             name: attr[a].name,
                             type: attr[a].type,
@@ -89,7 +89,7 @@ angular.module('cliffhanger.compare', ['ngRoute'])
                 if (!found) {
                     row.push({
                         name: null,
-                        type: $scope.metaTypes[mt],
+                        type: $scope.tags[t],
                         class: 'danger'
                     });
                 }
