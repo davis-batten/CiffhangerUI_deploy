@@ -90,10 +90,8 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             $log.info('Name : ' + newDataSet.name);
             $log.info('Description : ' + newDataSet.desc);
             $log.info(newDataSet);
-            //test json builder
-            datasetService.addDataset(newDataSet);
-            //retrieve all datasets
-            //$scope.datasetList = datasetService.getAllDatasets();
+            createDataset(newDataSet);
+
         });
     };
 
@@ -169,23 +167,23 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         col_name: "",
         description: "",
         data_type: "String",
-        tag_type: {
-            tag_name: "",
+        tag: {
+            name: "",
             description: ""
         }
     };
 
     $scope.tags = [
         {
-            tag_name: 'COUNTY',
+            name: 'COUNTY',
             description: 'A county of Iowa'
         },
         {
-            tag_name: 'ZIP',
+            name: 'ZIP',
             description: 'Zip Code'
         },
         {
-            tag_name: 'SSN',
+            name: 'SSN',
             description: 'Social Security Number'
         }
     ];
@@ -222,7 +220,7 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
 
     $scope.selectTag = function (selectedTag) {
         $log.log('selected', selectedTag);
-        $scope.newAttribute.tag_type = selectedTag;
+        $scope.newAttribute.tag = selectedTag;
     };
 
     //add an attribute to the input
@@ -234,8 +232,8 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
             $scope.input.attributes.push(temp);
             $scope.newAttribute.col_name = "";
             $scope.newAttribute.description = "";
-            $scope.newAttribute.tag_type = {
-                tag_name: '',
+            $scope.newAttribute.tag = {
+                name: '',
                 description: ''
             };
             $scope.newAttribute.data_type = "String";

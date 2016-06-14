@@ -50,10 +50,10 @@
                     Tag:
                     <div class="btn-group" uib-dropdown is-open="status.isopentag">
                         <button id="tag-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle>
-                            {{newAttribute.tag.tag_name}} <span class="caret"></span>
+                            {{newAttribute.tag.name}} <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
-                            <li ng-repeat="tag in tags" role="menuitem"><a prevent-default ng-click="selectTag(tag)">{{tag.tag_name}} : {{tag.description}}</a></li>
+                            <li ng-repeat="tag in tags" role="menuitem"><a prevent-default ng-click="selectTag(tag)">{{tag.name}} : {{tag.description}}</a></li>
                         </ul>
                     </div>
                     <button class="btn btn-primary" ng-click="addAttr()"><span class="glyphicon glyphicon-plus"></span></button>
@@ -65,7 +65,7 @@
 
                 <div class="col-md-6">
                     <ul ng-repeat="a in input.attributes track by a.tag.tag_name">
-                        <li>{{a.col_name}} // {{a.tag.tag_name}}
+                        <li>{{a.col_name}} // {{a.tag.name}}
                             <button class="btn btn-danger btn-xs" type="button" ng-click="removeAttr($index)">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
