@@ -13,14 +13,15 @@ module.exports = function (config) {
       'app.js',
       'components/**/*.js',
       'views/**/*.js',
-      'services/*.js'
+      'services/*.js',
+      'services/**/*.js'
       ],
 
         autoWatch: true,
 
         frameworks: ['jasmine'],
 
-        browsers: ['Chrome'],
+        //browsers: ['Chrome'],
 
         plugins: [
       'karma-chrome-launcher',

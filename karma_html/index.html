@@ -93,19 +93,16 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </style>
 </head>
 
-<body id="HTMLReporter" class="html-reporter showDetails">
+<body id="HTMLReporter" class="html-reporter">
 <h1>Tested in Chrome 51.0.2704 (Windows 7 0.0.0) on Tue Jun 14 2016</h1>
 
 <div class="alert">
 
 
-<!-- <span class="failingAlert bar">Failed 1 specs</span> -->
-<span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> |
-  <a href="#" onclick="unfold();">Unfold</a></span>15 specs, 1 failed, 0 pending</span>
-<span class="resultsMenu bar">
-<a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a
-   class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
-</span>
+
+
+  <span class="passingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> |
+  <a href="#" onclick="unfold();">Unfold</a></span>19 specs, 0 failed, 0 pending</span>
 
 
 
@@ -162,7 +159,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
     </div>
 
-    <div class="suite failed">
+    <div class="suite passed">
       <span class="description">cliffhanger.datasets module AddDatasetModalInstanceCtrl</span>
 
       <div class="specSummary passed">
@@ -189,7 +186,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">should be able to add an attribute</span>
       </div>
 
-      <div class="specSummary failed">
+      <div class="specSummary passed">
       <span class="description">should be able to remove an attribute</span>
       </div>
 
@@ -217,20 +214,36 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
     </div>
 
+    <div class="suite passed">
+      <span class="description">dataset service</span>
+
+      <div class="specSummary passed">
+      <span class="description">should be able to get all datasets</span>
+      </div>
+
+      <div class="specSummary passed">
+      <span class="description">should be able to create a dataset</span>
+      </div>
+
+    </div>
+
+    <div class="suite passed">
+      <span class="description">metaType service</span>
+
+      <div class="specSummary passed">
+      <span class="description">should be able to get all metatypes</span>
+      </div>
+
+      <div class="specSummary passed">
+      <span class="description">should be able to create a metatype</span>
+      </div>
+
+    </div>
+
 
 </div>
 
 <div id="details">
-
-
-  <div class="specDetail failed">
-    <span class="description">cliffhanger.datasets module AddDatasetModalInstanceCtrl should be able to remove an attribute</span>
-    <div class="stackTrace">
-      <div class="resultMessage">Expected 0 to be -1.
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/datasets/datasets_test.js?1b2c614001013ce9ddefd7a25574539408309047:138:60)</div>
-    </div>
-  </div>
-
 
 </div>
 
@@ -243,7 +256,7 @@ document.body.onkeypress = function (e) {
   switch (e.keyCode) {
     case 102: toggleFold(); break;
     case 49: showSummary(); break;
-    case 50: showFailures(); break;
+
   }
 };
 
