@@ -1,11 +1,11 @@
-describe('cliffhanger.metaTypes module', function () {
+describe('cliffhanger.tags module', function () {
 
     beforeEach(module('ngRoute'));
     beforeEach(module('ui.bootstrap'));
 
-    beforeEach(module('cliffhanger.metaTypes'));
+    beforeEach(module('cliffhanger.tags'));
 
-    describe('MetaTypeCtrl', function () {
+    describe('TagCtrl', function () {
 
         beforeEach(inject(function ($controller, $rootScope, $q, $log, $uibModal) {
             scope = $rootScope.$new();
@@ -27,35 +27,35 @@ describe('cliffhanger.metaTypes module', function () {
                 }
             }
 
-            //create mock metaTypeService
-            mockMetaTypeService = {
-                addMetaType: function () {
+            //create mock tagService
+            mockTagService = {
+                addTag: function () {
                     //TODO
                 },
-                getMetaType: function () {
+                getTag: function () {
                     //TODO
                 },
-                getAllMetaTypes: function () {
+                getAllTags: function () {
                     //TODO
                 }
             }
 
-            metaTypeCtrl = $controller('MetaTypeCtrl', {
+            tagCtrl = $controller('TagCtrl', {
                 $scope: scope,
                 $uibModal: modal,
                 $log: $log,
                 datasetService: mockDatasetService,
-                metaTypeService: mockMetaTypeService,
+                tagService: mockTagService,
 
             });
         }));
 
-        it('should have a MetaTypeCtrl controller', function () {
-            expect(metaTypeCtrl).toBeDefined();
+        it('should have a TagCtrl controller', function () {
+            expect(tagCtrl).toBeDefined();
         });
     });
 
-      describe('AddMetaTypeModalInstanceCtrl', function () {
+      describe('AddTagModalInstanceCtrl', function () {
         beforeEach(inject(function ($controller, $rootScope, $log) {
             scope = $rootScope.$new();
             modalInstance = {
@@ -65,7 +65,7 @@ describe('cliffhanger.metaTypes module', function () {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
-            addMetaTypeModalCtrl = $controller('AddMetaTypeModalInstanceCtrl', {
+            addTagModalCtrl = $controller('AddTagModalInstanceCtrl', {
                 $scope: scope,
                 $uibModalInstance: modalInstance,
                 $log: $log
@@ -73,8 +73,8 @@ describe('cliffhanger.metaTypes module', function () {
 
         }));
 
-        it('should instantiate the addMetaTypeModalInstanceCtrl controller', function () {
-            expect(addMetaTypeModalCtrl).not.toBeUndefined();
+        it('should instantiate the addTagModalInstanceCtrl controller', function () {
+            expect(addTagModalCtrl).not.toBeUndefined();
         });
 
         it('should dismiss the modal with cancel', function () {
@@ -88,33 +88,33 @@ describe('cliffhanger.metaTypes module', function () {
             expect(modalInstance.close).toHaveBeenCalled();
         });
 
-        it('should be able to add a Meta Type', function () {
-            var before = scope.input.meta_type.length;
+        it('should be able to add a tag', function () {
+            var before = scope.input.tag.length;
             scope.meta_type = {
                 meta_name: 'ZIP',
                 description: 'zip code'
             }
 
-            scope.submit();
+            scope.addTag();
             //expect one more attribute in list
             expect(scope.input.meta_type.length - before).toBe(1);
         });
 
-//        it('should be able to remove a Meta type', function () {
+//        it('should be able to remove a tag', function () {
 //
 //            //add new meta type
-//            scope.meta_type = {
+//            scope.tag = {
 //                meta_name: 'ZIP',
 //                description: 'zip code'
 //            }
 //
-//            scope.submit();
-//            var before = scope.input.meta_type.length;
+//            scope.addTAg();
+//            var before = scope.input.tag.length;
 //
 //            //remove and test
-//            scope.removeMetaType(0);
+//            scope.removeTag(0);
 //            //expect one less attribute in list
-//            expect(scope.input.meta_type.length - before).toBe(-1);
+//            expect(scope.input.tag.length - before).toBe(-1);
 //        })
 //    });
 
@@ -127,16 +127,16 @@ describe('cliffhanger.metaTypes module', function () {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
-            mockMetaData = {
+            mockTag = {
                 name: 'test',
                 description: 'desc'
             }
 
-            metaDataInfoCtrl = $controller('MetaDataInfoModalCtrl', {
+            tagInfoCtrl = $controller('TagInfoModalCtrl', {
                 $scope: scope,
                 $uibModalInstance: modalInstance,
                 $log: $log,
-                meta_data: mockMetaData
+                tag: mockTag
             });
 
         }));
