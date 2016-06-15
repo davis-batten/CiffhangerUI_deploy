@@ -70,6 +70,7 @@ describe('cliffhanger.datasets module', function () {
                     return $q.resolve();
                 }
             }
+
             addDatasetModalCtrl = $controller('AddDatasetModalInstanceCtrl', {
                 $scope: scope,
                 $uibModalInstance: modalInstance,

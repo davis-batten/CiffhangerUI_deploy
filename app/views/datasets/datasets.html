@@ -64,7 +64,7 @@
                 </div> -->
 
                 <div class="col-md-6">
-                    <ul ng-repeat="a in input.attributes track by a.tag.tag_name">
+                    <ul ng-repeat="a in input.attributes track by a.tag.name">
                         <li>{{a.col_name}} // {{a.tag.name}}
                             <button class="btn btn-danger btn-xs" type="button" ng-click="removeAttr($index)">
                                 <span class="glyphicon glyphicon-remove"></span>
