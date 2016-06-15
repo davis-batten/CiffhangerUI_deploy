@@ -33,7 +33,7 @@ File Directory Format:
             compare -- files for #/datasets/compare
             dashboard -- files for #/dashboard
             datasets -- files for #/datasets
-            metaTypes -- files for #/datasets/metaTypes
+            tags -- files for #/datasets/tags
             queries -- files for #/queries
         app.css -- main css for entire application
         app.js -- main javascript module for application

@@ -50,10 +50,10 @@
                     Tag:
                     <div class="btn-group" uib-dropdown is-open="status.isopentag">
                         <button id="tag-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle>
-                            {{newAttribute.meta_type.meta_name}} <span class="caret"></span>
+                            {{newAttribute.tag.name}} <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
-                            <li ng-repeat="tag in tags" role="menuitem"><a prevent-default ng-click="selectTag(tag)">{{tag.meta_name}} : {{tag.description}}</a></li>
+                            <li ng-repeat="tag in tags" role="menuitem"><a prevent-default ng-click="selectTag(tag)">{{tag.name}} : {{tag.description}}</a></li>
                         </ul>
                     </div>
                     <button class="btn btn-primary" ng-click="addAttr()"><span class="glyphicon glyphicon-plus"></span></button>
@@ -64,8 +64,8 @@
                 </div> -->
 
                 <div class="col-md-6">
-                    <ul ng-repeat="a in input.attributes track by a.meta_type.meta_name">
-                        <li>{{a.col_name}} // {{a.meta_type.meta_name}}
+                    <ul ng-repeat="a in input.attributes track by a.tag.name">
+                        <li>{{a.col_name}} // {{a.tag.name}}
                             <button class="btn btn-danger btn-xs" type="button" ng-click="removeAttr($index)">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
@@ -134,7 +134,7 @@
     <span class="glyphicon glyphicon-plus"></span> Add Dataset
 </button>
 <a class="btn btn-primary" href="#/datasets/compare" role="button">Compare All Datasets</a>
-<a class="btn btn-default" href="#/datasets/metaTypes" role="button">Meta-Types</a>
+<a class="btn btn-default" href="#/datasets/tags" role="button">Tags</a>
 
 <label>Compare all: </label>
 <checkbox ng-model="selectAll"></checkbox>

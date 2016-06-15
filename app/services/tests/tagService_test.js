@@ -1,5 +1,5 @@
-describe("metaType service", function () {
-    var metaTypeService, httpBackend, baseUrl, $q;
+describe("tag service", function () {
+    var tagService, httpBackend, baseUrl, $q;
 
     test_get_data = [
         {
@@ -20,30 +20,29 @@ describe("metaType service", function () {
 
     beforeEach(function () {
 
-        angular.mock.module("cliffhanger.metaTypes");
+        angular.mock.module("cliffhanger.tags");
 
         inject(function ($injector, $httpBackend) {
-            metaTypeService = $injector.get('metaTypeService');
+            tagService = $injector.get('tagService');
             httpBackend = $injector.get('$httpBackend');
             $q = $injector.get('$q');
             baseUrl = ($injector.get('$rootScope')).baseUrl;
         });
     });
 
-    it("should be able to get all metatypes", function () {
-        httpBackend.whenGET(baseUrl + '/metaType/list').respond({
+    it("should be able to get all tags", function () {
+        httpBackend.whenGET(baseUrl + '/tag/list').respond({
             data: test_get_data
         });
-        metaTypeService.getAllMetaTypes().then(function (response) {
+        tagService.getAllTags().then(function (response) {
             expect(response).toEqual(test_get_data);
         });
     });
 
-    it("should be able to create a metatype", function () {
-        httpBackend.expectPOST(baseUrl + '/metaType/create').respond(200, "success");
-        metaTypeService.addMetaType(test_create_data);
+    it("should be able to create a tag", function () {
+        httpBackend.expectPOST(baseUrl + '/tag/create').respond(200, "success");
+        tagService.addTag(test_create_data);
         //httpBackend.flush();
     })
 
-    //TODO add test for '/dataset/get/$name' when it is implemented fully
 });

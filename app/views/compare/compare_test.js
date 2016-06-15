@@ -1,8 +1,8 @@
 describe('cliffhanger.compare module', function () {
 
-    beforeEach(module('ngRoute'));
+    beforeEach(angular.mock.module('ngRoute'));
 
-    beforeEach(module('cliffhanger.compare'));
+    beforeEach(angular.mock.module('cliffhanger.compare'));
 
     describe('compare controller', function () {
 

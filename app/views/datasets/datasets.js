@@ -9,7 +9,7 @@ angular.module('cliffhanger.datasets', ['ngRoute'])
 var datasets = angular.module('cliffhanger.datasets');
 
 //main controller for dataset page
-datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService, metaTypeService) {
+datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService) {
 
     $scope.selected = [];
     $scope.showLoadingDatasetsMessage = true;
@@ -24,22 +24,9 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
     }
 
 
-    var getMetaTypes = function () {
-        metaTypeService.getAllMetaTypes()
-            .then(
-                function (data) {
-                    if (data.status == 'Success') {
-                        $scope.metaTypes = eval(data.obj);
-                        $log.debug('metatypes', $scope.metaTypes);
-                    }
 
-                },
-                function (data) {
-                    $log.error('Failed to load!');
-                });
-    };
 
-    // getMetaTypes();
+    // getTags();
 
     var getDatasets = function () {
         $scope.showFailedLoadDatasetsMessage = false;
@@ -49,7 +36,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
                 if (data.status == 'Success') {
                     $scope.showNoDatasetsMessage = false;
                     $scope.showLoadingDatasetsMessage = false;
-                    $scope.datasetList = eval(data.obj);
+                    $scope.datasetList = eval(data.data);
                     $log.debug($scope.datasetList);
                     if ($scope.datasetList.length == 0) {
                         $scope.showNoDatasetsMessage = true;
@@ -95,10 +82,8 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             $log.info('Name : ' + newDataSet.name);
             $log.info('Description : ' + newDataSet.desc);
             $log.info(newDataSet);
-            //test json builder
-            datasetService.addDataset(newDataSet);
-            //retrieve all datasets
-            //$scope.datasetList = datasetService.getAllDatasets();
+            createDataset(newDataSet);
+
         });
     };
 
@@ -163,7 +148,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
 
 
 //controller for an instance of AddDatasetModal
-datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalInstance, $log) {
+datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalInstance, $log, tagService) {
     $scope.step = 1; //what step is the modal on
     $scope.input = { //what is the input from the user
         name: "",
@@ -174,26 +159,26 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         col_name: "",
         description: "",
         data_type: "String",
-        meta_type: {
-            meta_name: "",
+        tag: {
+            name: "",
             description: ""
         }
     };
 
-    $scope.tags = [
-        {
-            meta_name: 'COUNTY',
-            description: 'A county of Iowa'
-        },
-        {
-            meta_name: 'ZIP',
-            description: 'Zip Code'
-        },
-        {
-            meta_name: 'SSN',
-            description: 'Social Security Number'
-        }
-    ];
+    //    $scope.tags = [
+    //        {
+    //            name: 'COUNTY',
+    //            description: 'A county of Iowa'
+    //        },
+    //        {
+    //            name: 'ZIP',
+    //            description: 'Zip Code'
+    //        },
+    //        {
+    //            name: 'SSN',
+    //            description: 'Social Security Number'
+    //        }
+    //    ];
 
 
     //advance the modal to the next step
@@ -227,7 +212,7 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
 
     $scope.selectTag = function (selectedTag) {
         $log.log('selected', selectedTag);
-        $scope.newAttribute.meta_type = selectedTag;
+        $scope.newAttribute.tag = selectedTag;
     };
 
     //add an attribute to the input
@@ -239,8 +224,8 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
             $scope.input.attributes.push(temp);
             $scope.newAttribute.col_name = "";
             $scope.newAttribute.description = "";
-            $scope.newAttribute.meta_type = {
-                meta_name: '',
+            $scope.newAttribute.tag = {
+                name: '',
                 description: ''
             };
             $scope.newAttribute.data_type = "String";
@@ -253,6 +238,22 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         $scope.input.attributes.splice(selectedAttr, 1);
 
     };
+
+    var getTags = function () {
+        tagService.getAllTags()
+            .then(
+                function (data) {
+                    if (data.status == 'Success') {
+                        $scope.tags = eval(data.data);
+                        $log.debug('tags', $scope.tags);
+                    }
+
+                },
+                function (data) {
+                    $log.error('Failed to load!');
+                });
+    };
+    getTags();
 
 });
 
