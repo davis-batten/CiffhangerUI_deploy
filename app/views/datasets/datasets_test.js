@@ -27,25 +27,13 @@ describe('cliffhanger.datasets module', function () {
                 }
             }
 
-            //create mock metaTypeService
-            mockMetaTypeService = {
-                addMetaType: function () {
-                    //TODO
-                },
-                getMetaType: function () {
-                    //TODO
-                },
-                getAllMetaTypes: function () {
-                    //TODO
-                }
-            }
+
 
             datasetsCtrl = $controller('DatasetsCtrl', {
                 $scope: scope,
                 $uibModal: modal,
                 $log: $log,
-                datasetService: mockDatasetService,
-                metaTypeService: mockMetaTypeService,
+                datasetService: mockDatasetService
 
             });
         }));
@@ -57,7 +45,7 @@ describe('cliffhanger.datasets module', function () {
     });
 
     describe('AddDatasetModalInstanceCtrl', function () {
-        beforeEach(inject(function ($controller, $rootScope, $log) {
+        beforeEach(inject(function ($controller, $rootScope, $log, $q) {
             scope = $rootScope.$new();
             modalInstance = {
                 close: jasmine.createSpy('uibModalInstance.close'),
@@ -66,10 +54,27 @@ describe('cliffhanger.datasets module', function () {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
+
+            //create mock tagService
+            mockTagService = {
+                addTag: function () {
+                    //TODO
+                    return $q.resolve();
+                },
+                getTag: function () {
+                    //TODO
+                    return $q.resolve();
+                },
+                getAllTags: function () {
+                    //TODO
+                    return $q.resolve();
+                }
+            }
             addDatasetModalCtrl = $controller('AddDatasetModalInstanceCtrl', {
                 $scope: scope,
                 $uibModalInstance: modalInstance,
-                $log: $log
+                $log: $log,
+                tagService: mockTagService
             });
 
         }));

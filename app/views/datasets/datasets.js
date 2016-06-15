@@ -9,7 +9,7 @@ angular.module('cliffhanger.datasets', ['ngRoute'])
 var datasets = angular.module('cliffhanger.datasets');
 
 //main controller for dataset page
-datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService, tagService) {
+datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService) {
 
     $scope.selected = [];
     $scope.showLoadingDatasetsMessage = true;
@@ -19,20 +19,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
     $scope.showFailedLoadDatasetsMessage = false;
 
 
-    var getTags = function () {
-        tagService.getAllTags()
-            .then(
-                function (data) {
-                    if (data.status == 'Success') {
-                        $scope.tags = eval(data.obj);
-                        $log.debug('tags', $scope.tags);
-                    }
 
-                },
-                function (data) {
-                    $log.error('Failed to load!');
-                });
-    };
 
     // getTags();
 
@@ -156,7 +143,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
 
 
 //controller for an instance of AddDatasetModal
-datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalInstance, $log) {
+datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalInstance, $log, tagService) {
     $scope.step = 1; //what step is the modal on
     $scope.input = { //what is the input from the user
         name: "",
@@ -173,20 +160,20 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         }
     };
 
-    $scope.tags = [
-        {
-            name: 'COUNTY',
-            description: 'A county of Iowa'
-        },
-        {
-            name: 'ZIP',
-            description: 'Zip Code'
-        },
-        {
-            name: 'SSN',
-            description: 'Social Security Number'
-        }
-    ];
+    //    $scope.tags = [
+    //        {
+    //            name: 'COUNTY',
+    //            description: 'A county of Iowa'
+    //        },
+    //        {
+    //            name: 'ZIP',
+    //            description: 'Zip Code'
+    //        },
+    //        {
+    //            name: 'SSN',
+    //            description: 'Social Security Number'
+    //        }
+    //    ];
 
 
     //advance the modal to the next step
@@ -246,6 +233,22 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         $scope.input.attributes.splice(selectedAttr, 1);
 
     };
+
+    var getTags = function () {
+        tagService.getAllTags()
+            .then(
+                function (data) {
+                    if (data.status == 'Success') {
+                        $scope.tags = eval(data.data);
+                        $log.debug('tags', $scope.tags);
+                    }
+
+                },
+                function (data) {
+                    $log.error('Failed to load!');
+                });
+    };
+    getTags();
 
 });
 
