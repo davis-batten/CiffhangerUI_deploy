@@ -19,8 +19,14 @@
     <ul>
         <li id="list_item" ng-repeat="t in tags | filter:query" class="list-group-item active">
             <label>{{t.name}}</label>
-            <button class="btn btn-danger" type="button" uib-tooltip="Delete"><span class="glyphicon glyphicon-trash"></span></button>
-            <button class="btn btn-default" type="button" uib-tooltip="Info"><span class="glyphicon glyphicon-info-sign"></span></button>
+            <button class="btn btn-danger" type="button" uib-tooltip="Delete" ng-click="delete(t)">
+                <span class="glyphicon glyphicon-trash"></span></button>
+            <button class="btn btn-default" type="button" uib-tooltip="Info" ng-click="moreInfo[$index] = !moreInfo[$index]">
+                <span class="glyphicon glyphicon-info-sign"></span></button>
+            <div class="more_info" ng-show="moreInfo[$index]">
+                <strong>Description</strong>
+                <br> {{t.description}}
+            </div>
         </li>
     </ul>
     <div ng-show="noResults" id="noResults" class="bg-danger">
@@ -28,7 +34,7 @@
     </div>
 </div>
 
-<!-- Add Attribute Modal -->
+<!-- Add Tag Modal -->
 <script type="text/ng-template" id="addTagModalContent.html">
     <div class="modal-header">
         <h3 class="modal-title">Add New Tag</h3>
@@ -47,4 +53,21 @@
         <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
         <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
     </div>
+</script>
+
+<!-- Delete Dataset Modal -->
+
+<script type="text/ng-template" id="tagDelete.html">
+    <div class="modal-header">
+        <h3 class="modal-title"> Delete Tag</h3>
+
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete <em><strong>{{tag.name}}</strong></em>? This action cannot be undone!</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
+        <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+
 </script>

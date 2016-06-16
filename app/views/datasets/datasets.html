@@ -147,10 +147,21 @@
 
     <ul class="list-group" id="dataset_list">
         <li class="list-group-item active" id="dataset_item" ng-repeat="d in datasetList">
-            <checkbox id="dataset_checkbox" ng-model="selected[$index]" ng-change="deselectAll()"></checkbox>
             <label>{{d.name}}</label>
-            <button class="btn btn-danger" type="button" ng-click="deleteDataset(d)"><span class="glyphicon glyphicon-trash"></span></button>
-            <button class="btn btn-default" type="button" ng-click="displayInfo(d)"><span class="glyphicon glyphicon-info-sign"></span></button>
+            <button class="btn btn-danger" type="button" ng-click="deleteDataset(d)" uib-tooltip="Delete">
+                <span class="glyphicon glyphicon-trash"></span></button>
+            <button class="btn btn-default" type="button" ng-click="moreInfo[$index]=!moreInfo[$index]" uib-tooltip="Info">
+                <span class="glyphicon glyphicon-info-sign"></span></button>
+            <div class="more_info" ng-show="moreInfo[$index]">
+                <strong>Description</strong>
+                <br> {{d.description}}
+                <br>
+                <br>
+                <strong>Columns</strong>
+                <ul class="inline-list">
+                    <li ng-repeat="attr in d.attributes"><span class="badge">{{attr.col_name}}</span></li>
+                </ul>
+            </div>
 
         </li>
     </ul>

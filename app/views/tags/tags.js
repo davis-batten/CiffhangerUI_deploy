@@ -1,5 +1,3 @@
-'use strict';
-
 var module = angular.module('cliffhanger.tags', ['ngRoute'])
 
 .config(['$routeProvider', function ($routeProvider) {
@@ -68,6 +66,32 @@ module.controller('TagCtrl', function ($scope, $uibModal, $log, tagService) {
         });
     };
 
+    //opnes deleteDataset modal for dataset d
+    $scope.delete = function (t) {
+        $log.warn('delete', t);
+        var modalInstance = $uibModal.open({
+            templateUrl: 'tagDelete.html',
+            controller: 'TagDeleteModalCtrl',
+            size: 'md',
+            resolve: {
+                tag: function () {
+                    return t;
+                }
+            }
+        });
+
+        //on modal completion
+        modalInstance.result.then(function (t) {
+            $log.warn('Deleted', t);
+            for (i in $scope.tags) {
+                if (t.name == $scope.tags[i].name) {
+                    $scope.tags.splice(i, 1);
+                    //TODO delete with service
+                }
+            }
+        });
+    };
+
 
 
 });
@@ -87,4 +111,20 @@ datasets.controller('AddTagModalInstanceCtrl', function ($scope, $uibModalInstan
         $uibModalInstance.dismiss('cancel');
     };
 
+});
+
+//controller for instance of DatasetDeleteModal
+datasets.controller('TagDeleteModalCtrl', function ($scope, $uibModalInstance, $log, tag) {
+
+    $scope.tag = tag;
+
+    //complete modal
+    $scope.delete = function () {
+        $uibModalInstance.close(tag);
+    };
+
+    //dismiss modal
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 });

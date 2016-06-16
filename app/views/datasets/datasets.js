@@ -87,22 +87,6 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         });
     };
 
-
-    //opens displayInfo modal for dataset d
-    $scope.displayInfo = function (d) {
-        $log.log(d);
-        var modalInstance = $uibModal.open({
-            templateUrl: 'datasetInfo.html',
-            controller: 'DatasetInfoModalCtrl',
-            size: 'lg',
-            resolve: {
-                dataset: function () {
-                    return d;
-                }
-            }
-        });
-    };
-
     //opnes deleteDataset modal for dataset d
     $scope.deleteDataset = function (d) {
         $log.log(d);
@@ -129,18 +113,6 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             $log.log($scope.data);
         });
     };
-
-    //watch for check all checkbox
-    $scope.$watch('selectAll', function (v) {
-        for (i in $scope.selected) {
-            $scope.selected[i] = v;
-        }
-    });
-
-    $scope.deselectAll = function () {
-        $scope.selectAll = false;
-    };
-
 
 
 
@@ -257,16 +229,6 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
 
 });
 
-
-//controller for instance of DatasetInfoModal
-datasets.controller('DatasetInfoModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {
-    $scope.dataset = dataset;
-
-    //dismiss modal
-    $scope.close = function () {
-        $uibModalInstance.dismiss('close');
-    };
-});
 
 //controller for instance of DatasetDeleteModal
 datasets.controller('DatasetDeleteModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {
