@@ -19,7 +19,7 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
     $locationProvider.hashPrefix('');
 
     $routeProvider.otherwise({
-        redirectTo: '/dashboard'
+        redirectTo: '/'
     });
 
 }])

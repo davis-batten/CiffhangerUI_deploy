@@ -3,13 +3,13 @@
 angular.module('cliffhanger.dashboard', ['ngRoute'])
 
 .config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/dashboard', {
+    $routeProvider.when('/', {
         templateUrl: 'views/dashboard/dashboard.html',
         controller: 'DashboardCtrl'
     });
 }])
 
-.controller('DashboardCtrl', function ($rootScope, $log, $scope, $q, $filter) {
+.controller('DashboardCtrl', function ($rootScope, $log, $scope, $q, $filter, $location) {
 
     $scope.testGlobal = function () {
         $log.log($rootScope);
@@ -43,6 +43,18 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
 
         return deferred.promise;
     };
+
+    $scope.pickDeveloper = function () {
+        $rootScope.isDeveloper = true;
+        $rootScope.isAnalyst = false;
+        $location.path("developer/datasets");
+    }
+
+    $scope.pickAnalyst = function () {
+        $rootScope.isAnalyst = true;
+        $rootScope.isDeveloper = false;
+        $location.url("analyst/compare");
+    }
 
 
 

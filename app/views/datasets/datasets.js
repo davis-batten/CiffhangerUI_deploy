@@ -1,6 +1,6 @@
 angular.module('cliffhanger.datasets', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/datasets', {
+        $routeProvider.when('/developer/datasets', {
             templateUrl: 'views/datasets/datasets.html',
             controller: 'DatasetsCtrl'
         });

@@ -3,7 +3,7 @@
 angular.module('cliffhanger.compare', ['ngRoute'])
 
 .config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/datasets/compare', {
+    $routeProvider.when('/analyst/compare', {
         templateUrl: 'views/compare/compare.html',
         controller: 'CompareCtrl'
     });
