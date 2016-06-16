@@ -2,9 +2,30 @@
 <h3>Compare</h3>
 
 <!--Typeaheads go here -->
+<div class="col-md-6">
+    <h4>Filter Tags</h4>
+    <tags-input ng-model="selectedTags" add-from-autocomplete-only="true" display-property="name" spellcheck="false">
+        <auto-complete source="filterTags($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true"></auto-complete>
+    </tags-input>
 
-<button class="btn btn-default">Select All Tags</button>
-<button class="btn btn-default">Select All Datasets</button>
+    <p ng-show="noTagResults">No Results</p>
+    <br>
+    <button class="btn btn-default" ng-click="selectAllTags()">Select All Tags</button>
+</div>
+
+<!--Typeaheads go here -->
+<div class="col-md-6">
+    <h4>Filter Datasets</h4>
+    <tags-input ng-model="selectedDatasets" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Add a dataset">
+        <auto-complete source="filterDatasets($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true"></auto-complete>
+    </tags-input>
+
+    <p ng-show="noDatasetResults">No Results</p>
+    <br>
+    <button class="btn btn-default" ng-click="selectAllDatasets()">Select All Datasets</button>
+</div>
+
+
 <button class="btn btn-default">Allow Untagged Attributes</button>
 <br>
 <br>
@@ -12,12 +33,12 @@
     <table class="table table-bordered">
         <thead>
             <th></th>
-            <th ng-repeat="tag in tags">{{tag}}</th>
+            <th ng-repeat="tag in selectedTags">{{tag.name}}</th>
         </thead>
         <tbody>
-            <tr ng-repeat="dataset in data">
+            <tr ng-repeat="dataset in selectedDatasets">
                 <td>{{dataset.name}}</td>
-                <td ng-repeat="attr in buildRow(dataset.attributes, $index)" class="{{attr.class}}">{{attr.name}}</td>
+                <td ng-repeat="attr in buildRow(dataset)" class="{{attr.class}}">{{attr.name}}</td>
             </tr>
         </tbody>
     </table>
