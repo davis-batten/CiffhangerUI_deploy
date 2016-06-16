@@ -18,6 +18,11 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
     $scope.showFailedAddDatasetMessage = false;
     $scope.showFailedLoadDatasetsMessage = false;
 
+    //alphabetically compare two strings, ignoring case
+    var ignoreCase = function (a, b) {
+        return a.meta_name.toLowerCase().localeCompare(b.meta_name.toLowerCase());
+    }
+
 
 
 

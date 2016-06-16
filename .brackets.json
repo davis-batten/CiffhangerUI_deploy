@@ -1,5 +1,6 @@
 {
     "jscodehints.detectedExclusions": [
-        "C:/Users/MKrueger/git/CliffhangerUI/app/bower_components/jquery/src/event/alias.js"
+        "C:/Users/ckelley/Documents/Git/CliffhangerUI/app/bower_components/jquery/src/attributes/classes.js",
+        "C:/Users/ckelley/Documents/Git/CliffhangerUI/app/views/datasets/datasets_test.js"
     ]
 }
