@@ -150,18 +150,6 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         });
     };
 
-    //watch for check all checkbox
-    $scope.$watch('selectAll', function (v) {
-        for (i in $scope.selected) {
-            $scope.selected[i] = v;
-        }
-    });
-
-    $scope.deselectAll = function () {
-        $scope.selectAll = false;
-    };
-
-
 
 
 });
