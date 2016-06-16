@@ -22,7 +22,11 @@
 <br>
 <div class="col-md-8 pull-right" id="tagQueryResults">
     <ul>
-        <li id="list_item" ng-repeat="t in tags | filter:query" class="bg-primary">{{t.name}}</li>
+        <li id="list_item" ng-repeat="t in tags | filter:query" class="list-group-item active">
+            <label>{{t.name}}</label>
+            <button class="btn btn-danger" type="button" uib-tooltip="Delete"><span class="glyphicon glyphicon-trash"></span></button>
+            <button class="btn btn-default" type="button" uib-tooltip="Info"><span class="glyphicon glyphicon-info-sign"></span></button>
+        </li>
     </ul>
     <div ng-show="noResults" id="noResults" class="bg-danger">
         <i class="glyphicon glyphicon-remove"></i> No Results Found
