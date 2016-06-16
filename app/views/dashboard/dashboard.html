@@ -8,3 +8,9 @@
 
 <h2><em>Coming Soon!</em></h2>
 <button ng-click="testGlobal()">Test</button>
+
+<tags-input ng-model="selectedTags" add-from-autocomplete-only="true" display-property="name" spellcheck="false">
+    <auto-complete source="loadTags($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true"></auto-complete>
+</tags-input>
+
+<p ng-show="noResults">No Results</p>

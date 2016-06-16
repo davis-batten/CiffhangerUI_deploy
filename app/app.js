@@ -3,6 +3,7 @@ app = angular.module('cliffhanger', [
     'ui.bootstrap',
     'ui.checkbox',
     'ngRoute',
+    'ngTagsInput',
     'cliffhanger.version',
 
     //Views
@@ -20,6 +21,7 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
     $routeProvider.otherwise({
         redirectTo: '/dashboard'
     });
+
 }])
 
 .run(function ($rootScope) {

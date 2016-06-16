@@ -14,11 +14,14 @@
     margin: .25em;
     padding: 1em;
     list-style-type: none;
+}
 
+#list_item button {
+    float: right;
+    margin-right: 0.5em;
 }
 
 #noResults {
     margin: .25em;
     padding: 1em;
 }
-

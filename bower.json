@@ -20,9 +20,14 @@
     "angular": "~1.5.0",
     "angular-route": "~1.5.0",
     "angular-loader": "~1.5.0",
+<<<<<<< HEAD
     "angular-mocks": "~1.5.0"
   },
   "resolutions": {
     "angular": "1.5.7"
+=======
+    "angular-mocks": "~1.5.0",
+    "ng-tags-input": "^3.1.1"
+>>>>>>> ea6542cdba4c2acb4057fa2cf934c329c7557b42
   }
 }
