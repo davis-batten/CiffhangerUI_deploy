@@ -3,7 +3,7 @@
 var module = angular.module('cliffhanger.tags', ['ngRoute'])
 
 .config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/datasets/tags', {
+    $routeProvider.when('/developer/tags', {
         templateUrl: 'views/tags/tags.html',
         controller: 'TagCtrl'
     });

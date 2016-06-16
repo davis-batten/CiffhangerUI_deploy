@@ -181,3 +181,35 @@
 
     </li>
 </ul>
+<div class="container-fluid">
+    <ul class="nav nav-pills">
+        <li class="active"><a href="#/developer/datasets">Data Management</a></li>
+        <li><a href="#/developer/tags">Tag Management</a></li>
+    </ul>
+
+    <hr>
+    <button class="btn btn-warning" type="button" ng-click="open()">
+        <span class="glyphicon glyphicon-plus"></span> Add Dataset
+    </button>
+
+    <br>
+    <br>
+
+    <div class="status-message" ng-show="showLoadingDatasetsMessage"> LOADING DATASETS </div>
+    <div class="status-message" ng-show="showNoDatasetsMessage"> NO DATASETS </div>
+    <div class="status-message" ng-show="showAddingDatasetMessage"> ADDING DATASET </div>
+    <div class="error-message" ng-show="showFailedAddDatasetMessage"> FAILED TO ADD DATASET </div>
+    <div class="error-message" ng-show="showFailedLoadDatasetsMessage"> FAILED TO LOAD DATASETS </div>
+
+
+    <ul class="list-group" id="dataset_list">
+        <li class="list-group-item active" id="dataset_item" ng-repeat="d in datasetList">
+            <checkbox id="dataset_checkbox" ng-model="selected[$index]" ng-change="deselectAll()"></checkbox>
+            <label>{{d.name}}</label>
+            <button class="btn btn-danger" type="button" ng-click="deleteDataset(d)"><span class="glyphicon glyphicon-trash"></span></button>
+            <button class="btn btn-default" type="button" ng-click="displayInfo(d)"><span class="glyphicon glyphicon-info-sign"></span></button>
+
+        </li>
+    </ul>
+</div>
+

@@ -1,16 +1,19 @@
-<ul class="nav nav-pills">
-    <li class="active"><a href="#">Dashboard</a></li>
-    <li><a href="#/datasets">Datasets</a></li>
-    <li><a href="#/queries">Queries</a></li>
-</ul>
 <hr>
-<h3>Dashboard</h3>
+<h4 class="text-center">Select your view:</h4>
+<div class="btn-group-center">
+    <button class="btn btn-success btn-lg" ng-click="pickDeveloper()">Developer</button>
+    <br>
+    <br>
+    <button class="btn btn-info btn-lg" ng-click="pickAnalyst()">Analyst</button>
+</div>
 
-<h2><em>Coming Soon!</em></h2>
-<button ng-click="testGlobal()">Test</button>
+<!--
 
 <tags-input ng-model="selectedTags" add-from-autocomplete-only="true" display-property="name" spellcheck="false">
     <auto-complete source="loadTags($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true"></auto-complete>
 </tags-input>
 
 <p ng-show="noResults">No Results</p>
+
+
+-->

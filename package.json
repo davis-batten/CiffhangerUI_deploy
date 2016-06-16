@@ -27,6 +27,7 @@
     "test-single-run": "karma start karma.conf.js --single-run"
   },
   "dependencies": {
-    "lodash": "^4.13.1"
+    "lodash": "^4.13.1",
+    "ng-tags-input": "^3.1.1"
   }
 }
