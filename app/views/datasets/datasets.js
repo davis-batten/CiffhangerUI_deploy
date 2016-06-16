@@ -83,10 +83,30 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             $log.info('Description : ' + newDataSet.desc);
             $log.info(newDataSet);
             createDataset(newDataSet);
-
         });
     };
 
+    //opens updateDataset modal for dataset d
+    $scope.updateDataset = function (d) {
+        
+        $log.log(d);
+        
+        var modalInstance = $uibModal.open({
+            templateUrl: 'updateDataset.html',
+            controller: 'DatasetUpdateModalCtrl',
+            size: 'lg',
+            resolve: function () {
+                return d;
+            }
+        });
+        
+        modalInstance.result.then(function (d) {
+            $log.info('Modal dismissed at: ' + new Date());
+            $log.info('Name : ' + d.name );
+            $log.info('Description : ' + d.desc );
+            $log.info(d);
+        });
+    };
 
     //opens displayInfo modal for dataset d
     $scope.displayInfo = function (d) {
@@ -103,7 +123,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         });
     };
 
-    //opnes deleteDataset modal for dataset d
+    //opens deleteDataset modal for dataset d
     $scope.deleteDataset = function (d) {
         $log.log(d);
         var modalInstance = $uibModal.open({
@@ -257,9 +277,32 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
 
 });
 
+//controller for instance of DatasetUpdateModal
+datasets.controller('DatasetUpdateModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {
+    
+    $scope.dataset = dataset;
+    
+    //
+    $scope.input = {
+        name: "",
+        description: ""
+    };
+    
+    //complete modal
+    $scope.complete = function () {
+        $uibModalInstance.close($scope.input);
+    };
+    
+    //dismiss modal
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+    
+});
 
 //controller for instance of DatasetInfoModal
 datasets.controller('DatasetInfoModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {
+    
     $scope.dataset = dataset;
 
     //dismiss modal
