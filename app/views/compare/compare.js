@@ -9,101 +9,280 @@ angular.module('cliffhanger.compare', ['ngRoute'])
     });
 }])
 
-.controller('CompareCtrl', function ($scope, $log) {
-    //test tag
-    $scope.tags = ['ZIP', 'SSN', 'Name', 'Country'].sort();
-    //test data
-    $scope.data = [
-        {
-            name: 'DataSet1',
-            desc: 'desc1',
-            attributes: [
-                {
-                    name: 'zippy',
-                    type: 'ZIP'
-                },
-                {
-                    name: 'id',
-                    type: 'SSN'
-                },
-                {
-                    name: 'legal_name',
-                    type: 'Name'
+.controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService) {
+
+    $scope.rows = []; //scope object for storing the rows of the table
+    var dirty = {}; //object for determining if a row is in need of updating
+    $scope.allTagsSelected = false; //are all the tags selected?s
+    $scope.allDatasetsSelected = false; //are all the datasets selected?
+
+    $scope.selectedTags = [];
+    $scope.selectedDatasets = [];
+
+
+    //alphabetically compare two object name strings, ignoring case
+    var ignoreCase = function (a, b) {
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+    }
+
+    //    //test tag
+    //    $scope.tags = [
+    //        {
+    //            name: "SSN",
+    //            description: "social security",
+    //        },
+    //        {
+    //            name: "ZIP",
+    //            description: "zip code"
+    //        },
+    //        {
+    //            name: "address1",
+    //            description: "first line of addresss"
+    //        }
+    //    ].sort(ignoreCase);
+    //
+    //    //test data
+    //    $scope.datasets = [
+    //        {
+    //            name: 'DataSet1',
+    //            desc: 'desc1',
+    //            attributes: [
+    //                {
+    //                    name: 'zippy',
+    //                    type: 'ZIP'
+    //                },
+    //                {
+    //                    name: 'id',
+    //                    type: 'SSN'
+    //                },
+    //                {
+    //                    name: 'legal_name',
+    //                    type: 'Name'
+    //                }
+    //            ]
+    //        },
+    //        {
+    //            name: 'DataSet2',
+    //            desc: 'desc2',
+    //            attributes: [
+    //                {
+    //                    name: 'ssn',
+    //                    type: 'SSN'
+    //                },
+    //                {
+    //                    name: 'zip_code',
+    //                    type: 'ZIP'
+    //                }
+    //            ]
+    //        },
+    //        {
+    //            name: 'DataSet3',
+    //            desc: 'desc3',
+    //            attributes: [
+    //                {
+    //                    name: 'id',
+    //                    type: 'SSN'
+    //                },
+    //                {
+    //                    name: 'name',
+    //                    type: 'Name'
+    //                }
+    //            ]
+    //        }
+    //    ];
+
+
+    function initalize() {
+        datasetService.getAllDatasets()
+            .then(function (data) {
+                if (data.status == 'Success') {
+                    $scope.datasets = eval(data.data).sort(ignoreCase);
+                } else {
+                    $scope.alerts.push({
+                        msg: data,
+                        type: 'danger'
+                    });
                 }
-            ]
-        },
-        {
-            name: 'DataSet2',
-            desc: 'desc2',
-            attributes: [
-                {
-                    name: 'ssn',
-                    type: 'SSN'
-                },
-                {
-                    name: 'zip_code',
-                    type: 'ZIP'
+            }, function (res) {
+                $scope.alerts.push({
+                    msg: "Failed to load datasets",
+                    type: 'danger'
+                });
+            });
+        tagService.getAllTags()
+            .then(function (data) {
+                if (data.status == 'Success') {
+                    $scope.tags = eval(data.data).sort(ignoreCase);
+                    $scope.tags.splice(0, 1);
+                } else {
+                    $scope.alerts.push({
+                        msg: data.data,
+                        type: 'danger'
+                    });
                 }
-            ]
-        },
-        {
-            name: 'DataSet3',
-            desc: 'desc3',
-            attributes: [
-                {
-                    name: 'id',
-                    type: 'SSN'
-                },
-                {
-                    name: 'name',
-                    type: 'Name'
-                }
-            ]
+            }, function (res) {
+                $scope.alerts.push({
+                    msg: "Failed to load datasets",
+                    type: 'danger'
+                });
+            });
+
+
+    }
+    initalize();
+
+
+    //filter the tags available to the typeahead
+    $scope.filterTags = function (query) {
+        var deferred = $q.defer();
+
+        var filteredTags = $filter('filter')($scope.tags, {
+            name: query
+        });
+
+        //update noResults flag
+        if (filteredTags.length == 0) $scope.noTagResults = true;
+        else $scope.noTagResults = false;
+
+        //return resolved promise
+        deferred.resolve(filteredTags);
+        return deferred.promise;
+    };
+
+    //filter the datasets available to the typeahead
+    $scope.filterDatasets = function (query) {
+        var deferred = $q.defer();
+        var filteredDatasets = $filter('filter')($scope.datasets, {
+            name: query
+        });
+
+        //update noResults flag
+        if (filteredDatasets.length == 0) $scope.noDatasetResults = true;
+        else $scope.noDatasetResults = false;
+
+        //return resolved promise
+        deferred.resolve(filteredDatasets);
+        return deferred.promise;
+    };
+
+
+    //table needs to be changed due to a change in $scope.selectedTags
+    $scope.$watch('selectedTags', function () {
+        $log.debug('tag watcher', $scope.rows);
+        //mark all rows as dirty (in need of update)
+        for (var i in dirty) {
+            if (dirty.hasOwnProperty(i)) {
+                dirty[i] = true;
+            }
         }
-    ];
+        updateTable();
+    }, true);
+
+    //table needs to be changed due to a change in $scope.selectedDatasets
+    $scope.$watch('selectedDatasets', function () {
+        $log.debug('dataset watcher', $scope.rows);
+        //mark all rows as dirty (in need of update)
+        for (var i in dirty) {
+            if (dirty.hasOwnProperty(i)) {
+                dirty[i] = true;
+            }
+        }
+        updateTable();
+    }, true);
+
+
+    //onclick method for select all tags button
+    $scope.selectAllTags = function () {
+        $scope.selectedTags = angular.copy($scope.tags);
+        $scope.allTagsSelected = true;
+    }
+
+    //onclick method for select all datasets button
+    $scope.selectAllDatasets = function () {
+        $scope.selectedDatasets = angular.copy($scope.datasets);
+        $scope.allDatasetsSelected = true;
+    }
+
+    //onclick method for deselect all tags button
+    $scope.deselectAllTags = function () {
+        $scope.selectedTags = [];
+        $scope.allTagsSelected = false;
+    }
+
+    //onclick method for deselect all datasets button
+    $scope.deselectAllDatasets = function () {
+        $scope.selectedDatasets = [];
+        $scope.allDatasetsSelected = false;
+    }
 
     //format row for display in table
-    $scope.buildRow = function (attributes, idx) {
-        //if row not built or changed
-        if (rows[idx] == null || rows[idx].dirty) {
-            var attr = attributes.sort(function (a, b) {
-                return (a.type).localeCompare(b.type);
+    $scope.buildRow = function (dataset) {
+        //$log.debug('build row', dataset);
+
+        //if row not created or is dirty
+        if ($scope.rows[dataset.name] == undefined || dirty[dataset.name]) {
+
+            var attr = dataset.attributes.sort(function (a, b) {
+                return (a.col_name).localeCompare(b.col_name);
             });
             var row = [];
 
             //add cells
-            for (var t in $scope.tags) {
+            for (var t in $scope.selectedTags) {
+                var type = 'danger';
+                var cols = "";
                 var found = false;
                 for (var a in attr) {
                     //if column matches type
-                    if (attr[a].type == $scope.tags[t]) {
-                        row.push({
-                            name: attr[a].name,
-                            type: attr[a].type,
-                            class: 'success'
-                        });
+                    if (attr[a].tag.name == $scope.selectedTags[t].name) {
+                        if (cols != "") cols += ", ";
+                        cols += (attr[a].col_name);
+                        type = 'success';
                         found = true;
                     }
                 }
-                // no column of this type
-                if (!found) {
-                    row.push({
-                        name: null,
-                        type: $scope.tags[t],
-                        class: 'danger'
-                    });
-                }
-
+                if (cols == []) cols = null;
+                row.push({
+                    name: cols,
+                    type: $scope.selectedTags[t],
+                    class: type
+                });
             }
             $log.log(row);
-            rows[idx] = row;
-            rows[idx].dirty = false;
+            dirty[dataset.name] = false;
+            $scope.rows[dataset.name] = row;
         }
-        return rows[idx];
+    }
 
-    };
+    //output log data - for testing only
+    $scope.log = function () {
+        $log.info('rows', $scope.rows);
+        $log.info('tags', $scope.selectedTags);
+        $log.info('datasets', $scope.selectedDatasets);
+    }
 
-    var rows = [];
+    //helper function to update all rows in the table
+    var updateTable = function () {
+        for (var d in $scope.selectedDatasets) {
+            $scope.buildRow($scope.selectedDatasets[d]);
+        }
+    }
+    updateTable(); //call to initalize the table
 
+
+    $scope.allowUntagged = function () {
+        var empty = {
+            name: '<EMPTY>'
+        }
+        $scope.tags.push(empty);
+        $scope.selectedTags.push(empty);
+        $scope.untagged = true;
+    }
+
+    $scope.removeUntagged = function () {
+        $scope.tags.pop();
+        $scope.selectedTags.pop();
+        $scope.untagged = false;
+    }
 
 });

@@ -72,6 +72,27 @@ angular.module('cliffhanger.datasets')
                 );
         };
 
+        //this service method gets all existing Datasets from the backend
+        this.deleteDataset = function (dataset) {
+            var datasetName = dataset.name;
+            return $http.delete($rootScope.baseUrl + '/dataset/delete/' + datasetName)
+                .then(function (response) { //success callback
+                        $log.info(response); //list all data from response
+                        if (response.data.status == 'Success') {
+                            $log.info('Successfully deleted dataset ' + datasetName);
+                            return response.data;
+                        } else {
+                            $log.warn('Failed to delete ' + datasetName);
+                            return $q.reject(response.data);
+                        }
+                    },
+                    function (response) { //error callback
+                        $log.warn(response);
+                        return $q.reject(response);
+                    }
+                );
+        };
+
 
 
     });

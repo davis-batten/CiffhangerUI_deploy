@@ -12,11 +12,14 @@ var datasets = angular.module('cliffhanger.datasets');
 datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService) {
 
     $scope.selected = [];
-    $scope.showLoadingDatasetsMessage = true;
     $scope.showNoDatasetsMessage = false;
-    $scope.showAddingDatasetMessage = false;
-    $scope.showFailedAddDatasetMessage = false;
-    $scope.showFailedLoadDatasetsMessage = false;
+
+    $scope.alerts = []; //list of alerts to show to user
+
+    //closes an alert
+    $scope.closeAlert = function (index) {
+        $scope.alerts.splice(index, 1);
+    };
 
     //alphabetically compare two strings, ignoring case
     var ignoreCase = function (a, b) {
@@ -25,47 +28,56 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
 
 
 
-
     // getTags();
 
     var getDatasets = function () {
-        $scope.showFailedLoadDatasetsMessage = false;
-        $scope.showLoadingDatasetsMessage = true;
+        $scope.showProgressBar = true;
         datasetService.getAllDatasets()
             .then(function (data) {
+                $scope.showProgressBar = false;
                 if (data.status == 'Success') {
                     $scope.showNoDatasetsMessage = false;
-                    $scope.showLoadingDatasetsMessage = false;
                     $scope.datasetList = eval(data.data);
                     $log.debug($scope.datasetList);
                     if ($scope.datasetList.length == 0) {
                         $scope.showNoDatasetsMessage = true;
                     }
                 } else {
-                    $scope.showLoadingDatasetsMessage = false;
-                    $scope.showFailedLoadDatasetsMessage = true;
+                    $scope.alerts.push({
+                        msg: res,
+                        type: 'danger'
+                    });
                 }
-            }, function (data) {
-                $scope.showLoadingDatasetsMessage = false;
-                $scope.showFailedLoadDatasetsMessage = true;
-            })
+            }, function (res) {
+                $scope.showProgressBar = false;
+                $scope.alerts.push({
+                    msg: "Failed to load datasetss",
+                    type: 'danger'
+                });
+            });
     };
     getDatasets();
 
     var createDataset = function (newDataSet) {
         $scope.showNoDatasetsMessage = false;
-        $scope.showFailedAddDatasetMessage = false;
-        $scope.showAddingDatasetMessage = true;
+        $scope.showProgressBar = true;
         datasetService.addDataset(newDataSet)
             .then(function (data) {
+                $scope.showProgressBar = false;
                 if (data.status == 'Success') {
-                    $scope.showAddingDatasetMessage = false;
                     $scope.datasetList.push(newDataSet);
                 } else {
-                    $scope.showFailedAddDatasetMessage = true;
+                    $scope.alerts.push({
+                        msg: data,
+                        type: 'danger'
+                    });
                 }
             }, function (data) {
-                $scope.showFailedAddDatasetMessage = true;
+                $scope.showProgressBar = false;
+                $scope.alerts.push({
+                    msg: 'Failed to create Dataet',
+                    type: 'danger'
+                });
             })
     };
 
@@ -145,10 +157,30 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         //on modal completion
         modalInstance.result.then(function (d) {
             $log.warn('Deleted', d);
+            $scope.showProgressBar = true;
             for (i in $scope.datasetList) {
                 if (d.name == $scope.datasetList[i].name) {
-                    $scope.datasetList.splice(i, 1);
-                    //TODO delete with service
+
+                    datasetService.deleteDataset(d)
+                        .then(function (res) {
+                                $scope.showProgressBar = false;
+                                if (res.status == 'Success') {
+                                    $scope.datasetList.splice(i, 1);
+                                    if ($scope.datasetList.length == 0) $scope.showNoDatasetsMessage = true;
+                                } else {
+                                    $scope.alerts.push({
+                                        msg: res,
+                                        type: 'danger'
+                                    });
+                                }
+                            },
+                            function (res) {
+                                $scope.showProgressBar = false;
+                                $scope.alerts.push({
+                                    msg: "Problem communicating with server!",
+                                    type: 'danger'
+                                });
+                            });
                 }
             }
             $log.log($scope.data);

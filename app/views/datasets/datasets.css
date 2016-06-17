@@ -28,6 +28,7 @@
 
 .inline-list {
     list-style-type: none;
+    padding: 0;
 }
 
 .inline-list li {
