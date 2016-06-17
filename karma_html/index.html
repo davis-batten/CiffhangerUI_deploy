@@ -93,16 +93,19 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </style>
 </head>
 
-<body id="HTMLReporter" class="html-reporter">
-<h1>Tested in Chrome 51.0.2704 (Windows 7 0.0.0) on Wed Jun 15 2016</h1>
+<body id="HTMLReporter" class="html-reporter showDetails">
+<h1>Tested in Chrome 51.0.2704 (Windows 7 0.0.0) on Fri Jun 17 2016</h1>
 
 <div class="alert">
 
 
-
-
-  <span class="passingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> |
-  <a href="#" onclick="unfold();">Unfold</a></span>20 specs, 0 failed, 0 pending</span>
+<!-- <span class="failingAlert bar">Failed 4 specs</span> -->
+<span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> |
+  <a href="#" onclick="unfold();">Unfold</a></span>24 specs, 4 failed, 0 pending</span>
+<span class="resultsMenu bar">
+<a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a
+   class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
+</span>
 
 
 
@@ -193,15 +196,6 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     </div>
 
     <div class="suite passed">
-      <span class="description">cliffhanger.datasets module DatasetInfoModalCtrl</span>
-
-      <div class="specSummary passed">
-      <span class="description">should be able close the modal</span>
-      </div>
-
-    </div>
-
-    <div class="suite passed">
       <span class="description">cliffhanger.datasets module DatasetDeleteModalCtrl</span>
 
       <div class="specSummary passed">
@@ -219,6 +213,36 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
       <div class="specSummary passed">
       <span class="description">should load</span>
+      </div>
+
+    </div>
+
+    <div class="suite passed">
+      <span class="description">cliffhanger.tags module TagCtrl</span>
+
+      <div class="specSummary passed">
+      <span class="description">should have a TagCtrl controller</span>
+      </div>
+
+    </div>
+
+    <div class="suite failed">
+      <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl</span>
+
+      <div class="specSummary failed">
+      <span class="description">should instantiate the addTagModalInstanceCtrl controller</span>
+      </div>
+
+      <div class="specSummary failed">
+      <span class="description">should dismiss the modal with cancel</span>
+      </div>
+
+      <div class="specSummary failed">
+      <span class="description">should close the modal with submit</span>
+      </div>
+
+      <div class="specSummary failed">
+      <span class="description">should be able to add a tag</span>
       </div>
 
     </div>
@@ -254,6 +278,81 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
 <div id="details">
 
+
+  <div class="specDetail failed">
+    <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should instantiate the addTagModalInstanceCtrl controller</span>
+    <div class="stackTrace">
+      <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined
+http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined
+    at http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:68:12
+    at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:1885:11)
+    at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:1895:3)
+    at $controller (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:10210:9)
+    at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:2208:12
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?2b2877742748b3f01b8c5d7141231ff408302710:56:31)
+    at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:4709:19)
+    at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:3071:20)
+Error: Declaration Location
+    at window.inject.angular.mock.inject (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:3033:25)
+    at Suite.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?2b2877742748b3f01b8c5d7141231ff408302710:47:20)
+    at Suite.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?2b2877742748b3f01b8c5d7141231ff408302710:46:5)
+    at http://localhost:9876/base/views/tags/tags_test.js?2b2877742748b3f01b8c5d7141231ff408302710:1:1,ReferenceError: addTagModalCtrl is not defined
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?2b2877742748b3f01b8c5d7141231ff408302710:65:20)</div>
+    </div>
+  </div>
+
+  <div class="specDetail failed">
+    <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should dismiss the modal with cancel</span>
+    <div class="stackTrace">
+      <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined
+http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined
+    at http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:68:12
+    at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:1885:11)
+    at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:1895:3)
+    at $controller (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:10210:9)
+    at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:2208:12
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?2b2877742748b3f01b8c5d7141231ff408302710:56:31)
+    at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:4709:19)
+    at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:3071:20),TypeError: scope.cancel is not a function
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?2b2877742748b3f01b8c5d7141231ff408302710:69:19)</div>
+    </div>
+  </div>
+
+  <div class="specDetail failed">
+    <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should close the modal with submit</span>
+    <div class="stackTrace">
+      <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined
+http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined
+    at http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:68:12
+    at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:1885:11)
+    at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:1895:3)
+    at $controller (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:10210:9)
+    at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:2208:12
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?2b2877742748b3f01b8c5d7141231ff408302710:56:31)
+    at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:4709:19)
+    at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:3071:20),TypeError: scope.submit is not a function
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?2b2877742748b3f01b8c5d7141231ff408302710:74:19)</div>
+    </div>
+  </div>
+
+  <div class="specDetail failed">
+    <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should be able to add a tag</span>
+    <div class="stackTrace">
+      <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined
+http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined
+    at http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:68:12
+    at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:1885:11)
+    at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:1895:3)
+    at $controller (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:10210:9)
+    at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:2208:12
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?2b2877742748b3f01b8c5d7141231ff408302710:56:31)
+    at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?55e2bd8ab98726d1b0cb3d9701f431a2532b35f1:4709:19)
+    at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:3071:20),TypeError: Cannot read property 'tag' of undefined
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?2b2877742748b3f01b8c5d7141231ff408302710:80:37)</div>
+    </div>
+  </div>
+
+
 </div>
 
 <script>
@@ -265,7 +364,7 @@ document.body.onkeypress = function (e) {
   switch (e.keyCode) {
     case 102: toggleFold(); break;
     case 49: showSummary(); break;
-
+    case 50: showFailures(); break;
   }
 };
 

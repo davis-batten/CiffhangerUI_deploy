@@ -145,35 +145,7 @@ describe('cliffhanger.datasets module', function () {
         })
     });
 
-    describe('DatasetInfoModalCtrl', function () {
-        beforeEach(inject(function ($controller, $rootScope, $log) {
-            scope = $rootScope.$new();
-            modalInstance = {
-                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
-                result: {
-                    then: jasmine.createSpy('uibModalInstance.result.then')
-                }
-            };
-            mockDataset = {
-                name: 'test',
-                description: 'desc',
-                attributes: []
-            }
 
-            datasetInfoCtrl = $controller('DatasetInfoModalCtrl', {
-                $scope: scope,
-                $uibModalInstance: modalInstance,
-                $log: $log,
-                dataset: mockDataset
-            });
-
-        }));
-
-        it('should be able close the modal', function () {
-            scope.close();
-            expect(modalInstance.dismiss).toHaveBeenCalledWith('close');
-        });
-    });
 
     describe('DatasetDeleteModalCtrl', function () {
         beforeEach(inject(function ($controller, $rootScope, $log) {

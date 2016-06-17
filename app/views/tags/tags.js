@@ -8,7 +8,7 @@ var module = angular.module('cliffhanger.tags', ['ngRoute'])
 }]);
 
 
-//main controller for /#/datasets/tag
+//main controller for /#/developer/tags
 module.controller('TagCtrl', function ($scope, $uibModal, $log, tagService) {
 
     $scope.selected = undefined;

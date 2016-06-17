@@ -2,6 +2,7 @@
 app = angular.module('cliffhanger', [
     'ui.bootstrap',
     'ui.checkbox',
+    'ui.grid',
     'ngRoute',
     'ngTagsInput',
     'cliffhanger.version',

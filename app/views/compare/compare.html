@@ -10,7 +10,8 @@
 
     <p ng-show="noTagResults">No Results</p>
     <br>
-    <button class="btn btn-default" ng-click="selectAllTags()">Select All Tags</button>
+    <button class="btn btn-default" ng-click="selectAllTags()" ng-hide="allTagsSelected">Select All Tags</button>
+    <button class="btn btn-default" ng-click="deselectAllTags()" ng-show="allTagsSelected">Deselect All Tags</button>
 </div>
 
 <!--Typeaheads go here -->
@@ -22,13 +23,15 @@
 
     <p ng-show="noDatasetResults">No Results</p>
     <br>
-    <button class="btn btn-default" ng-click="selectAllDatasets()">Select All Datasets</button>
+    <button class="btn btn-default" ng-click="selectAllDatasets()" ng-hide="allDatasetsSelected">Select All Datasets</button>
+    <button class="btn btn-default" ng-click="deselectAllDatasets()" ng-show="allDatasetsSelected">Deselect All Datasets</button>
 </div>
 
 
 <button class="btn btn-default">Allow Untagged Attributes</button>
 <br>
 <br>
+
 <div>
     <table class="table table-bordered">
         <thead>
@@ -38,12 +41,12 @@
         <tbody>
             <tr ng-repeat="dataset in selectedDatasets">
                 <td>{{dataset.name}}</td>
-                <td ng-repeat="attr in buildRow(dataset)" class="{{attr.class}}">{{attr.name}}</td>
+                <td ng-repeat="attr in rows[dataset.name]" class="{{attr.class}}">{{attr.name}}</td>
             </tr>
         </tbody>
     </table>
 </div>
 
 <div class="btn-group-center">
-    <button class="btn btn-success">Query Wizard</button>
+    <button class="btn btn-success" ng-click="log()">Query Wizard</button>
 </div>

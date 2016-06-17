@@ -12,6 +12,10 @@ angular.module('cliffhanger.compare', ['ngRoute'])
 .controller('CompareCtrl', function ($scope, $log, $q, $filter) {
 
     $scope.rows = [];
+    var dirty = {};
+    $scope.allTagsSelected = false;
+    $scope.allDatasetsSelected = false;
+
 
     //alphabetically compare two strings, ignoring case
     var ignoreCase = function (a, b) {
@@ -115,32 +119,52 @@ angular.module('cliffhanger.compare', ['ngRoute'])
 
     //check if table needs to be changed
     $scope.$watch('selectedTags', function () {
-        $scope.tableDirty = true;
-//        $scope.updateTable();
-    });
-    //        //$scope.selectedTags.sort(ignoreCase);
-    //    });
-    //
-    //    //check if table needs to be changed
-    //    $scope.$watch('selectedDatasets', function () {
-    //        for (i in $scope.tableDirty) $scope.tableDirty[i][] = true;
-    //        //$scope.selectedDatasets.sort(ignoreCase);
-    //    });
+        $log.debug('tag watcher', $scope.rows);
+        $log.debug('before', dirty);
+        for (var i in dirty) {
+            if (dirty.hasOwnProperty(i)) {
+                dirty[i] = true;
+            }
+        }
+        updateTable();
+    }, true);
+    //check if table needs to be changed
+    $scope.$watch('selectedDatasets', function () {
+        $log.debug('dataset watcher', $scope.rows);
+        for (var i in dirty) {
+            if (dirty.hasOwnProperty(i)) {
+                dirty[i] = true;
+            }
+        }
+        updateTable();
+    }, true);
 
 
     $scope.selectAllTags = function () {
         $scope.selectedTags = angular.copy($scope.tags);
-        $log.info($scope.tags);
+        $scope.allTagsSelected = true;
     }
 
     $scope.selectAllDatasets = function () {
         $scope.selectedDatasets = angular.copy($scope.datasets);
+        $scope.allDatasetsSelected = true;
+    }
+
+    $scope.deselectAllTags = function () {
+        $scope.selectedTags = [];
+        $scope.allTagsSelected = false;
+    }
+
+    $scope.deselectAllDatasets = function () {
+        $scope.selectedDatasets = [];
+        $scope.allDatasetsSelected = false;
     }
 
     //format row for display in table
     $scope.buildRow = function (dataset) {
-//        $log.log("row[i]", $scope.rows[dataset.name]);
-//        if ($scope.rows[dataset.name] == undefined || $scope.tableDirty) {
+        $log.debug('build row', dataset);
+
+        if ($scope.rows[dataset.name] == undefined || dirty[dataset.name]) {
 
             var attr = dataset.attributes.sort(function (a, b) {
                 return (a.type).localeCompare(b.type);
@@ -172,25 +196,24 @@ angular.module('cliffhanger.compare', ['ngRoute'])
 
             }
             $log.log(row);
-//            $scope.rows[dataset.name] = row;
-
-            return row;
-//        }
-
+            dirty[dataset.name] = false;
+            $scope.rows[dataset.name] = row;
+        }
     }
 
+    var updateTable = function () {
+        for (var d in $scope.selectedDatasets) {
+            $scope.buildRow($scope.selectedDatasets[d]);
+        }
+    }
+
+    updateTable();
 
 
-//    $scope.updateTable = function () {
-//        $scope.rows = [];
-//        for (i in $scope.selectedDatasets) {
-//            var dataset = $scope.selectedDatasets[i];
-//            $log.log(dataset);
-//            $scope.buildRow(dataset);
-//        }
-//        $scope.tableDirty = false;
-//    }
-
+    $scope.log = function () {
+        $log.info('tags', $scope.selectedTags);
+        $log.info('datasets', $scope.selectedDatasets);
+    }
 
 
 });
