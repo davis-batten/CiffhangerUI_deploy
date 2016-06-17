@@ -1,8 +1,8 @@
 angular.module('cliffhanger.datasets', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/developer/datasets', {
-            templateUrl: 'views/datasets/datasets.html',
-            controller: 'DatasetsCtrl'
+            templateUrl: 'views/datasets/datasets.html'
+            , controller: 'DatasetsCtrl'
         });
 }]);
 
@@ -72,9 +72,9 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
     //opens addDatasetModal
     $scope.open = function () {
         var modalInstance = $uibModal.open({
-            templateUrl: 'addDatasetModalContent.html',
-            controller: 'AddDatasetModalInstanceCtrl',
-            size: 'lg'
+            templateUrl: 'addDatasetModalContent.html'
+            , controller: 'AddDatasetModalInstanceCtrl'
+            , size: 'lg'
         });
 
         modalInstance.result.then(function (newDataSet) {
@@ -88,23 +88,27 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
 
     //opens updateDataset modal for dataset d
     $scope.updateDataset = function (d) {
-        
         $log.log(d);
-        
+        var nameTemp = d.name;
+
         var modalInstance = $uibModal.open({
-            templateUrl: 'updateDataset.html',
-            controller: 'DatasetUpdateModalCtrl',
-            size: 'lg',
-            resolve: function () {
-                return d;
+            templateUrl: 'datasetUpdate.html'
+            , controller: 'DatasetUpdateModalCtrl'
+            , size: 'lg'
+            , resolve: {
+                dataset: function () {
+                    return d;
+                }
             }
         });
-        
+        //executes changes (or carries unchanged values through)
         modalInstance.result.then(function (d) {
-            $log.info('Modal dismissed at: ' + new Date());
-            $log.info('Name : ' + d.name );
-            $log.info('Description : ' + d.desc );
-            $log.info(d);
+            for (i in $scope.datasetList) {
+                if (nameTemp == $scope.datasetList[i].name) {
+                    $scope.datasetList[i].name = d.name;
+                    $scope.datasetList[i].description = d.description;
+                }
+            }
         });
     };
 
@@ -112,25 +116,26 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
     $scope.displayInfo = function (d) {
         $log.log(d);
         var modalInstance = $uibModal.open({
-            templateUrl: 'datasetInfo.html',
-            controller: 'DatasetInfoModalCtrl',
-            size: 'lg',
-            resolve: {
+            templateUrl: 'datasetInfo.html'
+            , controller: 'DatasetInfoModalCtrl'
+            , size: 'lg'
+            , resolve: {
                 dataset: function () {
                     return d;
                 }
             }
         });
+
     };
 
     //opens deleteDataset modal for dataset d
     $scope.deleteDataset = function (d) {
         $log.log(d);
         var modalInstance = $uibModal.open({
-            templateUrl: 'datasetDelete.html',
-            controller: 'DatasetDeleteModalCtrl',
-            size: 'md',
-            resolve: {
+            templateUrl: 'datasetDelete.html'
+            , controller: 'DatasetDeleteModalCtrl'
+            , size: 'md'
+            , resolve: {
                 dataset: function () {
                     return d;
                 }
@@ -159,17 +164,17 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
 datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalInstance, $log, tagService) {
     $scope.step = 1; //what step is the modal on
     $scope.input = { //what is the input from the user
-        name: "",
-        description: "",
-        attributes: []
+        name: ""
+        , description: ""
+        , attributes: []
     };
     $scope.newAttribute = {
-        col_name: "",
-        description: "",
-        data_type: "String",
-        tag: {
-            name: "",
-            description: ""
+        col_name: ""
+        , description: ""
+        , data_type: "String"
+        , tag: {
+            name: ""
+            , description: ""
         }
     };
 
@@ -233,8 +238,8 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
             $scope.newAttribute.col_name = "";
             $scope.newAttribute.description = "";
             $scope.newAttribute.tag = {
-                name: '',
-                description: ''
+                name: ''
+                , description: ''
             };
             $scope.newAttribute.data_type = "String";
         }
@@ -256,8 +261,8 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
                         $log.debug('tags', $scope.tags);
                     }
 
-                },
-                function (data) {
+                }
+                , function (data) {
                     $log.error('Failed to load!');
                 });
     };
@@ -267,30 +272,30 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
 
 //controller for instance of DatasetUpdateModal
 datasets.controller('DatasetUpdateModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {
-    
+
     $scope.dataset = dataset;
-    
-    //
+
+    //gets input from user
     $scope.input = {
-        name: "",
-        description: ""
+        name: dataset.name
+        , description: dataset.description
     };
-    
+
     //complete modal
     $scope.complete = function () {
         $uibModalInstance.close($scope.input);
     };
-    
+
     //dismiss modal
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
-    
+
 });
 
 //controller for instance of DatasetInfoModal
 datasets.controller('DatasetInfoModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {
-    
+
     $scope.dataset = dataset;
 
     //dismiss modal
