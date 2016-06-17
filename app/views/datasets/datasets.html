@@ -129,20 +129,18 @@
         <li class="active"><a href="#/developer/datasets">Data Management</a></li>
         <li><a href="#/developer/tags">Tag Management</a></li>
     </ul>
-
     <hr>
+    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
     <button class="btn btn-warning" type="button" ng-click="open()">
         <span class="glyphicon glyphicon-plus"></span> Add Dataset
     </button>
 
     <br>
     <br>
-
-    <div class="status-message" ng-show="showLoadingDatasetsMessage"> LOADING DATASETS </div>
     <div class="status-message" ng-show="showNoDatasetsMessage"> NO DATASETS </div>
-    <div class="status-message" ng-show="showAddingDatasetMessage"> ADDING DATASET </div>
-    <div class="error-message" ng-show="showFailedAddDatasetMessage"> FAILED TO ADD DATASET </div>
-    <div class="error-message" ng-show="showFailedLoadDatasetsMessage"> FAILED TO LOAD DATASETS </div>
+
+    <uib-progressbar value="100" class="progress-striped active" ng-show="showProgressBar">Loading...</uib-progressbar>
+
 
 
     <ul class="list-group" id="dataset_list">
@@ -156,10 +154,13 @@
                 <strong>Description</strong>
                 <br> {{d.description}}
                 <br>
-                <br>
+                <strong>Tags</strong>
+                <ul class="inline-list">
+                    <li ng-repeat="t in d.tags" ng-if="t.name != '<EMPTY>'"><span class="label label-info">{{t.name}}</span></li>
+                </ul>
                 <strong>Columns</strong>
                 <ul class="inline-list">
-                    <li ng-repeat="attr in d.attributes"><span class="badge">{{attr.col_name}}</span></li>
+                    <li ng-repeat="attr in d.attributes"><span class="label label-default">{{attr.col_name}}</span></li>
                 </ul>
             </div>
 

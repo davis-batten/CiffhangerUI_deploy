@@ -11,13 +11,13 @@ angular.module('cliffhanger.compare', ['ngRoute'])
 
 .controller('CompareCtrl', function ($scope, $log, $q, $filter) {
 
-    $scope.rows = [];
-    var dirty = {};
-    $scope.allTagsSelected = false;
-    $scope.allDatasetsSelected = false;
+    $scope.rows = []; //scope object for storing the rows of the table
+    var dirty = {}; //object for determining if a row is in need of updating
+    $scope.allTagsSelected = false; //are all the tags selected?s
+    $scope.allDatasetsSelected = false; //are all the datasets selected?
 
 
-    //alphabetically compare two strings, ignoring case
+    //alphabetically compare two object name strings, ignoring case
     var ignoreCase = function (a, b) {
         return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
     }
@@ -89,38 +89,43 @@ angular.module('cliffhanger.compare', ['ngRoute'])
     ];
 
 
+    //filter the tags available to the typeahead
     $scope.filterTags = function (query) {
         var deferred = $q.defer();
         var filteredTags = $filter('filter')($scope.tags, {
             name: query
         });
 
+        //update noResults flag
         if (filteredTags.length == 0) $scope.noTagResults = true;
         else $scope.noTagResults = false;
 
+        //return resolved promise
         deferred.resolve(filteredTags);
         return deferred.promise;
     };
 
+    //filter the datasets available to the typeahead
     $scope.filterDatasets = function (query) {
         var deferred = $q.defer();
         var filteredDatasets = $filter('filter')($scope.datasets, {
             name: query
         });
 
+        //update noResults flag
         if (filteredDatasets.length == 0) $scope.noDatasetResults = true;
         else $scope.noDatasetResults = false;
 
+        //return resolved promise
         deferred.resolve(filteredDatasets);
-
         return deferred.promise;
     };
 
 
-    //check if table needs to be changed
+    //table needs to be changed due to a change in $scope.selectedTags
     $scope.$watch('selectedTags', function () {
         $log.debug('tag watcher', $scope.rows);
-        $log.debug('before', dirty);
+        //mark all rows as dirty (in need of update)
         for (var i in dirty) {
             if (dirty.hasOwnProperty(i)) {
                 dirty[i] = true;
@@ -128,9 +133,11 @@ angular.module('cliffhanger.compare', ['ngRoute'])
         }
         updateTable();
     }, true);
-    //check if table needs to be changed
+
+    //table needs to be changed due to a change in $scope.selectedDatasets
     $scope.$watch('selectedDatasets', function () {
         $log.debug('dataset watcher', $scope.rows);
+        //mark all rows as dirty (in need of update)
         for (var i in dirty) {
             if (dirty.hasOwnProperty(i)) {
                 dirty[i] = true;
@@ -140,21 +147,25 @@ angular.module('cliffhanger.compare', ['ngRoute'])
     }, true);
 
 
+    //onclick method for select all tags button
     $scope.selectAllTags = function () {
         $scope.selectedTags = angular.copy($scope.tags);
         $scope.allTagsSelected = true;
     }
 
+    //onclick method for select all datasets button
     $scope.selectAllDatasets = function () {
         $scope.selectedDatasets = angular.copy($scope.datasets);
         $scope.allDatasetsSelected = true;
     }
 
+    //onclick method for deselect all tags button
     $scope.deselectAllTags = function () {
         $scope.selectedTags = [];
         $scope.allTagsSelected = false;
     }
 
+    //onclick method for deselect all datasets button
     $scope.deselectAllDatasets = function () {
         $scope.selectedDatasets = [];
         $scope.allDatasetsSelected = false;
@@ -164,6 +175,7 @@ angular.module('cliffhanger.compare', ['ngRoute'])
     $scope.buildRow = function (dataset) {
         $log.debug('build row', dataset);
 
+        //if row not created or is dirty
         if ($scope.rows[dataset.name] == undefined || dirty[dataset.name]) {
 
             var attr = dataset.attributes.sort(function (a, b) {
@@ -201,15 +213,16 @@ angular.module('cliffhanger.compare', ['ngRoute'])
         }
     }
 
+    //helper function to update all rows in the table
     var updateTable = function () {
         for (var d in $scope.selectedDatasets) {
             $scope.buildRow($scope.selectedDatasets[d]);
         }
     }
+    updateTable(); //call to initalize the table
 
-    updateTable();
 
-
+    //output log data - for testing only
     $scope.log = function () {
         $log.info('tags', $scope.selectedTags);
         $log.info('datasets', $scope.selectedDatasets);
