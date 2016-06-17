@@ -9,12 +9,15 @@ angular.module('cliffhanger.compare', ['ngRoute'])
     });
 }])
 
-.controller('CompareCtrl', function ($scope, $log, $q, $filter) {
+.controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService) {
 
     $scope.rows = []; //scope object for storing the rows of the table
     var dirty = {}; //object for determining if a row is in need of updating
     $scope.allTagsSelected = false; //are all the tags selected?s
     $scope.allDatasetsSelected = false; //are all the datasets selected?
+
+    $scope.selectedTags = [];
+    $scope.selectedDatasets = [];
 
 
     //alphabetically compare two object name strings, ignoring case
@@ -22,76 +25,117 @@ angular.module('cliffhanger.compare', ['ngRoute'])
         return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
     }
 
-    //test tag
-    $scope.tags = [
-        {
-            name: "SSN",
-            description: "social security",
-        },
-        {
-            name: "ZIP",
-            description: "zip code"
-        },
-        {
-            name: "address1",
-            description: "first line of addresss"
-        }
-    ].sort(ignoreCase);
+    //    //test tag
+    //    $scope.tags = [
+    //        {
+    //            name: "SSN",
+    //            description: "social security",
+    //        },
+    //        {
+    //            name: "ZIP",
+    //            description: "zip code"
+    //        },
+    //        {
+    //            name: "address1",
+    //            description: "first line of addresss"
+    //        }
+    //    ].sort(ignoreCase);
+    //
+    //    //test data
+    //    $scope.datasets = [
+    //        {
+    //            name: 'DataSet1',
+    //            desc: 'desc1',
+    //            attributes: [
+    //                {
+    //                    name: 'zippy',
+    //                    type: 'ZIP'
+    //                },
+    //                {
+    //                    name: 'id',
+    //                    type: 'SSN'
+    //                },
+    //                {
+    //                    name: 'legal_name',
+    //                    type: 'Name'
+    //                }
+    //            ]
+    //        },
+    //        {
+    //            name: 'DataSet2',
+    //            desc: 'desc2',
+    //            attributes: [
+    //                {
+    //                    name: 'ssn',
+    //                    type: 'SSN'
+    //                },
+    //                {
+    //                    name: 'zip_code',
+    //                    type: 'ZIP'
+    //                }
+    //            ]
+    //        },
+    //        {
+    //            name: 'DataSet3',
+    //            desc: 'desc3',
+    //            attributes: [
+    //                {
+    //                    name: 'id',
+    //                    type: 'SSN'
+    //                },
+    //                {
+    //                    name: 'name',
+    //                    type: 'Name'
+    //                }
+    //            ]
+    //        }
+    //    ];
 
-    //test data
-    $scope.datasets = [
-        {
-            name: 'DataSet1',
-            desc: 'desc1',
-            attributes: [
-                {
-                    name: 'zippy',
-                    type: 'ZIP'
-                },
-                {
-                    name: 'id',
-                    type: 'SSN'
-                },
-                {
-                    name: 'legal_name',
-                    type: 'Name'
+
+    function initalize() {
+        datasetService.getAllDatasets()
+            .then(function (data) {
+                if (data.status == 'Success') {
+                    $scope.datasets = eval(data.data).sort(ignoreCase);
+                } else {
+                    $scope.alerts.push({
+                        msg: data,
+                        type: 'danger'
+                    });
                 }
-            ]
-        },
-        {
-            name: 'DataSet2',
-            desc: 'desc2',
-            attributes: [
-                {
-                    name: 'ssn',
-                    type: 'SSN'
-                },
-                {
-                    name: 'zip_code',
-                    type: 'ZIP'
+            }, function (res) {
+                $scope.alerts.push({
+                    msg: "Failed to load datasets",
+                    type: 'danger'
+                });
+            });
+        tagService.getAllTags()
+            .then(function (data) {
+                if (data.status == 'Success') {
+                    $scope.tags = eval(data.data).sort(ignoreCase);
+                    $scope.tags.splice(0, 1);
+                } else {
+                    $scope.alerts.push({
+                        msg: data.data,
+                        type: 'danger'
+                    });
                 }
-            ]
-        },
-        {
-            name: 'DataSet3',
-            desc: 'desc3',
-            attributes: [
-                {
-                    name: 'id',
-                    type: 'SSN'
-                },
-                {
-                    name: 'name',
-                    type: 'Name'
-                }
-            ]
-        }
-    ];
+            }, function (res) {
+                $scope.alerts.push({
+                    msg: "Failed to load datasets",
+                    type: 'danger'
+                });
+            });
+
+
+    }
+    initalize();
 
 
     //filter the tags available to the typeahead
     $scope.filterTags = function (query) {
         var deferred = $q.defer();
+
         var filteredTags = $filter('filter')($scope.tags, {
             name: query
         });
@@ -173,44 +217,48 @@ angular.module('cliffhanger.compare', ['ngRoute'])
 
     //format row for display in table
     $scope.buildRow = function (dataset) {
-        $log.debug('build row', dataset);
+        //$log.debug('build row', dataset);
 
         //if row not created or is dirty
         if ($scope.rows[dataset.name] == undefined || dirty[dataset.name]) {
 
             var attr = dataset.attributes.sort(function (a, b) {
-                return (a.type).localeCompare(b.type);
+                return (a.col_name).localeCompare(b.col_name);
             });
             var row = [];
 
             //add cells
             for (var t in $scope.selectedTags) {
+                var type = 'danger';
+                var cols = "";
                 var found = false;
                 for (var a in attr) {
                     //if column matches type
-                    if (attr[a].type == $scope.selectedTags[t].name) {
-                        row.push({
-                            name: attr[a].name,
-                            type: attr[a].type,
-                            class: 'success'
-                        });
+                    if (attr[a].tag.name == $scope.selectedTags[t].name) {
+                        if (cols != "") cols += ", ";
+                        cols += (attr[a].col_name);
+                        type = 'success';
                         found = true;
                     }
                 }
-                // no column of this type
-                if (!found) {
-                    row.push({
-                        name: null,
-                        type: $scope.selectedTags[t],
-                        class: 'danger'
-                    });
-                }
-
+                if (cols == []) cols = null;
+                row.push({
+                    name: cols,
+                    type: $scope.selectedTags[t],
+                    class: type
+                });
             }
             $log.log(row);
             dirty[dataset.name] = false;
             $scope.rows[dataset.name] = row;
         }
+    }
+
+    //output log data - for testing only
+    $scope.log = function () {
+        $log.info('rows', $scope.rows);
+        $log.info('tags', $scope.selectedTags);
+        $log.info('datasets', $scope.selectedDatasets);
     }
 
     //helper function to update all rows in the table
@@ -222,11 +270,19 @@ angular.module('cliffhanger.compare', ['ngRoute'])
     updateTable(); //call to initalize the table
 
 
-    //output log data - for testing only
-    $scope.log = function () {
-        $log.info('tags', $scope.selectedTags);
-        $log.info('datasets', $scope.selectedDatasets);
+    $scope.allowUntagged = function () {
+        var empty = {
+            name: '<EMPTY>'
+        }
+        $scope.tags.push(empty);
+        $scope.selectedTags.push(empty);
+        $scope.untagged = true;
     }
 
+    $scope.removeUntagged = function () {
+        $scope.tags.pop();
+        $scope.selectedTags.pop();
+        $scope.untagged = false;
+    }
 
 });

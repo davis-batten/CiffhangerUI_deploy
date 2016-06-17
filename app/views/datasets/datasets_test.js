@@ -163,7 +163,7 @@ describe('cliffhanger.datasets module', function () {
                 attributes: []
             }
 
-            datasetInfoCtrl = $controller('DatasetDeleteModalCtrl', {
+            datasetDeleteCtrl = $controller('DatasetDeleteModalCtrl', {
                 $scope: scope,
                 $uibModalInstance: modalInstance,
                 $log: $log,

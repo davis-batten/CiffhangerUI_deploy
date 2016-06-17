@@ -28,7 +28,8 @@
 </div>
 
 
-<button class="btn btn-default">Allow Untagged Attributes</button>
+<button class="btn btn-default" ng-click="allowUntagged()" ng-hide="untagged">Add Untagged Attributes</button>
+<button class="btn btn-default" ng-click="removeUntagged()" ng-show="untagged">Remove Untagged Attributes</button>
 <br>
 <br>
 
