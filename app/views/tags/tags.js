@@ -74,14 +74,22 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, tagService) {
         //on modal completion
         modalInstance.result.then(function (t) {
             $log.warn('Deleted', t);
-            for (i in $scope.tags) {
-                if (t.name == $scope.tags[i].name) {
-                    $scope.tags.splice(i, 1);
-                    //TODO delete with service
-                }
-            }
+
+            tagService.deleteTag(t.name)
+                .then(function (response) {
+                        for (i in $scope.tags) {
+                            if (t.name == $scope.tags[i].name) {
+                                $scope.tags.splice(i, 1);
+                            }
+                        }
+                    },
+                    function (response) {
+                        $log.error('Failure')
+                    }
+                );
         });
     };
+
 
     //opens updateDataset modal for dataset d
     $scope.update = function (t) {

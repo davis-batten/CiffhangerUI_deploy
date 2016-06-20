@@ -326,19 +326,16 @@
     </style>
 </head>
 
-<body id="HTMLReporter" class="html-reporter showDetails">
+<body id="HTMLReporter" class="html-reporter">
     <h1>Tested in Chrome 51.0.2704 (Windows 7 0.0.0) on Mon Jun 20 2016</h1>
 
     <div class="alert">
 
 
-        <!-- <span class="failingAlert bar">Failed 1 specs</span> -->
-        <span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> |
-  <a href="#" onclick="unfold();">Unfold</a></span>35 specs, 1 failed, 0 pending</span>
-        <span class="resultsMenu bar">
-<a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a
-   class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
-</span>
+
+
+        <span class="passingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> |
+  <a href="#" onclick="unfold();">Unfold</a></span>35 specs, 0 failed, 0 pending</span>
 
 
 
@@ -491,14 +488,13 @@
 
             </div>
 
-            <div class="suite failed">
+            <div class="suite passed">
                 <span class="description">cliffhanger.tags module TagCtrl</span>
 
                 <div class="specSummary passed">
                     <span class="description">should have a TagCtrl controller</span>
                 </div>
-
-                <div class="specSummary failed">
+                <div class="specSummary passed">
                     <span class="description">should be able to load the tags</span>
                 </div>
 
@@ -560,67 +556,10 @@
 
         <div id="details">
 
-
-            <div class="specDetail failed">
-                <span class="description">cliffhanger.tags module TagCtrl should be able to load the tags</span>
-                <div class="stackTrace">
-                    <div class="resultMessage">Expected [ ] to equal [ Object({ name: 'test1', description: 'test1 desc' }), Object({ name: 'test2', description: 'test2 desc' }) ]. at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?097f4c1a1f9df261b7179ee120ef5cbb29a11688:70:32)</div>
-                </div>
-            </div>
-
-
         </div>
 
-        <script>
-            var folded = false;
-
-            document.body.onkeypress = function (e) {
-                if (!e || !e.keyCode) return;
-                switch (e.keyCode) {
-                case 102:
-                    toggleFold();
-                    break;
-                case 49:
-                    showSummary();
-                    break;
-                case 50:
-                    showFailures();
-                    break;
-                }
-            };
-
-            function showSummary() {
-                document.body.className = "html-reporter showSummary";
-            }
-
-            function showFailures() {
-                document.body.className = "html-reporter showDetails";
-            }
-
-            function toggleSection(el) {
-                el.className = el.className === 'summary-section' ? 'summary-section folded' : 'summary-section';
-            }
-
-            function toggleFold() {
-                (folded) ? unfold(): fold();
-            }
-
-            function fold() {
-                var els = document.querySelectorAll('.summary-section');
-                for (var i = 0; i < els.length; i++) {
-                    els[i].className = 'summary-section folded';
-                }
-                folded = true;
-            }
-
-            function unfold() {
-                var els = document.querySelectorAll('.summary-section');
-                for (var i = 0; i < els.length; i++) {
-                    els[i].className = 'summary-section';
-                }
-                folded = false;
-            }
-        </script>
+        document.body.onkeypress = function (e) { if (!e || !e.keyCode) return; switch (e.keyCode) { case 102: toggleFold(); break; case 49: showSummary(); break; case 50: showFailures(); break; } }; function showSummary() { document.body.className = "html-reporter showSummary"; } document.body.onkeypress = function (e) { if (!e || !e.keyCode) return; switch (e.keyCode) { case 102: toggleFold(); break; case 49: showSummary(); break; } }; function toggleSection(el) { el.className = el.className === 'summary-section' ? 'summary-section folded' : 'summary-section'; } function toggleFold() { (folded) ? unfold(): fold(); } function fold() { var els = document.querySelectorAll('.summary-section'); for (var i = 0; i
+        < els.length; i++) { els[i].className='summary-section folded' ; } folded=t rue; } function unfold() { var els=d ocument.querySelectorAll( '.summary-section'); for (var i=0 ; i < els.length; i++) { els[i].className='summary-section' ; } folded=f alse; } </script>
 
 
 </body>
