@@ -2,7 +2,6 @@ describe('cliffhanger.datasets module', function () {
 
     beforeEach(module('ngRoute'));
     beforeEach(module('ui.bootstrap'));
-
     beforeEach(module('cliffhanger.datasets'));
 
     describe('DatasetsCtrl', function () {

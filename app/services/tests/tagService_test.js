@@ -43,6 +43,11 @@ describe("tag service", function () {
         httpBackend.expectPOST(baseUrl + '/tag/create').respond(200, "success");
         tagService.addTag(test_create_data);
         //httpBackend.flush();
-    })
+    });
+
+    it("should be able to update a tag", function () {
+        httpBackend.expectPUT(baseUrl + '/tag/update/' + test_create_data.name).respond(200, "success");
+        tagService.updateTag(test_create_data.name, test_create_data);
+    });
 
 });
