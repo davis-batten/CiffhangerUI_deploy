@@ -22,39 +22,27 @@ describe('cliffhanger.tags module', function () {
                 }
             ];
 
+            test_create_tag = {
+                name: 'test3',
+                description: 'test3 desc'
+            }
+
             deferred = $q.defer();
 
+            resp = {};
+
             spyOn(tagService, 'getAllTags').and.callFake(function () {
-                deferred.resolve(test_tag_data);
-                scope.defere
+                resp.data = test_tag_data;
+                resp.status = "Success";
+                deferred.resolve(resp);
                 return deferred.promise;
             });
-
-            //create mock tagService
-            mockTagService = {
-                addTag: function (tag) {
-                    var deferred = $q.defer();
-                    var tags = angular.copy(test_tag_data).push(tag)
-                    resp.data = tags;
-                    deferred.resolve(resp);
-                    return deferred.promise;
-                },
-                getTag: function () {
-                    var deferred = $q.defer();
-                    resp.data = test_tag_data[0]
-                    deferred.resolve(resp);
-                    return deferred.promise;
-                },
-                getAllTags: function () {
-                    return deferred.promise;
-                }
-            }
 
             tagCtrl = $controller('TagCtrl', {
                 $scope: scope,
                 $uibModal: modal,
                 $log: $log,
-                tagService: tagService,
+                tagService: tagService
 
             });
         }));
@@ -64,11 +52,11 @@ describe('cliffhanger.tags module', function () {
         });
 
         it('should be able to load the tags', function () {
-            //deferred.resolve(test_tag_data);
             scope.$apply();
             expect(scope.tags).not.toBe(undefined);
             expect(scope.tags).toEqual(test_tag_data);
         });
+
 
         afterEach(function () {
             //console.log($log.debug.logs);
