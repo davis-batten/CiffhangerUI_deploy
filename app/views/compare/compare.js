@@ -285,4 +285,14 @@ angular.module('cliffhanger.compare', ['ngRoute'])
         $scope.untagged = false;
     }
 
+    //for testing only!
+    $scope.testInital = function () {
+        //initalize();
+        $scope.tags = [{
+            name: "ZIP",
+            description: "zipcode"
+        }];
+        $scope.datasets = [];
+    }
+
 });

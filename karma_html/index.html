@@ -101,7 +101,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
 <!-- <span class="failingAlert bar">Failed 5 specs</span> -->
 <span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> |
-  <a href="#" onclick="unfold();">Unfold</a></span>25 specs, 5 failed, 0 pending</span>
+  <a href="#" onclick="unfold();">Unfold</a></span>28 specs, 5 failed, 0 pending</span>
 <span class="resultsMenu bar">
 <a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a
    class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
@@ -147,8 +147,20 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     <div class="suite failed">
       <span class="description">cliffhanger.compare module compare controller</span>
 
-      <div class="specSummary failed">
+      <div class="specSummary passed">
       <span class="description">should load</span>
+      </div>
+
+      <div class="specSummary passed">
+      <span class="description">should be able to add &lt;EMPTY&gt;</span>
+      </div>
+
+      <div class="specSummary passed">
+      <span class="description">should be able to remove &lt;EMPTY&gt;</span>
+      </div>
+
+      <div class="specSummary failed">
+      <span class="description">should update table rows when filter changes</span>
       </div>
 
     </div>
@@ -284,25 +296,10 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
 
   <div class="specDetail failed">
-    <span class="description">cliffhanger.compare module compare controller should load</span>
+    <span class="description">cliffhanger.compare module compare controller should update table rows when filter changes</span>
     <div class="stackTrace">
-      <div class="resultMessage">Error: [$injector:unpr] Unknown provider: tagServiceProvider &lt;- tagService &lt;- CompareCtrl
-http://errors.angularjs.org/1.5.7/$injector/unpr?p0=tagServiceProvider%20%3C-%20tagService%20%3C-%20CompareCtrl
-    at http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:68:12
-    at http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:4502:19
-    at Object.getService [as get] (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:4655:39)
-    at http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:4507:45
-    at getService (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:4655:39)
-    at injectionArgs (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:4679:58)
-    at Object.instantiate (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:4721:18)
-    at $controller (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:10249:28)
-    at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:2208:12
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/compare/compare_test.js?497b0106a7c5d9a5013bdf15aeb72223a1e112b6:11:31)
-Error: Declaration Location
-    at window.inject.angular.mock.inject (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:3033:25)
-    at Suite.&lt;anonymous&gt; (http://localhost:9876/base/views/compare/compare_test.js?497b0106a7c5d9a5013bdf15aeb72223a1e112b6:9:27)
-    at Suite.&lt;anonymous&gt; (http://localhost:9876/base/views/compare/compare_test.js?497b0106a7c5d9a5013bdf15aeb72223a1e112b6:7:5)
-    at http://localhost:9876/base/views/compare/compare_test.js?497b0106a7c5d9a5013bdf15aeb72223a1e112b6:1:1</div>
+      <div class="resultMessage">Expected spy buildRow to have been called.
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/compare/compare_test.js?4797b0efed1619e8e2c3e805ed78ed9fba98620f:85:36)</div>
     </div>
   </div>
 
