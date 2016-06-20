@@ -115,17 +115,32 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         });
         //executes changes (or carries unchanged values through)
         modalInstance.result.then(function (d) {
-            for (i in $scope.datasetList) {
-                if (nameTemp == $scope.datasetList[i].name) {
-                    if (d.name == null) {
-                        $scope.alerts.push({
-                            msg: 'Cannot update name to empty value'
-                            , type: 'danger'
+            if (d.name == "") {
+                $scope.alerts.push({
+                    msg: 'Cannot update name to empty value'
+                    , type: 'danger'
+                });
+            } else {
+                datasetService.updateDataset(nameTemp, d)
+                    .then(
+                        //success callback
+                        function (resp) {
+                            if (resp.status == 'Success') {
+                                for (i in $scope.datasetList) {
+                                    if (nameTemp == $scope.datasetList[i].name) {
+                                        $scope.datasetList[i].name = d.name;
+                                        $scope.datasetList[i].description = d.description;
+                                    }
+                                }
+                            }
+                            //problem on backend
+                            else {
+                                $log.warn("Failed to update");
+                            }
+                        }, //error callback
+                        function () {
+                            $log.error("Failed to connect");
                         });
-                    }
-                    $scope.datasetList[i].name = d.name;
-                    $scope.datasetList[i].description = d.description;
-                }
             }
         });
     };

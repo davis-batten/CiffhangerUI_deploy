@@ -159,13 +159,15 @@ describe('cliffhanger.datasets module', function () {
                 name: 'test'
                 , description: 'desc'
                 , attributes: []
-            }
+            };
+            //mockDatasetList = [mockDataset];
 
             datasetUpdateCtrl = $controller('DatasetUpdateModalCtrl', {
                 $scope: scope
                 , $uibModalInstance: modalInstance
                 , $log: $log
                 , dataset: mockDataset
+                    //, datasetList: mockDatasetList
             });
 
         }));
@@ -180,6 +182,24 @@ describe('cliffhanger.datasets module', function () {
             expect(scope.input).not.toBeNull();
             expect(modalInstance.close).toHaveBeenCalled();
         });
+
+        /*it('should be able to update name', function () {
+            scope.input = {
+                name: 'new'
+                , description: 'desc'
+            }
+            scope.edit(mockDataset.name, scope.input, mockDatasetList);
+            expect(mockDatasetList[0].name).toBe('new');
+        });
+
+        it('should be able to update description', function () {
+            scope.input = {
+                name: 'test'
+                , description: 'new'
+            }
+            scope.edit(mockDataset.name, scope.input, mockDatasetList);
+            expect(mockDatasetList[0].description).toBe('new');
+        });*/
 
     });
 

@@ -1,644 +1,483 @@
 <html>
-
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>index</title>
-    <style>
-        body {
-            background-color: #eeeeee;
-            padding: 0;
-            margin: 5px;
-            overflow-y: scroll;
-        }
-        
-        #HTMLReporter h1 {
-            font-size: 12px;
-            font-weight: normal;
-            text-align: right;
-            margin: 10px 0 10px 0 !important;
-        }
-        
-        #HTMLReporter {
-            font-size: 11px;
-            font-family: Monaco, "Lucida Console", monospace;
-            line-height: 14px;
-            color: #333333;
-        }
-        
-        #HTMLReporter a {
-            text-decoration: none;
-        }
-        
-        #HTMLReporter a:hover {
-            text-decoration: underline;
-        }
-        
-        #HTMLReporter p,
-        #HTMLReporter h1,
-        #HTMLReporter h2,
-        #HTMLReporter h3,
-        #HTMLReporter h4,
-        #HTMLReporter h5,
-        #HTMLReporter h6 {
-            margin: 0;
-            line-height: 14px;
-        }
-        
-        #HTMLReporter .banner,
-        #HTMLReporter .symbolSummary,
-        #HTMLReporter .summary,
-        #HTMLReporter .resultMessage,
-        #HTMLReporter .specDetail .description,
-        #HTMLReporter .alert .bar,
-        #HTMLReporter .stackTrace {
-            padding-left: 9px;
-            padding-right: 9px;
-        }
-        
-        #HTMLReporter #jasmine_content {
-            position: fixed;
-            right: 100%;
-        }
-        
-        #HTMLReporter .version {
-            color: #aaaaaa;
-        }
-        
-        #HTMLReporter .banner {
-            margin-top: 14px;
-        }
-        
-        #HTMLReporter .duration {
-            color: #aaaaaa;
-            float: right;
-        }
-        
-        #HTMLReporter .exceptions {
-            color: #fff;
-            float: right;
-            margin-top: 5px;
-            margin-right: 5px;
-        }
-        
-        #HTMLReporter .bar {
-            line-height: 28px;
-            font-size: 14px;
-            display: block;
-            color: #eee;
-        }
-        
-        #HTMLReporter .runningAlert {
-            background-color: #666666;
-        }
-        
-        #HTMLReporter .skippedAlert {
-            background-color: #aaaaaa;
-        }
-        
-        #HTMLReporter .skippedAlert:first-child {
-            background-color: #333333;
-        }
-        
-        #HTMLReporter .skippedAlert:hover {
-            text-decoration: none;
-            color: white;
-            text-decoration: underline;
-        }
-        
-        #HTMLReporter .passingAlert {
-            background-color: #a6b779;
-        }
-        
-        #HTMLReporter .passingAlert:first-child {
-            background-color: #5e7d00;
-        }
-        
-        #HTMLReporter .failingAlert {
-            background-color: #cf867e;
-        }
-        
-        #HTMLReporter .failingAlert:first-child {
-            background-color: #b03911;
-        }
-        
-        #HTMLReporter .results {
-            margin-top: 14px;
-        }
-        
-        #HTMLReporter #details {
-            display: none;
-        }
-        
-        #HTMLReporter .resultsMenu {
-            color: #999;
-            background-color: #fff;
-        }
-        
-        #HTMLReporter .summaryMenuItem {
-            font-weight: normal;
-            text-decoration: none;
-            margin-right: 5px;
-            color: #333;
-        }
-        
-        #HTMLReporter .detailsMenuItem {
-            font-weight: normal;
-            text-decoration: none;
-            margin-left: 5px;
-            color: #999;
-        }
-        
-        #HTMLReporter.showDetails .summaryMenuItem {
-            color: #999;
-        }
-        
-        #HTMLReporter.showDetails .detailsMenuItem {
-            color: #333;
-        }
-        
-        #HTMLReporter.showDetails .summaryMenuItem:hover {
-            text-decoration: underline;
-        }
-        
-        #HTMLReporter .detailsMenuItem:hover {
-            text-decoration: underline;
-        }
-        
-        #HTMLReporter.showDetails .summary {
-            display: none;
-        }
-        
-        #HTMLReporter.showDetails #details {
-            display: block;
-        }
-        
-        #HTMLReporter .summary {
-            margin-top: 14px;
-            margin-bottom: 40px;
-        }
-        
-        #HTMLReporter .summary .suite .suite,
-        #HTMLReporter .summary .specSummary {
-            margin-left: 14px;
-        }
-        
-        #HTMLReporter .summary .specSummary.passed {
-            color: #5e7d00;
-        }
-        
-        #HTMLReporter .summary .specSummary.failed {
-            color: #b03911;
-        }
-        
-        #HTMLReporter .summary .specSummary.skipped {
-            color: #ba9d37;
-        }
-        
-        #HTMLReporter .description + .suite {
-            margin-top: 0;
-        }
-        
-        #HTMLReporter .suite {
-            margin-top: 14px;
-        }
-        
-        #HTMLReporter .suite a {
-            color: #333333;
-        }
-        
-        #HTMLReporter #details .specDetail {
-            margin-bottom: 28px;
-        }
-        
-        #HTMLReporter #details .specDetail .description {
-            display: block;
-            color: white;
-            background-color: #b03911;
-        }
-        
-        #HTMLReporter .resultMessage {
-            padding-top: 14px;
-            color: #333333;
-        }
-        
-        #HTMLReporter .resultMessage span.result {
-            display: block;
-        }
-        
-        #HTMLReporter .stackTrace {
-            margin: 5px 0 0 0;
-            max-height: 224px;
-            overflow: auto;
-            line-height: 18px;
-            color: #666666;
-            border: 1px solid #ddd;
-            background: white;
-            white-space: pre;
-        }
-        
-        .fold-buttons {
-            float: right;
-        }
-        
-        .fold-buttons a {
-            color: #fff;
-            font-size: 12px;
-        }
-        
-        .fold-buttons {
-            display: none
-        }
-        
-        #HTMLReporter .br {
-            margin-top: 8px;
-        }
-        
-        #HTMLReporter .section-starter {
-            font-size: 14px;
-            line-height: 18px
-        }
-        
-        #HTMLReporter .summary-section {
-            cursor: -webkit-zoom-out;
-            cursor: -moz-zoom-out;
-            cursor: zoom-out;
-            background: #fafafa;
-            padding: 10px;
-            border-bottom: #eaeaea 1px solid;
-        }
-        
-        #HTMLReporter .summary-section.folded {
-            cursor: -webkit-zoom-in;
-            cursor: -moz-zoom-in;
-            cursor: zoom-in;
-            padding-bottom: 8px;
-        }
-        
-        #HTMLReporter .summary-section.folded div {
-            display: none
-        }
-        
-        #HTMLReporter .summary-section.folded div.section-starter {
-            display: block
-        }
-        /*#HTMLReporter .summary-section:hover { background: #e9e9e9; }*/
-        
-        #HTMLReporter .summary-section:hover {
-            background: #f5f5f5;
-        }
-        
-        #HTMLReporter .summary-section-totals {
-            font-size: 11px;
-            display: none;
-            margin-left: 11px;
-            overflow: hidden;
-            position: relative;
-            top: -1px;
-        }
-        
-        #HTMLReporter .summary-section.folded .summary-section-totals {
-            display: inline;
-        }
-        
-        #HTMLReporter .summary-section-total {
-            color: #fff;
-            vertical-align: baseline;
-            padding: 1px 8px;
-        }
-        
-        #HTMLReporter .summary-section-total.passed {
-            background: #5e7d00;
-        }
-        
-        #HTMLReporter .summary-section-total.failed {
-            background: #b03911;
-        }
-        
-        #HTMLReporter .summary-section-total.skipped {
-            background: #ba9d37;
-        }
-        
-        #HTMLReporter {
-            font-size: 12px;
-            line-height: 18px;
-        }
-        /*larget font-size*/
-    </style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>index</title>
+<style>
+body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
+#HTMLReporter h1 { font-size: 12px; font-weight: normal; text-align: right; margin: 10px 0 10px 0 !important; }
+#HTMLReporter { font-size: 11px; font-family: Monaco, "Lucida Console", monospace; line-height: 14px; color: #333333; }
+#HTMLReporter a { text-decoration: none; }
+#HTMLReporter a:hover { text-decoration: underline; }
+#HTMLReporter p, #HTMLReporter h1, #HTMLReporter h2, #HTMLReporter h3, #HTMLReporter h4, #HTMLReporter h5, #HTMLReporter h6 { margin: 0; line-height: 14px; }
+#HTMLReporter .banner, #HTMLReporter .symbolSummary, #HTMLReporter .summary, #HTMLReporter .resultMessage, #HTMLReporter .specDetail .description, #HTMLReporter .alert .bar, #HTMLReporter .stackTrace { padding-left: 9px; padding-right: 9px; }
+
+#HTMLReporter #jasmine_content { position: fixed; right: 100%; }
+#HTMLReporter .version { color: #aaaaaa; }
+#HTMLReporter .banner { margin-top: 14px; }
+#HTMLReporter .duration { color: #aaaaaa; float: right; }
+#HTMLReporter .exceptions { color: #fff; float: right; margin-top: 5px; margin-right: 5px; }
+#HTMLReporter .bar { line-height: 28px; font-size: 14px; display: block; color: #eee; }
+#HTMLReporter .runningAlert { background-color: #666666; }
+#HTMLReporter .skippedAlert { background-color: #aaaaaa; }
+#HTMLReporter .skippedAlert:first-child { background-color: #333333; }
+#HTMLReporter .skippedAlert:hover { text-decoration: none; color: white; text-decoration: underline; }
+#HTMLReporter .passingAlert { background-color: #a6b779; }
+#HTMLReporter .passingAlert:first-child { background-color: #5e7d00; }
+#HTMLReporter .failingAlert { background-color: #cf867e; }
+#HTMLReporter .failingAlert:first-child { background-color: #b03911; }
+#HTMLReporter .results { margin-top: 14px; }
+#HTMLReporter #details { display: none; }
+#HTMLReporter .resultsMenu { color: #999; background-color: #fff; }
+
+#HTMLReporter .summaryMenuItem { font-weight: normal; text-decoration: none; margin-right: 5px; color: #333; }
+#HTMLReporter .detailsMenuItem { font-weight: normal; text-decoration: none; margin-left: 5px; color: #999; }
+
+#HTMLReporter.showDetails .summaryMenuItem { color: #999; }
+#HTMLReporter.showDetails .detailsMenuItem { color: #333; }
+#HTMLReporter.showDetails .summaryMenuItem:hover { text-decoration: underline; }
+#HTMLReporter             .detailsMenuItem:hover { text-decoration: underline; }
+
+
+#HTMLReporter.showDetails .summary { display: none; }
+#HTMLReporter.showDetails #details { display: block; }
+#HTMLReporter .summary { margin-top: 14px; margin-bottom: 40px; }
+#HTMLReporter .summary .suite .suite, #HTMLReporter .summary .specSummary { margin-left: 14px; }
+#HTMLReporter .summary .specSummary.passed { color: #5e7d00; }
+#HTMLReporter .summary .specSummary.failed { color: #b03911; }
+#HTMLReporter .summary .specSummary.skipped { color: #ba9d37; }
+#HTMLReporter .description + .suite { margin-top: 0; }
+#HTMLReporter .suite { margin-top: 14px; }
+#HTMLReporter .suite a { color: #333333; }
+#HTMLReporter #details .specDetail { margin-bottom: 28px; }
+#HTMLReporter #details .specDetail .description { display: block; color: white; background-color: #b03911; }
+#HTMLReporter .resultMessage { padding-top: 14px; color: #333333; }
+#HTMLReporter .resultMessage span.result { display: block; }
+#HTMLReporter .stackTrace { margin: 5px 0 0 0; max-height: 224px; overflow: auto; 
+    line-height: 18px; color: #666666; border: 1px solid #ddd; background: white; white-space: pre; }
+
+
+.fold-buttons { float: right; }
+.fold-buttons a { color: #fff; font-size: 12px; }
+.fold-buttons { display: none } 
+#HTMLReporter .br { margin-top: 8px; }
+#HTMLReporter .section-starter { font-size: 14px; line-height: 18px }
+#HTMLReporter .summary-section { 
+  cursor: -webkit-zoom-out; cursor: -moz-zoom-out; cursor: zoom-out; 
+  background: #fafafa; 
+  padding: 10px; 
+  border-bottom: #eaeaea 1px solid; }
+#HTMLReporter .summary-section.folded { 
+  cursor: -webkit-zoom-in; cursor: -moz-zoom-in; cursor: zoom-in; 
+  padding-bottom: 8px;
+}
+#HTMLReporter .summary-section.folded div { display: none }
+#HTMLReporter .summary-section.folded div.section-starter { display: block }
+/*#HTMLReporter .summary-section:hover { background: #e9e9e9; }*/
+#HTMLReporter .summary-section:hover { background: #f5f5f5; }
+#HTMLReporter .summary-section-totals { 
+  font-size: 11px;
+  display: none; 
+  margin-left: 11px; 
+  overflow: hidden; 
+  position: relative;
+  top: -1px; 
+}
+#HTMLReporter .summary-section.folded .summary-section-totals { display: inline; }
+#HTMLReporter .summary-section-total { color: #fff; vertical-align: baseline; padding: 1px 8px; }
+#HTMLReporter .summary-section-total.passed { background: #5e7d00;  }
+#HTMLReporter .summary-section-total.failed { background: #b03911;  }
+#HTMLReporter .summary-section-total.skipped { background: #ba9d37;  }
+
+#HTMLReporter { font-size: 12px; line-height: 18px; } /*larget font-size*/
+
+</style>
 </head>
 
 <body id="HTMLReporter" class="html-reporter showDetails">
-    <h1>Tested in Chrome 51.0.2704 (Windows 7 0.0.0) on Mon Jun 20 2016</h1>
+<h1>Tested in Chrome 49.0.2623 (Mac OS X 10.8.5) on Mon Jun 20 2016</h1>
 
-    <div class="alert">
+<div class="alert">
 
 
-        <!-- <span class="failingAlert bar">Failed 4 specs</span> -->
-        <span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> |
-  <a href="#" onclick="unfold();">Unfold</a></span>34 specs, 4 failed, 0 pending</span>
-        <span class="resultsMenu bar">
-<a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a
+<!-- <span class="failingAlert bar">Failed 6 specs</span> -->
+<span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
+  <a href="#" onclick="unfold();">Unfold</a></span>38 specs, 6 failed, 0 pending</span>
+<span class="resultsMenu bar">
+<a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a 
    class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
+</span>
 
 
 
-    </div>
-    <div class="results">
-        <div class="summary">
-
-
-
-
-
-            <div class="suite passed">
-                <span class="description">cliffhanger.version module interpolate filter</span>
-
-        <div class="specSummary passed">
-            <span class="description">should replace VERSION</span>
-        </div>
-
-    </div>
-
+</div>
+<div class="results">
+  <div class="summary">
+  
+  
+  
+  
+  
     <div class="suite passed">
-        <span class="description">cliffhanger.version module app-version directive</span>
-
-        <div class="specSummary passed">
-            <span class="description">should print current version</span>
-        </div>
-
+      <span class="description">cliffhanger.version module interpolate filter</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should replace VERSION</span>
+      </div>
+    
     </div>
-
+  
     <div class="suite passed">
-        <span class="description">cliffhanger.version module version service</span>
-
-        <div class="specSummary passed">
-            <span class="description">should return current version</span>
-        </div>
-
+      <span class="description">cliffhanger.version module app-version directive</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should print current version</span>
+      </div>
+    
     </div>
-
+  
     <div class="suite passed">
-        <span class="description">cliffhanger.compare module compare controller</span>
-
-        <div class="specSummary passed">
-            <span class="description">should load</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to add &lt;EMPTY&gt;</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to remove &lt;EMPTY&gt;</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should update table rows when filter changes</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to select/deselect all tags</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to select/deselect all datasets</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to filter tags</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to filter datasets</span>
-        </div>
-
+      <span class="description">cliffhanger.version module version service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should return current version</span>
+      </div>
+    
     </div>
-
+  
     <div class="suite passed">
-        <span class="description">cliffhanger.compare module compare controller buildRow test</span>
-
-        <div class="specSummary passed">
-            <span class="description">should add a cell for matched tags</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should add empty cells for unmatched tags</span>
-        </div>
-
+      <span class="description">cliffhanger.compare module compare controller</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should load</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to add &lt;EMPTY&gt;</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to remove &lt;EMPTY&gt;</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should update table rows when filter changes</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to select/deselect all tags</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to select/deselect all datasets</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to filter tags</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to filter datasets</span>
+      </div>
+    
     </div>
-
+  
     <div class="suite passed">
-        <span class="description">cliffhanger.datasets module DatasetsCtrl</span>
-
-        <div class="specSummary passed">
-            <span class="description">should have a DatasetsCtrl controller</span>
-        </div>
-
+      <span class="description">cliffhanger.compare module compare controller buildRow test</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should add a cell for matched tags</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should add empty cells for unmatched tags</span>
+      </div>
+    
     </div>
-
+  
     <div class="suite passed">
-        <span class="description">cliffhanger.datasets module AddDatasetModalInstanceCtrl</span>
-
-        <div class="specSummary passed">
-            <span class="description">should instantiate the addDatasetModalInstanceCtrl controller</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should dismiss the modal with cancel</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should close the modal with submit</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should advance to the 2nd step</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to go back to the previous step</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to add an attribute</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to remove an attribute</span>
-        </div>
-
+      <span class="description">cliffhanger.datasets module DatasetsCtrl</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have a DatasetsCtrl controller</span>
+      </div>
+    
     </div>
-
+  
     <div class="suite passed">
-        <span class="description">cliffhanger.datasets module DatasetDeleteModalCtrl</span>
-
-        <div class="specSummary passed">
-            <span class="description">should be able accept and close the modal</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to cancel and dismiss the modal</span>
-        </div>
-
+      <span class="description">cliffhanger.datasets module AddDatasetModalInstanceCtrl</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should instantiate the addDatasetModalInstanceCtrl controller</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should dismiss the modal with cancel</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should close the modal with submit</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should advance to the 2nd step</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to go back to the previous step</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to add an attribute</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to remove an attribute</span>
+      </div>
+    
     </div>
-
-    <div class="suite passed">
-        <span class="description">cliffhanger.queries module queries controller</span>
-
-        <div class="specSummary passed">
-            <span class="description">should load</span>
-        </div>
-
-    </div>
-
-    <div class="suite passed">
-        <span class="description">cliffhanger.tags module TagCtrl</span>
-
-        <div class="specSummary passed">
-            <span class="description">should have a TagCtrl controller</span>
-        </div>
-
-    </div>
-
+  
     <div class="suite failed">
-        <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl</span>
-
-        <div class="specSummary failed">
-            <span class="description">should instantiate the addTagModalInstanceCtrl controller</span>
-        </div>
-
-        <div class="specSummary failed">
-            <span class="description">should dismiss the modal with cancel</span>
-        </div>
-
-        <div class="specSummary failed">
-            <span class="description">should close the modal with submit</span>
-        </div>
-
-        <div class="specSummary failed">
-            <span class="description">should be able to add a tag</span>
-        </div>
-
+      <span class="description">cliffhanger.datasets module DatasetUpdateModalCtrl</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should dismiss the modal with cancel</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to complete and close the modal</span>
+      </div>
+    
+      <div class="specSummary failed">
+      <span class="description">should be able to update name</span>
+      </div>
+    
+      <div class="specSummary failed">
+      <span class="description">should be able to update description</span>
+      </div>
+    
     </div>
-
+  
     <div class="suite passed">
-        <span class="description">dataset service</span>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to get all datasets</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to create a dataset</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to delete a dataset</span>
-        </div>
-
+      <span class="description">cliffhanger.datasets module DatasetDeleteModalCtrl</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able accept and close the modal</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to cancel and dismiss the modal</span>
+      </div>
+    
     </div>
-
+  
     <div class="suite passed">
-        <span class="description">tag service</span>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to get all tags</span>
-        </div>
-
-        <div class="specSummary passed">
-            <span class="description">should be able to create a tag</span>
-        </div>
-
+      <span class="description">cliffhanger.queries module queries controller</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should load</span>
+      </div>
+    
     </div>
-
-
+  
+    <div class="suite passed">
+      <span class="description">cliffhanger.tags module TagCtrl</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should have a TagCtrl controller</span>
+      </div>
+    
     </div>
-
-    <div id="details">
-
-
-        <div class="specDetail failed">
-            <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should instantiate the addTagModalInstanceCtrl controller</span>
-            <div class="stackTrace">
-                <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined at http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:68:12 at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1885:11) at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1895:3) at $controller (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:10210:9) at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:2214:12 at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:56:31) at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:4709:19) at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:3078:20) Error: Declaration Location at window.inject.angular.mock.inject (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:3040:25) at Suite.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:47:20) at Suite.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:46:5) at http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:1:1,ReferenceError: addTagModalCtrl is not defined at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:65:20)</div>
-            </div>
-        </div>
-
-        <div class="specDetail failed">
-            <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should dismiss the modal with cancel</span>
-            <div class="stackTrace">
-                <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined at http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:68:12 at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1885:11) at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1895:3) at $controller (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:10210:9) at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:2214:12 at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:56:31) at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:4709:19) at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:3078:20),TypeError: scope.cancel is not a function at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:69:19)</div>
-            </div>
-        </div>
-
-        <div class="specDetail failed">
-            <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should close the modal with submit</span>
-            <div class="stackTrace">
-                <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined at http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:68:12 at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1885:11) at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1895:3) at $controller (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:10210:9) at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:2214:12 at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:56:31) at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:4709:19) at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:3078:20),TypeError: scope.submit is not a function at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:74:19)</div>
-            </div>
-        </div>
-
-        <div class="specDetail failed">
-            <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should be able to add a tag</span>
-            <div class="stackTrace">
-                <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined at http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:68:12 at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:1885:11) at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:1895:3) at $controller (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:10210:9) at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:2208:12 at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?7ef6a6f250ebce6a54609c5be27e8d4c42dfb948:56:31) at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:4709:19) at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:3071:20),TypeError: Cannot read property 'tag' of undefined at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?7ef6a6f250ebce6a54609c5be27e8d4c42dfb948:80:37)</div>
-            </div>
-        </div>
-
-
+  
+    <div class="suite failed">
+      <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl</span>
+    
+      <div class="specSummary failed">
+      <span class="description">should instantiate the addTagModalInstanceCtrl controller</span>
+      </div>
+    
+      <div class="specSummary failed">
+      <span class="description">should dismiss the modal with cancel</span>
+      </div>
+    
+      <div class="specSummary failed">
+      <span class="description">should close the modal with submit</span>
+      </div>
+    
+      <div class="specSummary failed">
+      <span class="description">should be able to add a tag</span>
+      </div>
+    
     </div>
+  
+    <div class="suite passed">
+      <span class="description">dataset service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to get all datasets</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to create a dataset</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to delete a dataset</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">tag service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to get all tags</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to create a tag</span>
+      </div>
+    
+    </div>
+  
+  
+</div>
 
-    <script>
-        var folded = false;
+<div id="details">
+  
+  
+  <div class="specDetail failed">
+    <span class="description">cliffhanger.datasets module DatasetUpdateModalCtrl should be able to update name</span>
+    <div class="stackTrace">
+      <div class="resultMessage">TypeError: scope.edit is not a function
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/datasets/datasets_test.js?915a73b3956c71ea7bb0ef4acb6a43afeb8558ee:191:19)</div>
+    </div>
+  </div>
+  
+  <div class="specDetail failed">
+    <span class="description">cliffhanger.datasets module DatasetUpdateModalCtrl should be able to update description</span>
+    <div class="stackTrace">
+      <div class="resultMessage">TypeError: scope.edit is not a function
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/datasets/datasets_test.js?915a73b3956c71ea7bb0ef4acb6a43afeb8558ee:200:19)</div>
+    </div>
+  </div>
+  
+  
+  
+  <div class="specDetail failed">
+    <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should instantiate the addTagModalInstanceCtrl controller</span>
+    <div class="stackTrace">
+      <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined
+http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined
+    at http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:68:12
+    at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1885:11)
+    at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1895:3)
+    at $controller (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:10210:9)
+    at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:2214:12
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:56:31)
+    at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:4709:19)
+    at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:3078:20)
+Error: Declaration Location
+    at window.inject.angular.mock.inject (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:3040:25)
+    at Suite.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:47:20)
+    at Suite.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:46:5)
+    at http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:1:1,ReferenceError: addTagModalCtrl is not defined
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:65:20)</div>
+    </div>
+  </div>
+  
+  <div class="specDetail failed">
+    <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should dismiss the modal with cancel</span>
+    <div class="stackTrace">
+      <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined
+http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined
+    at http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:68:12
+    at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1885:11)
+    at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1895:3)
+    at $controller (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:10210:9)
+    at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:2214:12
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:56:31)
+    at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:4709:19)
+    at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:3078:20),TypeError: scope.cancel is not a function
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:69:19)</div>
+    </div>
+  </div>
+  
+  <div class="specDetail failed">
+    <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should close the modal with submit</span>
+    <div class="stackTrace">
+      <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined
+http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined
+    at http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:68:12
+    at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1885:11)
+    at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1895:3)
+    at $controller (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:10210:9)
+    at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:2214:12
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:56:31)
+    at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:4709:19)
+    at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:3078:20),TypeError: scope.submit is not a function
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:74:19)</div>
+    </div>
+  </div>
+  
+  <div class="specDetail failed">
+    <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should be able to add a tag</span>
+    <div class="stackTrace">
+      <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined
+http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined
+    at http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:68:12
+    at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1885:11)
+    at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:1895:3)
+    at $controller (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:10210:9)
+    at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:2214:12
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:56:31)
+    at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?b9d918dae17240eef063fefe90851e3189158e37:4709:19)
+    at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?0b7de425bd8504ad3dbae2be21385f4a577c0109:3078:20),TypeError: Cannot read property 'tag' of undefined
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?112c3ce23900772fb9a16fff99f10ef76bc3d80a:80:37)</div>
+    </div>
+  </div>
+  
+  
+</div>
 
-        document.body.onkeypress = function (e) {
-            if (!e || !e.keyCode) return;
-            switch (e.keyCode) {
-            case 102:
-                toggleFold();
-                break;
-            case 49:
-                showSummary();
-                break;
-            case 50:
-                showFailures();
-                break;
-            }
-        };
+<script>
 
-        function showSummary() {
-            document.body.className = "html-reporter showSummary";
-        }
+var folded = false;
 
-        function showFailures() {
-            document.body.className = "html-reporter showDetails";
-        }
+document.body.onkeypress = function (e) {
+  if (!e || !e.keyCode) return;
+  switch (e.keyCode) {
+    case 102: toggleFold(); break;
+    case 49: showSummary(); break;
+    case 50: showFailures(); break;case 50: showFailures(); break;
+  }
+};
 
-        function toggleSection(el) {
-            el.className = el.className === 'summary-section' ? 'summary-section folded' : 'summary-section';
-        }
+function showSummary() { document.body.className = "html-reporter showSummary"; }
+function showFailures() { document.body.className = "html-reporter showDetails"; }
 
-        function toggleFold() {
-            (folded) ? unfold(): fold();
-        }
+function toggleSection(el) {
+  el.className = el.className === 'summary-section' ? 'summary-section folded' : 'summary-section';
+}
 
-        function fold() {
-            var els = document.querySelectorAll('.summary-section');
-            for (var i = 0; i < els.length; i++) {
-                els[i].className = 'summary-section folded';
-            }
-            folded = true;
-        }
+function toggleFold() { (folded) ? unfold() : fold(); }
+function fold() {
+  var els = document.querySelectorAll('.summary-section');
+  for (var i = 0; i < els.length; i++) {
+    els[i].className = 'summary-section folded';
+  }
+  folded = true;
+}
+function unfold() {
+  var els = document.querySelectorAll('.summary-section');
+  for (var i = 0; i < els.length; i++) {
+    els[i].className = 'summary-section';
+  }
+  folded = false;
+}
 
-        function unfold() {
-            var els = document.querySelectorAll('.summary-section');
-            for (var i = 0; i < els.length; i++) {
-                els[i].className = 'summary-section';
-            }
-            folded = false;
-        }
-    </script>
+</script>
 
 
 </body>
-
 </html>
+
