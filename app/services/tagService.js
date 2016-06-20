@@ -31,7 +31,7 @@ angular.module('cliffhanger.tags')
         }
 
 
-        this.update = function (tagName, tag) {
+        this.updateTag = function (tagName, tag) {
 
             return $http.put($rootScope.baseUrl + '/tag/update/' + tagName, tag)
                 .then(

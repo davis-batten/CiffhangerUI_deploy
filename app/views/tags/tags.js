@@ -1,4 +1,4 @@
-var module = angular.module('cliffhanger.tags', ['ngRoute'])
+var tags = angular.module('cliffhanger.tags', ['ngRoute'])
 
 .config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/developer/tags', {
@@ -8,8 +8,9 @@ var module = angular.module('cliffhanger.tags', ['ngRoute'])
 }]);
 
 
+
 //main controller for /#/developer/tags
-module.controller('TagCtrl', function ($scope, $uibModal, $log, tagService) {
+tags.controller('TagCtrl', function ($scope, $uibModal, $log, tagService) {
 
     $scope.selected = undefined;
     $scope.noResults = false;
@@ -19,29 +20,19 @@ module.controller('TagCtrl', function ($scope, $uibModal, $log, tagService) {
         return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
     }
 
-    var getAllTags = function () {
+    $scope.getAllTags = function () {
         tagService.getAllTags()
             .then(function (data) {
+                $log.debug('response', data);
                 if (data.status == 'Success') {
-                    $log.debug('data obj', eval(data.data));
-                    $scope.tags = (eval(data.data)).sort(ignoreCase);
+                    $log.debug('data obj', data.data);
+                    $scope.tags = data.data.sort(ignoreCase);
                 } else {
                     $scope.tags = [];
                 }
             })
     };
-    getAllTags();
-
-    var createTag = function (newTag) {
-        tagService.addTag(newTag)
-            .then(function (data) {
-                if (data.status == 'Success') {
-                    $scope.tags.push(newTag);
-                } else {
-                    // display failed
-                }
-            })
-    };
+    $scope.getAllTags();
 
     //opens addTagModal
     $scope.add = function () {
@@ -57,7 +48,7 @@ module.controller('TagCtrl', function ($scope, $uibModal, $log, tagService) {
 
             tagService.addTag(input.name, input.description)
                 .then(function (response) {
-                        getAllTags();
+                        $scope.getAllTags();
                     },
                     function (response) {
                         $log.error('Failure!');
@@ -110,7 +101,7 @@ module.controller('TagCtrl', function ($scope, $uibModal, $log, tagService) {
         //executes changes (or carries unchanged values through)
         modalInstance.result.then(function (input) {
             //update tags on backend then ui
-            tagService.update(nameTemp, input)
+            tagService.updateTag(nameTemp, input)
                 .then(
                     //success callback
                     function (resp) {
@@ -140,7 +131,7 @@ module.controller('TagCtrl', function ($scope, $uibModal, $log, tagService) {
 });
 
 //controller for an instance of addTagModal
-datasets.controller('AddTagModalInstanceCtrl', function ($scope, $uibModalInstance, $log) {
+tags.controller('AddTagModalInstanceCtrl', function ($scope, $uibModalInstance, $log) {
 
     $scope.input = {};
 
@@ -157,7 +148,7 @@ datasets.controller('AddTagModalInstanceCtrl', function ($scope, $uibModalInstan
 });
 
 //controller for instance of DatasetUpdateModal
-datasets.controller('TagUpdateModalCtrl', function ($scope, $uibModalInstance, $log, tag) {
+tags.controller('TagUpdateModalCtrl', function ($scope, $uibModalInstance, $log, tag) {
 
     $scope.tag = tag;
 
@@ -180,7 +171,7 @@ datasets.controller('TagUpdateModalCtrl', function ($scope, $uibModalInstance, $
 });
 
 //controller for instance of DatasetDeleteModal
-datasets.controller('TagDeleteModalCtrl', function ($scope, $uibModalInstance, $log, tag) {
+tags.controller('TagDeleteModalCtrl', function ($scope, $uibModalInstance, $log, tag) {
 
     $scope.tag = tag;
 

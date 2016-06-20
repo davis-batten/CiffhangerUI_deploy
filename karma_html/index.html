@@ -99,9 +99,9 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 <div class="alert">
 
 
-<!-- <span class="failingAlert bar">Failed 4 specs</span> -->
+<!-- <span class="failingAlert bar">Failed 1 specs</span> -->
 <span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> |
-  <a href="#" onclick="unfold();">Unfold</a></span>34 specs, 4 failed, 0 pending</span>
+  <a href="#" onclick="unfold();">Unfold</a></span>35 specs, 1 failed, 0 pending</span>
 <span class="resultsMenu bar">
 <a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a
    class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
@@ -258,32 +258,32 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
     </div>
 
-    <div class="suite passed">
+    <div class="suite failed">
       <span class="description">cliffhanger.tags module TagCtrl</span>
 
       <div class="specSummary passed">
       <span class="description">should have a TagCtrl controller</span>
       </div>
 
+      <div class="specSummary failed">
+      <span class="description">should be able to load the tags</span>
+      </div>
+
     </div>
 
-    <div class="suite failed">
+    <div class="suite passed">
       <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl</span>
 
-      <div class="specSummary failed">
+      <div class="specSummary passed">
       <span class="description">should instantiate the addTagModalInstanceCtrl controller</span>
       </div>
 
-      <div class="specSummary failed">
+      <div class="specSummary passed">
       <span class="description">should dismiss the modal with cancel</span>
       </div>
 
-      <div class="specSummary failed">
+      <div class="specSummary passed">
       <span class="description">should close the modal with submit</span>
-      </div>
-
-      <div class="specSummary failed">
-      <span class="description">should be able to add a tag</span>
       </div>
 
     </div>
@@ -316,6 +316,10 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">should be able to create a tag</span>
       </div>
 
+      <div class="specSummary passed">
+      <span class="description">should be able to update a tag</span>
+      </div>
+
     </div>
 
 
@@ -325,75 +329,10 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
 
   <div class="specDetail failed">
-    <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should instantiate the addTagModalInstanceCtrl controller</span>
+    <span class="description">cliffhanger.tags module TagCtrl should be able to load the tags</span>
     <div class="stackTrace">
-      <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined
-http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined
-    at http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:68:12
-    at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:1885:11)
-    at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:1895:3)
-    at $controller (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:10210:9)
-    at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:2208:12
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?7ef6a6f250ebce6a54609c5be27e8d4c42dfb948:56:31)
-    at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:4709:19)
-    at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:3071:20)
-Error: Declaration Location
-    at window.inject.angular.mock.inject (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:3033:25)
-    at Suite.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?7ef6a6f250ebce6a54609c5be27e8d4c42dfb948:47:20)
-    at Suite.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?7ef6a6f250ebce6a54609c5be27e8d4c42dfb948:46:5)
-    at http://localhost:9876/base/views/tags/tags_test.js?7ef6a6f250ebce6a54609c5be27e8d4c42dfb948:1:1,ReferenceError: addTagModalCtrl is not defined
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?7ef6a6f250ebce6a54609c5be27e8d4c42dfb948:65:20)</div>
-    </div>
-  </div>
-
-  <div class="specDetail failed">
-    <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should dismiss the modal with cancel</span>
-    <div class="stackTrace">
-      <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined
-http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined
-    at http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:68:12
-    at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:1885:11)
-    at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:1895:3)
-    at $controller (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:10210:9)
-    at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:2208:12
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?7ef6a6f250ebce6a54609c5be27e8d4c42dfb948:56:31)
-    at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:4709:19)
-    at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:3071:20),TypeError: scope.cancel is not a function
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?7ef6a6f250ebce6a54609c5be27e8d4c42dfb948:69:19)</div>
-    </div>
-  </div>
-
-  <div class="specDetail failed">
-    <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should close the modal with submit</span>
-    <div class="stackTrace">
-      <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined
-http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined
-    at http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:68:12
-    at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:1885:11)
-    at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:1895:3)
-    at $controller (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:10210:9)
-    at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:2208:12
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?7ef6a6f250ebce6a54609c5be27e8d4c42dfb948:56:31)
-    at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:4709:19)
-    at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:3071:20),TypeError: scope.submit is not a function
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?7ef6a6f250ebce6a54609c5be27e8d4c42dfb948:74:19)</div>
-    </div>
-  </div>
-
-  <div class="specDetail failed">
-    <span class="description">cliffhanger.tags module AddTagModalInstanceCtrl should be able to add a tag</span>
-    <div class="stackTrace">
-      <div class="resultMessage">Error: [ng:areq] Argument 'AddTagModalInstanceCtrl' is not a function, got undefined
-http://errors.angularjs.org/1.5.7/ng/areq?p0=AddTagModalInstanceCtrl&amp;p1=not%20a%20function%2C%20got%20undefined
-    at http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:68:12
-    at assertArg (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:1885:11)
-    at assertArgFn (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:1895:3)
-    at $controller (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:10210:9)
-    at http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:2208:12
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?7ef6a6f250ebce6a54609c5be27e8d4c42dfb948:56:31)
-    at Object.invoke (http://localhost:9876/base/bower_components/angular/angular.js?9d7667a83708acf26a305894b67912b3ab972c8f:4709:19)
-    at Object.workFn (http://localhost:9876/base/bower_components/angular-mocks/angular-mocks.js?4cacaf7fef33b26b20b0412e17ae597edc51d1b4:3071:20),TypeError: Cannot read property 'tag' of undefined
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?7ef6a6f250ebce6a54609c5be27e8d4c42dfb948:80:37)</div>
+      <div class="resultMessage">Expected [  ] to equal [ Object({ name: 'test1', description: 'test1 desc' }), Object({ name: 'test2', description: 'test2 desc' }) ].
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/tags/tags_test.js?097f4c1a1f9df261b7179ee120ef5cbb29a11688:70:32)</div>
     </div>
   </div>
 
