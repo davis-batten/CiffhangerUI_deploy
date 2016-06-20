@@ -16,12 +16,12 @@ describe('cliffhanger.datasets module', function () {
                 addDataset: function () {
                     //TODO
                     return $q.resolve();
-                },
-                getDataset: function () {
+                }
+                , getDataset: function () {
                     //TODO
                     return $q.resolve();
-                },
-                getAllDatasets: function () {
+                }
+                , getAllDatasets: function () {
                     //TODO
                     return $q.resolve();
                 }
@@ -30,10 +30,10 @@ describe('cliffhanger.datasets module', function () {
 
 
             datasetsCtrl = $controller('DatasetsCtrl', {
-                $scope: scope,
-                $uibModal: modal,
-                $log: $log,
-                datasetService: mockDatasetService
+                $scope: scope
+                , $uibModal: modal
+                , $log: $log
+                , datasetService: mockDatasetService
 
             });
         }));
@@ -48,9 +48,9 @@ describe('cliffhanger.datasets module', function () {
         beforeEach(inject(function ($controller, $rootScope, $log, $q) {
             scope = $rootScope.$new();
             modalInstance = {
-                close: jasmine.createSpy('uibModalInstance.close'),
-                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
-                result: {
+                close: jasmine.createSpy('uibModalInstance.close')
+                , dismiss: jasmine.createSpy('uibModalInstance.dismiss')
+                , result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
@@ -60,22 +60,22 @@ describe('cliffhanger.datasets module', function () {
                 addTag: function () {
                     //TODO
                     return $q.resolve();
-                },
-                getTag: function () {
+                }
+                , getTag: function () {
                     //TODO
                     return $q.resolve();
-                },
-                getAllTags: function () {
+                }
+                , getAllTags: function () {
                     //TODO
                     return $q.resolve();
                 }
             }
 
             addDatasetModalCtrl = $controller('AddDatasetModalInstanceCtrl', {
-                $scope: scope,
-                $uibModalInstance: modalInstance,
-                $log: $log,
-                tagService: mockTagService
+                $scope: scope
+                , $uibModalInstance: modalInstance
+                , $log: $log
+                , tagService: mockTagService
             });
 
         }));
@@ -109,12 +109,12 @@ describe('cliffhanger.datasets module', function () {
         it('should be able to add an attribute', function () {
             var before = scope.input.attributes.length;
             scope.newAttribute = {
-                col_name: 'test',
-                description: 'test desc',
-                data_type: 'String',
-                meta_type: {
-                    meta_name: 'ZIP',
-                    description: 'zip code'
+                col_name: 'test'
+                , description: 'test desc'
+                , data_type: 'String'
+                , meta_type: {
+                    meta_name: 'ZIP'
+                    , description: 'zip code'
                 }
             }
 
@@ -127,12 +127,12 @@ describe('cliffhanger.datasets module', function () {
 
             //add new attribute
             scope.newAttribute = {
-                col_name: 'test',
-                description: 'test desc',
-                data_type: 'String',
-                meta_type: {
-                    meta_name: 'ZIP',
-                    description: 'zip code'
+                col_name: 'test'
+                , description: 'test desc'
+                , data_type: 'String'
+                , meta_type: {
+                    meta_name: 'ZIP'
+                    , description: 'zip code'
                 }
             }
             scope.addAttr();
@@ -145,29 +145,65 @@ describe('cliffhanger.datasets module', function () {
         })
     });
 
+    describe('DatasetUpdateModalCtrl', function () {
+        beforeEach(inject(function ($controller, $rootScope, $log) {
+            scope = $rootScope.$new();
+            modalInstance = {
+                dismiss: jasmine.createSpy('uibModalInstance.dismiss')
+                , close: jasmine.createSpy('uibModalInstance.close')
+                , result: {
+                    then: jasmine.createSpy('uibModalInstance.result.then')
+                }
+            };
+            mockDataset = {
+                name: 'test'
+                , description: 'desc'
+                , attributes: []
+            }
 
+            datasetUpdateCtrl = $controller('DatasetUpdateModalCtrl', {
+                $scope: scope
+                , $uibModalInstance: modalInstance
+                , $log: $log
+                , dataset: mockDataset
+            });
+
+        }));
+
+        it('should dismiss the modal with cancel', function () {
+            scope.cancel();
+            expect(modalInstance.dismiss).toHaveBeenCalledWith('cancel');
+        });
+
+        it('should be able to complete and close the modal', function () {
+            scope.complete();
+            expect(scope.input).not.toBeNull();
+            expect(modalInstance.close).toHaveBeenCalled();
+        });
+
+    });
 
     describe('DatasetDeleteModalCtrl', function () {
         beforeEach(inject(function ($controller, $rootScope, $log) {
             scope = $rootScope.$new();
             modalInstance = {
-                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
-                close: jasmine.createSpy('uibModalInstance.close'),
-                result: {
+                dismiss: jasmine.createSpy('uibModalInstance.dismiss')
+                , close: jasmine.createSpy('uibModalInstance.close')
+                , result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
             mockDataset = {
-                name: 'test',
-                description: 'desc',
-                attributes: []
+                name: 'test'
+                , description: 'desc'
+                , attributes: []
             }
 
             datasetDeleteCtrl = $controller('DatasetDeleteModalCtrl', {
-                $scope: scope,
-                $uibModalInstance: modalInstance,
-                $log: $log,
-                dataset: mockDataset
+                $scope: scope
+                , $uibModalInstance: modalInstance
+                , $log: $log
+                , dataset: mockDataset
             });
 
         }));
