@@ -92,6 +92,49 @@ module.controller('TagCtrl', function ($scope, $uibModal, $log, tagService) {
         });
     };
 
+    //opens updateDataset modal for dataset d
+    $scope.update = function (t) {
+        $log.log(t);
+        var nameTemp = t.name;
+
+        var modalInstance = $uibModal.open({
+            templateUrl: 'tagUpdate.html',
+            controller: 'TagUpdateModalCtrl',
+            size: 'lg',
+            resolve: {
+                tag: function () {
+                    return t;
+                }
+            }
+        });
+        //executes changes (or carries unchanged values through)
+        modalInstance.result.then(function (input) {
+            //update tags on backend then ui
+            tagService.update(nameTemp, input)
+                .then(
+                    //success callback
+                    function (resp) {
+                        if (resp.status == 'Success') {
+                            //update correct tag entry
+                            for (i in $scope.tags) {
+                                if (nameTemp == $scope.tags[i].name) {
+                                    $scope.tags[i].name = input.name;
+                                    $scope.tags[i].description = input.description;
+                                }
+                            }
+                        }
+                        //problem on backend
+                        else {
+                            $log.warn("Failed to update");
+                        }
+                    },
+                    //error callback
+                    function () {
+                        $log.error("Failed to connect");
+                    });
+        });
+    };
+
 
 
 });
@@ -103,6 +146,29 @@ datasets.controller('AddTagModalInstanceCtrl', function ($scope, $uibModalInstan
 
     //complete modal
     $scope.submit = function () {
+        $uibModalInstance.close($scope.input);
+    };
+
+    //dismiss modal
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+});
+
+//controller for instance of DatasetUpdateModal
+datasets.controller('TagUpdateModalCtrl', function ($scope, $uibModalInstance, $log, tag) {
+
+    $scope.tag = tag;
+
+    //gets input from user
+    $scope.input = {
+        name: tag.name,
+        description: tag.description
+    };
+
+    //complete modal
+    $scope.complete = function () {
         $uibModalInstance.close($scope.input);
     };
 

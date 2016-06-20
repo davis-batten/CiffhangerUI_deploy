@@ -31,6 +31,21 @@ angular.module('cliffhanger.tags')
         }
 
 
+        this.update = function (tagName, tag) {
+
+            return $http.put($rootScope.baseUrl + '/tag/update/' + tagName, tag)
+                .then(
+                    //success callback
+                    function (response) {
+                        return response.data;
+                    },
+                    //error callback
+                    function (response) {
+                        return $q.reject(response.data);
+                    }
+                );
+        }
+
 
 
         //this service method gets an existing Meta-Type from the backend
