@@ -100,4 +100,24 @@ angular.module('cliffhanger.tags')
                 );
 
         }
+        
+        this.deleteTag = function (tagName) {
+            
+            return $http.delete($rootScope.baseUrl + '/tag/delete/' + tagName)
+            .then(
+                    //success callback
+                    function (response) {
+                        $log.info('Success!');
+                        $log.info(response);
+
+                        //$scope.data = (reponse.data.);
+                    },
+                    //error callback
+                    function (response) {
+                        $log.warn('Failure!');
+                        $log.warn(response);
+
+                    }
+                );
+        }
     });

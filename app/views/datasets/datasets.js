@@ -44,15 +44,15 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
                     }
                 } else {
                     $scope.alerts.push({
-                        msg: res,
-                        type: 'danger'
+                        msg: res
+                        , type: 'danger'
                     });
                 }
             }, function (res) {
                 $scope.showProgressBar = false;
                 $scope.alerts.push({
-                    msg: "Failed to load datasetss",
-                    type: 'danger'
+                    msg: "Failed to load datasetss"
+                    , type: 'danger'
                 });
             });
     };
@@ -68,15 +68,15 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
                     $scope.datasetList.push(newDataSet);
                 } else {
                     $scope.alerts.push({
-                        msg: data,
-                        type: 'danger'
+                        msg: data
+                        , type: 'danger'
                     });
                 }
             }, function (data) {
                 $scope.showProgressBar = false;
                 $scope.alerts.push({
-                    msg: 'Failed to create Dataet',
-                    type: 'danger'
+                    msg: 'Failed to create Dataset'
+                    , type: 'danger'
                 });
             })
     };
@@ -115,11 +115,32 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         });
         //executes changes (or carries unchanged values through)
         modalInstance.result.then(function (d) {
-            for (i in $scope.datasetList) {
-                if (nameTemp == $scope.datasetList[i].name) {
-                    $scope.datasetList[i].name = d.name;
-                    $scope.datasetList[i].description = d.description;
-                }
+            if (d.name == "") {
+                $scope.alerts.push({
+                    msg: 'Cannot update name to empty value'
+                    , type: 'danger'
+                });
+            } else {
+                datasetService.updateDataset(nameTemp, d)
+                    .then(
+                        //success callback
+                        function (resp) {
+                            if (resp.status == 'Success') {
+                                for (i in $scope.datasetList) {
+                                    if (nameTemp == $scope.datasetList[i].name) {
+                                        $scope.datasetList[i].name = d.name;
+                                        $scope.datasetList[i].description = d.description;
+                                    }
+                                }
+                            }
+                            //problem on backend
+                            else {
+                                $log.warn("Failed to update");
+                            }
+                        }, //error callback
+                        function () {
+                            $log.error("Failed to connect");
+                        });
             }
         });
     };
@@ -169,16 +190,16 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
                                     if ($scope.datasetList.length == 0) $scope.showNoDatasetsMessage = true;
                                 } else {
                                     $scope.alerts.push({
-                                        msg: res,
-                                        type: 'danger'
+                                        msg: res
+                                        , type: 'danger'
                                     });
                                 }
-                            },
-                            function (res) {
+                            }
+                            , function (res) {
                                 $scope.showProgressBar = false;
                                 $scope.alerts.push({
-                                    msg: "Problem communicating with server!",
-                                    type: 'danger'
+                                    msg: "Problem communicating with server!"
+                                    , type: 'danger'
                                 });
                             });
                 }
