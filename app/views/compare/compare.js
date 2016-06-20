@@ -25,78 +25,13 @@ angular.module('cliffhanger.compare', ['ngRoute'])
         return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
     }
 
-    //    //test tag
-    //    $scope.tags = [
-    //        {
-    //            name: "SSN",
-    //            description: "social security",
-    //        },
-    //        {
-    //            name: "ZIP",
-    //            description: "zip code"
-    //        },
-    //        {
-    //            name: "address1",
-    //            description: "first line of addresss"
-    //        }
-    //    ].sort(ignoreCase);
-    //
-    //    //test data
-    //    $scope.datasets = [
-    //        {
-    //            name: 'DataSet1',
-    //            desc: 'desc1',
-    //            attributes: [
-    //                {
-    //                    name: 'zippy',
-    //                    type: 'ZIP'
-    //                },
-    //                {
-    //                    name: 'id',
-    //                    type: 'SSN'
-    //                },
-    //                {
-    //                    name: 'legal_name',
-    //                    type: 'Name'
-    //                }
-    //            ]
-    //        },
-    //        {
-    //            name: 'DataSet2',
-    //            desc: 'desc2',
-    //            attributes: [
-    //                {
-    //                    name: 'ssn',
-    //                    type: 'SSN'
-    //                },
-    //                {
-    //                    name: 'zip_code',
-    //                    type: 'ZIP'
-    //                }
-    //            ]
-    //        },
-    //        {
-    //            name: 'DataSet3',
-    //            desc: 'desc3',
-    //            attributes: [
-    //                {
-    //                    name: 'id',
-    //                    type: 'SSN'
-    //                },
-    //                {
-    //                    name: 'name',
-    //                    type: 'Name'
-    //                }
-    //            ]
-    //        }
-    //    ];
 
-
+    //helper method to initialize all the necessary scope variables using asynchrounous calls
     function initalize() {
         datasetService.getAllDatasets()
             .then(function (data) {
                 if (data.status == 'Success') {
-                    $scope.datasets = eval(data.data).sort(ignoreCase);
+                    $scope.datasets = data.data.sort(ignoreCase);
                 } else {
                     $scope.alerts.push({
                         msg: data,
@@ -112,8 +47,8 @@ angular.module('cliffhanger.compare', ['ngRoute'])
         tagService.getAllTags()
             .then(function (data) {
                 if (data.status == 'Success') {
-                    $scope.tags = eval(data.data).sort(ignoreCase);
-                    $scope.tags.splice(0, 1);
+                    $scope.tags = data.data.sort(ignoreCase);
+                    $scope.tags.splice(0, 1); //remove empty tag from beginning of tag list
                 } else {
                     $scope.alerts.push({
                         msg: data.data,
@@ -222,6 +157,7 @@ angular.module('cliffhanger.compare', ['ngRoute'])
         //if row not created or is dirty
         if ($scope.rows[dataset.name] == undefined || dirty[dataset.name]) {
 
+            //sort attributes by column name
             var attr = dataset.attributes.sort(function (a, b) {
                 return (a.col_name).localeCompare(b.col_name);
             });
@@ -233,7 +169,7 @@ angular.module('cliffhanger.compare', ['ngRoute'])
                 var cols = "";
                 var found = false;
                 for (var a in attr) {
-                    //if column matches type
+                    //if column matches tag add green cell (or add column name to existing cell)
                     if (attr[a].tag.name == $scope.selectedTags[t].name) {
                         if (cols != "") cols += ", ";
                         cols += (attr[a].col_name);
@@ -241,7 +177,7 @@ angular.module('cliffhanger.compare', ['ngRoute'])
                         found = true;
                     }
                 }
-                if (cols == []) cols = null;
+                if (cols == []) cols = null; //make it an empty red cell
                 row.push({
                     name: cols,
                     type: $scope.selectedTags[t],
@@ -249,8 +185,8 @@ angular.module('cliffhanger.compare', ['ngRoute'])
                 });
             }
             $log.log(row);
-            dirty[dataset.name] = false;
-            $scope.rows[dataset.name] = row;
+            dirty[dataset.name] = false; //row no longer needs updating
+            $scope.rows[dataset.name] = row; //add created row to scope bound variable
         }
     }
 
@@ -269,7 +205,7 @@ angular.module('cliffhanger.compare', ['ngRoute'])
     }
     $scope.updateTable(); //call to initalize the table
 
-
+    //Add empty tag column to table
     $scope.allowUntagged = function () {
         var empty = {
             name: '<EMPTY>'
@@ -279,6 +215,7 @@ angular.module('cliffhanger.compare', ['ngRoute'])
         $scope.untagged = true;
     }
 
+    //remove empty tag column from table
     $scope.removeUntagged = function () {
         $scope.tags.pop();
         $scope.selectedTags.pop();
