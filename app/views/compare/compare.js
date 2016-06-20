@@ -175,7 +175,7 @@ angular.module('cliffhanger.compare', ['ngRoute'])
                 dirty[i] = true;
             }
         }
-        updateTable();
+        $scope.updateTable();
     }, true);
 
     //table needs to be changed due to a change in $scope.selectedDatasets
@@ -187,7 +187,7 @@ angular.module('cliffhanger.compare', ['ngRoute'])
                 dirty[i] = true;
             }
         }
-        updateTable();
+        $scope.updateTable();
     }, true);
 
 
@@ -262,12 +262,12 @@ angular.module('cliffhanger.compare', ['ngRoute'])
     }
 
     //helper function to update all rows in the table
-    var updateTable = function () {
+    $scope.updateTable = function () {
         for (var d in $scope.selectedDatasets) {
             $scope.buildRow($scope.selectedDatasets[d]);
         }
     }
-    updateTable(); //call to initalize the table
+    $scope.updateTable(); //call to initalize the table
 
 
     $scope.allowUntagged = function () {
@@ -283,16 +283,6 @@ angular.module('cliffhanger.compare', ['ngRoute'])
         $scope.tags.pop();
         $scope.selectedTags.pop();
         $scope.untagged = false;
-    }
-
-    //for testing only!
-    $scope.testInital = function () {
-        //initalize();
-        $scope.tags = [{
-            name: "ZIP",
-            description: "zipcode"
-        }];
-        $scope.datasets = [];
     }
 
 });

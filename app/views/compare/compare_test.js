@@ -39,7 +39,20 @@ describe('cliffhanger.compare module', function () {
                 datasetService: mockDatasetService
             });
 
-            scope.testInital();
+            scope.tags = [
+                {
+                    name: "ZIP",
+                    description: "zipcode"
+            },
+                {
+                    name: "SSN",
+                    description: "social security number"
+            }];
+            scope.datasets = [{
+                name: "abc"
+        }, {
+                name: "def"
+        }];
         }));
 
         it('should load', function () {
@@ -48,7 +61,6 @@ describe('cliffhanger.compare module', function () {
         });
 
         it('should be able to add <EMPTY>', function () {
-            scope.testInital();
             scope.allowUntagged();
             var found = false;
             for (i in scope.selectedTags) {
@@ -61,7 +73,6 @@ describe('cliffhanger.compare module', function () {
         });
 
         it('should be able to remove <EMPTY>', function () {
-            scope.testInital();
             scope.allowUntagged();
             var found = false;
 
@@ -75,17 +86,104 @@ describe('cliffhanger.compare module', function () {
         });
 
         it('should update table rows when filter changes', function () {
-            spyOn(scope, 'buildRow');
-            scope.testInital();
+            spyOn(scope, 'updateTable');
             scope.selectedTags.push({
                 name: 'stuff',
                 description: 'test'
             });
             scope.$digest();
-            expect(scope.buildRow).toHaveBeenCalled();
-        })
+            expect(scope.updateTable).toHaveBeenCalled();
+        });
+
+        it('should be able to select/deselect all tags', function () {
+            expect(scope.tags.length).not.toBe(0);
+            expect(scope.selectedTags.length).toBe(0);
+            scope.selectAllTags(); //scope.tags.length = 2
+            expect(scope.selectedTags.length).toBe(2);
+            scope.deselectAllTags();
+            expect(scope.selectedTags.length).toBe(0);
+        });
+
+        it('should be able to select/deselect all datasets', function () {
+            expect(scope.datasets.length).not.toBe(0);
+            expect(scope.selectedDatasets.length).toBe(0);
+            scope.selectAllDatasets(); //scope.datasets.length = 2
+            expect(scope.selectedDatasets.length).toBe(2);
+            scope.deselectAllDatasets();
+            expect(scope.selectedDatasets.length).toBe(0);
+        });
+
+        it('should be able to filter tags', function () {
+            scope.filterTags("ZI").then(function (resp) {
+                expect(resp).toBe({
+                    name: "ZIP",
+                    description: "zipcode"
+                });
+            })
+        });
+
+        it('should be able to filter datasets', function () {
+            scope.filterTags("a").then(function (resp) {
+                expect(resp).toBe({
+                    name: "abc"
+                });
+            })
+        });
 
 
+        describe('buildRow test', function () {
+            var dataset;
+            beforeEach(function () {
+                scope.selectAllTags();
+                dataset = {
+                    name: 'DataSet1',
+                    desc: 'desc1',
+                    attributes: [
+                        {
+                            col_name: 'zippy',
+                            tag: {
+                                name: 'ZIP',
+                                description: 'zip code'
+                            }
 
+                        },
+                        {
+                            col_name: 'legal_name',
+                            tag: {
+                                name: 'NAME',
+                                description: 'name'
+                            }
+                        }
+                    ]
+                }
+                scope.rows = [];
+            });
+
+            it("should add a cell for matched tags", function () {
+                scope.buildRow(dataset);
+                expect(scope.rows[dataset.name][0]).toEqual({
+                    name: 'zippy',
+                    type: {
+                        name: 'ZIP',
+                        description: 'zipcode'
+                    },
+                    class: 'success'
+                });
+            });
+
+            it("should add empty cells for unmatched tags", function () {
+                scope.buildRow(dataset);
+                expect(scope.rows[dataset.name][1]).toEqual({
+                    name: null,
+                    type: {
+                        name: 'SSN',
+                        description: 'social security number'
+                    },
+                    class: 'danger'
+                });
+
+            });
+
+        });
     });
 });
