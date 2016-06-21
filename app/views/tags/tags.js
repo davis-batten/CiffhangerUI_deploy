@@ -15,6 +15,13 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, tagService) {
     $scope.selected = undefined;
     $scope.noResults = false;
 
+    $scope.alerts = []; //list of alerts to show to user
+
+    //closes an alert
+    $scope.closeAlert = function (index) {
+        $scope.alerts.splice(index, 1);
+    };
+
     //alphabetically compare two strings, ignoring case
     var ignoreCase = function (a, b) {
         return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
@@ -79,11 +86,24 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, tagService) {
                 .then(function (response) {
                         for (i in $scope.tags) {
                             if (t.name == $scope.tags[i].name) {
-                                $scope.tags.splice(i, 1);
+                                $scope.tags.splice(i, 1)
+                                $scope.alerts.push({
+                                    msg: "Tag deleted",
+                                    type: 'success'
+                                })
+                            } else {
+                                $scope.alerts.push({
+                                    msg: response,
+                                    type: 'danger'
+                                })
                             }
                         }
                     },
                     function (response) {
+                        $scope.alerts.push({
+                            msg: 'Problem communicating',
+                            type: 'danger'
+                        })
                         $log.error('Failure')
                     }
                 );
