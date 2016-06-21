@@ -6,40 +6,89 @@ describe('cliffhanger.datasets module', function () {
 
     describe('DatasetsCtrl', function () {
 
-        beforeEach(inject(function ($controller, $rootScope, $q, $log, $uibModal) {
+        beforeEach(inject(function ($controller, $rootScope, $q, $log, $uibModal, datasetService) {
             scope = $rootScope.$new();
             modal = $uibModal;
 
             //create mock datasetService
             mockDatasetService = {
-                addDataset: function () {
-                    //TODO
-                    return $q.resolve();
+                    addDataset: function () {
+                        //TODO
+                        return $q.resolve();
+                    }
+                    , getDataset: function () {
+                        //TODO
+                        return $q.resolve();
+                    }
+                    , getAllDatasets: function () {
+                        //TODO
+                        return $q.resolve();
+                    }
                 }
-                , getDataset: function () {
-                    //TODO
-                    return $q.resolve();
+                /*
+                old_dataset_data = [
+                    {
+                        name: 'old 1'
+                        , description: 'old desc 1'
+                        , attributes: []
+                    }, {
+                        name: 'old 2'
+                        , description: 'old desc 2'
+                        , attributes: []
+                    }
+                ];
+
+                updated_dataset_data = {
+                    name: 'new'
+                    , description: 'new desc'
+                    , attributes: []
                 }
-                , getAllDatasets: function () {
-                    //TODO
-                    return $q.resolve();
-                }
-            }
+                */
+            deferred = $q.defer();
 
+            resp = {};
 
-
+            spyOn(datasetService, 'getAllDatasets').and.callFake(function () {
+                resp.data = old_dataset_data;
+                resp.status = "Success";
+                deferred.resolve(resp);
+                return deferred.promise;
+            });
+            /*
+            spyOn(datasetService, 'updateDataset').and.callFake(function () {
+                resp.data = updated_dataset_data;
+                resp.status = "Success";
+                deferred.resolve(resp);
+                return deferred.promise;
+            });
+            */
             datasetsCtrl = $controller('DatasetsCtrl', {
                 $scope: scope
                 , $uibModal: modal
                 , $log: $log
-                , datasetService: mockDatasetService
+                , datasetService: datasetService
+              //, datasetList: old_dataset_data
 
             });
+
+            //spyOn(datasetsCtrl, 'updateDataset').and.callFake(function () {
+            // res.data = upd
+            //})
+
         }));
 
         it('should have a DatasetsCtrl controller', function () {
             expect(datasetsCtrl).toBeDefined();
         });
+
+        /*
+        it('should be able to update the dataset', function () {
+            //scope.updateDataset(updated_dataset_data);
+            scope.$apply();
+            expect(scope.datasetList).not.toBe(undefined);
+            expect(scope.datasetList[0]).toEqual(updated_dataset_data);
+        });
+        */
 
     });
 

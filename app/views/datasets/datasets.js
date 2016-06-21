@@ -136,10 +136,18 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
                             //problem on backend
                             else {
                                 $log.warn("Failed to update");
+                                $scope.alerts.push({
+                                    msg: 'Failed to update dataset on backend'
+                                    , type: 'danger'
+                                });
                             }
                         }, //error callback
                         function () {
                             $log.error("Failed to connect");
+                            $scope.alerts.push({
+                                msg: 'Failed to connect'
+                                , type: 'danger'
+                            });
                         });
             }
         });
