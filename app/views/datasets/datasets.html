@@ -90,17 +90,19 @@
         <h3 class="modal-title">Edit {{dataset.name}}</h3>
     </div>
     <div class="modal-body">
-        <div class="form-group">
-            <label for="datasetName">Name</label>
-            <input type="text" class="form-control" id="datasetName" ng-model="input.name">
-        </div>
-        <div class="form-group">
-            <label for="datasetDesc">Description</label>
-            <input type="text" class="form-control" id="datasetDesc" ng-model="input.description">
-        </div>
+        <form name="editForm">
+            <div class="form-group">
+                <label for="datasetName">Name</label>
+                <input type="text" class="form-control" name="name" id="datasetName" ng-model="input.name" required>
+            </div>
+            <div class="form-group">
+                <label for="datasetDesc">Description</label>
+                <input type="text" class="form-control" id="datasetDesc" ng-model="input.description">
+            </div>
+        </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-success" type="button" ng-click="complete()">Save Changes</button>
+        <button form="editForm" class="btn btn-success" type="button" ng-disabled="editForm.name.$invalid" ng-click="complete()">Save Changes</button>
         <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>
@@ -176,7 +178,7 @@
             <button class="btn btn-default" type="button" ng-click="moreInfo[$index]=!moreInfo[$index]" uib-tooltip="Info">
                 <span class="glyphicon glyphicon-info-sign"></span></button>
             <button class="btn btn-info" type="button" ng-click="updateDataset(d)" uib-tooltip="Edit">
-                <span class="glyphicon glyphicon-pencil"></span></button>
+                <span class="glyphicon glyphicon-edit"></span></button>
             <div class="more_info" ng-show="moreInfo[$index]">
                 <strong>Description</strong>
                 <br> {{d.description}}

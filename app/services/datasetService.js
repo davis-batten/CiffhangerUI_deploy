@@ -14,8 +14,7 @@ angular.module('cliffhanger.datasets')
                         $log.info('Success!');
                         $log.info(response);
                         return response.data;
-                    },
-                    //error callback
+                    }, //error callback
                     function (response) {
                         $log.warn('Failure!');
                         $log.warn(response);
@@ -39,8 +38,7 @@ angular.module('cliffhanger.datasets')
                         $log.info('Success!');
                         $log.info(response);
                         return response.data;
-                    },
-                    //error callback
+                    }, //error callback
                     function (response) {
                         $log.warn('Failure!');
                         $log.warn(response);
@@ -64,15 +62,29 @@ angular.module('cliffhanger.datasets')
                             $log.warn('Failed to retrieve datasets');
                             return $q.reject(response.data);
                         }
-                    },
-                    function (response) { //error callback
+                    }
+                    , function (response) { //error callback
                         $log.warn(response);
                         return $q.reject(response.data);
                     }
                 );
         };
 
-        //this service method gets all existing Datasets from the backend
+        //this service method updates a specified dataset on the backend
+        this.updateDataset = function (prevName, dataset) {
+            return $http.put($rootScope.baseUrl + '/dataset/update/' + prevName, dataset)
+                .then(
+                    //success callback
+                    function (response) {
+                        return response.data;
+                    }, //error callback
+                    function (response) {
+                        return $q.reject(response.data);
+                    }
+                );
+        }
+
+        //this service method deletes a specified dataset from the backend
         this.deleteDataset = function (dataset) {
             var datasetName = dataset.name;
             return $http.delete($rootScope.baseUrl + '/dataset/delete/' + datasetName)
@@ -85,8 +97,8 @@ angular.module('cliffhanger.datasets')
                             $log.warn('Failed to delete ' + datasetName);
                             return $q.reject(response.data);
                         }
-                    },
-                    function (response) { //error callback
+                    }
+                    , function (response) { //error callback
                         $log.warn(response);
                         return $q.reject(response);
                     }
