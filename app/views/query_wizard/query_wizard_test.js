@@ -1,8 +1,8 @@
-describe('cliffhanger.queries module', function () {
+describe('cliffhanger.query_wizard module', function () {
 
     beforeEach(angular.mock.module('ngRoute'));
 
-    beforeEach(angular.mock.module('cliffhanger.queries'));
+    beforeEach(angular.mock.module('cliffhanger.query_wizard'));
 
     describe('query wizard controller', function () {
 

@@ -130,6 +130,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
                                     if (nameTemp == $scope.datasetList[i].name) {
                                         $scope.datasetList[i].name = d.name;
                                         $scope.datasetList[i].description = d.description;
+                                        $scope.datasetList[i].attributes = d.attributes;
                                     }
                                 }
                             }
@@ -332,14 +333,15 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
 });
 
 //controller for instance of DatasetUpdateModal
-datasets.controller('DatasetUpdateModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {
+datasets.controller('DatasetUpdateModalCtrl', function ($scope, $uibModalInstance, $log, dataset, tagService) {
 
     $scope.dataset = dataset;
 
     //gets input from user
     $scope.input = {
-        name: dataset.name
-        , description: dataset.description
+        name: dataset.name, 
+        description: dataset.description,
+        attributes: dataset.attributes
     };
 
     //complete modal
@@ -351,7 +353,32 @@ datasets.controller('DatasetUpdateModalCtrl', function ($scope, $uibModalInstanc
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
+    
+    $scope.replaceTag = function (attrIndex, selectedTag) {
+        $log.log('tag switched', selectedTag);
+        $scope.dataset.attributes[attrIndex].tag = selectedTag;
+    };
+    
+    $scope.removeTag = function (attrIndex) {
+        $log.log('tag removed', attrIndex);
+        $scope.dataset.attributes[attrIndex].tag = {name:'<EMPTY>', description:''};
+    };
+    
+   var getTags = function () {
+        tagService.getAllTags()
+            .then(
+                function (data) {
+                    if (data.status == 'Success') {
+                        $scope.tags = eval(data.data);
+                        $log.debug('tags', $scope.tags);
+                    }
 
+                }
+                , function (data) {
+                    $log.error('Failed to load!');
+                });
+    };
+    getTags();
 });
 
 //controller for instance of DatasetInfoModal
