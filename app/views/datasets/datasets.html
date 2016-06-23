@@ -99,6 +99,36 @@
                 <label for="datasetDesc">Description</label>
                 <input type="text" class="form-control" id="datasetDesc" ng-model="input.description">
             </div>
+            <div>
+                <label for="editAttributeTable">Attributes</label>
+                <table id="editAttributeTable" class="table table-bordered">
+                    <thead>
+                        <th><b>Column Name</b></th>
+                        <th><b>Description</b></th>
+                        <th><b>Data Type</b></th>
+                        <th><b>Tag</b></th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="attr in dataset.attributes">
+                            <td>{{attr.col_name}}</td>
+                            <td>
+                                <input ng-model="attr.description">
+                            </td>
+                            <td>{{attr.data_type}}</td>
+                            <td>
+                                {{attr.tag.name}}
+                                <div class="btn-group" uib-dropdown is-open="status.isopentag" ng-show="attr.tag.name=='<EMPTY>'">
+                                    <button id="tag-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle>+</button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
+                                        <li ng-repeat="tag in tags" role="menuitem"><a prevent-default ng-click="replaceTag($parent.$index, tag)">{{tag.name}} : {{tag.description}}</a></li>
+                                    </ul>
+                                </div>
+                                <button ng-show="attr.tag.name!='<EMPTY>'" ng-click="removeTag($index)">x</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </form>
     </div>
     <div class="modal-footer">
