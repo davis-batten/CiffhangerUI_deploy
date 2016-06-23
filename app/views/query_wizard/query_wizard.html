@@ -13,14 +13,14 @@
         <h4><strong>Datasets  </strong><em>Select two</em></h4>
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="d in datasets">
-                <checkbox ng-model="d.selected" ng-change="change(d)"></checkbox>
+                <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)"></checkbox>
                 <label>{{d.name}}</label>
             </li>
         </ul>
     </div>
     <div class="modal-footer">
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
-        <button class="btn btn-primary" type="button" ng-click="next()" ng-disabled="selectedCount != 2">Next</button>
+        <button class="btn btn-primary" type="button" ng-click="next()" ng-disabled="selectedDatasets.length != 2">Next</button>
     </div>
 </div>
 
@@ -30,7 +30,7 @@
         <h4><strong>Tags  </strong><em>Select one to join datasets on</em></h4>
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="t in tags">
-                <checkbox ng-model="t.selected" ng-change="change(t)"></checkbox>
+                <checkbox ng-model="t.selected" ng-change="change(t, selectedTags)" ng-disabled="!t.selected && selectedTags.length == 1"></checkbox>
                 <label>{{t.name}}</label>
             </li>
         </ul>
@@ -40,7 +40,7 @@
     <div class="modal-footer">
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
         <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-        <button class="btn btn-primary" type="button" ng-click="next()" ng-disabled="selectedCount != 1">Next</button>
+        <button class="btn btn-primary" type="button" ng-click="next()" ng-disabled="selectedTags.length != 1">Next</button>
     </div>
 </div>
 
