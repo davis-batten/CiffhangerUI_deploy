@@ -1,3 +1,7 @@
 .inline {
     display: inline !important;
 }
+
+h5.inline {
+    padding-left: 1em;
+}

@@ -230,7 +230,7 @@ angular.module('cliffhanger.compare', ['ngRoute'])
             size: 'lg',
             resolve: {
                 datasets: function () {
-                    return $scope.selectedDatasets;
+                    return angular.copy($scope.selectedDatasets);
                 }
             }
         });
