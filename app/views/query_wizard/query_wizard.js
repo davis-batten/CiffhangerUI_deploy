@@ -5,6 +5,7 @@ var queries = angular.module('cliffhanger.query_wizard', ['ngRoute']);
 queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets) {
     $scope.query = {};
     $scope.step = 1;
+    $scope.maxSteps = 5;
     $scope.datasets = datasets;
     $scope.tags = []; //TODO load based upon datasets
     $scope.addJoinColumn = false;
@@ -47,13 +48,13 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         $scope.step++;
         if ($scope.step == 2) {
             loadTags();
-        } else if ($scope.step == 4) $scope.progressType = "success";
+        } else if ($scope.step == $scope.maxSteps) $scope.progressType = "success";
     };
 
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
-        if ($scope.step < 4) $scope.progressType = null;
+        if ($scope.step < $scope.maxSteps) $scope.progressType = null;
     };
 
     //dismiss the modal
