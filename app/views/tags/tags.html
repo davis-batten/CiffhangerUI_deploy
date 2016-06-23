@@ -18,14 +18,12 @@
 <div class="col-md-8 pull-right" id="tagQueryResults">
     <ul>
         <li id="list_item" ng-repeat="t in tags | filter:query" class="list-group-item active" ng-if="t.name != '<EMPTY>'">
-            <h4>{{t.name}}<small>{{t.description}}</small></h4>
+            <label>{{t.name}}</label>
+            <small>{{t.description}}</small>
             <button class="btn btn-danger" type="button" uib-tooltip="Delete" ng-click="delete(t)">
                 <span class="glyphicon glyphicon-trash"></span></button>
-            <button class="btn btn-default" type="button" uib-tooltip="Info" ng-click="moreInfo[$index] = !moreInfo[$index]">
-                <span class="glyphicon glyphicon-info-sign"></span></button>
             <button class="btn btn-info" type="button" uib-tooltip="Edit" ng-click="update(t)">
                 <span class="glyphicon glyphicon-edit"></span></button>
-            
         </li>
     </ul>
     <div ng-show="noResults" id="noResults" class="text-danger">
