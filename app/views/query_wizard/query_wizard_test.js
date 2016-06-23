@@ -4,14 +4,14 @@ describe('cliffhanger.queries module', function () {
 
     beforeEach(angular.mock.module('cliffhanger.queries'));
 
-    describe('queries controller', function () {
+    describe('query wizard controller', function () {
 
         it('should load', inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
-            var queriesCtrl = $controller('QueriesCtrl', {
+            var queryWizCtrl = $controller('QueryWizardCtrl', {
                 $scope: scope
             });
-            expect(queriesCtrl).toBeDefined();
+            expect(queryWizCtrl).toBeDefined();
 
         }));
 
