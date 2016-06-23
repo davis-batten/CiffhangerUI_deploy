@@ -4,7 +4,7 @@
 <div class="modal-header">
     <h3 class="modal-title inline">Query Wizard</h3>
     <h5 class="inline">Build a query from your comparison</h5>
-    <uib-progressbar max="4" value="step" type="{{progressType}}">{{step}} / 4</uib-progressbar>
+    <uib-progressbar max="maxSteps" value="step" type="{{progressType}}">{{step}} / {{maxSteps}}</uib-progressbar>
 </div>
 
 <!-- First step of modal -->
@@ -69,6 +69,18 @@
 
 <!-- Fourth step of modal -->
 <div ng-show="step == 4">
+    <div class="modal-body">
+        <h4>Additional Settings</h4>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
+        <button class="btn btn-primary" type="button" ng-click="next()">Next</button>
+    </div>
+</div>
+
+<!-- Fifth step of modal -->
+<div ng-show="step == 5">
     <div class="modal-body">
         <h4>Constructed Query</h4>
     </div>
