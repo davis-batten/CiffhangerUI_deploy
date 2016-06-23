@@ -6,17 +6,19 @@
             <h3 class="modal-title">New Dataset</h3>
         </div>
         <div class="modal-body">
-            <div class="form-group">
-                <label for="newDatasetName">Name</label>
-                <input type="text" class="form-control" id="newDatasetName" ng-model="input.name">
-            </div>
-            <div class="form-group">
-                <label for="newDatasetDesc">Description</label>
-                <input type="text" class="form-control" id="newDatasetDesc" ng-model="input.description">
-            </div>
+            <form name="newDatasetFormStep1">
+                <div class="form-group">
+                    <label for="newDatasetName">Name</label>
+                    <input type="text" class="form-control" name="name" id="newDatasetName" ng-model="input.name" required>
+                </div>
+                <div class="form-group">
+                    <label for="newDatasetDesc">Description</label>
+                    <input type="text" class="form-control" id="newDatasetDesc" ng-model="input.description">
+                </div>
+            </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="next()">Next</button>
+            <button class="btn btn-primary" type="button" ng-disabled="newDatasetFormStep1.name.$invalid" ng-click="next()">Next</button>
             <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
         </div>
     </div>
@@ -53,7 +55,7 @@
                             {{newAttribute.tag.name}} <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
-                            <li ng-repeat="tag in tags" role="menuitem"><a prevent-default ng-click="selectTag(tag)">{{tag.name}} : {{tag.description}}</a></li>
+                            <li ng-repeat="tag in tags | orderBy:'name'" role="menuitem"><a prevent-default ng-click="selectTag(tag)">{{tag.name}} : {{tag.description}}</a></li>
                         </ul>
                     </div>
                     <button class="btn btn-primary" ng-click="addAttr()"><span class="glyphicon glyphicon-plus"></span></button>
@@ -157,21 +159,26 @@
     </ul>
     <hr>
     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
-    <button class="btn btn-warning" type="button" ng-click="open()">
-        <span class="glyphicon glyphicon-plus"></span> Add Dataset
-    </button>
-
-
-    <br>
-    <br>
+    <div class="row">
+        <div class="col-sm-2">
+            <button class="btn btn-warning" type="button" ng-click="open()">
+                <span class="glyphicon glyphicon-plus"></span> Add Dataset
+            </button>
+        </div>
+        <div class="col-sm-3">
+            <div id="custom-search-input">
+                <input type="text" size="30" ng-model="query" placeholder="Search" uib-typeahead="d.name for d in datasetList | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults">
+            </div>
+        </div>
+    </div>
+    <hr>
     <div class="status-message" ng-show="showNoDatasetsMessage"> NO DATASETS </div>
 
     <uib-progressbar value="100" class="progress-striped active" ng-show="showProgressBar">Loading...</uib-progressbar>
 
 
-
     <ul class="list-group" id="dataset_list">
-        <li class="list-group-item active" id="dataset_item" ng-repeat="d in datasetList">
+        <li class="list-group-item active" id="dataset_item" ng-repeat="d in datasetList | orderBy:'name' | filter:query">
             <label>{{d.name}}</label>
             <button class="btn btn-danger" type="button" ng-click="deleteDataset(d)" uib-tooltip="Delete">
                 <span class="glyphicon glyphicon-trash"></span></button>
@@ -185,7 +192,7 @@
                 <br>
                 <strong>Tags</strong>
                 <ul class="inline-list">
-                    <li ng-repeat="t in d.tags" ng-if="t.name != '<EMPTY>'"><span class="label label-info">{{t.name}}</span></li>
+                    <li ng-repeat="t in d.tags | orderBy:'name'" ng-if="t.name != '<EMPTY>'"><span class="label label-info">{{t.name}}</span></li>
                 </ul>
                 <strong>Columns</strong>
                 <ul class="inline-list">
