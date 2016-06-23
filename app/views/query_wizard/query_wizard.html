@@ -22,6 +22,15 @@
     <div class="modal-body">
         Step 2
     </div>
+    <div class="col-md-6">
+        <ul ng-repeat="attr in selectedDataset">
+            <li>{{attr.col_name}} // {attr.dataset.name}}
+                <button class="btn btn-danger btn-xs" type="button" ng-click="addAttToQuery(attr)">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </li>
+        </ul>
+    </div>
     <div class="modal-footer">
         <button class="btn btn-default" type="button" ng-click="previous()">Previous</button>
         <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
