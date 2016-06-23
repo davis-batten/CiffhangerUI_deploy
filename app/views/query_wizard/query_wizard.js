@@ -22,6 +22,14 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         $log.debug($scope.selectedCount);
     };
 
+    $scope.choose = function (item) {
+        if (item.choosen) {
+            $scope.choose = true;
+        } else {
+            $scope.choose = false;
+        }
+    }
+
     //load the tags only in the selected datasets
     var loadTags = function () {
         for (var d = 0; d < datasets.length; d++) {
