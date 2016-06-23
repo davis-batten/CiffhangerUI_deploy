@@ -5,22 +5,33 @@ var queries = angular.module('cliffhanger.query_wizard', ['ngRoute']);
 queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets) {
     $scope.query = {};
     $scope.step = 1;
-    $scope.maxSteps = 5;
+    $scope.maxSteps = 4;
     $scope.datasets = datasets;
     $scope.tags = []; //TODO load based upon datasets
+
+
+
     $scope.addJoinColumn = false;
+    $scope.selectedDatasets = [];
+    $scope.selectedTags = [];
+    $scope.selectedColumns = [];
 
-    $scope.selectedCount = datasets.length;
-
-    // Count the number of selected items
-    $scope.change = function (item) {
-        if (item.selected) {
-            $scope.selectedCount++
+    $scope.change = function (d, selections) {
+        if (d.selected) {
+            selections.push(d);
         } else {
-            $scope.selectedCount--
+            for (var i = 0; i < selections.length; i++) {
+                $log.debug(selections[i]);
+                if (selections[i].name == d.name) {
+                    selections.splice(i, 1);
+                }
+            }
         }
-        $log.debug($scope.selectedCount);
-    };
+        $log.debug(selections);
+    }
+
+
+
 
     $scope.choose = function (item) {
         if (item.choosen) {
@@ -62,6 +73,21 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
+        //revert to begining step
+        if ($scope.step == 1) {
+            $scope.selectedCount = $scope.datasets.length;
+            for (var i = 0; i < $scope.tags.length; i++) {
+                if ($scope.tags[i].selected) {
+                    $scope.tags[i].selected = false;
+                }
+            }
+            for (var j = 0; j < $scope.datasets.length; j++) {
+                if ($scope.datasets[j].selected) {
+                    $scope.datasets[j].selected = false;
+                    $scope.selectedCount--;
+                }
+            }
+        }
         if ($scope.step < $scope.maxSteps) $scope.progressType = null;
     };
 
