@@ -27,7 +27,7 @@
     padding: 1em;
 }
 
-label {
+tagQueryResults.label {
     float: left;
     padding-right: 1.5em;
 }
