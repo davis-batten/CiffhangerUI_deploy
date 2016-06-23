@@ -15,14 +15,97 @@ describe('cliffhanger.query_wizard module', function () {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
+
+            mockDatasets = [
+                {
+                    name: 'test1',
+                    description: 'test desc 1',
+                    attributes: [
+                        {
+                            "name": "attr1",
+                            "tag": {
+                                "name": "ZIP"
+                            }
+                        },
+                        {
+                            "name": "attr2",
+                            "tag": {
+                                "name": "SSN"
+                            }
+                        }
+                    ],
+                    selected: true,
+                    tags: [
+                        {
+                            "name": "ZIP"
+                        },
+                        {
+                            "name": "SSN"
+                        }
+                    ]
+                    }, {
+                    name: 'test2',
+                    description: 'test desc 2',
+                    attributes: [
+                        {
+                            "name": "attr3",
+                            "tag": {
+                                "name": "ZIP"
+                            }
+                        },
+                        {
+                            "name": "attr4",
+                            "tag": {
+                                "name": "NAME"
+                            }
+                        }
+                    ],
+                    selected: true,
+                    tags: [
+                        {
+                            "name": "ZIP"
+                        },
+                        {
+                            "name": "NAME"
+                        }
+                    ]
+                    }, {
+                    name: 'test3',
+                    description: 'test desc 3',
+                    attributes: [
+                        {
+                            "name": "attr4",
+                            "tag": {
+                                "name": "COUNTY"
+                            }
+                        },
+                        {
+                            "name": "attr5",
+                            "tag": {
+                                "name": "COUNTRY"
+                            }
+                        }
+                    ],
+                    selected: false,
+                    tags: [
+                        {
+                            "name": "COUNTY"
+                        },
+                        {
+                            "name": "COUNTRY"
+                        }
+                    ]
+                    }
+                ];
             queryWizardCtrl = $controller('QueryWizardCtrl', {
                 $scope: scope,
-                $uibModalInstance: modalInstance
+                $uibModalInstance: modalInstance,
+                datasets: mockDatasets
             });
 
         }));
 
-        it('should instantiate the addTagModalInstanceCtrl controller', function () {
+        it('should instantiate the QueryWizardCtrl controller', function () {
             expect(queryWizardCtrl).not.toBeUndefined();
         });
 
@@ -33,7 +116,7 @@ describe('cliffhanger.query_wizard module', function () {
 
         it('should close the modal with submit', function () {
             scope.submit();
-            expect(scope.input).not.toBeNull();
+            expect(scope.query).not.toBeNull();
             expect(modalInstance.close).toHaveBeenCalled();
         });
 
@@ -42,11 +125,41 @@ describe('cliffhanger.query_wizard module', function () {
             expect(scope.step).toBe(2);
         });
 
+        it('should show a complete progress bar on the last step', function () {
+            scope.step = scope.maxSteps - 1;
+            scope.next();
+            expect(scope.progressType).toBe('success');
+        });
+
         it('should be able to go back to the previous step', function () {
             scope.next();
             scope.previous();
             expect(scope.step).toBe(1);
             expect(scope.progressType).toBeNull();
         });
+
+        it('should load the correct tags for the selected datasets', function () {
+            scope.selectedDatasets = mockDatasets;
+            scope.loadTags();
+            expect(scope.tags).toEqual([
+                {
+                    "name": "ZIP"
+                }, {
+                    "name": "SSN"
+                }, {
+                    "name": "NAME"
+                }
+            ]);
+
+        });
+
+        it('should handle changes linked to checkboxes', function () {
+            var myArr = [];
+            scope.change(scope.datasets[0], myArr);
+            expect(myArr.length).toBe(1);
+            scope.datasets[0].selected = false;
+            scope.change(scope.datasets[0], myArr);
+            expect(myArr.length).toBe(0);
+        })
     });
 });

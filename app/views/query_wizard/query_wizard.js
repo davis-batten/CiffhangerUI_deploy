@@ -34,7 +34,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
 
 
     //load the tags only in the selected datasets
-    var loadTags = function () {
+    $scope.loadTags = function () {
         for (var d = 0; d < datasets.length; d++) {
             if ($scope.datasets[d].selected) {
                 $log.debug($scope.datasets[d].name + ' was selected');
@@ -50,7 +50,6 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                 }
             }
         }
-        $scope.selectedCount = $scope.tags.length; //so you can check how many are selected
         $log.debug($scope.tags);
     }
 
@@ -58,28 +57,13 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.next = function () {
         $scope.step++;
         if ($scope.step == 2) {
-            loadTags();
+            $scope.loadTags();
         } else if ($scope.step == $scope.maxSteps) $scope.progressType = "success";
     };
 
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
-        //revert to begining step
-        if ($scope.step == 1) {
-            $scope.selectedCount = $scope.datasets.length;
-            for (var i = 0; i < $scope.tags.length; i++) {
-                if ($scope.tags[i].selected) {
-                    $scope.tags[i].selected = false;
-                }
-            }
-            for (var j = 0; j < $scope.datasets.length; j++) {
-                if ($scope.datasets[j].selected) {
-                    $scope.datasets[j].selected = false;
-                    $scope.selectedCount--;
-                }
-            }
-        }
         if ($scope.step < $scope.maxSteps) $scope.progressType = null;
     };
 
