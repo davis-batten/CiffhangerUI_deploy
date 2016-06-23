@@ -93,6 +93,4 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         //TODO
     };
 
-
-
 });
