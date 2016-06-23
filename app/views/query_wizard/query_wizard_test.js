@@ -101,7 +101,7 @@ describe('cliffhanger.query_wizard module', function () {
                 $scope: scope,
                 $uibModalInstance: modalInstance,
                 datasets: mockDatasets
-            });
+            })
 
         }));
 
@@ -124,11 +124,13 @@ describe('cliffhanger.query_wizard module', function () {
         });
 
         it('should advance to the next step', function () {
+            scope.selectedDatasets = mockDatasets;
             scope.next();
             expect(scope.step).toBe(2);
         });
 
         it('should be able to go back to the previous step', function () {
+            scope.selectedDatasets = mockDatasets;
             scope.next();
             scope.previous();
             expect(scope.step).toBe(1);
@@ -154,10 +156,6 @@ describe('cliffhanger.query_wizard module', function () {
             expect(scope.tags).toEqual([
                 {
                     "name": "ZIP"
-                }, {
-                    "name": "SSN"
-                }, {
-                    "name": "NAME"
                 }
             ]);
 
