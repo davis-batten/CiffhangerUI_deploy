@@ -52,54 +52,36 @@
             <li class="list-group-item" ng-repeat="d in datasets | filter:{selected:true}">
                 <label>{{d.name}}</label>
                 <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="a in d.attributes">
-                        <checkbox ng-model="a.selected"></checkbox>
+                    <li class="list-group-item" ng-repeat="a in d.attributes" ng-if="a.tag.name != selectedTags[0].name">
+                        <checkbox ng-model="a.selected" ng-change="change(a, selectedColumns)"></checkbox>
                         <label uib-tooltip="{{a.description}}">{{a.col_name}}</label>
                     </li>
                 </ul>
             </li>
         </ul>
     </div>
-    <div class="col-md-6">
-        <ul class="list-group">
-            <li class="list-group-item" ng-repeat="a in attributes">
-                <checkbox ng-model="a.selected" ng-change="change(a)"></checkbox>
-                <label>{{a.name}} // {{a.datatset.name}}</label>
-            </li>
-            <hr>
-            <label>Show selected tag in table</label>
-            <checkbox ng-model="addJoinColumn"></checkbox>
-        </ul>
-    </div>
     <div class="modal-footer">
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
         <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
         <button class="btn btn-primary" type="button" ng-click="next()">Next</button>
     </div>
 </div>
+
+
 
 <!-- Fourth step of modal -->
 <div ng-show="step == 4">
     <div class="modal-body">
-        <h4>Additional Settings</h4>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
-        <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-        <button class="btn btn-primary" type="button" ng-click="next()">Next</button>
-    </div>
-</div>
-
-<!-- Fifth step of modal -->
-<div ng-show="step == 5">
-    <div class="modal-body">
         <h4>Constructed Query</h4>
+        <pre>QUERY goes here!!!
+        </pre>
         <div class="form-group">
-            <label for="where">WHERE:</label>
+            <label for="where">WHERE </label>
             <input type="text" class="form-control" id="where" ng-model="input.where">
         </div>
+        <br>
         <div class="form-group">
-            <label for="limit">LIMIT:</label>
+            <label for="limit">LIMIT </label>
             <input type="text" class="form-control" id="limit" ng-model="input.limit">
         </div>
     </div>

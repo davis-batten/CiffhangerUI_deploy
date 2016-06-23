@@ -5,7 +5,7 @@ var queries = angular.module('cliffhanger.query_wizard', ['ngRoute']);
 queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets) {
     $scope.query = {};
     $scope.step = 1;
-    $scope.maxSteps = 5;
+    $scope.maxSteps = 4;
     $scope.datasets = datasets;
     $scope.tags = []; //TODO load based upon datasets
 
