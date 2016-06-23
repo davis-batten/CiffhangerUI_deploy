@@ -1,0 +1,28 @@
+<!-- Query Wizard Modal Template -->
+
+
+<div class="modal-header">
+    <h3 class="modal-title inline">Query Wizard</h3>
+    <h5 class="inline">Build a query from your comparison</h5>
+    <uib-progressbar max="4" value="step">{{step}} / 4</uib-progressbar>
+</div>
+
+<!-- First step of modal -->
+<div ng-show="step == 1">
+    <div class="modal-body">
+        Step 1
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="next()">Next</button>
+        <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</div>
+
+<div ng-show="step == 2">
+    <div class="modal-body">
+        Step 2
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

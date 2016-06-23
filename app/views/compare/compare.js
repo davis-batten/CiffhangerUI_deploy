@@ -9,7 +9,7 @@ angular.module('cliffhanger.compare', ['ngRoute'])
     });
 }])
 
-.controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService) {
+.controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal) {
 
     $scope.rows = []; //scope object for storing the rows of the table
     var dirty = {}; //object for determining if a row is in need of updating
@@ -221,5 +221,24 @@ angular.module('cliffhanger.compare', ['ngRoute'])
         $scope.selectedTags.pop();
         $scope.untagged = false;
     }
+
+    //opens deleteDataset modal for dataset d
+    $scope.openQueryWizard = function () {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'views/query_wizard/query_wizard.html',
+            controller: 'QueryWizardCtrl',
+            size: 'lg',
+            resolve: {
+                datasets: function () {
+                    return $scope.selectedDatasets;
+                }
+            }
+        });
+
+        //on modal completion
+        modalInstance.result.then(function () {
+            //TODO
+        });
+    };
 
 });
