@@ -9,7 +9,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.tags = []; //TODO load based upon datasets
     $scope.addJoinColumn = false;
 
-    /advance the modal to the next step
+    //advance the modal to the next step
     $scope.next = function () {
         $scope.step++;
     };
