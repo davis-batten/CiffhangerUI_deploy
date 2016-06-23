@@ -234,7 +234,7 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         , description: ""
         , data_type: "String"
         , tag: {
-            name: ""
+            name: "<EMPTY>"
             , description: ""
         }
     };
@@ -299,7 +299,7 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
             $scope.newAttribute.col_name = "";
             $scope.newAttribute.description = "";
             $scope.newAttribute.tag = {
-                name: ''
+                name: '<EMPTY>'
                 , description: ''
             };
             $scope.newAttribute.data_type = "String";
