@@ -33,10 +33,9 @@
                 <checkbox ng-model="t.selected" ng-change="change(t)"></checkbox>
                 <label>{{t.name}}</label>
             </li>
-            <hr>
-            <label>Show selected tag in table</label>
-            <checkbox ng-model="addJoinColumn"></checkbox>
         </ul>
+        <label>Show selected tag in table</label>
+        <checkbox ng-model="addJoinColumn"></checkbox>
     </div>
     <div class="modal-footer">
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
@@ -49,6 +48,17 @@
 <div ng-show="step == 3">
     <div class="modal-body">
         <h4><strong>Columns  </strong><em>Select columns to show in table</em></h4>
+        <ul>
+            <li class="list-group-item" ng-repeat="d in datasets | filter:{selected:true}">
+                <label>{{d.name}}</label>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="a in d.attributes">
+                        <checkbox ng-model="a.selected"></checkbox>
+                        <label uib-tooltip="{{a.description}}">{{a.col_name}}</label>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </div>
     <div class="col-md-6">
         <ul class="list-group">
