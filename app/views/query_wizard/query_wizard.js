@@ -6,7 +6,6 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.query = {};
     $scope.step = 1;
     $scope.datasets = datasets;
-    $scope.attr = [];
     $scope.tags = []; //TODO load based upon datasets
     $scope.addJoinColumn = false;
 
