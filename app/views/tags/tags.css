@@ -18,10 +18,20 @@
 
 #list_item button {
     float: right;
+    margin-top: -0.5em;
     margin-right: 0.5em;
 }
 
 #noResults {
     margin: .25em;
     padding: 1em;
+}
+
+tagQueryResults.label {
+    float: left;
+    padding-right: 1.5em;
+}
+
+small {
+    opacity: .8;
 }

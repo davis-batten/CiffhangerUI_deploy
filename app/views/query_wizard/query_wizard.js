@@ -1,6 +1,6 @@
 'use strict';
 
-var queries = angular.module('cliffhanger.queries', ['ngRoute']);
+var queries = angular.module('cliffhanger.query_wizard', ['ngRoute']);
 
 queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets) {
     $scope.query = {};

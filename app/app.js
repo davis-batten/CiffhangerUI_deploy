@@ -9,7 +9,7 @@ app = angular.module('cliffhanger', [
     //Views
     'cliffhanger.dashboard',
     'cliffhanger.datasets',
-    'cliffhanger.queries',
+    'cliffhanger.query_wizard',
     'cliffhanger.compare',
     'cliffhanger.tags'
 
