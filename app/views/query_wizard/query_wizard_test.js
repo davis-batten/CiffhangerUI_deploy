@@ -101,9 +101,12 @@ describe('cliffhanger.query_wizard module', function () {
                 $scope: scope,
                 $uibModalInstance: modalInstance,
                 datasets: mockDatasets
-            });
+            })
 
         }));
+
+
+        // -----------Modal operations----------------------
 
         it('should instantiate the QueryWizardCtrl controller', function () {
             expect(queryWizardCtrl).not.toBeUndefined();
@@ -121,38 +124,22 @@ describe('cliffhanger.query_wizard module', function () {
         });
 
         it('should advance to the next step', function () {
+            scope.selectedDatasets = mockDatasets;
             scope.next();
             expect(scope.step).toBe(2);
         });
 
-        it('should show a complete progress bar on the last step', function () {
-            scope.step = scope.maxSteps - 1;
-            scope.next();
-            expect(scope.progressType).toBe('success');
-        });
-
         it('should be able to go back to the previous step', function () {
+            scope.selectedDatasets = mockDatasets;
             scope.next();
             scope.previous();
             expect(scope.step).toBe(1);
             expect(scope.progressType).toBeNull();
         });
 
-        it('should load the correct tags for the selected datasets', function () {
-            scope.selectedDatasets = mockDatasets;
-            scope.loadTags();
-            expect(scope.tags).toEqual([
-                {
-                    "name": "ZIP"
-                }, {
-                    "name": "SSN"
-                }, {
-                    "name": "NAME"
-                }
-            ]);
+        //-------------Step Specific Tests-----------------
 
-        });
-
+        //step 1 - dataset select
         it('should handle changes linked to checkboxes', function () {
             var myArr = [];
             scope.change(scope.datasets[0], myArr);
@@ -160,6 +147,25 @@ describe('cliffhanger.query_wizard module', function () {
             scope.datasets[0].selected = false;
             scope.change(scope.datasets[0], myArr);
             expect(myArr.length).toBe(0);
-        })
+        });
+
+        //step 2 - join tag select
+        it('should load the correct tags for the selected datasets', function () {
+            scope.selectedDatasets = mockDatasets;
+            scope.loadTags();
+            expect(scope.tags).toEqual([
+                {
+                    "name": "ZIP"
+                }
+            ]);
+
+        });
+
+        //step 4 - completion step
+        it('should show a complete progress bar on the last step', function () {
+            scope.step = scope.maxSteps - 1;
+            scope.next();
+            expect(scope.progressType).toBe('success');
+        });
     });
 });
