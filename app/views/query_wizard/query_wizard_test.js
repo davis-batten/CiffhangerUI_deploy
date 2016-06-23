@@ -105,6 +105,9 @@ describe('cliffhanger.query_wizard module', function () {
 
         }));
 
+
+        // -----------Modal operations----------------------
+
         it('should instantiate the QueryWizardCtrl controller', function () {
             expect(queryWizardCtrl).not.toBeUndefined();
         });
@@ -125,12 +128,6 @@ describe('cliffhanger.query_wizard module', function () {
             expect(scope.step).toBe(2);
         });
 
-        it('should show a complete progress bar on the last step', function () {
-            scope.step = scope.maxSteps - 1;
-            scope.next();
-            expect(scope.progressType).toBe('success');
-        });
-
         it('should be able to go back to the previous step', function () {
             scope.next();
             scope.previous();
@@ -138,6 +135,19 @@ describe('cliffhanger.query_wizard module', function () {
             expect(scope.progressType).toBeNull();
         });
 
+        //-------------Step Specific Tests-----------------
+
+        //step 1 - dataset select
+        it('should handle changes linked to checkboxes', function () {
+            var myArr = [];
+            scope.change(scope.datasets[0], myArr);
+            expect(myArr.length).toBe(1);
+            scope.datasets[0].selected = false;
+            scope.change(scope.datasets[0], myArr);
+            expect(myArr.length).toBe(0);
+        });
+
+        //step 2 - join tag select
         it('should load the correct tags for the selected datasets', function () {
             scope.selectedDatasets = mockDatasets;
             scope.loadTags();
@@ -153,13 +163,11 @@ describe('cliffhanger.query_wizard module', function () {
 
         });
 
-        it('should handle changes linked to checkboxes', function () {
-            var myArr = [];
-            scope.change(scope.datasets[0], myArr);
-            expect(myArr.length).toBe(1);
-            scope.datasets[0].selected = false;
-            scope.change(scope.datasets[0], myArr);
-            expect(myArr.length).toBe(0);
-        })
+        //step 4 - completion step
+        it('should show a complete progress bar on the last step', function () {
+            scope.step = scope.maxSteps - 1;
+            scope.next();
+            expect(scope.progressType).toBe('success');
+        });
     });
 });

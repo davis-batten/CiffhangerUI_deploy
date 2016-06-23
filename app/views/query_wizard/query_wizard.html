@@ -29,11 +29,13 @@
     <div class="modal-body">
         <h4><strong>Tags  </strong><em>Select one to join datasets on</em></h4>
         <ul class="list-group">
-            <li class="list-group-item" ng-repeat="t in tags">
+            <li class="list-group-item" ng-repeat="t in tags | orderBy:'name'">
                 <checkbox ng-model="t.selected" ng-change="change(t, selectedTags)" ng-disabled="!t.selected && selectedTags.length == 1"></checkbox>
                 <label>{{t.name}}</label>
             </li>
         </ul>
+
+        <h4 class="text-danger" ng-show="tags.length==0">No joinable tags for the selected datasets</h4>
         <label>Show selected tag in table</label>
         <checkbox ng-model="addJoinColumn"></checkbox>
     </div>
