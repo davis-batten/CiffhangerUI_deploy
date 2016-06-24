@@ -11,7 +11,9 @@
     <h3>Tags</h3>
     <button class="btn btn-warning" ng-click="add()"><span class="glyphicon glyphicon-plus"></span> Add Tag</button>
     <h5>Search</h5>
-    <input type="text" size="40" ng-model="query" uib-typeahead="t.name for t in tags | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults">
+    <div id="custom-search-input">
+        <input type="text" size="45" ng-model="query.name" uib-typeahead="t.name for t in tags | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults">
+    </div>
 </div>
 
 <br>

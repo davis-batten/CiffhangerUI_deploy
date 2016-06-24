@@ -197,7 +197,7 @@
         </div>
         <div class="col-sm-3">
             <div id="custom-search-input">
-                <input type="text" size="30" ng-model="query" placeholder="Search" uib-typeahead="d.name for d in datasetList | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults">
+                <input type="text" size="30" ng-model="query.name" placeholder="Search" uib-typeahead="d.name for d in datasetList | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults">
             </div>
         </div>
     </div>
