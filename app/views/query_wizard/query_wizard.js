@@ -10,7 +10,6 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.tags = []; //TODO load based upon datasets
 
 
-
     $scope.addJoinColumn = false; //whether to include joined column in select
     $scope.selectedDatasets = []; //datasets selected to be joined
     $scope.selectedTags = []; //selected join tags
@@ -70,8 +69,15 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     };
 
     //complete the modal
-    $scope.submit = function () {
-        //TODO
+    $scope.submit = function () {};
+
+    $scope.statement = {
+        where: "",
+        limit: ""
     };
 
+    $scope.showStatement = function () {
+        $scope.statement = "WHERE " + $scope.statement.where + " LIMIT " + $scope.statement.limit;
+        $log.debug($scope.statement);
+    };
 });
