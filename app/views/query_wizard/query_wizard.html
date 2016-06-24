@@ -1,103 +1,97 @@
 <!-- Query Wizard Modal Template -->
 
-<<<<<<< HEAD <div class="modal-header">
-    <h3 class="modal-title inline">Query Wizard</h3>
-    <h5 class="inline">Build a query from your comparison</h5>
-    <uib-progressbar max="4" value="step" type="{{progressType}}">{{step}} / 4</uib-progressbar>
-    =======
-    <div class="query-wizard-header">
-        <div class="modal-header">
-            <h3 class="modal-title inline">Query Wizard</h3>
-            <h5 class="inline">Build a query from your comparison</h5>
-            <uib-progressbar max="maxSteps" value="step" type="{{progressType}}">{{step}} / {{maxSteps}}</uib-progressbar>
-        </div>
-        >>>>>>> f94d3acdb2831b46b5cb61aa217932f3e21df67a
+
+<div class="query-wizard-header">
+    <div class="modal-header">
+        <h3 class="modal-title inline">Query Wizard</h3>
+        <h5 class="inline">Build a query from your comparison</h5>
+        <uib-progressbar max="maxSteps" value="step" type="{{progressType}}">{{step}} / {{maxSteps}}</uib-progressbar>
     </div>
+</div>
 
-    <!-- First step of modal -->
-    <div ng-show="step == 1">
-        <div class="modal-body">
-            <h4><strong>Datasets </strong><small><em> Select two</em></small></h4>
-            <ul class="list-group">
-                <li class="list-group-item" ng-repeat="d in datasets">
-                    <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)"></checkbox>
-                    <label>{{d.name}}</label>
-                </li>
-            </ul>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
-            <button class="btn btn-primary" type="button" ng-click="next()" ng-disabled="selectedDatasets.length != 2">Next</button>
-        </div>
+<!-- First step of modal -->
+<div ng-show="step == 1">
+    <div class="modal-body">
+        <h4><strong>Datasets </strong><small><em> Select two</em></small></h4>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="d in datasets">
+                <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)"></checkbox>
+                <label>{{d.name}}</label>
+            </li>
+        </ul>
     </div>
-
-    <!-- Second step of modal -->
-    <div ng-show="step == 2">
-        <div class="modal-body">
-            <h4><strong>Tags  </strong><small><em>Select one to join datasets on</em></small></h4>
-            <ul class="list-group">
-                <li class="list-group-item" ng-repeat="t in tags | orderBy:'name'">
-                    <checkbox ng-model="t.selected" ng-change="change(t, selectedTags)" ng-disabled="!t.selected && selectedTags.length == 1"></checkbox>
-                    <label>{{t.name}}</label>
-                </li>
-            </ul>
-
-            <h4 class="text-danger" ng-show="tags.length==0">No joinable tags for the selected datasets</h4>
-            <label>Show selected tag in table</label>
-            <checkbox ng-model="addJoinColumn"></checkbox>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
-            <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-            <button class="btn btn-primary" type="button" ng-click="next()" ng-disabled="selectedTags.length != 1">Next</button>
-        </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-primary" type="button" ng-click="next()" ng-disabled="selectedDatasets.length != 2">Next</button>
     </div>
+</div>
 
-    <!-- Third step of modal -->
-    <div ng-show="step == 3">
-        <div class="modal-body">
-            <h4><strong>Columns  </strong><small><em>Select columns to show in table</em></small></h4>
-            <ul>
-                <li class="list-group-item" ng-repeat="d in datasets | filter:{selected:true}">
-                    <label>{{d.name}}</label>
-                    <ul class="list-group">
-                        <li class="list-group-item" ng-repeat="a in d.attributes" ng-if="a.tag.name != selectedTags[0].name">
-                            <checkbox ng-model="a.selected" ng-change="change(a, selectedColumns)"></checkbox>
-                            <label uib-tooltip="{{a.description}}">{{a.col_name}}</label>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
-            <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-            <button class="btn btn-primary" type="button" ng-click="next()">Next</button>
-        </div>
+<!-- Second step of modal -->
+<div ng-show="step == 2">
+    <div class="modal-body">
+        <h4><strong>Tags  </strong><small><em>Select one to join datasets on</em></small></h4>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="t in tags | orderBy:'name'">
+                <checkbox ng-model="t.selected" ng-change="change(t, selectedTags)" ng-disabled="!t.selected && selectedTags.length == 1"></checkbox>
+                <label>{{t.name}}</label>
+            </li>
+        </ul>
+
+        <h4 class="text-danger" ng-show="tags.length==0">No joinable tags for the selected datasets</h4>
+        <label>Show selected tag in table</label>
+        <checkbox ng-model="addJoinColumn"></checkbox>
     </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
+        <button class="btn btn-primary" type="button" ng-click="next()" ng-disabled="selectedTags.length != 1">Next</button>
+    </div>
+</div>
 
-    <!-- Fourth step of modal -->
-    <div ng-show="step == 4">
-        <div class="modal-body">
-            <h4>Constructed Query</h4>
-            <pre>QUERY<br>
-            {{query}}
+<!-- Third step of modal -->
+<div ng-show="step == 3">
+    <div class="modal-body">
+        <h4><strong>Columns  </strong><small><em>Select columns to show in table</em></small></h4>
+        <ul>
+            <li class="list-group-item" ng-repeat="d in datasets | filter:{selected:true}">
+                <label>{{d.name}}</label>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="a in d.attributes" ng-if="a.tag.name != selectedTags[0].name">
+                        <checkbox ng-model="a.selected" ng-change="change(a, selectedColumns)"></checkbox>
+                        <label uib-tooltip="{{a.description}}">{{a.col_name}}</label>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
+        <button class="btn btn-primary" type="button" ng-click="next()">Next</button>
+    </div>
+</div>
+
+<!-- Fourth step of modal -->
+<div ng-show="step == 4">
+    <div class="modal-body">
+        <h4>Constructed Query</h4>
+        <pre>QUERY<br>
+            {{query}} {{statement.text}}
         </pre>
-            <div class="form-group">
-                <label for="where">WHERE </label>
-                <input type="text" class="form-control" id="where" ng-model="statement.where">
-            </div>
-            <br>
-            <div class="form-group">
-                <label for="limit">LIMIT </label>
-                <input type="text" class="form-control" id="limit" ng-model="statement.limit">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
-                <button class="btn btn-warning pull-left" type="button" ng-click="showStatement()">Add To</button>
-                <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
-                <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-                <button class="btn btn-default" type="button">Save</button>
-                <button class="btn btn-success" type="button">Save &amp; Run</button>
-            </div>
-        </div>=
+        <div class="form-group">
+            <label for="where">WHERE </label>
+            <input type="text" class="form-control" id="where" ng-model="statement.where">
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="limit">LIMIT </label>
+            <input type="text" class="form-control" id="limit" ng-model="statement.limit">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-warning pull-left" type="button" ng-click="addToQuery()">Add To</button>
+            <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
+            <button class="btn btn-default" type="button">Save</button>
+            <button class="btn btn-success" type="button">Save &amp; Run</button>
+        </div>
+    </div>=

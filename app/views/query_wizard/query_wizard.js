@@ -71,13 +71,14 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     //complete the modal
     $scope.submit = function () {};
 
-    $scope.statement = {
-        where: "",
-        limit: ""
-    };
-
-    $scope.showStatement = function () {
-        $scope.statement = "WHERE " + $scope.statement.where + " LIMIT " + $scope.statement.limit;
+    $scope.addToQuery = function () {
+        if ($scope.statement.where != "" && $scope.statement.limit != "") {
+            $scope.statement.text = "WHERE " + $scope.statement.where + " LIMIT " + $scope.statement.limit;
+        } else if ($scope.statement.where != "" && $scope.statement.limit == "") {
+            $scope.statement.text = "WHERE " + $scope.statement.where;
+        } else if ($scope.statement.where == "" && $scope.statement.limit != "") {
+            $scope.statement.text = "LIMIT " + $scope.statement.limit;
+        }
         $log.debug($scope.statement);
     };
 
