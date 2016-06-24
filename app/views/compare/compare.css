@@ -16,3 +16,7 @@ tr {
 td {
     border-color: #999999 !important;
 }
+
+#compareTable {
+    overflow: auto;
+}

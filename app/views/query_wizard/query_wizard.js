@@ -55,7 +55,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         $scope.step++;
         if ($scope.step == 2) {
             $scope.loadTags();
-        } else if ($scope.step == $scope.maxSteps) $scope.progressType = "success";
+        } else if ($scope.step == $scope.maxSteps) $scope.buildQuery();
     };
 
     //go back a step in the modal
@@ -81,8 +81,6 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             joinTag: $scope.selectedTags,
             addJoinColumn: $scope.addJoinColumn,
             columns: $scope.selectedColumns
-                //WHERE
-                //LIMIT
         }
 
         queryService.buildQuery(queryInput)
