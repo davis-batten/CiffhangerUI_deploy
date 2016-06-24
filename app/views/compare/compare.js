@@ -222,6 +222,42 @@ angular.module('cliffhanger.compare', ['ngRoute'])
         $scope.untagged = false;
     }
 
+    $scope.selectRelevantTags = function () {
+        $scope.selectedTags = [];
+        for (var d = 0; d < $scope.selectedDatasets.length; d++) {
+            var dataset = $scope.selectedDatasets[d];
+            for (var t = 0; t < dataset.tags.length; t++) {
+                var tag = dataset.tags[t];
+                if ($scope.selectedTags.map(function (obj) {
+                        return obj.name;
+                    }).indexOf(tag.name) == -1 && tag.name != '<EMPTY>') {
+                    $scope.selectedTags.push(tag);
+                }
+            }
+        }
+        $log.debug($scope.selectedTags);
+    }
+
+    $scope.selectRelevantDatasets = function () {
+        $scope.selectedDatasets = [];
+        for (var t = 0; t < $scope.selectedTags.length; t++) {
+            var tag = $scope.selectedTags[t];
+            for (var d = 0; d < $scope.datasets.length; d++) {
+                var dataset = $scope.datasets[d];
+                if (dataset.tags.map(function (obj) {
+                        return obj.name;
+                    }).indexOf(tag.name) != -1 && tag.name != '<EMPTY>') {
+                    if ($scope.selectedDatasets.map(function (obj) {
+                            return obj.name;
+                        }).indexOf(dataset.name) == -1) {
+                        $scope.selectedDatasets.push(dataset);
+                    }
+                }
+            }
+        }
+        $log.debug($scope.selectedTags);
+    }
+
     //opens deleteDataset modal for dataset d
     $scope.openQueryWizard = function () {
         var modalInstance = $uibModal.open({
