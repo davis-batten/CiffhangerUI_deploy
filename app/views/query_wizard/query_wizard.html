@@ -67,8 +67,6 @@
     </div>
 </div>
 
-
-
 <!-- Fourth step of modal -->
 <div ng-show="step == 4">
     <div class="modal-body">
@@ -84,5 +82,10 @@
         <div class="form-group">
             <label for="limit">LIMIT </label>
             <input type="text" class="form-control" id="limit" ng-model="input.limit">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-primary pull-right" type="button">Save</button>
+            <button class="btn btn-primary pull-right" type="button">Save &amp; Run</button>
         </div>
     </div>
