@@ -1,16 +1,17 @@
 <!-- Query Wizard Modal Template -->
 
-
-<div class="modal-header">
-    <h3 class="modal-title inline">Query Wizard</h3>
-    <h5 class="inline">Build a query from your comparison</h5>
-    <uib-progressbar max="maxSteps" value="step" type="{{progressType}}">{{step}} / {{maxSteps}}</uib-progressbar>
+<div class="query-wizard-header">
+    <div class="modal-header">
+        <h3 class="modal-title inline">Query Wizard</h3>
+        <h5 class="inline">Build a query from your comparison</h5>
+        <uib-progressbar max="maxSteps" value="step" type="{{progressType}}">{{step}} / {{maxSteps}}</uib-progressbar>
+    </div>
 </div>
 
 <!-- First step of modal -->
 <div ng-show="step == 1">
     <div class="modal-body">
-        <h4><strong>Datasets  </strong><em>Select two</em></h4>
+        <h4><strong>Datasets </strong><small><em> Select two</em></small></h4>
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="d in datasets">
                 <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)"></checkbox>
@@ -27,7 +28,7 @@
 <!-- Second step of modal -->
 <div ng-show="step == 2">
     <div class="modal-body">
-        <h4><strong>Tags  </strong><em>Select one to join datasets on</em></h4>
+        <h4><strong>Tags  </strong><small><em>Select one to join datasets on</em></small></h4>
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="t in tags | orderBy:'name'">
                 <checkbox ng-model="t.selected" ng-change="change(t, selectedTags)" ng-disabled="!t.selected && selectedTags.length == 1"></checkbox>
@@ -49,7 +50,7 @@
 <!-- Third step of modal -->
 <div ng-show="step == 3">
     <div class="modal-body">
-        <h4><strong>Columns  </strong><em>Select columns to show in table</em></h4>
+        <h4><strong>Columns  </strong><small><em>Select columns to show in table</em></small></h4>
         <ul>
             <li class="list-group-item" ng-repeat="d in datasets | filter:{selected:true}">
                 <label>{{d.name}}</label>
