@@ -2,7 +2,7 @@
 
 var queries = angular.module('cliffhanger.query_wizard', ['ngRoute']);
 
-queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets) {
+queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets, queryService) {
     $scope.query = {}; //container for query
     $scope.step = 1; //which step in the modal is on
     $scope.maxSteps = 4; //number of steps in modal
@@ -54,7 +54,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         $scope.step++;
         if ($scope.step == 2) {
             $scope.loadTags();
-        } else if ($scope.step == $scope.maxSteps) $scope.progressType = "success";
+        } else if ($scope.step == $scope.maxSteps) $scope.buildQuery();
     };
 
     //go back a step in the modal
@@ -80,4 +80,31 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         $scope.statement = "WHERE " + $scope.statement.where + " LIMIT " + $scope.statement.limit;
         $log.debug($scope.statement);
     };
+
+    $scope.buildQuery = function () {
+        var queryInput = {
+            datasets: $scope.selectedDatasets,
+            joinTag: $scope.selectedTags,
+            addJoinColumn: $scope.addJoinColumn,
+            columns: $scope.selectedColumns
+        }
+
+        queryService.buildQuery(queryInput)
+            .then(function (response) {
+                if (data.status == 'Success') {
+                    $scope.query = response.data;
+                    $scope.progressType = 'success';
+                } else {
+                    $scope.progressType = 'danger'
+                    $scope.buildQueryError = true;
+                    $log.error(response.data);
+
+                }
+            }, function (data) {
+                $scope.progressType = 'danger'
+                $scope.buildQueryError = true;
+                $log.error('Failed to connect to server');
+            })
+    }
+
 });

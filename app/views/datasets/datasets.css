@@ -61,3 +61,7 @@
     border: 0;
     box-shadow: none;
 }
+
+#editAttributeTable .form-group {
+    margin-bottom: 0px;
+}
