@@ -1,13 +1,14 @@
 describe('cliffhanger.compare module', function () {
 
     beforeEach(angular.mock.module('ngRoute'));
-
+    beforeEach(angular.mock.module('ui.bootstrap'));
     beforeEach(angular.mock.module('cliffhanger.compare'));
 
     describe('compare controller', function () {
 
-        beforeEach(inject(function ($controller, $rootScope, $q, $log, $filter) {
+        beforeEach(inject(function ($controller, $rootScope, $q, $log, $filter, $uibModal) {
             scope = $rootScope.$new();
+            modal = $uibModal;
 
             //create mock datasetService
             mockDatasetService = {
@@ -35,6 +36,7 @@ describe('cliffhanger.compare module', function () {
                 $log: $log,
                 $q: $q,
                 $filter: $filter,
+                $uibModal: modal,
                 tagService: mockTagService,
                 datasetService: mockDatasetService
             });

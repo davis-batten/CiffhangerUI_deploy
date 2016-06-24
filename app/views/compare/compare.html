@@ -1,52 +1,62 @@
-<hr>
-<h3>Compare</h3>
+<div class="container">
+    <hr>
+    <h3>Compare</h3>
 
-<!--Typeaheads go here -->
-<div class="col-md-6">
-    <h4>Filter Tags</h4>
-    <tags-input ng-model="selectedTags" add-from-autocomplete-only="true" display-property="name" spellcheck="false">
-        <auto-complete source="filterTags($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true"></auto-complete>
-    </tags-input>
+    <div class="row">
+        <!--Typeaheads go here -->
+        <div class="col-md-6">
+            <h4>Filter Tags</h4>
+            <tags-input ng-model="selectedTags" add-from-autocomplete-only="true" display-property="name" spellcheck="false">
+                <auto-complete source="filterTags($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true"></auto-complete>
+            </tags-input>
 
-    <p ng-show="noTagResults">No Results</p>
+            <p ng-show="noTagResults">No Results</p>
+            <br>
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button class="btn btn-default" ng-click="selectAllTags()">Select All Tags</button>
+                    <button class="btn btn-default" ng-click="deselectAllTags()">Deselect All Tags</button>
+                </div>
+                <button class="btn btn-default" ng-click="allowUntagged()" ng-hide="untagged">Show Untagged Attributes</button>
+                <button class="btn btn-default" ng-click="removeUntagged()" ng-show="untagged">Hide Untagged Attributes</button>
+            </div>
+        </div>
+
+        <!--Typeaheads go here -->
+        <div class="col-md-6">
+            <h4>Filter Datasets</h4>
+            <tags-input ng-model="selectedDatasets" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Add a dataset">
+                <auto-complete source="filterDatasets($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true"></auto-complete>
+            </tags-input>
+
+            <p ng-show="noDatasetResults">No Results</p>
+            <br>
+            <div class="btn-group">
+                <button class="btn btn-default" ng-click="selectAllDatasets()">Select All Datasets</button>
+                <button class="btn btn-default" ng-click="deselectAllDatasets()">Deselect All Datasets</button>
+            </div>
+        </div>
+    </div>
+
+    <hr>
     <br>
-    <button class="btn btn-default" ng-click="selectAllTags()">Select All Tags</button>
-    <button class="btn btn-default" ng-click="deselectAllTags()">Deselect All Tags</button>
-</div>
 
-<!--Typeaheads go here -->
-<div class="col-md-6">
-    <h4>Filter Datasets</h4>
-    <tags-input ng-model="selectedDatasets" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Add a dataset">
-        <auto-complete source="filterDatasets($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true"></auto-complete>
-    </tags-input>
+    <div class="">
+        <table class="table table-bordered">
+            <thead>
+                <th></th>
+                <th ng-repeat="tag in selectedTags">{{tag.name}}</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="dataset in selectedDatasets">
+                    <td>{{dataset.name}}</td>
+                    <td ng-repeat="attr in rows[dataset.name]" class="{{attr.class}}">{{attr.name}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-    <p ng-show="noDatasetResults">No Results</p>
-    <br>
-    <button class="btn btn-default" ng-click="selectAllDatasets()">Select All Datasets</button>
-    <button class="btn btn-default" ng-click="deselectAllDatasets()">Deselect All Datasets</button>
-</div>
-
-<button class="btn btn-default" ng-click="allowUntagged()" ng-hide="untagged">Show Untagged Attributes</button>
-<button class="btn btn-default" ng-click="removeUntagged()" ng-show="untagged">Hide Untagged Attributes</button>
-<br>
-<br>
-
-<div>
-    <table class="table table-bordered">
-        <thead>
-            <th></th>
-            <th ng-repeat="tag in selectedTags">{{tag.name}}</th>
-        </thead>
-        <tbody>
-            <tr ng-repeat="dataset in selectedDatasets">
-                <td>{{dataset.name}}</td>
-                <td ng-repeat="attr in rows[dataset.name]" class="{{attr.class}}">{{attr.name}}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<div class="btn-group-center">
-    <button class="btn btn-success" ng-click="openQueryWizard()">Query Wizard</button>
+    <div class="btn-group-center">
+        <button class="btn btn-success" ng-click="openQueryWizard()">Query Wizard</button>
+    </div>
 </div>

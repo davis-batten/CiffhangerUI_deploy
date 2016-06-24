@@ -1,0 +1,18 @@
+.table-bordered {
+    border-color: #999999 !important;
+}
+
+.table-bordered th,
+td,
+tr {
+    border-color: #999999 !important;
+}
+
+.table-bordered tbody {
+    border-color: #999999 !important;
+}
+
+.table-bordered tbody tr,
+td {
+    border-color: #999999 !important;
+}
