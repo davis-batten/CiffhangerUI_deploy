@@ -6,7 +6,7 @@ app = angular.module('cliffhanger', [
     'ngTagsInput',
     'cliffhanger.version',
 
-    //Views
+    //My modules
     'cliffhanger.dashboard',
     'cliffhanger.datasets',
     'cliffhanger.query_wizard',
