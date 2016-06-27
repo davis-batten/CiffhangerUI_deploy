@@ -20,8 +20,8 @@
     margin-left: .5em;
 }
 
-#no_data_warning {
-    /*color: #d9534f;*/
+.no_data_warning {
+    color: #d9534f;
     font-size: 1.5em;
 }
 
