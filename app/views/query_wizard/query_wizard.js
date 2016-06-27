@@ -121,8 +121,10 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                 })
     };
 
-    $scope.runQuery = function ($scope.query) {
-        queryService.runQuery($scope.query)
+    $scope.runQuery = function () {
+        var query = $scope.query;
+
+        queryService.runQuery(query)
             .then(
                 function (response) {
                     //success callback
