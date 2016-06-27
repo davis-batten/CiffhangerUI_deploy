@@ -1,5 +1,6 @@
 <!-- Query Wizard Modal Template -->
 
+
 <div class="query-wizard-header">
     <div class="modal-header">
         <h3 class="modal-title inline">Query Wizard</h3>
@@ -70,29 +71,27 @@
     </div>
 </div>
 
-
-
 <!-- Fourth step of modal -->
 <div ng-show="step == 4">
     <div class="modal-body">
         <h4>Constructed Query</h4>
         <pre>QUERY<br>
-            {{query}}
+{{query}}
         </pre>
         <div class="form-group">
             <label for="where">WHERE </label>
-            <input type="text" class="form-control" id="where" ng-model="input.where">
+            <input type="text" class="form-control" id="where" ng-model="statement.where">
         </div>
         <br>
         <div class="form-group">
             <label for="limit">LIMIT </label>
-            <input type="text" class="form-control" id="limit" ng-model="input.limit">
+            <input type="text" class="form-control" id="limit" ng-model="statement.limit">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-warning pull-left" type="button" ng-click="addToQuery()">Add To</button>
+            <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
+            <button class="btn btn-default" type="button">Save</button>
+            <button class="btn btn-success" type="button">Save &amp; Run</button>
         </div>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
-        <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-        <button class="btn btn-default" type="button">Save</button>
-        <button class="btn btn-success" type="button">Save &amp; Run</button>
-    </div>
-</div>
