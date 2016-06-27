@@ -5,7 +5,7 @@ var queries = angular.module('cliffhanger.queries', ['ngRoute']);
 queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets, queryService) {
     $scope.query = {}; //container for query
     $scope.step = 1; //which step in the modal is on
-    $scope.maxSteps = 4; //number of steps in modal
+    $scope.maxSteps = 5; //number of steps in modal
     $scope.datasets = datasets;
     $scope.tags = []; //TODO load based upon datasets
 
@@ -54,7 +54,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         $scope.step++;
         if ($scope.step == 2) {
             $scope.loadTags();
-        } else if ($scope.step == $scope.maxSteps) $scope.buildQuery();
+        } else if ($scope.step == 4) $scope.buildQuery();
     };
 
     //go back a step in the modal
