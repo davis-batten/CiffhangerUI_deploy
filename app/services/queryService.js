@@ -6,8 +6,28 @@ angular.module('cliffhanger.queries')
         this.buildQuery = function (input) {
 
 
-                $log.debug('json query input', JSON.stringify(input));
-                return $http.post($rootScope.baseUrl + '/query/build', input)
+            $log.debug('json query input', JSON.stringify(input));
+            return $http.post($rootScope.baseUrl + '/query/build', input)
+
+            .then(
+                //success callback
+                function (response) {
+                    $log.debug('Success!');
+                    return response.data;
+                }, //error callback
+                function (response) {
+                    $log.warn('Failure!');
+                    $log.warn(response);
+                    return $q.reject(response.data);
+
+                }
+            );
+        }
+
+        //this service method formats a new query on the backend
+        this.runQuery = function (sql) {
+
+                return $http.get($rootScope.baseUrl + '/query/run/' + sql)
 
                 .then(
                     //success callback
