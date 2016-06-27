@@ -1,6 +1,6 @@
 'use strict';
 
-var queries = angular.module('cliffhanger.query_wizard', ['ngRoute']);
+var queries = angular.module('cliffhanger.queries', ['ngRoute']);
 
 queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets, queryService) {
     $scope.query = {}; //container for query
@@ -90,12 +90,12 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.buildQuery = function () {
         //query input packaged
         var queryInput = {
-                datasets: $scope.selectedDatasets,
-                joinTag: $scope.selectedTags,
-                addJoinColumn: $scope.addJoinColumn,
-                columns: $scope.selectedColumns
-            }
-            //do service call
+            datasets: $scope.selectedDatasets,
+            joinTag: $scope.selectedTags,
+            addJoinColumn: $scope.addJoinColumn,
+            columns: $scope.selectedColumns
+        }
+
         queryService.buildQuery(queryInput)
             .then(
                 function (response) {
