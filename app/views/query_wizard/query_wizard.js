@@ -71,6 +71,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     //complete the modal
     $scope.submit = function () {};
 
+    //add where and limit clause to SQL query string
     $scope.addToQuery = function () {
         if ($scope.statement.where != "" && $scope.statement.limit != "") {
             $scope.statement.text = "\n" + "WHERE " + $scope.statement.where + "\n" + "LIMIT " + $scope.statement.limit;
@@ -85,30 +86,38 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         $log.debug($scope.statement);
     };
 
+    //build a new query given the user's choices
     $scope.buildQuery = function () {
+        //query input packaged
         var queryInput = {
-            datasets: $scope.selectedDatasets,
-            joinTag: $scope.selectedTags,
-            addJoinColumn: $scope.addJoinColumn,
-            columns: $scope.selectedColumns
-        }
-
+                datasets: $scope.selectedDatasets,
+                joinTag: $scope.selectedTags,
+                addJoinColumn: $scope.addJoinColumn,
+                columns: $scope.selectedColumns
+            }
+            //do service call
         queryService.buildQuery(queryInput)
-            .then(function (response) {
-                if (data.status == 'Success') {
-                    $scope.query = response.data;
-                    $scope.progressType = 'success';
-                } else {
+            .then(
+                function (response) {
+                    //success callback
+                    if (data.status == 'Success') {
+                        $scope.query = response.data;
+                        $scope.progressType = 'success';
+                        //error callback
+                    } else {
+                        $scope.progressType = 'danger'
+                        $scope.buildQueryError = true;
+                        $log.error(response.data);
+
+                    }
+
+                },
+                //failure to connect
+                function (data) {
                     $scope.progressType = 'danger'
                     $scope.buildQueryError = true;
-                    $log.error(response.data);
-
-                }
-            }, function (data) {
-                $scope.progressType = 'danger'
-                $scope.buildQueryError = true;
-                $log.error('Failed to connect to server');
-            })
+                    $log.error('Failed to connect to server');
+                })
     }
 
 });
