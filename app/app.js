@@ -1,17 +1,25 @@
 // Declare app level module which depends on views, and components
 app = angular.module('cliffhanger', [
-    'ui.bootstrap',
-    'ui.checkbox',
-    'ngRoute',
-    'ngTagsInput',
-    'cliffhanger.version',
+    'ui.bootstrap'
+    
+    , 'ui.checkbox'
+    
+    , 'ngRoute'
+    
+    , 'ngTagsInput'
+    
+    , 'cliffhanger.version',
 
     //My modules
-    'cliffhanger.dashboard',
-    'cliffhanger.datasets',
-    'cliffhanger.query_wizard',
-    'cliffhanger.compare',
-    'cliffhanger.tags'
+    'cliffhanger.dashboard'
+    
+    , 'cliffhanger.datasets'
+    
+    , 'cliffhanger.compare'
+    
+    , 'cliffhanger.queries'
+    
+    , 'cliffhanger.tags'
 
 ]).
 config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
@@ -39,7 +47,7 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
     };
 
     return {
-        restrict: 'A',
-        link: linkFn
+        restrict: 'A'
+        , link: linkFn
     }
 });
