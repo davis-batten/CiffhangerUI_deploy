@@ -161,6 +161,11 @@ describe('cliffhanger.query_wizard module', function () {
 
         });
 
+        //TODO test add WHERE and LIMIT clause
+        it('should be able to add a WHERE/LIMIT clause to the query', function () {
+            expect(scope.statement.text).toBe(); //TODO
+        });
+
         //step 4 - completion step
         it('should show a complete progress bar on the last step', function () {
             scope.step = scope.maxSteps - 1;
