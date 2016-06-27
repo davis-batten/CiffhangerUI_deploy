@@ -15,6 +15,10 @@
                     <label for="newDatasetDesc">Description</label>
                     <input type="text" class="form-control" id="newDatasetDesc" ng-model="input.description">
                 </div>
+                <div class="form-group">
+                    <label for="newDatasetTableName">Database Table Name</label>
+                    <input type="text" class="form-control" id="newDatasetTableName" ng-model="input.db_table_name">
+                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -97,6 +101,10 @@
             <div class="form-group">
                 <label for="datasetDesc">Description</label>
                 <input type="text" class="form-control" id="datasetDesc" ng-model="input.description">
+            </div>
+            <div class="form-group">
+                <label for="newDatasetTableName">Database Table Name</label>
+                <input type="text" class="form-control" id="newDatasetTableName" ng-model="input.db_table_name">
             </div>
             <div>
                 <label for="editAttributeTable">Attributes</label>
@@ -200,6 +208,9 @@
             <div class="more_info" ng-show="moreInfo[$index]">
                 <strong>Description</strong>
                 <br> {{d.description}}
+                <br>
+                <strong>Database Table Name</strong>
+                <br> {{d.db_table_name}}
                 <br>
                 <strong>Tags</strong>
                 <ul class="inline-list">
