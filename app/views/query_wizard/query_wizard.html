@@ -110,14 +110,12 @@
             <table class="table table-bordered">
                 <thead>
                     <th></th>
-                    <th ng-repeat="column in selectedColumns">
-                        {{column.col_name}}
+                    <th ng-repeat="column in tableResult.colNames">
+                        {{column}}
                     </th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="dataset in selectedDatasets">
-                        <td ng-repeat="attr in rows[dataset.name]" class="{{attr.class}}">{{attr.name}}</td>
-                    </tr>
+                    <td ng-repeat="row in tableResult.rows">{{row}}</td>
                 </tbody>
             </table>
         </div>
