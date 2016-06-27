@@ -72,6 +72,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.submit = function () {};
 
     $scope.addToQuery = function () {
+        $scope.clearStatement();
         if ($scope.statement.where != "" && $scope.statement.limit != "") {
             $scope.statement.text = "\n" + "WHERE " + $scope.statement.where + "\n" + "LIMIT " + $scope.statement.limit;
         } else if ($scope.statement.where != "" && $scope.statement.limit == "") {
@@ -81,7 +82,6 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         } else if ($scope.statement.where != "" && $scope.statement.limit != "") {
             $scope.statement.text = "";
         }
-        $scope.query += $scope.statement.text;
         $log.debug($scope.statement);
     };
 

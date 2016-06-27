@@ -76,7 +76,7 @@
     <div class="modal-body">
         <h4>Constructed Query</h4>
         <pre>QUERY<br>
-{{query}}
+{{query}}{{statement.text}}
         </pre>
         <div class="form-group">
             <label for="where">WHERE </label>
@@ -87,9 +87,11 @@
             <label for="limit">LIMIT </label>
             <input type="text" class="form-control" id="limit" ng-model="statement.limit">
         </div>
+        <div class="form-group">
+            <button class="btn btn-warning center" type="button" ng-click="addToQuery()">Add To</button>
+        </div>
         <div class="modal-footer">
             <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
-            <button class="btn btn-warning pull-left" type="button" ng-click="addToQuery()">Add To</button>
             <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
             <button class="btn btn-default" type="button">Save</button>
             <button class="btn btn-success" type="button">Save &amp; Run</button>
