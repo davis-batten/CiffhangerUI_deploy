@@ -72,15 +72,15 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.submit = function () {};
 
     $scope.addToQuery = function () {
-        $scope.clearStatement();
+        $scope.query = $scope.query.replace(";", "");
         if ($scope.statement.where != "" && $scope.statement.limit != "") {
-            $scope.statement.text = "\n" + "WHERE " + $scope.statement.where + "\n" + "LIMIT " + $scope.statement.limit;
+            $scope.statement.text = "\nWHERE " + $scope.statement.where + "\n" + "LIMIT " + $scope.statement.limit + ";";
         } else if ($scope.statement.where != "" && $scope.statement.limit == "") {
-            $scope.statement.text = "WHERE " + $scope.statement.where;
+            $scope.statement.text = "\nWHERE " + $scope.statement.where + ";";
         } else if ($scope.statement.where == "" && $scope.statement.limit != "") {
-            $scope.statement.text = "LIMIT " + $scope.statement.limit;
+            $scope.statement.text = "\nLIMIT " + $scope.statement.limit + ";";
         } else if ($scope.statement.where != "" && $scope.statement.limit != "") {
-            $scope.statement.text = "";
+            $scope.statement.text = ";";
         }
         $log.debug($scope.statement);
     };
@@ -95,7 +95,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
 
         queryService.buildQuery(queryInput)
             .then(function (response) {
-                if (data.status == 'Success') {
+                if (response.status == 'Success') {
                     $scope.query = response.data;
                     $scope.progressType = 'success';
                 } else {
