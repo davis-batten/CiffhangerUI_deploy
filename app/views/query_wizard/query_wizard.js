@@ -4,8 +4,9 @@ var queries = angular.module('cliffhanger.queries', ['ngRoute']);
 
 queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets, queryService) {
     $scope.query = {}; //container for query
+    $scope.tableResult = {};
     $scope.step = 1; //which step in the modal is on
-    $scope.maxSteps = 4; //number of steps in modal
+    $scope.maxSteps = 5; //number of steps in modal
     $scope.datasets = datasets;
     $scope.tags = []; //TODO load based upon datasets
 
@@ -72,7 +73,8 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         $scope.step++;
         if ($scope.step == 2) {
             $scope.loadTags();
-        } else if ($scope.step == $scope.maxSteps) $scope.buildQuery();
+        } else if ($scope.step == 4) $scope.buildQuery();
+        else if ($scope.step == 5) $scope.runQuery($scope.query);
     };
 
     //go back a step in the modal
@@ -108,10 +110,10 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.buildQuery = function () {
         //query input packaged
         var queryInput = {
-            datasets: $scope.selectedDatasets,
-            joinTag: $scope.selectedTags,
-            addJoinColumn: $scope.addJoinColumn,
-            columns: $scope.selectedColumns
+            datasets: $scope.selectedDatasets
+            , joinTag: $scope.selectedTags
+            , addJoinColumn: $scope.addJoinColumn
+            , columns: $scope.selectedColumns
         }
 
         queryService.buildQuery(queryInput)
@@ -123,19 +125,42 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                         $scope.progressType = 'success';
                         //error callback
                     } else {
-                        $scope.progressType = 'danger'
+                        $scope.progressType = 'danger';
                         $scope.buildQueryError = true;
                         $log.error(response.data);
 
                     }
 
-                },
-                //failure to connect
+                }, //failure to connect
                 function (data) {
-                    $scope.progressType = 'danger'
+                    $scope.progressType = 'danger';
                     $scope.buildQueryError = true;
                     $log.error('Failed to connect to server');
                 })
-    }
+    };
+
+    $scope.runQuery = function () {
+        var query = $scope.query;
+
+        queryService.runQuery(query)
+            .then(
+                function (response) {
+                    //success callback
+                    if (data.status == 'Success') {
+                        $scope.tableResult = response.data;
+                        $scope.progressType = 'success';
+                        //error callback
+                    } else {
+                        $scope.progressType = 'danger';
+                        $scope.runQueryError = true;
+                        $log.error(response.data);
+                    }
+                }, //failure to connect
+                function (data) {
+                    $scope.progressType = 'danger';
+                    $scope.runQueryError = true;
+                    $log.error('Failed to connect to server');
+                })
+    };
 
 });
