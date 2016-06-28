@@ -145,16 +145,8 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         queryService.runQuery(query)
             .then(
                 function (response) {
-                    //success callback
-                    if (data.status == 'Success') {
-                        $scope.tableResult = response.data;
-                        $scope.progressType = 'success';
-                        //error callback
-                    } else {
-                        $scope.progressType = 'danger';
-                        $scope.runQueryError = true;
-                        $log.error(response.data);
-                    }
+                    $scope.tableResult = response;
+                    $scope.progressType = 'success';
                 }, //failure to connect
                 function (data) {
                     $scope.progressType = 'danger';
