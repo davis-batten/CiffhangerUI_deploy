@@ -160,7 +160,7 @@ describe('cliffhanger.query_wizard module', function () {
             ]);
 
         });
-
+        
         //step 4 - completion step
         it('should show a complete progress bar on the last step', function () {
             scope.step = scope.maxSteps - 1;
