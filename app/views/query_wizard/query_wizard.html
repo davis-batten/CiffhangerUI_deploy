@@ -109,15 +109,13 @@
         <div class="" id="queryResultsTable">
             <table class="table table-bordered">
                 <thead>
-                    <th></th>
                     <th ng-repeat="column in tableResult.colNames">
                         {{column}}
                     </th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td ng-repeat="row in tableResult.rows">{{row}}</td>
-                    </tr>
+                    <tr ng-repeat="row in tableResult.rows">
+                        <td ng-repeat="cell in row">{{cell}}</td>
                 </tbody>
             </table>
         </div>

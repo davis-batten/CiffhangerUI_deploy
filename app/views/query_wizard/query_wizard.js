@@ -74,7 +74,11 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         if ($scope.step == 2) {
             $scope.loadTags();
         } else if ($scope.step == 4) $scope.buildQuery();
-        else if ($scope.step == 5) $scope.runQuery($scope.query);
+        //else if ($scope.step == 5) $scope.runQuery($scope.query);
+        else if ($scope.step == 5) {
+            $scope.query = "SELECT * FROM testHiveTable;";
+            $scope.runQuery($scope.query);
+        }
     };
 
     //go back a step in the modal
@@ -144,9 +148,10 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
 
         queryService.runQuery(query)
             .then(
-                function (response) {
+                function (response) { //success callback
                     $scope.tableResult = response;
                     $scope.progressType = 'success';
+
                 }, //failure to connect
                 function (data) {
                     $scope.progressType = 'danger';
