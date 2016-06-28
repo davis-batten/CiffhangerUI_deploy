@@ -74,7 +74,11 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         if ($scope.step == 2) {
             $scope.loadTags();
         } else if ($scope.step == 4) $scope.buildQuery();
-        else if ($scope.step == 5) $scope.runQuery($scope.query);
+        //else if ($scope.step == 5) $scope.runQuery($scope.query);
+        else if ($scope.step == 5) {
+            $scope.query = "SELECT * FROM testHiveTable;";
+            $scope.runQuery($scope.query);
+        }
     };
 
     //go back a step in the modal
@@ -110,10 +114,10 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.buildQuery = function () {
         //query input packaged
         var queryInput = {
-            datasets: $scope.selectedDatasets
-            , joinTag: $scope.selectedTags
-            , addJoinColumn: $scope.addJoinColumn
-            , columns: $scope.selectedColumns
+            datasets: $scope.selectedDatasets,
+            joinTag: $scope.selectedTags,
+            addJoinColumn: $scope.addJoinColumn,
+            columns: $scope.selectedColumns
         }
 
         queryService.buildQuery(queryInput)
@@ -146,15 +150,9 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             .then(
                 function (response) {
                     //success callback
-                    if (data.status == 'Success') {
-                        $scope.tableResult = response.data;
-                        $scope.progressType = 'success';
-                        //error callback
-                    } else {
-                        $scope.progressType = 'danger';
-                        $scope.runQueryError = true;
-                        $log.error(response.data);
-                    }
+                    $scope.tableResult = response;
+                    $scope.progressType = 'success';
+
                 }, //failure to connect
                 function (data) {
                     $scope.progressType = 'danger';

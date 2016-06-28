@@ -27,21 +27,23 @@ angular.module('cliffhanger.queries')
         //this service method formats a new query on the backend
         this.runQuery = function (sql) {
 
-            return $http.get($rootScope.baseUrl + '/query/run/' + sql)
+            $log.debug('sql', sql);
 
-            .then(
-                //success callback
-                function (response) {
-                    $log.debug('Success!');
-                    return response.data;
-                }, //error callback
-                function (response) {
-                    $log.warn('Failure!');
-                    $log.warn(response);
-                    return $q.reject(response.data);
+            //            return $http.get($rootScope.baseUrl + '/query/run/' + sql)
+            return $http.get($rootScope.baseUrl + '/query/testHive')
+                .then(
+                    //success callback
+                    function (response) {
+                        $log.debug('Success!');
+                        return response.data;
+                    }, //error callback
+                    function (response) {
+                        $log.warn('Failure!');
+                        $log.warn(response);
+                        return $q.reject(response.data);
 
-                }
-            );
+                    }
+                );
         };
         /*
                 //this service method gets an existing Query from the backend
