@@ -27,7 +27,6 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
     }
 
 
-
     // getTags();
 
     var getDatasets = function () {
@@ -153,22 +152,6 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         });
     };
 
-    //opens displayInfo modal for dataset d
-    $scope.displayInfo = function (d) {
-        $log.log(d);
-        var modalInstance = $uibModal.open({
-            templateUrl: 'datasetInfo.html',
-            controller: 'DatasetInfoModalCtrl',
-            size: 'lg',
-            resolve: {
-                dataset: function () {
-                    return d;
-                }
-            }
-        });
-
-    };
-
     //opens deleteDataset modal for dataset d
     $scope.deleteDataset = function (d) {
         $log.log(d);
@@ -215,8 +198,6 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
         });
     };
 
-
-
 });
 
 
@@ -226,6 +207,7 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
     $scope.input = { //what is the input from the user
         name: "",
         description: "",
+        db_table_name: "",
         attributes: []
     };
     $scope.newAttribute = {
@@ -237,22 +219,6 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
             description: ""
         }
     };
-
-    //    $scope.tags = [
-    //        {
-    //            name: 'COUNTY',
-    //            description: 'A county of Iowa'
-    //        },
-    //        {
-    //            name: 'ZIP',
-    //            description: 'Zip Code'
-    //        },
-    //        {
-    //            name: 'SSN',
-    //            description: 'Social Security Number'
-    //        }
-    //    ];
-
 
     //advance the modal to the next step
     $scope.next = function () {
@@ -339,6 +305,7 @@ datasets.controller('DatasetUpdateModalCtrl', function ($scope, $uibModalInstanc
     $scope.input = {
         name: dataset.name,
         description: dataset.description,
+        db_table_name: dataset.db_table_name,
         attributes: dataset.attributes
     };
 
@@ -380,17 +347,6 @@ datasets.controller('DatasetUpdateModalCtrl', function ($scope, $uibModalInstanc
                 });
     };
     getTags();
-});
-
-//controller for instance of DatasetInfoModal
-datasets.controller('DatasetInfoModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {
-
-    $scope.dataset = dataset;
-
-    //dismiss modal
-    $scope.close = function () {
-        $uibModalInstance.dismiss('close');
-    };
 });
 
 //controller for instance of DatasetDeleteModal

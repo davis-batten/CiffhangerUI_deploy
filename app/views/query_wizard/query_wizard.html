@@ -22,7 +22,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
-        <button class="btn btn-primary" type="button" ng-click="next()" ng-disabled="selectedDatasets.length != 2">Next</button>
+        <button class="btn btn-info" type="button" ng-click="next()" ng-disabled="selectedDatasets.length != 2">Next</button>
     </div>
 </div>
 
@@ -44,7 +44,7 @@
     <div class="modal-footer">
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
         <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-        <button class="btn btn-primary" type="button" ng-click="next()" ng-disabled="selectedTags.length != 1">Next</button>
+        <button class="btn btn-info" type="button" ng-click="next()" ng-disabled="selectedTags.length != 1">Next</button>
     </div>
 </div>
 
@@ -67,7 +67,7 @@
     <div class="modal-footer">
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
         <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-        <button class="btn btn-primary" type="button" ng-click="next()">Next</button>
+        <button class="btn btn-info" type="button" ng-click="next()">Next</button>
     </div>
 </div>
 
@@ -87,13 +87,43 @@
             <label for="limit">LIMIT </label>
             <input type="text" class="form-control" id="limit" ng-model="statement.limit">
         </div>
-        <div class="form-group">
-            <button class="btn btn-warning center" type="button" ng-click="addToQuery()">Add To</button>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
-            <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-            <button class="btn btn-default" type="button">Save</button>
-            <button class="btn btn-success" type="button">Save &amp; Run</button>
+        <br>
+        <div class="row">
+            <div class="col-xs-3">
+                <button class="btn btn-warning pull-left" type="button" ng-click="addToQuery()">Add To Query</button>
+            </div>
         </div>
     </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
+        <button class="btn btn-info" type="button">Save</button>
+        <button class="btn btn-success" type="button" ng-click="next()">Run</button>
+    </div>
+</div>
+
+<!-- Fifth step of modal -->
+<div ng-show="step == 5">
+    <div class="modal-body">
+        <h4>Preview of Results <small>after running Constructed Query</small></h4>
+        <div class="" id="queryResultsTable">
+            <table class="table table-bordered">
+                <thead>
+                    <th></th>
+                    <th ng-repeat="column in tableResult.colNames">
+                        {{column}}
+                    </th>
+                </thead>
+                <tbody>
+                    <td ng-repeat="row in tableResult.rows">{{row}}</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
+        <button class="btn btn-info" type="button">Save</button>
+        <button class="btn btn-success" type="button">Download Full Results</button>
+    </div>
+</div>

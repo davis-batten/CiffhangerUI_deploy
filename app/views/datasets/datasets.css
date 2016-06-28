@@ -20,6 +20,11 @@
     margin-left: .5em;
 }
 
+.no_data_warning {
+    color: #d9534f;
+    font-size: 1.5em;
+}
+
 #dataset_checkbox {
     float: left !important;
     display: inline-block;

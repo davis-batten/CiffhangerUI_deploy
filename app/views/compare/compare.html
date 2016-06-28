@@ -1,6 +1,10 @@
-<div class="container">
+<div class="container-fluid">
     <hr>
-    <h3>Compare</h3>
+    <ul class="nav nav-pills">
+        <li class="active"><a href="#/analyst/compare">Compare</a></li>
+        <li><a href="#/analyst/queries">Query Management</a></li>
+    </ul>
+    <hr>
 
     <div class="row">
         <!--Typeaheads go here -->
@@ -51,7 +55,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="dataset in selectedDatasets">
-                    <td>{{dataset.name}}</td>
+                    <td>{{dataset.name}} <span class="glyphicon glyphicon-exclamation-sign no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset!"></span></td>
                     <td ng-repeat="attr in rows[dataset.name]" class="{{attr.class}}">{{attr.name}}</td>
                 </tr>
             </tbody>
