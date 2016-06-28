@@ -32,6 +32,24 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         $log.debug(selections);
     }
 
+    //method responsible for handling changes due to checkboxes
+    //d -> item selected/deselected
+    //selections -> array to add/remove item
+    $scope.changeColumns = function (column, selections, dataset) {
+        if (column.selected) {
+            column.db_table_name = dataset.db_table_name;
+            selections.push(column);
+        } else {
+            for (var i = 0; i < selections.length; i++) {
+                $log.debug(selections[i]);
+                if (selections[i].name == column.name) {
+                    selections.splice(i, 1);
+                }
+            }
+        }
+        $log.debug(selections);
+    }
+
     //load the joinable tags only in the selected datasets
     $scope.loadTags = function () {
         for (var i = 0; i < $scope.selectedDatasets[0].tags.length; i++) {
@@ -100,7 +118,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             .then(
                 function (response) {
                     //success callback
-                    if (data.status == 'Success') {
+                    if (response.status == 'Success') {
                         $scope.query = response.data;
                         $scope.progressType = 'success';
                         //error callback

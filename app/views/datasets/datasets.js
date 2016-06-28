@@ -64,7 +64,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
             .then(function (data) {
                 $scope.showProgressBar = false;
                 if (data.status == 'Success') {
-                    $scope.datasetList.push(newDataSet);
+                    $scope.datasetList.push(data.data);
                 } else {
                     $scope.alerts.push({
                         msg: data,
