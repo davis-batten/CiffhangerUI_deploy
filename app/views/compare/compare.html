@@ -55,7 +55,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="dataset in selectedDatasets">
-                    <td>{{dataset.name}} <span class="glyphicon glyphicon-exclamation-sign no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset!"></span></td>
+                    <td>{{dataset.name}} <span class="glyphicon glyphicon-exclamation-sign no_data_warning" ng-if="dataset.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset!"></span></td>
                     <td ng-repeat="attr in rows[dataset.name]" class="{{attr.class}}">{{attr.name}}</td>
                 </tr>
             </tbody>

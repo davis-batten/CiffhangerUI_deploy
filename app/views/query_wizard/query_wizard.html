@@ -57,7 +57,7 @@
                 <label>{{d.name}}</label>
                 <ul class="list-group">
                     <li class="list-group-item" ng-repeat="a in d.attributes" ng-if="a.tag.name != selectedTags[0].name">
-                        <checkbox ng-model="a.selected" ng-change="change(a, selectedColumns)"></checkbox>
+                        <checkbox ng-model="a.selected" ng-change="changeColumns(a, selectedColumns, d)"></checkbox>
                         <label uib-tooltip="{{a.description}}">{{a.col_name}}</label>
                     </li>
                 </ul>
