@@ -115,10 +115,10 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.buildQuery = function () {
         //query input packaged
         var queryInput = {
-            datasets: $scope.selectedDatasets,
-            joinTag: $scope.selectedTags,
-            addJoinColumn: $scope.addJoinColumn,
-            columns: $scope.selectedColumns
+            datasets: $scope.selectedDatasets
+            , joinTag: $scope.selectedTags
+            , addJoinColumn: $scope.addJoinColumn
+            , columns: $scope.selectedColumns
         }
 
         queryService.buildQuery(queryInput)
@@ -148,8 +148,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
 
         queryService.runQuery(query)
             .then(
-                function (response) {
-                    //success callback
+                function (response) { //success callback
                     $scope.tableResult = response;
                     $scope.progressType = 'success';
 
