@@ -98,15 +98,17 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     //add where and limit clause to SQL query string
     $scope.addToQuery = function () {
         if ($scope.statement.where != "" && $scope.statement.limit != "") {
-            $scope.statement.text = "\n" + "WHERE " + $scope.statement.where + "\n" + "LIMIT " + $scope.statement.limit;
+            $scope.query = $scope.query.replace(";", "");
+            $scope.statement.text = "\nWHERE " + $scope.statement.where + "\n" + "LIMIT " + $scope.statement.limit + ";";
         } else if ($scope.statement.where != "" && $scope.statement.limit == "") {
-            $scope.statement.text = "WHERE " + $scope.statement.where;
+            $scope.query = $scope.query.replace(";", "");
+            $scope.statement.text = "\nWHERE " + $scope.statement.where + ";";
         } else if ($scope.statement.where == "" && $scope.statement.limit != "") {
-            $scope.statement.text = "LIMIT " + $scope.statement.limit;
-        } else if ($scope.statement.where != "" && $scope.statement.limit != "") {
-            $scope.statement.text = "";
+            $scope.query = $scope.query.replace(";", "");
+            $scope.statement.text = "\nLIMIT " + $scope.statement.limit + ";";
+        } else if ($scope.statement.where == "" && $scope.statement.limit == "") {
+            $scope.statement.text = ";";
         }
-        $scope.query += $scope.statement.text;
         $log.debug($scope.statement);
     };
 
@@ -127,7 +129,6 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                     if (response.status == 'Success') {
                         $scope.query = response.data;
                         $scope.progressType = 'success';
-                        //error callback
                     } else {
                         $scope.progressType = 'danger';
                         $scope.buildQueryError = true;
