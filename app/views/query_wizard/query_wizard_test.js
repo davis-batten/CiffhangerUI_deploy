@@ -163,7 +163,9 @@ describe('cliffhanger.query_wizard module', function () {
 
         //TODO test add WHERE and LIMIT clause
         it('should be able to add a WHERE/LIMIT clause to the query', function () {
-            expect(scope.statement.text).toBe(); //TODO
+            scope.statement.where = "assaults = 10"
+            scope.addToQuery(scope.statement.text)
+            expect(scope.statement.text).not.toBeNull();
         });
 
         //step 4 - completion step
