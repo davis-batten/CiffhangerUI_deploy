@@ -10,12 +10,30 @@
         <!--Typeaheads go here -->
         <div class="col-md-6">
             <h4>Tags</h4>
-            <tags-input ng-model="selectedTags" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Click to start selecting tags">
+            <tags-input ng-model="selectedTags" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Click to add tags to selection">
                 <auto-complete source="filterTags($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true" max-results-to-show="1000"></auto-complete>
             </tags-input>
 
             <p ng-show="noTagResults">No Results</p>
             <br>
+
+        </div>
+
+        <!--Typeaheads go here -->
+        <div class="col-md-6">
+            <h4>Datasets</h4>
+            <tags-input ng-model="selectedDatasets" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Click to add datasets to selection">
+                <auto-complete source="filterDatasets($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true" max-results-to-show="1000"></auto-complete>
+            </tags-input>
+
+            <p ng-show="noDatasetResults">No Results</p>
+            <br>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
             <div class="btn-toolbar">
                 <div class="btn-group">
                     <button class="btn btn-default btn-sm" ng-click="selectAllTags()">Select All</button>
@@ -23,38 +41,29 @@
                 </div>
                 <button class="btn btn-default btn-sm" ng-click="allowUntagged()" ng-hide="untagged">Show Untagged Attributes</button>
                 <button class="btn btn-default btn-sm" ng-click="removeUntagged()" ng-show="untagged">Hide Untagged Attributes</button>
+
             </div>
         </div>
-
-        <!--Typeaheads go here -->
         <div class="col-md-6">
-            <h4>Datasets</h4>
-            <tags-input ng-model="selectedDatasets" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Click to start selecting datasets">
-                <auto-complete source="filterDatasets($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true" max-results-to-show="1000"></auto-complete>
-            </tags-input>
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button class="btn btn-default btn-sm" ng-click="selectAllDatasets()">Select All</button>
+                    <button class="btn btn-default btn-sm" ng-click="deselectAllDatasets()">Deselect All</button>
+                </div>
 
-            <p ng-show="noDatasetResults">No Results</p>
-            <br>
-            <div class="btn-group">
-                <button class="btn btn-default btn-sm" ng-click="selectAllDatasets()">Select All</button>
-                <button class="btn btn-default btn-sm" ng-click="deselectAllDatasets()">Deselect All</button>
             </div>
         </div>
     </div>
-
-    <hr>
+    <br>
     <div class="row">
         <div class="col-md-6">
-            <div class="btn-toolbar">
-                <button class="btn btn-default btn-sm" ng-click="selectRelevantTags()" ng-show="selectedDatasets.length">Select Relevant</button>
-            </div>
+            <button class="btn btn-default btn-sm" ng-click="selectRelevantTags()" ng-show="selectedDatasets.length" uib-tooltip="Select all Tags that are in at least one of the selected Datasets">Limit to Relevant</button>
         </div>
         <div class="col-md-6">
-            <div class="btn-toolbar">
-                <button class="btn btn-default btn-sm" ng-click="selectRelevantDatasets()" ng-show="selectedTags.length">Select Relevant</button>
-            </div>
+            <button class="btn btn-default btn-sm" ng-click="selectRelevantDatasets()" ng-show="selectedTags.length" uib-tooltip="Select all Datasets that have at least one of the selected Tags">Limit to Relevant</button>
         </div>
     </div>
+    <hr>
     <br>
 
     <div class="" id="compareTable">
@@ -73,6 +82,6 @@
     </div>
 
     <div class="btn-group-center">
-        <button class="btn btn-success" ng-click="openQueryWizard()" uib-tooltip="Combine data to create a custom table">Make a Custom Table</button>
+        <button class="btn btn-success" ng-click="openQueryWizard()" uib-tooltip="Combine data to create a custom table">Build Custom Table</button>
     </div>
 </div>
