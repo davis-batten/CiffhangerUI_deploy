@@ -131,6 +131,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
                                     }
                                 }
                             }
+
                             //problem on backend
                             else {
                                 $log.warn("Failed to update");
