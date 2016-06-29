@@ -93,14 +93,16 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
 
     //add where and limit clause to SQL query string
     $scope.addToQuery = function () {
-        $scope.query = $scope.query.replace(";", "");
         if ($scope.statement.where != "" && $scope.statement.limit != "") {
+            $scope.query = $scope.query.replace(";", "");
             $scope.statement.text = "\nWHERE " + $scope.statement.where + "\n" + "LIMIT " + $scope.statement.limit + ";";
         } else if ($scope.statement.where != "" && $scope.statement.limit == "") {
+            $scope.query = $scope.query.replace(";", "");
             $scope.statement.text = "\nWHERE " + $scope.statement.where + ";";
         } else if ($scope.statement.where == "" && $scope.statement.limit != "") {
+            $scope.query = $scope.query.replace(";", "");
             $scope.statement.text = "\nLIMIT " + $scope.statement.limit + ";";
-        } else if ($scope.statement.where != "" && $scope.statement.limit != "") {
+        } else if ($scope.statement.where == "" && $scope.statement.limit == "") {
             $scope.statement.text = ";";
         }
         $log.debug($scope.statement);
