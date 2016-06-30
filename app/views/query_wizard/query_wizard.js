@@ -119,39 +119,40 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             , columns: $scope.selectedColumns
         }
         queryService.buildQuery(queryInput).then(function (response) {
-                    //success callback
-                    if (response.status == 'Success') {
-                        $scope.query = response.data;
-                        $scope.progressType = 'success';
-                        //failure callback
-                    }
-                    else {
-                        $scope.progressType = 'danger';
-                        $scope.buildQueryError = true;
-                        $log.error(response.data);
-                    }
-                }, //failure to connect
-                function (data) {
+                //success callback
+                if (response.status == 'Success') {
+                    $scope.query = response.data;
+                    $scope.progressType = 'success';
+                    //failure callback
+                }
+                else {
                     $scope.progressType = 'danger';
                     $scope.buildQueryError = true;
                     $log.error(response.data);
                 }
+            }
+            , //failure to connect
+            function (data) {
+                $scope.progressType = 'danger';
+                $scope.buildQueryError = true;
+                $log.error(response.data);
             }, //failure to connect
             function (data) {
                 $scope.progressType = 'danger';
                 $scope.buildQueryError = true;
                 $log.error('Failed to connect to server');
             })
-}; $scope.runQuery = function () {
-    var query = $scope.query;
-    queryService.runQuery(query).then(function (response) { //success callback
-            $scope.tableResult = response;
-            $scope.progressType = 'success';
-        }, //failure to connect
-        function (data) {
-            $scope.progressType = 'danger';
-            $scope.runQueryError = true;
-            $log.error('Failed to connect to server');
-        })
-};
+    };
+    $scope.runQuery = function () {
+        var query = $scope.query;
+        queryService.runQuery(query).then(function (response) { //success callback
+                $scope.tableResult = response;
+                $scope.progressType = 'success';
+            }, //failure to connect
+            function (data) {
+                $scope.progressType = 'danger';
+                $scope.runQueryError = true;
+                $log.error('Failed to connect to server');
+            })
+    };
 });
