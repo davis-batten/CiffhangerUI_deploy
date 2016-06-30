@@ -94,14 +94,14 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </head>
 
 <body id="HTMLReporter" class="html-reporter showDetails">
-<h1>Tested in Chrome 51.0.2704 (Windows 7 0.0.0) on Fri Jun 24 2016</h1>
+<h1>Tested in Chrome 51.0.2704 (Windows 7 0.0.0) on Thu Jun 30 2016</h1>
 
 <div class="alert">
 
 
-<!-- <span class="failingAlert bar">Failed 2 specs</span> -->
+<!-- <span class="failingAlert bar">Failed 3 specs</span> -->
 <span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
-  <a href="#" onclick="unfold();">Unfold</a></span>44 specs, 2 failed, 0 pending</span>
+  <a href="#" onclick="unfold();">Unfold</a></span>49 specs, 3 failed, 0 pending</span>
 <span class="resultsMenu bar">
 <a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a 
    class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
@@ -263,7 +263,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     </div>
   
     <div class="suite failed">
-      <span class="description">cliffhanger.query_wizard module query wizard controller</span>
+      <span class="description">cliffhanger.queries module query wizard controller</span>
 
       <div class="specSummary passed">
       <span class="description">should instantiate the QueryWizardCtrl controller</span>
@@ -291,6 +291,22 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
       <div class="specSummary passed">
       <span class="description">should load the correct tags for the selected datasets</span>
+      </div>
+
+      <div class="specSummary failed">
+      <span class="description">should be able to add a WHERE/LIMIT clause to the query</span>
+      </div>
+
+      <div class="specSummary passed">
+      <span class="description">should show a green progress bar on the build query step</span>
+      </div>
+
+      <div class="specSummary passed">
+      <span class="description">should correctly build SQL query on the build query step</span>
+      </div>
+
+      <div class="specSummary passed">
+      <span class="description">should show a red progress bar in the event of an error</span>
       </div>
 
       <div class="specSummary failed">
@@ -347,6 +363,15 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     </div>
   
     <div class="suite passed">
+      <span class="description">query service</span>
+
+      <div class="specSummary passed">
+      <span class="description">should be able to build a query</span>
+      </div>
+
+    </div>
+
+    <div class="suite passed">
       <span class="description">tag service</span>
     
       <div class="specSummary passed">
@@ -370,18 +395,26 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
   
   
   <div class="specDetail failed">
-    <span class="description">cliffhanger.query_wizard module query wizard controller should close the modal with submit</span>
+    <span class="description">cliffhanger.queries module query wizard controller should close the modal with submit</span>
     <div class="stackTrace">
       <div class="resultMessage">Expected spy uibModalInstance.close to have been called.
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?bd7d6e2a2c0c4a18fe31296bd429d76b22b68d91:123:41)</div>
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?8ea8064ce425ae0829bced8135bbdfd7f24dae8b:149:41)</div>
     </div>
   </div>
 
   <div class="specDetail failed">
-    <span class="description">cliffhanger.query_wizard module query wizard controller should show a complete progress bar on the last step</span>
+    <span class="description">cliffhanger.queries module query wizard controller should be able to add a WHERE/LIMIT clause to the query</span>
+    <div class="stackTrace">
+      <div class="resultMessage">TypeError: Cannot set property 'where' of undefined
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?8ea8064ce425ae0829bced8135bbdfd7f24dae8b:192:35)</div>
+    </div>
+  </div>
+
+  <div class="specDetail failed">
+    <span class="description">cliffhanger.queries module query wizard controller should show a complete progress bar on the last step</span>
     <div class="stackTrace">
       <div class="resultMessage">Expected undefined to be 'success'.
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?bd7d6e2a2c0c4a18fe31296bd429d76b22b68d91:168:40)</div>
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?8ea8064ce425ae0829bced8135bbdfd7f24dae8b:226:40)</div>
     </div>
   </div>
   
