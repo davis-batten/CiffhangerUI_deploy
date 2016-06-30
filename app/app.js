@@ -4,6 +4,8 @@ app = angular.module('cliffhanger', [
     , 'ui.checkbox'
     , 'ngRoute'
     , 'ngTagsInput'
+    , 'ngSanitize'
+    , 'ngCsv'
     , 'cliffhanger.version',
 
     //My modules

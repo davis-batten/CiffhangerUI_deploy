@@ -124,6 +124,6 @@
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
         <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
         <button class="btn btn-info" type="button">Save</button>
-        <button class="btn btn-success" type="button">Download Full Results</button>
+        <button class="btn btn-success" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="test.csv">Download Full Results</button>
     </div>
 </div>
