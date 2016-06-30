@@ -157,6 +157,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                     if (response.status == 'Success') {
                         $scope.query = response.data;
                         $scope.progressType = 'success';
+                        //failure callback
                     } else {
                         $scope.progressType = 'danger';
                         $scope.buildQueryError = true;
