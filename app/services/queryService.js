@@ -54,6 +54,7 @@ angular.module('cliffhanger.queries')
                     //success callback
                     function (response) {
                         $log.debug('Success!');
+                        $log.info(response)
                         return response.data;
                     }, //error callback
                     function (response) {

@@ -2,6 +2,7 @@
 var queries = angular.module('cliffhanger.queries', ['ngRoute', 'ngSanitize', 'ngCsv']);
 queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets, queryService) {
     $scope.query = {}; //container for query
+    $scope.alerts = [];
     $scope.tableResult = {};
     $scope.step = 1; //which step in the modal is on
     $scope.maxSteps = 5; //number of steps in modal
@@ -84,54 +85,30 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         $uibModalInstance.dismiss('cancel');
     };
 
-    //complete the modal
-    $scope.save = function () {
-        $scope.newQuery = {
-            name: newQuery.name,
-            description: newQuery.description,
-            query: newQuery.SQLString
-        };
-        queryService.saveQuery($scope.newQuery)
-            .then(function (data) {
-                if (data.status == 'Success') {
-                    $log.debug(data.data)
-                } else {
-                    $scope.alerts.push({
-                        msg: data,
-                        type: 'danger'
-                    });
-                }
-            }, function (data) {
-                $scope.alerts.push({
-                    msg: 'Failed to create Query',
-                    type: 'danger'
-                });
-            })
-    };
-
     //add where and limit clause to SQL query string
     $scope.addToQuery = function () {
+        if (($scope.statement.where == null && $scope.statement.limit == null) || ($scope.statement.where == "" && $scope.statement.limit == "") || ($scope.statement.where == null && $scope.statement.limit == "") || ($scope.statement.where == "" && $scope.statement.limit == null)) {
+            $scope.query = $scope.query.replace(";", "");
+            $scope.statement.text = ";";
+        }
         //adding both WHERE and LIMIT statement
-        if ($scope.statement.where != "" && $scope.statement.limit != "") {
+        else if ($scope.statement.where != null && $scope.statement.limit != null) {
             $scope.query = $scope.query.replace(";", "");
             $scope.statement.text = "\nWHERE " + $scope.statement.where + "\n" + "LIMIT " + $scope.statement.limit + ";";
         }
         //adding WHERE and not LIMIT
-        else if ($scope.statement.where != "" && $scope.statement.limit == "") {
+        else if (($scope.statement.where != null && $scope.statement.limit == null) || ($scope.statement.where != null && $scope.statement.limit == "")) {
             $scope.query = $scope.query.replace(";", "");
             $scope.statement.text = "\nWHERE " + $scope.statement.where + ";";
         }
         //adding LIMIT and not WHERE
-        else if ($scope.statement.where == "" && $scope.statement.limit != "") {
+        else if (($scope.statement.where == null && $scope.statement.limit != null) || ($scope.statement.where == "" && $scope.statement.limit != null)) {
             $scope.query = $scope.query.replace(";", "");
             $scope.statement.text = "\nLIMIT " + $scope.statement.limit + ";";
         }
-        //adding Neither
-        else if ($scope.statement.where == "" && $scope.statement.limit == "") {
-            $scope.statement.text = ";";
-        }
         $log.debug($scope.statement);
     };
+
     //build a new query given the user's choices
     $scope.buildQuery = function () {
         //query input packaged
@@ -141,7 +118,8 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             addJoinColumn: $scope.addJoinColumn,
             columns: $scope.selectedColumns
         }
-        queryService.buildQuery(queryInput).then(function (response) {
+        queryService.buildQuery(queryInput)
+            .then(function (response) {
                     //success callback
                     if (response.status == 'Success') {
                         $scope.query = response.data;
@@ -157,23 +135,46 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                     $scope.progressType = 'danger';
                     $scope.buildQueryError = true;
                     $log.error(response.data);
+                });
+    };
+
+
+    //complete the modal
+    $scope.save = function () {
+        if ($scope.statement.text != null) {
+            $scope.newQuery.sqlString = $scope.query + $scope.statement.text;
+        } else {
+            $scope.newQuery.sqlString = $scope.query;
+        }
+        queryService.saveQuery($scope.newQuery)
+            .then(function (data) {
+                if (data.status == 'Success') {
+                    $log.debug(data)
+                } else {
+                    $scope.alerts.push({
+                        msg: data,
+                        type: 'danger'
+                    });
                 }
+            }, function (data) {
+                $scope.alerts.push({
+                    msg: 'Failed to create Query',
+                    type: 'danger'
+                });
+            })
+    };
+
+
+    $scope.runQuery = function () {
+        var query = $scope.query;
+        queryService.runQuery(query).then(function (response) { //success callback
+                $scope.tableResult = response;
+                $scope.progressType = 'success';
             }, //failure to connect
             function (data) {
                 $scope.progressType = 'danger';
-                $scope.buildQueryError = true;
+                $scope.runQueryError = true;
                 $log.error('Failed to connect to server');
             })
-}; $scope.runQuery = function () {
-    var query = $scope.query;
-    queryService.runQuery(query).then(function (response) { //success callback
-            $scope.tableResult = response;
-            $scope.progressType = 'success';
-        }, //failure to connect
-        function (data) {
-            $scope.progressType = 'danger';
-            $scope.runQueryError = true;
-            $log.error('Failed to connect to server');
-        })
-};
+    };
 });
