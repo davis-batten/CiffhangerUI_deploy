@@ -75,9 +75,9 @@
 <div ng-show="step == 4">
     <div class="modal-body">
         <h4>Constructed Query</h4>
-        <pre>QUERY<br>
-{{query}}{{statement.text}}
-        </pre>
+
+        <pre>{{query}}{{statement.text}}</pre>
+
         <div class="form-group">
             <label for="where">WHERE </label>
             <input type="text" class="form-control" id="where" ng-model="statement.where">
@@ -116,7 +116,6 @@
                 <tbody>
                     <tr ng-repeat="row in tableResult.rows">
                         <td ng-repeat="cell in row">{{cell}}</td>
-                    </tr>
                 </tbody>
             </table>
         </div>
