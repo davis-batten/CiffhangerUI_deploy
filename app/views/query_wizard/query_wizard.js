@@ -1,7 +1,5 @@
 'use strict';
-
 var queries = angular.module('cliffhanger.queries', ['ngRoute', 'ngSanitize', 'ngCsv']);
-
 queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets, queryService) {
     $scope.query = {}; //container for query
     $scope.tableResult = {};
@@ -9,66 +7,61 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.maxSteps = 5; //number of steps in modal
     $scope.datasets = datasets;
     $scope.tags = []; //TODO load based upon datasets
-
-
     $scope.addJoinColumn = false; //whether to include joined column in select
     $scope.selectedDatasets = []; //datasets selected to be joined
     $scope.selectedTags = []; //selected join tags
     $scope.selectedColumns = []; //select columns for query
-
+    //for save query dropdown
+    $scope.isCollapsed = true;
     //method responsible for handling changes due to checkboxes
     //d -> item selected/deselected
     //selections -> array to add/remove item
     $scope.change = function (d, selections) {
-        if (d.selected) {
-            selections.push(d);
-        } else {
-            for (var i = 0; i < selections.length; i++) {
-                $log.debug(selections[i]);
-                if (selections[i].name == d.name) {
-                    selections.splice(i, 1);
+            if (d.selected) {
+                selections.push(d);
+            } else {
+                for (var i = 0; i < selections.length; i++) {
+                    $log.debug(selections[i]);
+                    if (selections[i].name == d.name) {
+                        selections.splice(i, 1);
+                    }
                 }
             }
+            $log.debug(selections);
         }
-        $log.debug(selections);
-    }
-
-    //method responsible for handling changes due to checkboxes
-    //d -> item selected/deselected
-    //selections -> array to add/remove item
+        //method responsible for handling changes due to checkboxes
+        //d -> item selected/deselected
+        //selections -> array to add/remove item
     $scope.changeColumns = function (column, selections, dataset) {
-        if (column.selected) {
-            column.db_table_name = dataset.db_table_name;
-            selections.push(column);
-        } else {
-            for (var i = 0; i < selections.length; i++) {
-                $log.debug(selections[i]);
-                if (selections[i].name == column.name) {
-                    selections.splice(i, 1);
+            if (column.selected) {
+                column.db_table_name = dataset.db_table_name;
+                selections.push(column);
+            } else {
+                for (var i = 0; i < selections.length; i++) {
+                    $log.debug(selections[i]);
+                    if (selections[i].name == column.name) {
+                        selections.splice(i, 1);
+                    }
                 }
             }
+            $log.debug(selections);
         }
-        $log.debug(selections);
-    }
-
-    //load the joinable tags only in the selected datasets
+        //load the joinable tags only in the selected datasets
     $scope.loadTags = function () {
-        for (var i = 0; i < $scope.selectedDatasets[0].tags.length; i++) {
-            var tagA = $scope.selectedDatasets[0].tags[i];
-            for (var j = 0; j < $scope.selectedDatasets[1].tags.length; j++) {
-                var tagB = $scope.selectedDatasets[1].tags[j];
-                //if tags match, aren't EMPTY and are not a duplicate
-                if (tagA.name == tagB.name && tagA.name != '<EMPTY>' && $scope.tags.indexOf(tagA) == -1) {
-                    $scope.tags.push(tagA);
-                    break;
+            for (var i = 0; i < $scope.selectedDatasets[0].tags.length; i++) {
+                var tagA = $scope.selectedDatasets[0].tags[i];
+                for (var j = 0; j < $scope.selectedDatasets[1].tags.length; j++) {
+                    var tagB = $scope.selectedDatasets[1].tags[j];
+                    //if tags match, aren't EMPTY and are not a duplicate
+                    if (tagA.name == tagB.name && tagA.name != '<EMPTY>' && $scope.tags.indexOf(tagA) == -1) {
+                        $scope.tags.push(tagA);
+                        break;
+                    }
                 }
             }
+            $log.debug($scope.tags);
         }
-        $log.debug($scope.tags);
-    }
-
-
-    //advance the modal to the next step
+        //advance the modal to the next step
     $scope.next = function () {
         $scope.step++;
         if ($scope.step == 2) {
@@ -139,7 +132,6 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         }
         $log.debug($scope.statement);
     };
-
     //build a new query given the user's choices
     $scope.buildQuery = function () {
         //query input packaged
@@ -149,10 +141,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             addJoinColumn: $scope.addJoinColumn,
             columns: $scope.selectedColumns
         }
-
-        queryService.buildQuery(queryInput)
-            .then(
-                function (response) {
+        queryService.buildQuery(queryInput).then(function (response) {
                     //success callback
                     if (response.status == 'Success') {
                         $scope.query = response.data;
@@ -162,32 +151,29 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                         $scope.progressType = 'danger';
                         $scope.buildQueryError = true;
                         $log.error(response.data);
-
                     }
-
                 }, //failure to connect
                 function (data) {
                     $scope.progressType = 'danger';
                     $scope.buildQueryError = true;
-                    $log.error('Failed to connect to server');
-                })
-    };
-
-    $scope.runQuery = function () {
-        var query = $scope.query;
-
-        queryService.runQuery(query)
-            .then(
-                function (response) { //success callback
-                    $scope.tableResult = response;
-                    $scope.progressType = 'success';
-
-                }, //failure to connect
-                function (data) {
-                    $scope.progressType = 'danger';
-                    $scope.runQueryError = true;
-                    $log.error('Failed to connect to server');
-                })
-    };
-
+                    $log.error(response.data);
+                }
+            }, //failure to connect
+            function (data) {
+                $scope.progressType = 'danger';
+                $scope.buildQueryError = true;
+                $log.error('Failed to connect to server');
+            })
+}; $scope.runQuery = function () {
+    var query = $scope.query;
+    queryService.runQuery(query).then(function (response) { //success callback
+            $scope.tableResult = response;
+            $scope.progressType = 'success';
+        }, //failure to connect
+        function (data) {
+            $scope.progressType = 'danger';
+            $scope.runQueryError = true;
+            $log.error('Failed to connect to server');
+        })
+};
 });

@@ -1,14 +1,11 @@
 <!-- Query Wizard Modal Template -->
-
-
 <div class="query-wizard-header">
     <div class="modal-header">
         <h3 class="modal-title inline">Query Wizard</h3>
-        <h5 class="inline">Build a query from your comparison</h5>
+        <h5 class="inline">Build a query from your comparison and create a custom table</h5>
         <uib-progressbar max="maxSteps" value="step" type="{{progressType}}">{{step}} / {{maxSteps}}</uib-progressbar>
     </div>
 </div>
-
 <!-- First step of modal -->
 <div ng-show="step == 1">
     <div class="modal-body">
@@ -25,7 +22,6 @@
         <button class="btn btn-info" type="button" ng-click="next()" ng-disabled="selectedDatasets.length != 2">Next</button>
     </div>
 </div>
-
 <!-- Second step of modal -->
 <div ng-show="step == 2">
     <div class="modal-body">
@@ -36,7 +32,6 @@
                 <label>{{t.name}}</label>
             </li>
         </ul>
-
         <h4 class="text-danger" ng-show="tags.length==0">No joinable tags for the selected datasets</h4>
         <label>Show selected tag in table</label>
         <checkbox ng-model="addJoinColumn"></checkbox>
@@ -47,7 +42,6 @@
         <button class="btn btn-info" type="button" ng-click="next()" ng-disabled="selectedTags.length != 1">Next</button>
     </div>
 </div>
-
 <!-- Third step of modal -->
 <div ng-show="step == 3">
     <div class="modal-body">
@@ -70,7 +64,6 @@
         <button class="btn btn-info" type="button" ng-click="next()">Next</button>
     </div>
 </div>
-
 <!-- Fourth step of modal -->
 <div ng-show="step == 4">
     <div class="modal-body">
@@ -88,6 +81,7 @@
             <input type="text" class="form-control" id="limit" ng-model="statement.limit">
         </div>
         <br>
+
         <div class="row">
             <div class="col-xs-3">
                 <button class="btn btn-warning pull-left" type="button" ng-click="addToQuery()">Add To Query</button>
@@ -97,11 +91,27 @@
     <div class="modal-footer">
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
         <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-        <button class="btn btn-info" type="button" ng-click="save()">Save</button>
+        <button class="btn btn-info" type="button" ng-click="isCollapsed = !isCollapsed">Save As</button>
         <button class="btn btn-success" type="button" ng-click="next()">Run</button>
+        <div uib-collapse="isCollapsed">
+            <hr>
+            <div class="well well-sm">
+                <form name="saveQueryAs">
+                    <div class="form-group">
+                        <label for="queryName" class="pull-left">Name</label>
+                        <input type="text" class="form-control" name="name" id="queryName" required> </div>
+                    <div class="form-group">
+                        <label for="queryDesc" class="pull-left">Description</label>
+                        <input type="text" class="form-control" id="queryDesc"> </div>
+                    <div class="form-group">
+                        <button class="btn btn-info" type="button" ng-disabled="name.$invalid">Save</button>
+                        <button class="btn btn-danger pull-left" type="button">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
-
 <!-- Fifth step of modal -->
 <div ng-show="step == 5">
     <div class="modal-body">
@@ -109,9 +119,7 @@
         <div class="" id="queryResultsTable">
             <table class="table table-bordered">
                 <thead>
-                    <th ng-repeat="column in tableResult.colNames">
-                        {{column}}
-                    </th>
+                    <th ng-repeat="column in tableResult.colNames"> {{column}} </th>
                 </thead>
                 <tbody>
                     <tr ng-repeat="row in tableResult.rows">
@@ -123,7 +131,7 @@
     <div class="modal-footer">
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
         <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-        <button class="btn btn-info" type="button">Save</button>
+        <button class="btn btn-info" type="button">Save Query As</button>
         <button class="btn btn-success" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="test.csv">Download Full Results</button>
     </div>
 </div>
