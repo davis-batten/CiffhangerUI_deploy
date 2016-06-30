@@ -88,18 +88,22 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.submit = function () {};
     //add where and limit clause to SQL query string
     $scope.addToQuery = function () {
+        //adding both WHERE and LIMIT statement
         if ($scope.statement.where != "" && $scope.statement.limit != "") {
             $scope.query = $scope.query.replace(";", "");
             $scope.statement.text = "\nWHERE " + $scope.statement.where + "\n" + "LIMIT " + $scope.statement.limit + ";";
         }
+        //adding WHERE and not LIMIT
         else if ($scope.statement.where != "" && $scope.statement.limit == "") {
             $scope.query = $scope.query.replace(";", "");
             $scope.statement.text = "\nWHERE " + $scope.statement.where + ";";
         }
+        //adding LIMIT and not WHERE
         else if ($scope.statement.where == "" && $scope.statement.limit != "") {
             $scope.query = $scope.query.replace(";", "");
             $scope.statement.text = "\nLIMIT " + $scope.statement.limit + ";";
         }
+        //adding Neither
         else if ($scope.statement.where == "" && $scope.statement.limit == "") {
             $scope.statement.text = ";";
         }
@@ -115,12 +119,19 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             , columns: $scope.selectedColumns
         }
         queryService.buildQuery(queryInput).then(function (response) {
-                //success callback
-                if (response.status == 'Success') {
-                    $scope.query = response.data;
-                    $scope.progressType = 'success';
-                }
-                else {
+                    //success callback
+                    if (response.status == 'Success') {
+                        $scope.query = response.data;
+                        $scope.progressType = 'success';
+                        //failure callback
+                    }
+                    else {
+                        $scope.progressType = 'danger';
+                        $scope.buildQueryError = true;
+                        $log.error(response.data);
+                    }
+                }, //failure to connect
+                function (data) {
                     $scope.progressType = 'danger';
                     $scope.buildQueryError = true;
                     $log.error(response.data);
@@ -131,17 +142,16 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                 $scope.buildQueryError = true;
                 $log.error('Failed to connect to server');
             })
-    };
-    $scope.runQuery = function () {
-        var query = $scope.query;
-        queryService.runQuery(query).then(function (response) { //success callback
-                $scope.tableResult = response;
-                $scope.progressType = 'success';
-            }, //failure to connect
-            function (data) {
-                $scope.progressType = 'danger';
-                $scope.runQueryError = true;
-                $log.error('Failed to connect to server');
-            })
-    };
+}; $scope.runQuery = function () {
+    var query = $scope.query;
+    queryService.runQuery(query).then(function (response) { //success callback
+            $scope.tableResult = response;
+            $scope.progressType = 'success';
+        }, //failure to connect
+        function (data) {
+            $scope.progressType = 'danger';
+            $scope.runQueryError = true;
+            $log.error('Failed to connect to server');
+        })
+};
 });
