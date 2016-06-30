@@ -23,7 +23,6 @@
         , "angular-mocks": "~1.5.0"
         , "ng-tags-input": "^3.1.1"
         , "ng-csv": "^0.3.6"
-        , "ngSanitize": "^1.7.9"
     }
     , "resolutions": {
         "angular": "1.5.7"

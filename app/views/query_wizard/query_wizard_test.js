@@ -1,5 +1,7 @@
 describe('cliffhanger.queries module', function () {
     beforeEach(angular.mock.module('ngRoute'));
+    beforeEach(angular.mock.module('ngSanitize'));
+    beforeEach(angular.mock.module('ngCsv'));
     beforeEach(angular.mock.module('cliffhanger.queries'));
     describe('query wizard controller', function () {
         beforeEach(inject(function ($controller, $rootScope, $log, queryService, $q) {
@@ -149,7 +151,7 @@ describe('cliffhanger.queries module', function () {
             scope.cancel();
             expect(modalInstance.dismiss).toHaveBeenCalledWith('cancel');
         });
-        it('should close the modal with submit', function () {
+        it('should close the modal with submit', function () { //This test will always fail because scope.submit is not implemented
             scope.submit();
             expect(scope.query).not.toBeNull();
             expect(modalInstance.close).toHaveBeenCalled();
