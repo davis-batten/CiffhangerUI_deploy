@@ -33,7 +33,7 @@ paths:
       responses:
         # Response code
         200:
-          description: Successful response
+          description: success
           # A schema describing your response object.
           # Use JSON Schema format
           schema:
@@ -83,6 +83,210 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/Dataset'
+  /dataset/update/{dataset_name}:
+    put:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        -
+          name: dataset_name
+          in: path
+          required: true
+          type: string
+        -
+          name: input
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Dataset'
+      responses:
+        200:
+          description: success
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: either "Success" or "Error"
+              data:
+                $ref: '#/definitions/Dataset'
+  /dataset/delete/{dataset_name}:
+    delete:
+      description: Deletes an existing `Dataset`. Note that this does not delete the data ingested into HDFS, nor drop any tables in Hive
+      parameters:
+        -
+          name: dataset_name
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+  /tag/create:
+    post:
+      description: Creates a new `Tag`
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        -
+          name: input
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Tag'
+      responses:
+        200:
+          description: success
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: either "Success" or "Error"
+              data:
+                $ref: '#/definitions/Tag'
+  /tag/get/{tag_name}:
+    get:
+      description: Fetch an existing `Tag`
+      produces:
+        - application/json
+      parameters:
+        -
+          name: tag_name
+          description: name of the `Tag` you are looking for
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: success
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: either "Success" or "Error"
+              data:
+                $ref: '#/definitions/Tag'
+  /tag/list:
+    get:
+      description: Gets all existing `Tags`
+      produces:
+        - application/json
+      responses:
+        200:
+          description: success
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: either "Success" or "Error"
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Tag'
+  /tag/update/{tag_name}:
+    put:
+      description: Updates an existing `Tag`.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        -
+          name: tag_name
+          description: name of the `Tag` you are updating
+          in: path
+          required: true
+          type: string
+        -
+          name: input
+          in: body
+          schema:
+            $ref: '#/definitions/Tag'
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: either "Success" or "Error"
+              data:
+                $ref: '#/definitions/Tag'
+  /tag/delete/{tag_name}:
+    delete:
+      description: Deletes an existing `Tag`.
+      produces:
+        - application/json
+      parameters:
+        -
+          name: tag_name
+          description: name of the `Tag` to be deleted
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: either "Success" or "Error"
+  /query/build:
+    post:
+      description: Build a new SQL query string
+      consumes:
+         - application/json
+      produces:
+        - application/json
+      parameters:
+        -
+          name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              datasets:
+                type: array
+                items:
+                  $ref: '#/definitions/Dataset'
+              joinTag:
+                type: array
+                items:
+                  $ref: '#/definitions/Tag'
+              addJoinColumn:
+                type: boolean
+                description: whether to include column of join in view
+              columns:
+                type: array
+                items:
+                  $ref: '#/definitions/Attribute'
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: either "Success" or "Error"
+              data:
+                type: object
+                properties:
+                  query:
+                    type: string
+                    description: SQL query string
+
 definitions:
   Dataset:
     description: A `dataset skeleton` representing the meta-data about a dataset
