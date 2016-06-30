@@ -189,9 +189,48 @@ describe('cliffhanger.queries module', function () {
 
         //TODO test add WHERE and LIMIT clause
         it('should be able to add a WHERE/LIMIT clause to the query', function () {
-            scope.statement.where = "assaults = 10"
-            scope.addToQuery(scope.statement.text)
+            scope.statement = {};
+            scope.query = "SELECT * FROM table;";
+            scope.statement.where = "assaults = 10";
+            scope.statement.limit = "100";
+            scope.addToQuery();
             expect(scope.statement.text).not.toBeNull();
+            expect(scope.statement.text).toEqual("\nWHERE assaults = 10\nLIMIT 100;");
+        });
+
+        it('should be able to add a WHERE clause without a LIMIT clause', function () {
+            scope.statement = {};
+            scope.query = "SELECT * FROM table;";
+            scope.statement.where = "assaults = 10";
+            scope.statement.limit = "";
+            scope.addToQuery();
+            expect(scope.statement.text).not.toBeNull();
+            expect(scope.statement.text).toEqual("\nWHERE assaults = 10;");
+        });
+
+        it('should be able to add a LIMIT clause without a WHERE clause', function () {
+            scope.statement = {};
+            scope.query = "SELECT * FROM table;";
+            scope.statement.where = "";
+            scope.statement.limit = "110";
+            scope.addToQuery();
+            expect(scope.statement.text).not.toBeNull();
+            expect(scope.statement.text).toEqual("\nLIMIT 110;");
+        });
+
+        it('should be able to add a WHERE/LIMIT clause and then change it', function () {
+            scope.statement = {};
+            scope.query = "SELECT * FROM table;";
+            scope.statement.where = "assaults = 10";
+            scope.statement.limit = "100";
+            scope.addToQuery();
+            expect(scope.statement.text).not.toBeNull();
+            expect(scope.statement.text).toEqual("\nWHERE assaults = 10\nLIMIT 100;");
+            scope.statement.where = "assaults > 0";
+            scope.statement.limit = "20";
+            scope.addToQuery();
+            expect(scope.statement.text).not.toBeNull();
+            expect(scope.statement.text).toEqual("\nWHERE assaults > 0\nLIMIT 20;");
         });
 
         //step 4 - query compilation step
