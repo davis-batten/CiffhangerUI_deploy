@@ -273,10 +273,6 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">should dismiss the modal with cancel</span>
       </div>
     
-      <div class="specSummary failed">
-      <span class="description">should close the modal with submit</span>
-      </div>
-    
       <div class="specSummary passed">
       <span class="description">should advance to the next step</span>
       </div>
@@ -297,11 +293,11 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">should be able to add a WHERE/LIMIT clause to the query</span>
       </div>
     
-      <div class="specSummary passed">
+      <div class="specSummary failed">
       <span class="description">should be able to add a WHERE clause without a LIMIT clause</span>
       </div>
     
-      <div class="specSummary passed">
+      <div class="specSummary failed">
       <span class="description">should be able to add a LIMIT clause without a WHERE clause</span>
       </div>
     
@@ -321,8 +317,12 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">should show a red progress bar in the event of an error</span>
       </div>
     
-      <div class="specSummary failed">
+      <div class="specSummary passed">
       <span class="description">should show a complete progress bar on the last step</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should run the query and return a table result object</span>
       </div>
     
     </div>
@@ -407,18 +407,24 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
   
   
   <div class="specDetail failed">
-    <span class="description">cliffhanger.queries module query wizard controller should close the modal with submit</span>
+    <span class="description">cliffhanger.queries module query wizard controller should be able to add a WHERE clause without a LIMIT clause</span>
     <div class="stackTrace">
-      <div class="resultMessage">Expected spy uibModalInstance.close to have been called.
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?68d86bf3a5d528ad6b7efbc0cdad1d9314d83d7f:157:41)</div>
+      <div class="resultMessage">Expected '
+WHERE assaults = 10
+LIMIT ;' to equal '
+WHERE assaults = 10;'.
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?aef00eb0a30ec5f04dacf6dafb38671c5f3a926f:215:42)</div>
     </div>
   </div>
   
   <div class="specDetail failed">
-    <span class="description">cliffhanger.queries module query wizard controller should show a complete progress bar on the last step</span>
+    <span class="description">cliffhanger.queries module query wizard controller should be able to add a LIMIT clause without a WHERE clause</span>
     <div class="stackTrace">
-      <div class="resultMessage">Expected undefined to be 'success'.
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?68d86bf3a5d528ad6b7efbc0cdad1d9314d83d7f:258:40)</div>
+      <div class="resultMessage">Expected '
+WHERE 
+LIMIT 110;' to equal '
+LIMIT 110;'.
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?aef00eb0a30ec5f04dacf6dafb38671c5f3a926f:224:42)</div>
     </div>
   </div>
   

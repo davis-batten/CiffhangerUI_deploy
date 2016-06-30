@@ -146,7 +146,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         }
         queryService.saveQuery($scope.newQuery).then(function (data) {
             if (data.status == 'Success') {
-                $log.debug(data)
+                $log.debug(data);
             }
             else {
                 $scope.alerts.push({
