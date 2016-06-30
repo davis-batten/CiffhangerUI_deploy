@@ -76,15 +76,15 @@
     <div class="modal-body">
         <h4>Constructed Query</h4>
 
-        <pre>{{query}}{{statement.text}}</pre>
+        <pre id="SQLString" ng-model="newQuery.query">{{query}}{{statement.text}}</pre>
 
         <div class="form-group">
-            <label for="where">WHERE </label>
+            <label for="where">Manual WHERE clause</label><small>  Example Input: table.column > x</small>
             <input type="text" class="form-control" id="where" ng-model="statement.where">
         </div>
         <br>
         <div class="form-group">
-            <label for="limit">LIMIT </label>
+            <label for="limit">Manual LIMIT clause</label><small>  Example Input: 100</small>
             <input type="text" class="form-control" id="limit" ng-model="statement.limit">
         </div>
         <br>
@@ -97,7 +97,7 @@
     <div class="modal-footer">
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
         <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-        <button class="btn btn-info" type="button">Save</button>
+        <button class="btn btn-info" type="button" ng-click="save()">Save</button>
         <button class="btn btn-success" type="button" ng-click="next()">Run</button>
     </div>
 </div>

@@ -92,7 +92,29 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     };
 
     //complete the modal
-    $scope.submit = function () {};
+    $scope.save = function () {
+        $scope.newQuery = {
+            name: newQuery.name,
+            description: newQuery.description,
+            query: newQuery.SQLString
+        };
+        queryService.saveQuery($scope.newQuery)
+            .then(function (data) {
+                if (data.status == 'Success') {
+                    $log.debug(data.data)
+                } else {
+                    $scope.alerts.push({
+                        msg: data,
+                        type: 'danger'
+                    });
+                }
+            }, function (data) {
+                $scope.alerts.push({
+                    msg: 'Failed to create Query',
+                    type: 'danger'
+                });
+            })
+    };
 
     //add where and limit clause to SQL query string
     $scope.addToQuery = function () {
@@ -122,10 +144,10 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.buildQuery = function () {
         //query input packaged
         var queryInput = {
-            datasets: $scope.selectedDatasets
-            , joinTag: $scope.selectedTags
-            , addJoinColumn: $scope.addJoinColumn
-            , columns: $scope.selectedColumns
+            datasets: $scope.selectedDatasets,
+            joinTag: $scope.selectedTags,
+            addJoinColumn: $scope.addJoinColumn,
+            columns: $scope.selectedColumns
         }
 
         queryService.buildQuery(queryInput)
