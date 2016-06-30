@@ -1,5 +1,5 @@
 'use strict';
-var queries = angular.module('cliffhanger.queries', ['ngRoute']);
+var queries = angular.module('cliffhanger.queries', ['ngRoute', 'ngSanitize', 'ngCsv']);
 queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets, queryService) {
     $scope.query = {}; //container for query
     $scope.tableResult = {};
