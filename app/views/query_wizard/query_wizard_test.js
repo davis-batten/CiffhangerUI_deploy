@@ -105,7 +105,7 @@ describe('cliffhanger.queries module', function () {
             //mock queryService methods
             spyOn(mockQueryService, "runQuery").and.callFake(function () {
                 var deferred = $q.defer();
-                deferred.resolve('TableResult'); //TODO add tableResult to here
+                deferred.resolve(); //TODO add tableResult to here
                 return deferred.promise;
             })
             spyOn(mockQueryService, "buildQuery").and.callFake(function () {

@@ -1,0 +1,128 @@
+# Example YAML to get you started quickly.
+# Be aware that YAML has indentation based scoping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+
+# This is your document metadata
+info:
+  version: "0.0.1"
+  title: Cliffhanger
+
+# Describe your paths here
+paths:
+  # This is a path endpoint. Change it.
+  /dataset/create:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      # Describe this verb here. Note: you can use markdown
+      description: |
+        Creates a new `Dataset`.
+      # This is array of GET operation parameters:
+      parameters:
+        -
+          name: input
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Dataset'
+
+      # Expected responses for this operation:
+      responses:
+        # Response code
+        200:
+          description: Successful response
+          # A schema describing your response object.
+          # Use JSON Schema format
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: either "Success" or "Error"
+              data:
+                $ref: '#/definitions/Dataset'
+  /dataset/get/{dataset_name}:
+    get:
+      produces:
+        - application/json
+      description: Fetches an existing `Dataset`
+      parameters:
+        -
+          name: dataset_name
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: success
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: either "Success" or "Error"
+              data:
+                $ref: '#/definitions/Dataset'
+  /dataset/list:
+    get:
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: success
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: either "Success" or "Error"
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Dataset'
+definitions:
+  Dataset:
+    description: A `dataset skeleton` representing the meta-data about a dataset
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      db_table_name:
+        type: string
+      #add attributes
+      attributes:
+        type: array
+        items:
+          $ref: '#/definitions/Attribute'
+    required:
+      - name
+      - attributes
+
+  Attribute:
+    properties:
+      col_name:
+        type: string
+      data_type:
+        type: string
+      description:
+        type: string
+      tag:
+        $ref: '#/definitions/Tag'
+    required:
+      - col_name
+      - data_type
+
+  Tag:
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+    required:
+      - name
+
+
