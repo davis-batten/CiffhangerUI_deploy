@@ -46,6 +46,24 @@ angular.module('cliffhanger.queries')
                     }
                 );
         };
+
+        this.saveQuery = function (newQuery) {
+
+            return $http.post($rootScope.baseUrl + '/query/save', newQuery)
+                .then(
+                    //success callback
+                    function (response) {
+                        $log.debug('Success!');
+                        $log.info(response)
+                        return response.data;
+                    }, //error callback
+                    function (response) {
+                        $log.warn('Failure');
+                        $log.warn(response);
+                    }
+                );
+        };
+
         /*
                 //this service method gets an existing Query from the backend
                 this.getQuery = function (name) {
