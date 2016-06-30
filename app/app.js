@@ -5,7 +5,7 @@ app = angular.module('cliffhanger', [
     , 'ngRoute'
     , 'ngTagsInput'
     , 'ngSanitize'
-    , 'ngCSV'
+    , 'ngCsv'
     , 'cliffhanger.version',
 
     //My modules
