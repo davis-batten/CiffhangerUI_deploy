@@ -123,7 +123,7 @@ describe('cliffhanger.queries module', function () {
                     ]
                 }
                 var deferred = $q.defer();
-                if (serviceError) deferred.resolve(bad_result);
+                if (serviceError) deferred.reject(bad_result);
                 else deferred.resolve(testTableResult); //TODO add tableResult to here
                 return deferred.promise;
             })
