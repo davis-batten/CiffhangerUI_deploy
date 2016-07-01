@@ -1,6 +1,6 @@
 'use strict';
-var queries = angular.module('cliffhanger.queries', ['ngRoute', 'ngSanitize', 'ngCsv']);
-queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets, queryService) {
+var query_wizard = angular.module('cliffhanger.query_wizard', ['ngRoute', 'ngSanitize', 'ngCsv']);
+query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets, queryService) {
     $scope.query = {}; //container for query
     $scope.alerts = [];
     $scope.tableResult = {};
@@ -168,7 +168,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                 $scope.tableResult = response;
                 $scope.progressType = 'success';
             }, //failure to connect
-            function (data){
+            function (data) {
                 $scope.loadingPreview = false;
                 $scope.progressType = 'danger';
                 $scope.runQueryError = true;

@@ -66,22 +66,19 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
                         }
                     );
             };
-
-            //this service method gets all existing Queries from the backend
-            this.getAllQueries = function () {
-
-                return $http.get($rootScope.baseUrl + '/query/list')
-                    .then(function (response) { //success callback
-                            $log.info(response); //list all data from response
-                            if (response.data.status == 'Success') {
-                                $log.info('Successfully retrieved queries');
-                                return response.data;
-                            } else {
-                                $log.warn('Failed to retrieve queries');
-                                return $q.reject(response.data);
-                            }
-
-                        );
-                };
-        */
+*/
+    //this service method gets all existing Queries from the backend
+    this.getAllQueries = function () {
+        return $http.get($rootScope.baseUrl + '/query/list').then(function (response) { //success callback
+            $log.info(response); //list all data from response
+            if (response.data.status == 'Success') {
+                $log.info('Successfully retrieved queries');
+                return response.data;
+            }
+            else {
+                $log.warn('Failed to retrieve queries');
+                return $q.reject(response.data);
+            };
+        });
+    };
 });

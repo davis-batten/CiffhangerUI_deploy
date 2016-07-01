@@ -3,4 +3,32 @@
         <li><a href="#/analyst/compare">Compare</a></li>
         <li class="active"><a href="#/analyst/queries">Query Management</a></li>
     </ul>
-    <hr> </div>
+    <hr>
+    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="btn-group" uib-dropdown is-open="status.isopen">
+                <button id="sortBy-button" class="btn btn-warning dropdown-toggle" type="button" uib-dropdown-toggle> Sort By <span class="caret"></span></button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="sortBy-button">
+                    <li role="menuitem"><a>Date Created</a></li>
+                    <li role="menuitem"><a>Date Last Run</a></li>
+                    <li role="menuitem"><a>Name A-Z</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div id="custom-search-input">
+                <input type="text" size="30" ng-model="query.name" placeholder="Search" uib-typeahead="q.name for q in queries | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
+        </div>
+    </div>
+    <hr>
+    <div class="status-message" ng-show="showNoQueriesMessage"> NO QUERIES </div>
+    <uib-progressbar value="100" class="progress-striped active" ng-show="showProgressBar">Loading...</uib-progressbar>
+    <ul class="list-group" id="query_list">
+        <li class="list-group-item active" id="dataset_item" ng-repeat="q in queries | orderBy:'name' | filter:query">
+            <label>{{q.name}}</label> <small>{{q.description}}</small>
+            <button class="btn btn-danger" type="button" ng-click="deleteQuery(q)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
+            <button class="btn btn-info" type="button" ng-click="view(q)"> View</button>
+        </li>
+    </ul>
+</div>

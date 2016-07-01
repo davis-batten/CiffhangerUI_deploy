@@ -16,8 +16,14 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     };
     //alphabetically compare two strings, ignoring case
     var ignoreCase = function (a, b) {
-        return a.meta_name.toLowerCase().localeCompare(b.meta_name.toLowerCase());
-    }
+            return a.meta_name.toLowerCase().localeCompare(b.meta_name.toLowerCase());
+        }
+        //for sort by
+    $scope.toggleDropdown = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.status.isopen = !$scope.status.isopen;
+    };
     $scope.getAllQueries = function () {
         queryService.getAllQueries().then(function (data) {
             $log.debug('response', data);
