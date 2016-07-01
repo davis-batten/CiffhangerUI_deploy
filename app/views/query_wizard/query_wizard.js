@@ -4,6 +4,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.query = {}; //container for query
     $scope.alerts = [];
     $scope.tableResult = {};
+    $scope.selected = {};
     $scope.step = 1; //which step in the modal is on
     $scope.maxSteps = 5; //number of steps in modal
     $scope.datasets = datasets;
@@ -70,7 +71,6 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         if ($scope.step == 2) {
             $scope.loadTags();
         } else if ($scope.step == 4) $scope.buildQuery();
-        //else if ($scope.step == 5) $scope.runQuery($scope.query);
         else if ($scope.step == 5) {
             $scope.runQuery($scope.query);
         }
@@ -83,6 +83,22 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             $scope.tableResult = null;
         }
     };
+
+    $scope.selectAllFromDataset = function (dataset) {
+        if ($scope.selected[dataset.name]) {
+            for (var i = 0; i < dataset.attributes.length; i++) {
+                var a = dataset.attributes[i];
+                a.selected = true;
+            }
+        } else {
+            for (var i = 0; i < dataset.attributes.length; i++) {
+                var a = dataset.attributes[i];
+                a.selected = false;
+            }
+        }
+    }
+
+
     //dismiss the modal
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
