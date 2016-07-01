@@ -287,6 +287,50 @@ paths:
                     type: string
                     description: SQL query string
 
+  #/query/save
+  #/query/list
+
+  /query/run:
+    post:
+      description: Execute a SQL query.
+      parameters:
+        -
+          name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              query:
+                type: string
+                description: the SQL statement
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              colNames:
+                type: array
+                items:
+                  type: string
+                  description: a column name
+              colCount:
+                type: integer
+                description: number of columns in result
+              rows:
+                type: array
+                items:
+                  type: array
+                  description: a row in the table
+                  items:
+                    type: string
+                    description: a cell in the row
+
+  #/query/get/{query_name}
+  #/query/delete/{query_name}
+
+
 definitions:
   Dataset:
     description: A `dataset skeleton` representing the meta-data about a dataset
@@ -328,5 +372,18 @@ definitions:
         type: string
     required:
       - name
+
+  Query:
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      dateCreated:
+        type: string
+        format: date-time
+      sqlString:
+        type: string
+
 
 
