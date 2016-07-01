@@ -281,7 +281,7 @@ describe('cliffhanger.queries module', function () {
             scope.$apply();
             expect(scope.progressType).toBe('danger');
         });
-        it('should run save query', function () {
+        it('should run save query without where and limit clause', function () {
             scope.isCollapsed = false;
             scope.query = "SELECT * FROM table";
             scope.statement = undefined;
@@ -294,10 +294,11 @@ describe('cliffhanger.queries module', function () {
             expect(scope.newQuery.description).toEqual("test query description");
             expect(scope.newQuery.sqlString).toEqual("SELECT * FROM table");
         });
-        it('should run save query and then try to run it again with the same name and fail', function () {
+        it('should run save query with a where and limit clause', function () {
             scope.isCollapsed = false;
             scope.query = "SELECT * FROM table";
-            scope.statement = undefined;
+            scope.statement = {};
+            scope.statement.text = " WHERE";
             scope.newQuery = {};
             scope.newQuery.name = "Test Query";
             scope.newQuery.description = "test query description";
@@ -305,15 +306,7 @@ describe('cliffhanger.queries module', function () {
             expect(scope.newQuery).not.toBeNull();
             expect(scope.newQuery.name).toEqual("Test Query");
             expect(scope.newQuery.description).toEqual("test query description");
-            expect(scope.newQuery.sqlString).toEqual("SELECT * FROM table");
-            scope.isCollapsed = false;
-            scope.statement = undefined;
-            scope.newQuery = {};
-            scope.newQuery.sqlString = "SELECT * FROM table";
-            scope.newQuery.name = "Test Query";
-            scope.newQuery.description = "test query description";
-            scope.save(scope.newQuery);
-            expect(scope.data.data).toEqual("Query named Test Queryalready exists");
+            expect(scope.newQuery.sqlString).toEqual("SELECT * FROM table WHERE");
         });
     });
 });
