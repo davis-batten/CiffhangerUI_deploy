@@ -1,32 +1,32 @@
 {
-  "name": "cliffhanger-front-end",
-  "authors": [
+    "name": "cliffhanger-front-end"
+    , "authors": [
     "Davis Batten <davis.batten@zirous.com>"
-  ],
-  "description": "front-end for cliffhanger",
-  "main": "",
-  "license": "MIT",
-  "homepage": "",
-  "private": true,
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "angular-bootstrap-checkbox": "^0.5.0",
-    "angular": "~1.5.0",
-    "angular-route": "~1.5.0",
-    "angular-loader": "~1.5.0",
-    "angular-mocks": "~1.5.0",
-    "ng-tags-input": "^3.1.1",
-    "ng-csv": "^0.3.6"
-  },
-  "resolutions": {
-    "angular": "1.5.7",
-    "angular-mocks": "~1.5.0",
-    "ng-tags-input": "^3.1.1"
-  }
+  ]
+    , "description": "front-end for cliffhanger"
+    , "main": ""
+    , "license": "MIT"
+    , "homepage": ""
+    , "private": true
+    , "ignore": [
+    "**/.*"
+    , "node_modules"
+    , "bower_components"
+    , "test"
+    , "tests"
+  ]
+    , "dependencies": {
+        "angular-bootstrap-checkbox": "^0.5.0"
+        , "angular": "~1.5.0"
+        , "angular-route": "~1.5.0"
+        , "angular-loader": "~1.5.0"
+        , "angular-mocks": "~1.5.0"
+        , "ng-tags-input": "^3.1.1"
+        , "ng-csv": "^0.3.6"
+    }
+    , "resolutions": {
+        "angular": "1.5.7"
+        , "angular-mocks": "~1.5.0"
+        , "ng-tags-input": "^3.1.1"
+    }
 }

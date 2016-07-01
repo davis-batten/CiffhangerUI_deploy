@@ -74,18 +74,15 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             $scope.runQuery($scope.query);
         }
     };
-
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
         if ($scope.step < $scope.maxSteps) $scope.progressType = null;
     };
-
     //dismiss the modal
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
-
     //add where and limit clause to SQL query string
     $scope.addToQuery = function () {
         if (($scope.statement.where == null && $scope.statement.limit == null) || ($scope.statement.where == "" && $scope.statement.limit == "") || ($scope.statement.where == null && $scope.statement.limit == "") || ($scope.statement.where == "" && $scope.statement.limit == null)) {
@@ -109,7 +106,6 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         }
         $log.debug($scope.statement);
     };
-
     //build a new query given the user's choices
     $scope.buildQuery = function () {
         //query input packaged
@@ -131,9 +127,8 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                 $log.error(response.data);
             }
         });
+
     };
-
-
     //complete the modal
     $scope.save = function () {
         if ($scope.statement.text != null) {
@@ -141,25 +136,22 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         } else {
             $scope.newQuery.sqlString = $scope.query;
         }
-        queryService.saveQuery($scope.newQuery)
-            .then(function (data) {
-                if (data.status == 'Success') {
-                    $log.debug(data)
-                } else {
-                    $scope.alerts.push({
-                        msg: data,
-                        type: 'danger'
-                    });
-                }
-            }, function (data) {
+        queryService.saveQuery($scope.newQuery).then(function (data) {
+            if (data.status == 'Success') {
+                $log.debug(data);
+            } else {
                 $scope.alerts.push({
-                    msg: 'Failed to create Query',
+                    msg: data,
                     type: 'danger'
                 });
-            })
+            }
+        }, function (data) {
+            $scope.alerts.push({
+                msg: 'Failed to create Query',
+                type: 'danger'
+            });
+        })
     };
-
-
 
     $scope.runQuery = function () {
         $scope.loadingPreview = true;
