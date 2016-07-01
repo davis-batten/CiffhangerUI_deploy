@@ -123,7 +123,7 @@ describe('cliffhanger.queries module', function () {
                     ]
                 }
                 var deferred = $q.defer();
-                if (serviceError) deferred.resolve(bad_result);
+                if (serviceError) deferred.reject(bad_result);
                 else deferred.resolve(testTableResult); //TODO add tableResult to here
                 return deferred.promise;
             })
@@ -273,6 +273,13 @@ describe('cliffhanger.queries module', function () {
             expect(scope.tableResult.colCount).toEqual(2);
             expect(scope.tableResult.colNames[1]).toBe("test.col2");
             expect(scope.tableResult.rows[0][1]).toBe("abc");
+        });
+        it('should show a red progress bar in the event of an error', function () {
+            serviceError = true;
+            scope.step = scope.maxSteps - 1;
+            scope.next();
+            scope.$apply();
+            expect(scope.progressType).toBe('danger');
         });
     });
 });

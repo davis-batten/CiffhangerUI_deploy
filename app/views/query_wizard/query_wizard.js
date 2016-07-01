@@ -21,7 +21,8 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.change = function (d, selections) {
             if (d.selected) {
                 selections.push(d);
-            } else {
+            }
+            else {
                 for (var i = 0; i < selections.length; i++) {
                     $log.debug(selections[i]);
                     if (selections[i].name == d.name) {
@@ -38,7 +39,8 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             if (column.selected) {
                 column.db_table_name = dataset.db_table_name;
                 selections.push(column);
-            } else {
+            }
+            else {
                 for (var i = 0; i < selections.length; i++) {
                     $log.debug(selections[i]);
                     if (selections[i].name == column.name) {
@@ -68,7 +70,8 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         $scope.step++;
         if ($scope.step == 2) {
             $scope.loadTags();
-        } else if ($scope.step == 4) $scope.buildQuery();
+        }
+        else if ($scope.step == 4) $scope.buildQuery();
         //else if ($scope.step == 5) $scope.runQuery($scope.query);
         else if ($scope.step == 5) {
             $scope.runQuery($scope.query);
@@ -113,10 +116,10 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.buildQuery = function () {
         //query input packaged
         var queryInput = {
-            datasets: $scope.selectedDatasets,
-            joinTag: $scope.selectedTags,
-            addJoinColumn: $scope.addJoinColumn,
-            columns: $scope.selectedColumns
+            datasets: $scope.selectedDatasets
+            , joinTag: $scope.selectedTags
+            , addJoinColumn: $scope.addJoinColumn
+            , columns: $scope.selectedColumns
         }
         queryService.buildQuery(queryInput).then(function (response) {
             //success callback
@@ -124,38 +127,39 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                 $scope.query = response.data;
                 $scope.progressType = 'success';
                 //failure callback
-            } else {
+            }
+            else {
                 $scope.progressType = 'danger';
                 $scope.buildQueryError = true;
                 $log.error(response.data);
             }
         });
-
     };
     //complete the modal
     $scope.save = function () {
         if ($scope.statement.text != null) {
             $scope.newQuery.sqlString = $scope.query + $scope.statement.text;
-        } else {
+        }
+        else {
             $scope.newQuery.sqlString = $scope.query;
         }
         queryService.saveQuery($scope.newQuery).then(function (data) {
             if (data.status == 'Success') {
                 $log.debug(data);
-            } else {
+            }
+            else {
                 $scope.alerts.push({
-                    msg: data,
-                    type: 'danger'
+                    msg: data
+                    , type: 'danger'
                 });
             }
         }, function (data) {
             $scope.alerts.push({
-                msg: 'Failed to create Query',
-                type: 'danger'
+                msg: 'Failed to create Query'
+                , type: 'danger'
             });
         })
     };
-
     $scope.runQuery = function () {
         $scope.loadingPreview = true;
         var query = $scope.query;
@@ -164,7 +168,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                 $scope.tableResult = response;
                 $scope.progressType = 'success';
             }, //failure to connect
-            function (data) {
+            function (data){
                 $scope.loadingPreview = false;
                 $scope.progressType = 'danger';
                 $scope.runQueryError = true;
