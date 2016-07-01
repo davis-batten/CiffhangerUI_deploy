@@ -94,14 +94,14 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </head>
 
 <body id="HTMLReporter" class="html-reporter showDetails">
-<h1>Tested in Chrome 49.0.2623 (Mac OS X 10.8.5) on Thu Jun 30 2016</h1>
+<h1>Tested in Chrome 51.0.2704 (Windows 7 0.0.0) on Fri Jul 01 2016</h1>
 
 <div class="alert">
 
 
-<!-- <span class="failingAlert bar">Failed 2 specs</span> -->
+<!-- <span class="failingAlert bar">Failed 1 specs</span> -->
 <span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
-  <a href="#" onclick="unfold();">Unfold</a></span>52 specs, 2 failed, 0 pending</span>
+  <a href="#" onclick="unfold();">Unfold</a></span>54 specs, 1 failed, 0 pending</span>
 <span class="resultsMenu bar">
 <a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a 
    class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
@@ -293,11 +293,11 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">should be able to add a WHERE/LIMIT clause to the query</span>
       </div>
     
-      <div class="specSummary failed">
+      <div class="specSummary passed">
       <span class="description">should be able to add a WHERE clause without a LIMIT clause</span>
       </div>
     
-      <div class="specSummary failed">
+      <div class="specSummary passed">
       <span class="description">should be able to add a LIMIT clause without a WHERE clause</span>
       </div>
     
@@ -323,6 +323,14 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
       <div class="specSummary passed">
       <span class="description">should run the query and return a table result object</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should run save query</span>
+      </div>
+    
+      <div class="specSummary failed">
+      <span class="description">should run save query and then try to run it again with the same name and fail</span>
       </div>
     
     </div>
@@ -407,24 +415,10 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
   
   
   <div class="specDetail failed">
-    <span class="description">cliffhanger.queries module query wizard controller should be able to add a WHERE clause without a LIMIT clause</span>
+    <span class="description">cliffhanger.queries module query wizard controller should run save query and then try to run it again with the same name and fail</span>
     <div class="stackTrace">
-      <div class="resultMessage">Expected '
-WHERE assaults = 10
-LIMIT ;' to equal '
-WHERE assaults = 10;'.
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?aef00eb0a30ec5f04dacf6dafb38671c5f3a926f:215:42)</div>
-    </div>
-  </div>
-  
-  <div class="specDetail failed">
-    <span class="description">cliffhanger.queries module query wizard controller should be able to add a LIMIT clause without a WHERE clause</span>
-    <div class="stackTrace">
-      <div class="resultMessage">Expected '
-WHERE 
-LIMIT 110;' to equal '
-LIMIT 110;'.
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?aef00eb0a30ec5f04dacf6dafb38671c5f3a926f:224:42)</div>
+      <div class="resultMessage">TypeError: Cannot read property 'data' of undefined
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?c5e9c137466b3436fc8916e637ab42d54b41cd97:309:30)</div>
     </div>
   </div>
   

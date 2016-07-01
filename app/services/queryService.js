@@ -58,8 +58,10 @@ angular.module('cliffhanger.queries')
                         return response.data;
                     }, //error callback
                     function (response) {
+                        $log.debug("Error")
                         $log.warn('Failure');
                         $log.warn(response);
+                        return $q.reject(response.data);
                     }
                 );
         };
