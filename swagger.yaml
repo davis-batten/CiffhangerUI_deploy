@@ -287,12 +287,58 @@ paths:
                     type: string
                     description: SQL query string
 
-  #/query/save
-  #/query/list
+  /query/save:
+    post:
+      description: Save a SQL `Query`
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        -
+          name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: name of the query
+              description:
+                type: string
+                description: description of the query
+              sqlString:
+                type: string
+                description: a SELECT SQL statement
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/Query"
+
+
+  /query/list:
+    get:
+      description: Fetch every existing `Query`
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Query'
+
 
   /query/run:
     post:
       description: Execute a SQL query.
+      consumes:
+        - application/json
+      produces:
+        - application/json
       parameters:
         -
           name: body
@@ -328,7 +374,39 @@ paths:
                     description: a cell in the row
 
   #/query/get/{query_name}
-  #/query/delete/{query_name}
+  /query/get/{query_name}:
+    get:
+      description: Fetch a `Query`
+      produces:
+        - application/json
+      parameters:
+        -
+          name: query_name
+          in: path
+          type: string
+          required: true
+          description: the name of the query to be fetched
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/Query'
+
+
+  /query/delete/{query_name}:
+    delete:
+      description: Delete a `Query`
+      parameters:
+        -
+          name: query_name
+          in: path
+          type: string
+          required: true
+          description: the name of the query to be deleted
+      responses:
+        200:
+          description: Success
+          #TODO add schema
 
 
 definitions:
