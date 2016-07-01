@@ -77,7 +77,10 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
-        if ($scope.step < $scope.maxSteps) $scope.progressType = null;
+        if ($scope.step < $scope.maxSteps) {
+            $scope.progressType = null;
+            $scope.tableResult = null;
+        }
     };
     //dismiss the modal
     $scope.cancel = function () {
@@ -162,6 +165,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                 $scope.progressType = 'success';
             }, //failure to connect
             function (data) {
+                $scope.loadingPreview = false;
                 $scope.progressType = 'danger';
                 $scope.runQueryError = true;
                 $log.error('Failed to connect to server');

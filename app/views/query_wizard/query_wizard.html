@@ -114,9 +114,9 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
-        <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-        <button class="btn btn-info" type="button" ng-click="isCollapsed = !isCollapsed">Save Query As</button>
-        <button class="btn btn-success" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="test.csv">Download Full Results</button>
+        <button class="btn btn-primary pull-left" type="button" ng-click="previous()" ng-disabled="loadingPreview">Previous</button>
+        <button class="btn btn-info" type="button" ng-click="isCollapsed = !isCollapsed" ng-disabled="loadingPreview">Save Query As</button>
+        <button class="btn btn-success" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="test.csv" ng-disabled="loadingPreview">Download Full Results</button>
         <div uib-collapse="isCollapsed">
             <hr>
             <div class="well well-sm">
