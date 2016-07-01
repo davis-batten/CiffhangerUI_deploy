@@ -156,7 +156,7 @@ describe('cliffhanger.queries module', function () {
             expect(modalInstance.dismiss).toHaveBeenCalledWith('cancel');
         });
         /*
-        it('should close the modal with submit', function () { 
+        it('should close the modal with submit', function () {
             //This test will always fail because scope.submit is not implemented
             scope.submit();
             expect(scope.query).not.toBeNull();

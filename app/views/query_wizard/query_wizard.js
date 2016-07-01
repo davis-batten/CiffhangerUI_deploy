@@ -14,6 +14,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.selectedColumns = []; //select columns for query
     //for save query dropdown
     $scope.isCollapsed = true;
+    $scope.loadingPreview = false;
     //method responsible for handling changes due to checkboxes
     //d -> item selected/deselected
     //selections -> array to add/remove item
@@ -76,7 +77,10 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
-        if ($scope.step < $scope.maxSteps) $scope.progressType = null;
+        if ($scope.step < $scope.maxSteps) {
+            $scope.progressType = null;
+            $scope.tableResult = null;
+        }
     };
     //dismiss the modal
     $scope.cancel = function () {
@@ -115,22 +119,18 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             columns: $scope.selectedColumns
         }
         queryService.buildQuery(queryInput).then(function (response) {
-                //success callback
-                if (response.status == 'Success') {
-                    $scope.query = response.data;
-                    $scope.progressType = 'success';
-                    //failure callback
-                } else {
-                    $scope.progressType = 'danger';
-                    $scope.buildQueryError = true;
-                    $log.error(response.data);
-                }
-            }, //failure to connect
-            function (data) {
+            //success callback
+            if (response.status == 'Success') {
+                $scope.query = response.data;
+                $scope.progressType = 'success';
+                //failure callback
+            } else {
                 $scope.progressType = 'danger';
                 $scope.buildQueryError = true;
                 $log.error(response.data);
-            });
+            }
+        });
+
     };
     //complete the modal
     $scope.save = function () {
@@ -155,16 +155,20 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             });
         })
     };
+
     $scope.runQuery = function () {
+        $scope.loadingPreview = true;
         var query = $scope.query;
         queryService.runQuery(query).then(function (response) { //success callback
+                $scope.loadingPreview = false;
                 $scope.tableResult = response;
                 $scope.progressType = 'success';
             }, //failure to connect
             function (data) {
+                $scope.loadingPreview = false;
                 $scope.progressType = 'danger';
                 $scope.runQueryError = true;
                 $log.error('Failed to connect to server');
-            })
+            });
     };
 });

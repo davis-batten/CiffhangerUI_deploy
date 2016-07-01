@@ -98,13 +98,15 @@
 <div ng-show="step == 5">
     <div class="modal-body">
         <h4>Preview of Results <small>after running Constructed Query</small></h4>
+        <p>Note: Preview will only show up to 100 results.</p>
+        <uib-alert type="info" ng-show="loadingPreview">Loading...</uib-alert>
         <div class="" id="queryResultsTable">
             <table class="table table-bordered">
                 <thead>
                     <th ng-repeat="column in tableResult.colNames"> {{column}} </th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="row in tableResult.rows">
+                    <tr ng-repeat="row in tableResult.rows | limitTo:100">
                         <td ng-repeat="cell in row">{{cell}}</td>
                 </tbody>
             </table>
@@ -112,9 +114,9 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
-        <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
-        <button class="btn btn-info" type="button" ng-click="isCollapsed = !isCollapsed">Save To Queries</button>
-        <button class="btn btn-success" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="test.csv">Download Full Results</button>
+        <button class="btn btn-primary pull-left" type="button" ng-click="previous()" ng-disabled="loadingPreview">Previous</button>
+        <button class="btn btn-info" type="button" ng-click="isCollapsed = !isCollapsed" ng-disabled="loadingPreview">Save To Queries</button>
+        <button class="btn btn-success" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="test.csv" ng-disabled="loadingPreview">Download Full Results</button>
         <div uib-collapse="isCollapsed">
             <hr>
             <div class="well well-sm">

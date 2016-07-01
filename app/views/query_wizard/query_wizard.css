@@ -19,3 +19,8 @@ h4 small {
 .query-wizard-header .modal-header.ng-scope {
     padding-bottom: 0 !important;
 }
+
+#queryResultsTable {
+    max-height: 500px;
+    overflow: auto;
+}
