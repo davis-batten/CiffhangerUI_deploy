@@ -4,6 +4,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     $scope.query = {}; //container for query
     $scope.alerts = [];
     $scope.tableResult = {};
+    $scope.selected = {};
     $scope.step = 1; //which step in the modal is on
     $scope.maxSteps = 5; //number of steps in modal
     $scope.datasets = datasets;
@@ -14,6 +15,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     $scope.selectedColumns = []; //select columns for query
     //for save query dropdown
     $scope.isCollapsed = true;
+    $scope.download = false;
     $scope.loadingPreview = false;
     //method responsible for handling changes due to checkboxes
     //d -> item selected/deselected
@@ -21,8 +23,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     $scope.change = function (d, selections) {
             if (d.selected) {
                 selections.push(d);
-            }
-            else {
+            } else {
                 for (var i = 0; i < selections.length; i++) {
                     $log.debug(selections[i]);
                     if (selections[i].name == d.name) {
@@ -39,8 +40,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             if (column.selected) {
                 column.db_table_name = dataset.db_table_name;
                 selections.push(column);
-            }
-            else {
+            } else {
                 for (var i = 0; i < selections.length; i++) {
                     $log.debug(selections[i]);
                     if (selections[i].name == column.name) {
@@ -70,9 +70,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
         $scope.step++;
         if ($scope.step == 2) {
             $scope.loadTags();
-        }
-        else if ($scope.step == 4) $scope.buildQuery();
-        //else if ($scope.step == 5) $scope.runQuery($scope.query);
+        } else if ($scope.step == 4) $scope.buildQuery();
         else if ($scope.step == 5) {
             $scope.runQuery($scope.query);
         }
@@ -85,6 +83,29 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             $scope.tableResult = null;
         }
     };
+
+    $scope.selectAllFromDataset = function (dataset) {
+
+        for (var i = 0; i < dataset.attributes.length; i++) {
+            var a = dataset.attributes[i];
+            if ($scope.selected[dataset.name]) {
+                if (a.tag.name != $scope.selectedTags[0].name) {
+                    a.db_table_name = dataset.db_table_name;
+                    a.selected = true;
+                    $scope.selectedColumns.push(a);
+                }
+            } else {
+                a.selected = false;
+                for (var j = 0; j < $scope.selectedColumns.length; j++) {
+                    if ($scope.selectedColumns[j].name == a.name) {
+                        $scope.selectedColumns.splice(j, 1);
+                    }
+                }
+            }
+        }
+    }
+
+
     //dismiss the modal
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
@@ -116,10 +137,10 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     $scope.buildQuery = function () {
         //query input packaged
         var queryInput = {
-            datasets: $scope.selectedDatasets
-            , joinTag: $scope.selectedTags
-            , addJoinColumn: $scope.addJoinColumn
-            , columns: $scope.selectedColumns
+            datasets: $scope.selectedDatasets,
+            joinTag: $scope.selectedTags,
+            addJoinColumn: $scope.addJoinColumn,
+            columns: $scope.selectedColumns
         }
         queryService.buildQuery(queryInput).then(function (response) {
             //success callback
@@ -127,8 +148,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
                 $scope.query = response.data;
                 $scope.progressType = 'success';
                 //failure callback
-            }
-            else {
+            } else {
                 $scope.progressType = 'danger';
                 $scope.buildQueryError = true;
                 $log.error(response.data);
@@ -139,24 +159,22 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     $scope.save = function () {
         if ($scope.statement.text != null) {
             $scope.newQuery.sqlString = $scope.query + $scope.statement.text;
-        }
-        else {
+        } else {
             $scope.newQuery.sqlString = $scope.query;
         }
         queryService.saveQuery($scope.newQuery).then(function (data) {
             if (data.status == 'Success') {
                 $log.debug(data);
-            }
-            else {
+            } else {
                 $scope.alerts.push({
-                    msg: data
-                    , type: 'danger'
+                    msg: data,
+                    type: 'danger'
                 });
             }
         }, function (data) {
             $scope.alerts.push({
-                msg: 'Failed to create Query'
-                , type: 'danger'
+                msg: 'Failed to create Query',
+                type: 'danger'
             });
         })
     };

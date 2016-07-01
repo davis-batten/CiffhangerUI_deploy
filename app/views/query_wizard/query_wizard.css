@@ -24,3 +24,8 @@ h4 small {
     max-height: 500px;
     overflow: auto;
 }
+
+#columnList {
+    max-height: 200px;
+    overflow: auto;
+}
