@@ -14,14 +14,14 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.selectedColumns = []; //select columns for query
     //for save query dropdown
     $scope.isCollapsed = true;
+    $scope.loadingPreview = false;
     //method responsible for handling changes due to checkboxes
     //d -> item selected/deselected
     //selections -> array to add/remove item
     $scope.change = function (d, selections) {
             if (d.selected) {
                 selections.push(d);
-            }
-            else {
+            } else {
                 for (var i = 0; i < selections.length; i++) {
                     $log.debug(selections[i]);
                     if (selections[i].name == d.name) {
@@ -38,8 +38,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             if (column.selected) {
                 column.db_table_name = dataset.db_table_name;
                 selections.push(column);
-            }
-            else {
+            } else {
                 for (var i = 0; i < selections.length; i++) {
                     $log.debug(selections[i]);
                     if (selections[i].name == column.name) {
@@ -69,8 +68,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         $scope.step++;
         if ($scope.step == 2) {
             $scope.loadTags();
-        }
-        else if ($scope.step == 4) $scope.buildQuery();
+        } else if ($scope.step == 4) $scope.buildQuery();
         //else if ($scope.step == 5) $scope.runQuery($scope.query);
         else if ($scope.step == 5) {
             $scope.runQuery($scope.query);
@@ -79,7 +77,10 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
-        if ($scope.step < $scope.maxSteps) $scope.progressType = null;
+        if ($scope.step < $scope.maxSteps) {
+            $scope.progressType = null;
+            $scope.tableResult = null;
+        }
     };
     //dismiss the modal
     $scope.cancel = function () {
@@ -112,62 +113,63 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.buildQuery = function () {
         //query input packaged
         var queryInput = {
-            datasets: $scope.selectedDatasets
-            , joinTag: $scope.selectedTags
-            , addJoinColumn: $scope.addJoinColumn
-            , columns: $scope.selectedColumns
+            datasets: $scope.selectedDatasets,
+            joinTag: $scope.selectedTags,
+            addJoinColumn: $scope.addJoinColumn,
+            columns: $scope.selectedColumns
         }
         queryService.buildQuery(queryInput).then(function (response) {
-                //success callback
-                if (response.status == 'Success') {
-                    $scope.query = response.data;
-                    $scope.progressType = 'success';
-                    //failure callback
-                }
-                else {
-                    $scope.progressType = 'danger';
-                    $scope.buildQueryError = true;
-                    $log.error(response.data);
-                }
-            }, //failure to connect
-            function (data) {
+            //success callback
+            if (response.status == 'Success') {
+                $scope.query = response.data;
+                $scope.progressType = 'success';
+                //failure callback
+            } else {
                 $scope.progressType = 'danger';
                 $scope.buildQueryError = true;
                 $log.error(response.data);
-            });
+            }
+        });
+
     };
     //complete the modal
     $scope.save = function () {
         if ($scope.statement.text != null) {
             $scope.newQuery.sqlString = $scope.query + $scope.statement.text;
-        }
-        else {
+        } else {
             $scope.newQuery.sqlString = $scope.query;
         }
         queryService.saveQuery($scope.newQuery).then(function (data) {
             if (data.status == 'Success') {
                 $log.debug(data);
-            }
-            else {
+            } else {
                 $scope.alerts.push({
-                    msg: data
-                    , type: 'danger'
+                    msg: data,
+                    type: 'danger'
                 });
             }
         }, function (data) {
             $scope.alerts.push({
-                msg: 'Failed to create Query'
-                , type: 'danger'
+                msg: 'Failed to create Query',
+                type: 'danger'
             });
         })
     };
+
     $scope.runQuery = function () {
+        $scope.loadingPreview = true;
         var query = $scope.query;
         queryService.runQuery(query).then(function (response) { //success callback
+                $scope.loadingPreview = false;
                 $scope.tableResult = response;
                 $scope.progressType = 'success';
             }, //failure to connect
+<<<<<<< HEAD
             function (response) {
+=======
+            function (data) {
+                $scope.loadingPreview = false;
+>>>>>>> fbc84612ac1b7e5b9a29a131248236ea4f0a0b97
                 $scope.progressType = 'danger';
                 $scope.runQueryError = true;
                 $log.error('Failed to connect to server');

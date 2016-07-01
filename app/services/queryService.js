@@ -80,12 +80,8 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
                                 $log.warn('Failed to retrieve queries');
                                 return $q.reject(response.data);
                             }
-                        }
-                        , function (response) { //error callback
-                            $log.warn(response);
-                            return $q.reject(response.data);
-                        }
-                    );
-            };
-    */
+
+                        );
+                };
+        */
 });
