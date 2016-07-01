@@ -94,14 +94,14 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </head>
 
 <body id="HTMLReporter" class="html-reporter showDetails">
-<h1>Tested in Chrome 49.0.2623 (Mac OS X 10.8.5) on Thu Jun 30 2016</h1>
+<h1>Tested in Chrome 49.0.2623 (Mac OS X 10.8.5) on Fri Jul 01 2016</h1>
 
 <div class="alert">
 
 
-<!-- <span class="failingAlert bar">Failed 2 specs</span> -->
+<!-- <span class="failingAlert bar">Failed 3 specs</span> -->
 <span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
-  <a href="#" onclick="unfold();">Unfold</a></span>52 specs, 2 failed, 0 pending</span>
+  <a href="#" onclick="unfold();">Unfold</a></span>53 specs, 3 failed, 0 pending</span>
 <span class="resultsMenu bar">
 <a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a 
    class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
@@ -325,6 +325,10 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">should run the query and return a table result object</span>
       </div>
     
+      <div class="specSummary failed">
+      <span class="description">should show a red progress bar in the event of an error</span>
+      </div>
+    
     </div>
   
     <div class="suite passed">
@@ -413,7 +417,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 WHERE assaults = 10
 LIMIT ;' to equal '
 WHERE assaults = 10;'.
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?aef00eb0a30ec5f04dacf6dafb38671c5f3a926f:215:42)</div>
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?06f7d0c8a9e9e1cc6ea26cf4a8a482d1e3f42ae1:215:42)</div>
     </div>
   </div>
   
@@ -424,7 +428,15 @@ WHERE assaults = 10;'.
 WHERE 
 LIMIT 110;' to equal '
 LIMIT 110;'.
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?aef00eb0a30ec5f04dacf6dafb38671c5f3a926f:224:42)</div>
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?06f7d0c8a9e9e1cc6ea26cf4a8a482d1e3f42ae1:224:42)</div>
+    </div>
+  </div>
+  
+  <div class="specDetail failed">
+    <span class="description">cliffhanger.queries module query wizard controller should show a red progress bar in the event of an error</span>
+    <div class="stackTrace">
+      <div class="resultMessage">Expected 'success' to be 'danger'.
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?06f7d0c8a9e9e1cc6ea26cf4a8a482d1e3f42ae1:282:40)</div>
     </div>
   </div>
   

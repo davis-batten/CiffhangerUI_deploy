@@ -274,5 +274,12 @@ describe('cliffhanger.queries module', function () {
             expect(scope.tableResult.colNames[1]).toBe("test.col2");
             expect(scope.tableResult.rows[0][1]).toBe("abc");
         });
+        it('should show a red progress bar in the event of an error', function () {
+            serviceError = true;
+            scope.step = scope.maxSteps - 1;
+            scope.next();
+            scope.$apply();
+            expect(scope.progressType).toBe('danger');
+        });
     });
 });

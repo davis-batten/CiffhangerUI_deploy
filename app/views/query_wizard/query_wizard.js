@@ -167,10 +167,10 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
                 $scope.tableResult = response;
                 $scope.progressType = 'success';
             }, //failure to connect
-            function (data) {
+            function (response) {
                 $scope.progressType = 'danger';
                 $scope.runQueryError = true;
                 $log.error('Failed to connect to server');
-            })
+            });
     };
 });
