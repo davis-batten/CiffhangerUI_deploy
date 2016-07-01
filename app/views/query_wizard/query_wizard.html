@@ -98,13 +98,15 @@
 <div ng-show="step == 5">
     <div class="modal-body">
         <h4>Preview of Results <small>after running Constructed Query</small></h4>
+        <p>Note: Preview will only show up to 100 results.</p>
+        <uib-alert type="info" ng-show="loadingPreview">Loading...</uib-alert>
         <div class="" id="queryResultsTable">
             <table class="table table-bordered">
                 <thead>
                     <th ng-repeat="column in tableResult.colNames"> {{column}} </th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="row in tableResult.rows">
+                    <tr ng-repeat="row in tableResult.rows | limitTo:100">
                         <td ng-repeat="cell in row">{{cell}}</td>
                 </tbody>
             </table>

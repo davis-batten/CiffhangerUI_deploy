@@ -14,6 +14,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     $scope.selectedColumns = []; //select columns for query
     //for save query dropdown
     $scope.isCollapsed = true;
+    $scope.loadingPreview = false;
     //method responsible for handling changes due to checkboxes
     //d -> item selected/deselected
     //selections -> array to add/remove item
@@ -119,68 +120,59 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             columns: $scope.selectedColumns
         }
         queryService.buildQuery(queryInput).then(function (response) {
-                //success callback
-                if (response.status == 'Success') {
-                    $scope.query = response.data;
-                    $scope.progressType = 'success';
-                    //failure callback
-                } else {
-                    $scope.progressType = 'danger';
-                    $scope.buildQueryError = true;
-                    $log.error(response.data);
-                });
-        };
-
-
-        //complete the modal
-        $scope.save = function () {
-            if ($scope.statement.text != null) {
-                $scope.newQuery.sqlString = $scope.query + $scope.statement.text;
+            //success callback
+            if (response.status == 'Success') {
+                $scope.query = response.data;
+                $scope.progressType = 'success';
+                //failure callback
             } else {
-                $scope.newQuery.sqlString = $scope.query;
+                $scope.progressType = 'danger';
+                $scope.buildQueryError = true;
+                $log.error(response.data);
             }
-            queryService.saveQuery($scope.newQuery)
-                .then(function (data) {
-                    if (data.status == 'Success') {
-                        $log.debug(data)
-                    } else {
-                        $scope.alerts.push({
-                            msg: data,
-                            type: 'danger'
-                        });
-                    }
-                }, function (data) {
+        });
+    };
+
+
+    //complete the modal
+    $scope.save = function () {
+        if ($scope.statement.text != null) {
+            $scope.newQuery.sqlString = $scope.query + $scope.statement.text;
+        } else {
+            $scope.newQuery.sqlString = $scope.query;
+        }
+        queryService.saveQuery($scope.newQuery)
+            .then(function (data) {
+                if (data.status == 'Success') {
+                    $log.debug(data)
+                } else {
                     $scope.alerts.push({
-                        msg: 'Failed to create Query',
+                        msg: data,
                         type: 'danger'
                     });
-                })
-        };
+                }
+            }, function (data) {
+                $scope.alerts.push({
+                    msg: 'Failed to create Query',
+                    type: 'danger'
+                });
+            })
+    };
 
 
-        $scope.runQuery = function () {
-            var query = $scope.query;
-            queryService.runQuery(query).then(function (response) { //success callback
-                    $scope.tableResult = response;
-                    $scope.progressType = 'success';
-                }, //failure to connect
-                function (data) {
-                    $scope.progressType = 'danger';
-                    $scope.buildQueryError = true;
-                    $log.error(response.data);
-                })
-        };
-        $scope.runQuery = function () {
-            var query = $scope.query;
-            queryService.runQuery(query).then(function (response) { //success callback
-                    $scope.tableResult = response;
-                    $scope.progressType = 'success';
-                }, //failure to connect
-                function (data) {
-                    $scope.progressType = 'danger';
-                    $scope.runQueryError = true;
-                    $log.error('Failed to connect to server');
-                })
-        };
+
+    $scope.runQuery = function () {
+        $scope.loadingPreview = true;
+        var query = $scope.query;
+        queryService.runQuery(query).then(function (response) { //success callback
+                $scope.loadingPreview = false;
+                $scope.tableResult = response;
+                $scope.progressType = 'success';
+            }, //failure to connect
+            function (data) {
+                $scope.progressType = 'danger';
+                $scope.runQueryError = true;
+                $log.error('Failed to connect to server');
+            });
     };
 });
