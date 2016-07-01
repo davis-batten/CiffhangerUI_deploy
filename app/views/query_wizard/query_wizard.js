@@ -88,14 +88,19 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
 
         for (var i = 0; i < dataset.attributes.length; i++) {
             var a = dataset.attributes[i];
+            //select all
             if ($scope.selected[dataset.name]) {
+                //add column to selection
                 if (a.tag.name != $scope.selectedTags[0].name) {
                     a.db_table_name = dataset.db_table_name;
                     a.selected = true;
                     $scope.selectedColumns.push(a);
                 }
-            } else {
+            }
+            //deselect all
+            else {
                 a.selected = false;
+                //remove column from selection
                 for (var j = 0; j < $scope.selectedColumns.length; j++) {
                     if ($scope.selectedColumns[j].name == a.name) {
                         $scope.selectedColumns.splice(j, 1);
