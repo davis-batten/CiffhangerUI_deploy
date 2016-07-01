@@ -116,7 +116,7 @@
         <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
         <button class="btn btn-primary pull-left" type="button" ng-click="previous()" ng-disabled="loadingPreview">Previous</button>
         <button class="btn btn-info" type="button" ng-click="isCollapsed = !isCollapsed" ng-disabled="loadingPreview">Save Query As</button>
-        <button class="btn btn-success" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="test.csv" ng-disabled="loadingPreview">Download Full Results</button>
+        <button class="btn btn-success" type="button" ng-click="download = !download" ng-disabled="loadingPreview">Download Full Results</button>
         <div uib-collapse="isCollapsed">
             <hr>
             <div class="well well-sm">
@@ -130,6 +130,20 @@
                     <div class="form-group">
                         <button class="btn btn-info" type="button" ng-disabled="name.$invalid" ng-click="save()">Save</button>
                         <button class="btn btn-danger pull-left" type="button" ng-click="isCollapsed = !isCollapsed">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div uib-collapse="!download">
+            <hr>
+            <div class="well well-sm">
+                <form name="downloadQueryAs">
+                    <div class="form-group">
+                        <label for="filename" class="pull-left">Filename</label>
+                        <input type="text" class="form-control" name="name" id="filename" ng-model="filename" required>.csv </div>
+                    <div class="form-group">
+                        <button class="btn btn-info" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="{{filename}}.csv">Save As CSV</button>
+                        <button class="btn btn-danger pull-left" type="button" ng-click="download = !download">Cancel</button>
                     </div>
                 </form>
             </div>
