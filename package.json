@@ -22,7 +22,7 @@
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000 -c-1 ./app",
     "pretest": "npm install",
-    "test": "start karma_html/index.html && karma start karma.conf.js",
+    "test": "karma start karma.conf.js",
     "posttest": "",
     "test-single-run": "karma start karma.conf.js --single-run"
   },
