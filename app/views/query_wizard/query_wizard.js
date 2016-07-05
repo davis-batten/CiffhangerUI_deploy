@@ -193,7 +193,11 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     };
     $scope.runQuery = function () {
         $scope.loadingPreview = true;
-        var query = $scope.query;
+        if ($scope.statement != undefined) {
+            var query = $scope.query + $scope.statement.text;
+        } else {
+            var query = $scope.query;
+        }
         queryService.runQuery(query).then(function (response) { //success callback
                 $scope.loadingPreview = false;
                 $scope.tableResult = response;
