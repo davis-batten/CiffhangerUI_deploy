@@ -41,7 +41,8 @@ describe("dataset service", function () {
         httpBackend.expectPOST(baseUrl + '/dataset/create').respond(200, "success");
         datasetService.addDataset(test_create_data);
         //httpBackend.flush();
-    })
+    });
+    
 
     it("should be able to delete a dataset", function () {
         var datasetName = test_create_data.name;
