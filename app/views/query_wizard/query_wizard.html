@@ -1,0 +1,153 @@
+<!-- Query Wizard Modal Template -->
+<div class="query-wizard-header">
+    <div class="modal-header">
+        <h3 class="modal-title inline">Query Wizard</h3>
+        <h5 class="inline">Build a query from your comparison and create a custom table</h5>
+        <uib-progressbar max="maxSteps" value="step" type="{{progressType}}">{{step}} / {{maxSteps}}</uib-progressbar>
+    </div>
+</div>
+<!-- First step of modal -->
+<div ng-show="step == 1">
+    <div class="modal-body">
+        <h4><strong>Datasets </strong><small><em> Select two</em></small></h4>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="d in datasets">
+                <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)"></checkbox>
+                <label>{{d.name}}</label>
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-info" type="button" ng-click="next()" ng-disabled="selectedDatasets.length != 2">Next</button>
+    </div>
+</div>
+<!-- Second step of modal -->
+<div ng-show="step == 2">
+    <div class="modal-body">
+        <h4><strong>Tags  </strong><small><em>Select one to join datasets on</em></small></h4>
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="t in tags | orderBy:'name'">
+                <checkbox ng-model="t.selected" ng-change="change(t, selectedTags)" ng-disabled="!t.selected && selectedTags.length == 1"></checkbox>
+                <label>{{t.name}}</label>
+            </li>
+        </ul>
+        <h4 class="text-danger" ng-show="tags.length==0">No joinable tags for the selected datasets</h4>
+        <label>Show selected tag in table</label>
+        <checkbox ng-model="addJoinColumn"></checkbox>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
+        <button class="btn btn-info" type="button" ng-click="next()" ng-disabled="selectedTags.length != 1">Next</button>
+    </div>
+</div>
+<!-- Third step of modal -->
+<div ng-show="step == 3">
+    <div class="modal-body">
+        <h4><strong>Columns  </strong><small><em>Select columns to show in table</em></small></h4>
+        <ul>
+            <li class="list-group-item" ng-repeat="d in datasets | filter:{selected:true}">
+                <checkbox ng-change="selectAllFromDataset(d)" ng-model="selected[d.name]"></checkbox>
+                <label>{{d.name}}</label>
+                <ul class="list-group" id="columnList">
+                    <li class="list-group-item" ng-repeat="a in d.attributes" ng-if="a.tag.name != selectedTags[0].name">
+                        <checkbox ng-model="a.selected" ng-change="changeColumns(a, selectedColumns, d)"></checkbox>
+                        <label uib-tooltip="{{a.description}}">{{a.col_name}}</label>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
+        <button class="btn btn-info" type="button" ng-click="next()">Next</button>
+    </div>
+</div>
+<!-- Fourth step of modal -->
+<div ng-show="step == 4">
+    <div class="modal-body">
+        <h4>Constructed Query</h4>
+
+        <pre>{{query}}{{statement.text}}</pre>
+
+        <div class="form-group">
+            <label for="where">Manual WHERE clause</label><small>  Example Input: table.column > x</small>
+            <input type="text" class="form-control" id="where" ng-model="statement.where">
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="limit">Manual LIMIT clause</label><small>  Example Input: 100</small>
+            <input type="text" class="form-control" id="limit" ng-model="statement.limit">
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col-xs-3">
+                <button class="btn btn-warning pull-left" type="button" ng-click="addToQuery()">Add To Query</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-primary pull-left" type="button" ng-click="previous()">Previous</button>
+        <button class="btn btn-success" type="button" ng-click="next()">Run</button>
+    </div>
+</div>
+<!-- Fifth step of modal -->
+<div ng-show="step == 5">
+    <div class="modal-body">
+        <h4>Preview of Results <small>after running Constructed Query</small></h4>
+        <p>Note: Preview will only show up to 100 results.</p>
+        <uib-alert type="info" ng-show="loadingPreview">Loading...</uib-alert>
+        <div class="" id="queryResultsTable">
+            <table class="table table-bordered">
+                <thead>
+                    <th ng-repeat="column in tableResult.colNames"> {{column}} </th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in tableResult.rows | limitTo:100">
+                        <td ng-repeat="cell in row">{{cell}}</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-primary pull-left" type="button" ng-click="previous()" ng-disabled="loadingPreview">Previous</button>
+        <button class="btn btn-info" type="button" ng-click="isCollapsed = !isCollapsed" ng-disabled="loadingPreview">Save To Queries</button>
+        <button class="btn btn-success" type="button" ng-click="download = !download" ng-disabled="loadingPreview">Download Full Results</button>
+        <div uib-collapse="isCollapsed">
+            <hr>
+            <div class="well well-sm">
+                <form name="saveQueryAs">
+                    <div class="form-group">
+                        <label for="queryName" class="pull-left">Name</label>
+                        <input type="text" class="form-control" name="name" id="queryName" id="name" ng-model="newQuery.name" required> </div>
+                    <div class="form-group">
+                        <label for="queryDesc" class="pull-left">Description</label>
+                        <input type="text" class="form-control" id="description" ng-model="newQuery.description"> </div>
+                    <div class="form-group">
+                        <button class="btn btn-info" type="button" ng-disabled="name.$invalid" ng-click="save()">Save</button>
+                        <button class="btn btn-danger pull-left" type="button" ng-click="isCollapsed = !isCollapsed">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div uib-collapse="!download">
+            <hr>
+            <div class="well well-sm">
+                <form name="downloadQueryAs">
+                    <div class="form-group">
+                        <label for="filename" class="pull-left">Filename</label>
+                        <input type="text" class="form-control" name="name" id="filename" ng-model="filename" required>.csv </div>
+                    <div class="form-group">
+                        <button class="btn btn-info" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="{{filename}}.csv">Save As CSV</button>
+                        <button class="btn btn-danger pull-left" type="button" ng-click="download = !download">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

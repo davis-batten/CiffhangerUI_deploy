@@ -6,68 +6,56 @@ describe('cliffhanger.datasets module', function () {
 
     describe('DatasetsCtrl', function () {
 
+        var baseScope;
+
         beforeEach(inject(function ($controller, $rootScope, $q, $log, $uibModal, datasetService) {
             scope = $rootScope.$new();
+            baseScope = scope;
             modal = $uibModal;
+            service = datasetService;
 
-            //create mock datasetService
-            mockDatasetService = {
-                    addDataset: function () {
-                        //TODO
-                        return $q.resolve();
-                    }
-                    , getDataset: function () {
-                        //TODO
-                        return $q.resolve();
-                    }
-                    , getAllDatasets: function () {
-                        //TODO
-                        return $q.resolve();
-                    }
-                }
-                /*
-                old_dataset_data = [
-                    {
-                        name: 'old 1'
-                        , description: 'old desc 1'
-                        , attributes: []
+            old_dataset_data = [
+                {
+                    name: 'old 1',
+                    description: 'old desc 1',
+                    attributes: []
                     }, {
-                        name: 'old 2'
-                        , description: 'old desc 2'
-                        , attributes: []
+                    name: 'old 2',
+                    description: 'old desc 2',
+                    attributes: []
                     }
                 ];
 
-                updated_dataset_data = {
-                    name: 'new'
-                    , description: 'new desc'
-                    , attributes: []
-                }
-                */
+            updated_dataset_data = {
+                name: 'new name',
+                description: 'new desc',
+                db_table_name: 'new table name',
+                attributes: []
+            }
+
             deferred = $q.defer();
 
             resp = {};
 
-            spyOn(datasetService, 'getAllDatasets').and.callFake(function () {
+            spyOn(service, 'getAllDatasets').and.callFake(function () {
                 resp.data = old_dataset_data;
                 resp.status = "Success";
                 deferred.resolve(resp);
                 return deferred.promise;
             });
-            /*
-            spyOn(datasetService, 'updateDataset').and.callFake(function () {
+
+            spyOn(service, 'updateDataset').and.callFake(function () {
                 resp.data = updated_dataset_data;
                 resp.status = "Success";
                 deferred.resolve(resp);
                 return deferred.promise;
             });
-            */
+
             datasetsCtrl = $controller('DatasetsCtrl', {
-                $scope: scope
-                , $uibModal: modal
-                , $log: $log
-                , datasetService: datasetService
-              //, datasetList: old_dataset_data
+                $scope: scope,
+                $uibModal: modal,
+                $log: $log,
+                datasetService: service
 
             });
 
@@ -81,14 +69,33 @@ describe('cliffhanger.datasets module', function () {
             expect(datasetsCtrl).toBeDefined();
         });
 
-        /*
-        it('should be able to update the dataset', function () {
-            //scope.updateDataset(updated_dataset_data);
-            scope.$apply();
-            expect(scope.datasetList).not.toBe(undefined);
-            expect(scope.datasetList[0]).toEqual(updated_dataset_data);
-        });
-        */
+
+        //        it('should be able to update the dataset', function () {
+        //
+        //            var fakeModal = {
+        //                result: {
+        //                    then: function (confirmCallback, cancelCallback) {
+        //                        this.confirmCallback = confirmCallback;
+        //                        this.cancelCallback = cancelCallback;
+        //                    }
+        //                },
+        //                close: function () {
+        //                    this.result.confirmCallback(updated_dataset_data);
+        //                },
+        //                dismiss: function () {
+        //                    this.result.cancelCallback();
+        //                }
+        //            }
+        //
+        //            spyOn(modal, 'open').and.returnValue(fakeModal);
+        //
+        //            scope.updateDataset(old_dataset_data[0]);
+        //            //            call scope.modalInstance.close(updated_dataset_data) ---> need to expose modal instance to scope!
+        //            //            expect(service.updateDataset).toHaveBeenCalled();
+        //            //            expect(scope.datasetList).not.toBe(undefined);
+        //            //            expect(scope.datasetList[0]).toEqual(updated_dataset_data);
+        //        });
+
 
     });
 
@@ -96,9 +103,9 @@ describe('cliffhanger.datasets module', function () {
         beforeEach(inject(function ($controller, $rootScope, $log, $q) {
             scope = $rootScope.$new();
             modalInstance = {
-                close: jasmine.createSpy('uibModalInstance.close')
-                , dismiss: jasmine.createSpy('uibModalInstance.dismiss')
-                , result: {
+                close: jasmine.createSpy('uibModalInstance.close'),
+                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
+                result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
@@ -108,22 +115,22 @@ describe('cliffhanger.datasets module', function () {
                 addTag: function () {
                     //TODO
                     return $q.resolve();
-                }
-                , getTag: function () {
+                },
+                getTag: function () {
                     //TODO
                     return $q.resolve();
-                }
-                , getAllTags: function () {
+                },
+                getAllTags: function () {
                     //TODO
                     return $q.resolve();
                 }
             }
 
             addDatasetModalCtrl = $controller('AddDatasetModalInstanceCtrl', {
-                $scope: scope
-                , $uibModalInstance: modalInstance
-                , $log: $log
-                , tagService: mockTagService
+                $scope: scope,
+                $uibModalInstance: modalInstance,
+                $log: $log,
+                tagService: mockTagService
             });
 
         }));
@@ -157,12 +164,12 @@ describe('cliffhanger.datasets module', function () {
         it('should be able to add an attribute', function () {
             var before = scope.input.attributes.length;
             scope.newAttribute = {
-                col_name: 'test'
-                , description: 'test desc'
-                , data_type: 'String'
-                , meta_type: {
-                    meta_name: 'ZIP'
-                    , description: 'zip code'
+                col_name: 'test',
+                description: 'test desc',
+                data_type: 'String',
+                meta_type: {
+                    meta_name: 'ZIP',
+                    description: 'zip code'
                 }
             }
 
@@ -175,12 +182,12 @@ describe('cliffhanger.datasets module', function () {
 
             //add new attribute
             scope.newAttribute = {
-                col_name: 'test'
-                , description: 'test desc'
-                , data_type: 'String'
-                , meta_type: {
-                    meta_name: 'ZIP'
-                    , description: 'zip code'
+                col_name: 'test',
+                description: 'test desc',
+                data_type: 'String',
+                meta_type: {
+                    meta_name: 'ZIP',
+                    description: 'zip code'
                 }
             }
             scope.addAttr();
@@ -194,27 +201,45 @@ describe('cliffhanger.datasets module', function () {
     });
 
     describe('DatasetUpdateModalCtrl', function () {
-        beforeEach(inject(function ($controller, $rootScope, $log) {
+        beforeEach(inject(function ($controller, $rootScope, $log, $q) {
             scope = $rootScope.$new();
             modalInstance = {
-                dismiss: jasmine.createSpy('uibModalInstance.dismiss')
-                , close: jasmine.createSpy('uibModalInstance.close')
-                , result: {
+                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
+                close: jasmine.createSpy('uibModalInstance.close'),
+                result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
             mockDataset = {
-                name: 'test'
-                , description: 'desc'
-                , attributes: []
+                name: 'test',
+                description: 'desc',
+                db_table_name: 'table name',
+                attributes: []
             };
             //mockDatasetList = [mockDataset];
 
+            //create mock datasetService
+            mockTagService = {
+                addTag: function () {
+                    //TODO
+                    return $q.resolve();
+                },
+                getTag: function () {
+                    //TODO
+                    return $q.resolve();
+                },
+                getAllTags: function () {
+                    //TODO
+                    return $q.resolve();
+                }
+            }
+
             datasetUpdateCtrl = $controller('DatasetUpdateModalCtrl', {
-                $scope: scope
-                , $uibModalInstance: modalInstance
-                , $log: $log
-                , dataset: mockDataset
+                $scope: scope,
+                $uibModalInstance: modalInstance,
+                $log: $log,
+                dataset: mockDataset,
+                tagService: mockTagService
                     //, datasetList: mockDatasetList
             });
 
@@ -231,23 +256,16 @@ describe('cliffhanger.datasets module', function () {
             expect(modalInstance.close).toHaveBeenCalled();
         });
 
-        /*it('should be able to update name', function () {
-            scope.input = {
-                name: 'new'
-                , description: 'desc'
-            }
-            scope.edit(mockDataset.name, scope.input, mockDatasetList);
-            expect(mockDatasetList[0].name).toBe('new');
-        });
 
+        /*
         it('should be able to update description', function () {
             scope.input = {
-                name: 'test'
-                , description: 'new'
+                name: 'test',
+                description: 'new'
             }
             scope.edit(mockDataset.name, scope.input, mockDatasetList);
             expect(mockDatasetList[0].description).toBe('new');
-        });*/
+        }); */
 
     });
 
@@ -255,23 +273,23 @@ describe('cliffhanger.datasets module', function () {
         beforeEach(inject(function ($controller, $rootScope, $log) {
             scope = $rootScope.$new();
             modalInstance = {
-                dismiss: jasmine.createSpy('uibModalInstance.dismiss')
-                , close: jasmine.createSpy('uibModalInstance.close')
-                , result: {
+                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
+                close: jasmine.createSpy('uibModalInstance.close'),
+                result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
             mockDataset = {
-                name: 'test'
-                , description: 'desc'
-                , attributes: []
+                name: 'test',
+                description: 'desc',
+                attributes: []
             }
 
             datasetDeleteCtrl = $controller('DatasetDeleteModalCtrl', {
-                $scope: scope
-                , $uibModalInstance: modalInstance
-                , $log: $log
-                , dataset: mockDataset
+                $scope: scope,
+                $uibModalInstance: modalInstance,
+                $log: $log,
+                dataset: mockDataset
             });
 
         }));

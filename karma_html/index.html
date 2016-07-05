@@ -93,20 +93,17 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </style>
 </head>
 
-<body id="HTMLReporter" class="html-reporter showDetails">
-<h1>Tested in Chrome 49.0.2623 (Mac OS X 10.8.5) on Tue Jun 21 2016</h1>
+<body id="HTMLReporter" class="html-reporter">
+<h1>Tested in Chrome 51.0.2704 (Windows 7 0.0.0) on Tue Jul 05 2016</h1>
 
 <div class="alert">
 
 
-<!-- <span class="failingAlert bar">Failed 1 specs</span> -->
-<span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
-  <a href="#" onclick="unfold();">Unfold</a></span>38 specs, 1 failed, 0 pending</span>
-<span class="resultsMenu bar">
-<a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a 
-   class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
-</span>
 
+  
+  <span class="passingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
+  <a href="#" onclick="unfold();">Unfold</a></span>56 specs, 0 failed, 0 pending</span>
+  
 
 
 </div>
@@ -194,15 +191,11 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
     </div>
   
-    <div class="suite failed">
+    <div class="suite passed">
       <span class="description">cliffhanger.datasets module DatasetsCtrl</span>
     
       <div class="specSummary passed">
       <span class="description">should have a DatasetsCtrl controller</span>
-      </div>
-    
-      <div class="specSummary failed">
-      <span class="description">should be able to update the dataset</span>
       </div>
     
     </div>
@@ -267,10 +260,78 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     </div>
   
     <div class="suite passed">
-      <span class="description">cliffhanger.queries module queries controller</span>
+      <span class="description">cliffhanger.queries module query wizard controller</span>
     
       <div class="specSummary passed">
-      <span class="description">should load</span>
+      <span class="description">should instantiate the QueryWizardCtrl controller</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should dismiss the modal with cancel</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should advance to the next step</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to go back to the previous step</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should handle changes linked to checkboxes</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should load the correct tags for the selected datasets</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to add a WHERE/LIMIT clause to the query</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to add a WHERE clause without a LIMIT clause</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to add a LIMIT clause without a WHERE clause</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to add a WHERE/LIMIT clause and then change it</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show a green progress bar on the build query step</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should correctly build SQL query on the build query step</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show a red progress bar in the event of an error</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show a complete progress bar on the last step</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should run the query and return a table result object</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should show a red progress bar in the event of an error</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should run save query without where and limit clause</span>
+      </div>
+    
+      <div class="specSummary passed">
+      <span class="description">should run save query with a where and limit clause</span>
       </div>
     
     </div>
@@ -320,6 +381,19 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">should be able to delete a dataset</span>
       </div>
     
+      <div class="specSummary passed">
+      <span class="description">should be able to update a dataset</span>
+      </div>
+    
+    </div>
+  
+    <div class="suite passed">
+      <span class="description">query service</span>
+    
+      <div class="specSummary passed">
+      <span class="description">should be able to build a query</span>
+      </div>
+    
     </div>
   
     <div class="suite passed">
@@ -344,16 +418,6 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
 <div id="details">
   
-  
-  <div class="specDetail failed">
-    <span class="description">cliffhanger.datasets module DatasetsCtrl should be able to update the dataset</span>
-    <div class="stackTrace">
-      <div class="resultMessage">Expected Object({ name: 'old 1', description: 'old desc 1', attributes: [  ] }) to equal Object({ name: 'new', description: 'new desc', attributes: [  ] }).
-    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/datasets/datasets_test.js?5164edcbd7a69fd58f6a8e1b7a43cfed310af350:89:42)</div>
-    </div>
-  </div>
-  
-  
 </div>
 
 <script>
@@ -365,7 +429,7 @@ document.body.onkeypress = function (e) {
   switch (e.keyCode) {
     case 102: toggleFold(); break;
     case 49: showSummary(); break;
-    case 50: showFailures(); break;
+    
   }
 };
 

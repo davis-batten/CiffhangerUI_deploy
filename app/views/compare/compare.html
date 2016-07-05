@@ -1,52 +1,86 @@
-<hr>
-<h3>Compare</h3>
+<div class="container-fluid">
+    <hr>
+    <ul class="nav nav-pills">
+        <li class="active"><a href="#/analyst/compare">Compare</a></li>
+        <li><a href="#/analyst/queries">Query Management</a></li>
+    </ul>
+    <hr>
 
-<!--Typeaheads go here -->
-<div class="col-md-6">
-    <h4>Filter Tags</h4>
-    <tags-input ng-model="selectedTags" add-from-autocomplete-only="true" display-property="name" spellcheck="false">
-        <auto-complete source="filterTags($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true"></auto-complete>
-    </tags-input>
+    <div class="row">
+        <!--Typeaheads go here -->
+        <div class="col-md-6">
+            <h4>Datasets</h4>
+            <tags-input ng-model="selectedDatasets" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Click to add datasets to selection">
+                <auto-complete source="filterDatasets($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true" max-results-to-show="1000"></auto-complete>
+            </tags-input>
 
-    <p ng-show="noTagResults">No Results</p>
+            <p ng-show="noDatasetResults">No Results</p>
+            <br>
+
+        </div>
+
+        <!--Typeaheads go here -->
+        <div class="col-md-6">
+            <h4>Tags</h4>
+            <tags-input ng-model="selectedTags" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Click to add tags to selection">
+                <auto-complete source="filterTags($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true" max-results-to-show="1000"></auto-complete>
+            </tags-input>
+
+            <p ng-show="noTagResults">No Results</p>
+            <br>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button class="btn btn-default btn-sm" ng-click="selectAllDatasets()">Select All</button>
+                    <button class="btn btn-default btn-sm" ng-click="deselectAllDatasets()">Deselect All</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button class="btn btn-default btn-sm" ng-click="selectAllTags()">Select All</button>
+                    <button class="btn btn-default btn-sm" ng-click="deselectAllTags()">Deselect All</button>
+                </div>
+                <button class="btn btn-default btn-sm" ng-click="allowUntagged()" ng-hide="untagged">Show Untagged Attributes</button>
+                <button class="btn btn-default btn-sm" ng-click="removeUntagged()" ng-show="untagged">Hide Untagged Attributes</button>
+
+            </div>
+        </div>
+    </div>
     <br>
-    <button class="btn btn-default" ng-click="selectAllTags()">Select All Tags</button>
-    <button class="btn btn-default" ng-click="deselectAllTags()">Deselect All Tags</button>
-</div>
-
-<!--Typeaheads go here -->
-<div class="col-md-6">
-    <h4>Filter Datasets</h4>
-    <tags-input ng-model="selectedDatasets" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Add a dataset">
-        <auto-complete source="filterDatasets($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true"></auto-complete>
-    </tags-input>
-
-    <p ng-show="noDatasetResults">No Results</p>
+    <div class="row">
+        <div class="col-md-6">
+            <button class="btn btn-default btn-sm" ng-click="selectRelevantDatasets()" ng-show="selectedTags.length" uib-tooltip="Select all Datasets that have at least one of the selected Tags">Select Relevant</button>
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-default btn-sm" ng-click="selectRelevantTags()" ng-show="selectedDatasets.length" uib-tooltip="Select all Tags that are in at least one of the selected Datasets">Select Relevant</button>
+        </div>
+    </div>
+    <hr>
     <br>
-    <button class="btn btn-default" ng-click="selectAllDatasets()">Select All Datasets</button>
-    <button class="btn btn-default" ng-click="deselectAllDatasets()">Deselect All Datasets</button>
-</div>
 
-<button class="btn btn-default" ng-click="allowUntagged()" ng-hide="untagged">Show Untagged Attributes</button>
-<button class="btn btn-default" ng-click="removeUntagged()" ng-show="untagged">Hide Untagged Attributes</button>
-<br>
-<br>
+    <div class="" id="compareTable">
+        <table class="table table-bordered">
+            <thead>
+                <th></th>
+                <th ng-repeat="tag in selectedTags">{{tag.name}}</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="dataset in selectedDatasets">
+                    <td>{{dataset.name}} <span class="glyphicon glyphicon-exclamation-sign no_data_warning" ng-if="dataset.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset"></span></td>
+                    <td ng-repeat="attr in rows[dataset.name]" class="{{attr.class}}">{{attr.name}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-<div>
-    <table class="table table-bordered">
-        <thead>
-            <th></th>
-            <th ng-repeat="tag in selectedTags">{{tag.name}}</th>
-        </thead>
-        <tbody>
-            <tr ng-repeat="dataset in selectedDatasets">
-                <td>{{dataset.name}}</td>
-                <td ng-repeat="attr in rows[dataset.name]" class="{{attr.class}}">{{attr.name}}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<div class="btn-group-center">
-    <button class="btn btn-success" ng-click="log()">Query Wizard</button>
+    <div class="btn-group-center">
+        <button class="btn btn-success" ng-click="openQueryWizard()" uib-tooltip="Combine data to create a custom table">Build Custom Table</button>
+    </div>
 </div>

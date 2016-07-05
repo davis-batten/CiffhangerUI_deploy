@@ -20,6 +20,11 @@
     margin-left: .5em;
 }
 
+.no_data_warning {
+    color: #d9534f;
+    font-size: 1.5em;
+}
+
 #dataset_checkbox {
     float: left !important;
     display: inline-block;
@@ -48,4 +53,20 @@
     text-align: center;
     font-size: 1.5em;
     color: darkred
+}
+
+#custom-search-input {
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+#custom-search-input input {
+    border: 0;
+    box-shadow: none;
+}
+
+#editAttributeTable .form-group {
+    margin-bottom: 0px;
 }
