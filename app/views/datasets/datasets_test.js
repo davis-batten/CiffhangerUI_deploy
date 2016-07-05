@@ -19,12 +19,12 @@ describe('cliffhanger.datasets module', function () {
                     name: 'old 1',
                     description: 'old desc 1',
                     attributes: []
-                    }, {
+                }, {
                     name: 'old 2',
                     description: 'old desc 2',
                     attributes: []
-                    }
-                ];
+                }
+            ];
 
             updated_dataset_data = {
                 name: 'new name',
@@ -203,19 +203,44 @@ describe('cliffhanger.datasets module', function () {
     describe('DatasetUpdateModalCtrl', function () {
         beforeEach(inject(function ($controller, $rootScope, $log, $q) {
             scope = $rootScope.$new();
+
             modalInstance = {
                 dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
                 close: jasmine.createSpy('uibModalInstance.close'),
+
                 result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
+
+            mockTag = {
+                name: 'test tag to remove',
+                description: 'test tag desc'
+            };
+
             mockDataset = {
                 name: 'test',
                 description: 'desc',
-                db_table_name: 'table name',
-                attributes: []
+                db_table_name: '',
+                attributes: [
+                    {
+                        col_name: 'test_col1',
+                        description: 'test attr 1 desc',
+                        data_type: 'String',
+                        tag: {
+                            name: '<EMPTY>',
+                            description: ''
+                        }
+                    },
+                    {
+                        col_name: 'test_col2',
+                        description: 'test attr 2 desc',
+                        data_type: 'String',
+                        tag: mockTag
+                    }
+                ]
             };
+
             //mockDatasetList = [mockDataset];
 
             //create mock datasetService
@@ -254,6 +279,20 @@ describe('cliffhanger.datasets module', function () {
             scope.complete();
             expect(scope.input).not.toBeNull();
             expect(modalInstance.close).toHaveBeenCalled();
+        });
+
+
+        it('should be able to add a tag to an attribute', function () {
+            scope.replaceTag(0, mockTag);
+            expect(mockDataset.attributes[0].tag).toBe(mockTag);
+        });
+
+
+        it('should be able to remove a tag from an attribute', function () {
+            scope.removeTag(1);
+            expect(mockDataset.attributes[1].tag.name).toBe('<EMPTY>');
+            expect(mockDataset.attributes[1].tag.description).toBe('');
+
         });
 
 

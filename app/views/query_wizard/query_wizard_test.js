@@ -4,7 +4,7 @@ describe('cliffhanger.queries module', function () {
     beforeEach(angular.mock.module('ngCsv'));
     beforeEach(angular.mock.module('cliffhanger.queries'));
     describe('query wizard controller', function () {
-        beforeEach(inject(function ($controller, $rootScope, $log, queryService, $q) {
+        beforeEach(inject(function ($controller, $rootScope, _$log_, queryService, $q) {
             scope = $rootScope.$new();
             mockQueryService = queryService;
             modalInstance = {
