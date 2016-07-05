@@ -8,32 +8,32 @@ describe('cliffhanger.queries module', function () {
             scope = $rootScope.$new();
             mockQueryService = queryService;
             modalInstance = {
-                close: jasmine.createSpy('uibModalInstance.close')
-                , dismiss: jasmine.createSpy('uibModalInstance.dismiss')
-                , result: {
+                close: jasmine.createSpy('uibModalInstance.close'),
+                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
+                result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
             mockDatasets = [
                 {
-                    name: 'test1'
-                    , description: 'test desc 1'
-                    , attributes: [
+                    name: 'test1',
+                    description: 'test desc 1',
+                    attributes: [
                         {
-                            "name": "attr1"
-                            , "tag": {
+                            "name": "attr1",
+                            "tag": {
                                 "name": "ZIP"
                             }
                         }
                         , {
-                            "name": "attr2"
-                            , "tag": {
+                            "name": "attr2",
+                            "tag": {
                                 "name": "SSN"
                             }
                         }
-                    ]
-                    , selected: true
-                    , tags: [
+                    ],
+                    selected: true,
+                    tags: [
                         {
                             "name": "ZIP"
                         }
@@ -42,24 +42,24 @@ describe('cliffhanger.queries module', function () {
                         }
                     ]
                     }, {
-                    name: 'test2'
-                    , description: 'test desc 2'
-                    , attributes: [
+                    name: 'test2',
+                    description: 'test desc 2',
+                    attributes: [
                         {
-                            "name": "attr3"
-                            , "tag": {
+                            "name": "attr3",
+                            "tag": {
                                 "name": "ZIP"
                             }
                         }
                         , {
-                            "name": "attr4"
-                            , "tag": {
+                            "name": "attr4",
+                            "tag": {
                                 "name": "NAME"
                             }
                         }
-                    ]
-                    , selected: true
-                    , tags: [
+                    ],
+                    selected: true,
+                    tags: [
                         {
                             "name": "ZIP"
                         }
@@ -68,24 +68,24 @@ describe('cliffhanger.queries module', function () {
                         }
                     ]
                     }, {
-                    name: 'test3'
-                    , description: 'test desc 3'
-                    , attributes: [
+                    name: 'test3',
+                    description: 'test desc 3',
+                    attributes: [
                         {
-                            "name": "attr4"
-                            , "tag": {
+                            "name": "attr4",
+                            "tag": {
                                 "name": "COUNTY"
                             }
                         }
                         , {
-                            "name": "attr5"
-                            , "tag": {
+                            "name": "attr5",
+                            "tag": {
                                 "name": "COUNTRY"
                             }
                         }
-                    ]
-                    , selected: false
-                    , tags: [
+                    ],
+                    selected: false,
+                    tags: [
                         {
                             "name": "COUNTY"
                         }
@@ -102,12 +102,12 @@ describe('cliffhanger.queries module', function () {
                     status: 'Error'
                 }
                 var testTableResult = {
-                    colCount: 2
-                    , colNames: [
+                    colCount: 2,
+                    colNames: [
                         "test.col1"
                         , "test.col2"
-                    ]
-                    , rows: [
+                    ],
+                    rows: [
                         [
                             1
                             , "abc"
@@ -132,8 +132,8 @@ describe('cliffhanger.queries module', function () {
                     status: 'Error'
                 }
                 var good_result = {
-                    data: "SELECT * FROM table;"
-                    , status: 'Success'
+                    data: "SELECT * FROM table;",
+                    status: 'Success'
                 }
                 var deferred = $q.defer();
                 if (serviceError) deferred.resolve(bad_result);
@@ -141,10 +141,10 @@ describe('cliffhanger.queries module', function () {
                 return deferred.promise;
             })
             queryWizardCtrl = $controller('QueryWizardCtrl', {
-                $scope: scope
-                , $uibModalInstance: modalInstance
-                , datasets: mockDatasets
-                , queryService: mockQueryService
+                $scope: scope,
+                $uibModalInstance: modalInstance,
+                datasets: mockDatasets,
+                queryService: mockQueryService
             })
         }));
         // -----------Modal operations----------------------
@@ -209,7 +209,7 @@ describe('cliffhanger.queries module', function () {
             scope.statement = {};
             scope.query = "SELECT * FROM table;";
             scope.statement.where = "assaults = 10";
-            scope.statement.limit = "";
+            scope.statement.limit = null;
             scope.addToQuery();
             expect(scope.statement.text).not.toBeNull();
             expect(scope.statement.text).toEqual("\nWHERE assaults = 10;");
@@ -217,7 +217,7 @@ describe('cliffhanger.queries module', function () {
         it('should be able to add a LIMIT clause without a WHERE clause', function () {
             scope.statement = {};
             scope.query = "SELECT * FROM table;";
-            scope.statement.where = "";
+            scope.statement.where = null;
             scope.statement.limit = "110";
             scope.addToQuery();
             expect(scope.statement.text).not.toBeNull();
@@ -280,6 +280,31 @@ describe('cliffhanger.queries module', function () {
             scope.next();
             scope.$apply();
             expect(scope.progressType).toBe('danger');
+        });
+        it('should run save query without where and limit clause', function () {
+            scope.query = "SELECT * FROM table";
+            scope.statement = undefined;
+            scope.newQuery = {};
+            scope.newQuery.name = "Test Query";
+            scope.newQuery.description = "test query description";
+            scope.save(scope.newQuery);
+            expect(scope.newQuery).not.toBeNull();
+            expect(scope.newQuery.name).toEqual("Test Query");
+            expect(scope.newQuery.description).toEqual("test query description");
+            expect(scope.newQuery.sqlString).toEqual("SELECT * FROM table");
+        });
+        it('should run save query with a where and limit clause', function () {
+            scope.query = "SELECT * FROM table";
+            scope.statement = {};
+            scope.statement.text = " WHERE * > 10";
+            scope.newQuery = {};
+            scope.newQuery.name = "Test Query";
+            scope.newQuery.description = "test query description";
+            scope.save(scope.newQuery);
+            expect(scope.newQuery).not.toBeNull();
+            expect(scope.newQuery.name).toEqual("Test Query");
+            expect(scope.newQuery.description).toEqual("test query description");
+            expect(scope.newQuery.sqlString).toEqual("SELECT * FROM table WHERE * > 10");
         });
     });
 });

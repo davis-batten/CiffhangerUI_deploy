@@ -117,22 +117,22 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     };
     //add where and limit clause to SQL query string
     $scope.addToQuery = function () {
-        if (($scope.statement.where == null && $scope.statement.limit == null) || ($scope.statement.where == "" && $scope.statement.limit == "") || ($scope.statement.where == null && $scope.statement.limit == "") || ($scope.statement.where == "" && $scope.statement.limit == null)) {
+        if (($scope.statement.where == undefined && $scope.statement.limit == undefined) || ($scope.statement.where == "" && $scope.statement.limit == "") || ($scope.statement.where == undefined && $scope.statement.limit == "") || ($scope.statement.where == "" && $scope.statement.limit == undefined)) {
             $scope.query = $scope.query.replace(";", "");
             $scope.statement.text = ";";
         }
         //adding both WHERE and LIMIT statement
-        else if ($scope.statement.where != null && $scope.statement.limit != null) {
+        else if (($scope.statement.where != undefined && $scope.statement.limit != undefined && $scope.statement.where != "" && $scope.statement.limit != "")) {
             $scope.query = $scope.query.replace(";", "");
             $scope.statement.text = "\nWHERE " + $scope.statement.where + "\n" + "LIMIT " + $scope.statement.limit + ";";
         }
         //adding WHERE and not LIMIT
-        else if (($scope.statement.where != null && $scope.statement.limit == null) || ($scope.statement.where != null && $scope.statement.limit == "")) {
+        else if (($scope.statement.where != undefined && $scope.statement.limit == undefined) || ($scope.statement.where != undefined && $scope.statement.limit == "")) {
             $scope.query = $scope.query.replace(";", "");
             $scope.statement.text = "\nWHERE " + $scope.statement.where + ";";
         }
         //adding LIMIT and not WHERE
-        else if (($scope.statement.where == null && $scope.statement.limit != null) || ($scope.statement.where == "" && $scope.statement.limit != null)) {
+        else if (($scope.statement.where == undefined && $scope.statement.limit != undefined) || ($scope.statement.where == "" && $scope.statement.limit != null)) {
             $scope.query = $scope.query.replace(";", "");
             $scope.statement.text = "\nLIMIT " + $scope.statement.limit + ";";
         }
@@ -162,7 +162,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
     };
     //complete the modal
     $scope.save = function () {
-        if ($scope.statement.text != null) {
+        if ($scope.statement != undefined) {
             $scope.newQuery.sqlString = $scope.query + $scope.statement.text;
         } else {
             $scope.newQuery.sqlString = $scope.query;
@@ -171,10 +171,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             if (data.status == 'Success') {
                 $log.debug(data);
             } else {
-                $scope.alerts.push({
-                    msg: data,
-                    type: 'danger'
-                });
+                $log.debug(data);
             }
         }, function (data) {
             $scope.alerts.push({

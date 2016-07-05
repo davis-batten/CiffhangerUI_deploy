@@ -20,6 +20,7 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
         var input = {
             query: sql
         }
+
         return $http.post($rootScope.baseUrl + '/query/run', input).then(
             //success callback
             function (response) {
@@ -37,7 +38,6 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
             //success callback
             function (response) {
                 $log.debug('Success!');
-                $log.info(response)
                 return response.data;
             }, //error callback
             function (response) {
