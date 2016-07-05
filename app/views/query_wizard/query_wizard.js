@@ -171,10 +171,7 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
             if (data.status == 'Success') {
                 $log.debug(data);
             } else {
-                $scope.alerts.push({
-                    msg: data,
-                    type: 'danger'
-                });
+                $log.debug(data);
             }
         }, function (data) {
             $scope.alerts.push({

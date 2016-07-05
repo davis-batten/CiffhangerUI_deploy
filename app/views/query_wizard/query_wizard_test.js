@@ -282,7 +282,6 @@ describe('cliffhanger.queries module', function () {
             expect(scope.progressType).toBe('danger');
         });
         it('should run save query without where and limit clause', function () {
-            scope.isCollapsed = false;
             scope.query = "SELECT * FROM table";
             scope.statement = undefined;
             scope.newQuery = {};
@@ -295,10 +294,9 @@ describe('cliffhanger.queries module', function () {
             expect(scope.newQuery.sqlString).toEqual("SELECT * FROM table");
         });
         it('should run save query with a where and limit clause', function () {
-            scope.isCollapsed = false;
             scope.query = "SELECT * FROM table";
             scope.statement = {};
-            scope.statement.text = " WHERE";
+            scope.statement.text = " WHERE * > 10";
             scope.newQuery = {};
             scope.newQuery.name = "Test Query";
             scope.newQuery.description = "test query description";
@@ -306,7 +304,7 @@ describe('cliffhanger.queries module', function () {
             expect(scope.newQuery).not.toBeNull();
             expect(scope.newQuery.name).toEqual("Test Query");
             expect(scope.newQuery.description).toEqual("test query description");
-            expect(scope.newQuery.sqlString).toEqual("SELECT * FROM table WHERE");
+            expect(scope.newQuery.sqlString).toEqual("SELECT * FROM table WHERE * > 10");
         });
     });
 });
