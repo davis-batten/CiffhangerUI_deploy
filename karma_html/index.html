@@ -93,17 +93,20 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </style>
 </head>
 
-<body id="HTMLReporter" class="html-reporter">
+<body id="HTMLReporter" class="html-reporter showDetails">
 <h1>Tested in Chrome 51.0.2704 (Windows 7 0.0.0) on Tue Jul 05 2016</h1>
 
 <div class="alert">
 
 
+<!-- <span class="failingAlert bar">Failed 1 specs</span> -->
+<span class="failingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
+  <a href="#" onclick="unfold();">Unfold</a></span>56 specs, 1 failed, 0 pending</span>
+<span class="resultsMenu bar">
+<a class="summaryMenuItem" onclick="showSummary();" href="#">Spec List<a>|<a 
+   class="detailsMenuItem" onclick="showFailures();" href="#">Failures</a>
+</span>
 
-  
-  <span class="passingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
-  <a href="#" onclick="unfold();">Unfold</a></span>55 specs, 0 failed, 0 pending</span>
-  
 
 
 </div>
@@ -259,7 +262,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
     </div>
   
-    <div class="suite passed">
+    <div class="suite failed">
       <span class="description">cliffhanger.queries module query wizard controller</span>
     
       <div class="specSummary passed">
@@ -332,6 +335,10 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
     
       <div class="specSummary passed">
       <span class="description">should run save query with a where and limit clause</span>
+      </div>
+    
+      <div class="specSummary failed">
+      <span class="description">should run save query without where and limit clause</span>
       </div>
     
     </div>
@@ -414,6 +421,16 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
 <div id="details">
   
+  
+  <div class="specDetail failed">
+    <span class="description">cliffhanger.queries module query wizard controller should run save query without where and limit clause</span>
+    <div class="stackTrace">
+      <div class="resultMessage">TypeError: Cannot read property 'logs' of undefined
+    at Object.&lt;anonymous&gt; (http://localhost:9876/base/views/query_wizard/query_wizard_test.js?e5f238d94bc64242744bad8df5047d1e2f7537de:327:35)</div>
+    </div>
+  </div>
+  
+  
 </div>
 
 <script>
@@ -425,7 +442,7 @@ document.body.onkeypress = function (e) {
   switch (e.keyCode) {
     case 102: toggleFold(); break;
     case 49: showSummary(); break;
-    
+    case 50: showFailures(); break;
   }
 };
 

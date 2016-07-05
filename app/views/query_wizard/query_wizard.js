@@ -167,6 +167,9 @@ queries.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log,
         } else {
             $scope.newQuery.sqlString = $scope.query;
         }
+        if ($scope.newQuery.description == null || $scope.newQuery.description == undefined) {
+            $scope.newQuery.description = "";
+        }
         queryService.saveQuery($scope.newQuery).then(function (data) {
             if (data.status == 'Success') {
                 $log.debug(data);
