@@ -9,3 +9,7 @@
     border: 0;
     box-shadow: none;
 }
+
+h3 small {
+    padding-left: .5em;
+}
