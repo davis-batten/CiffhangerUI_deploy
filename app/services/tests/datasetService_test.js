@@ -47,7 +47,14 @@ describe("dataset service", function () {
     it("should be able to delete a dataset", function () {
         var datasetName = test_create_data.name;
         httpBackend.expectDELETE(baseUrl + '/dataset/delete/' + datasetName).respond(200, "success");
-        datasetService.addDataset(test_create_data);
+        datasetService.deleteDataset(test_create_data);
+        //httpBackend.flush();
+    })
+
+    it("should be able to update a dataset", function () {
+        var datasetName = test_create_data.name;
+        httpBackend.expectPUT(baseUrl + '/dataset/update/' + datasetName).respond(200, "success");
+        datasetService.updateDataset(test_create_data);
         //httpBackend.flush();
     })
 
