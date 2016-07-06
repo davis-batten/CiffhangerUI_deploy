@@ -197,16 +197,6 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
         queryService.saveQuery($scope.newQuery).then(function (data) {
             if (data.status == 'Success') {
                 $log.debug(data);
-            }
-            //adding WHERE and not LIMIT
-            else if (($scope.statement.where != null && $scope.statement.limit == null) || ($scope.statement.where != null && $scope.statement.limit == "")) {
-                $scope.query = $scope.query.replace(";", "");
-                $scope.statement.text = "\nWHERE " + $scope.statement.where + ";";
-            }
-            //adding LIMIT and not WHERE
-            else if (($scope.statement.where == null && $scope.statement.limit != null) || ($scope.statement.where == "" && $scope.statement.limit != null)) {
-                $scope.query = $scope.query.replace(";", "");
-                $scope.statement.text = "\nLIMIT " + $scope.statement.limit + ";";
             } else {
                 $log.debug(data);
             }
