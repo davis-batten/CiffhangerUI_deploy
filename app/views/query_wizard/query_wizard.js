@@ -74,10 +74,9 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
         //advance the modal to the next step
     $scope.next = function () {
         $scope.step++;
-        if ($scope.step == 2) { << << << < HEAD
-            $scope.loadTags(); === === =
+        if ($scope.step == 2) {
             $scope.numJoins++;
-            $log.debug($scope.numJoins); >>> >>> > f7c83806faac8d31daa20f3e7f2fb2276eea6c37
+            $log.debug($scope.numJoins);
         } else if ($scope.step == 4) $scope.buildQuery();
         else if ($scope.step == 5) {
             $scope.runQuery($scope.query);
