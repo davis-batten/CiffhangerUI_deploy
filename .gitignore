@@ -6,3 +6,4 @@
 app/bower_components/
 app/npm-debug.log
 /.brackets.json
+/karma_html/

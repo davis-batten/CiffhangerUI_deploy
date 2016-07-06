@@ -6,25 +6,13 @@ describe('cliffhanger.datasets module', function () {
 
     describe('DatasetsCtrl', function () {
 
+        var baseScope;
+
         beforeEach(inject(function ($controller, $rootScope, $q, $log, $uibModal, datasetService) {
             scope = $rootScope.$new();
+            baseScope = scope;
             modal = $uibModal;
-
-            //create mock datasetService
-            mockDatasetService = {
-                addDataset: function () {
-                    //TODO
-                    return $q.resolve();
-                },
-                getDataset: function () {
-                    //TODO
-                    return $q.resolve();
-                },
-                getAllDatasets: function () {
-                    //TODO
-                    return $q.resolve();
-                }
-            }
+            service = datasetService;
 
             old_dataset_data = [
                 {
@@ -39,8 +27,9 @@ describe('cliffhanger.datasets module', function () {
             ];
 
             updated_dataset_data = {
-                name: 'new',
+                name: 'new name',
                 description: 'new desc',
+                db_table_name: 'new table name',
                 attributes: []
             }
 
@@ -48,25 +37,25 @@ describe('cliffhanger.datasets module', function () {
 
             resp = {};
 
-            spyOn(datasetService, 'getAllDatasets').and.callFake(function () {
+            spyOn(service, 'getAllDatasets').and.callFake(function () {
                 resp.data = old_dataset_data;
                 resp.status = "Success";
                 deferred.resolve(resp);
                 return deferred.promise;
             });
-            /*
-            spyOn(datasetService, 'updateDataset').and.callFake(function () {
+
+            spyOn(service, 'updateDataset').and.callFake(function () {
                 resp.data = updated_dataset_data;
                 resp.status = "Success";
                 deferred.resolve(resp);
                 return deferred.promise;
             });
-            */
+
             datasetsCtrl = $controller('DatasetsCtrl', {
                 $scope: scope,
                 $uibModal: modal,
                 $log: $log,
-                datasetService: datasetService
+                datasetService: service
 
             });
 
@@ -80,14 +69,33 @@ describe('cliffhanger.datasets module', function () {
             expect(datasetsCtrl).toBeDefined();
         });
 
-        /*
-        it('should be able to update the dataset', function () {
-            //scope.updateDataset(updated_dataset_data);
-            scope.$apply();
-            expect(scope.datasetList).not.toBe(undefined);
-            expect(scope.datasetList[0]).toEqual(updated_dataset_data);
-        });
-        */
+
+        //        it('should be able to update the dataset', function () {
+        //
+        //            var fakeModal = {
+        //                result: {
+        //                    then: function (confirmCallback, cancelCallback) {
+        //                        this.confirmCallback = confirmCallback;
+        //                        this.cancelCallback = cancelCallback;
+        //                    }
+        //                },
+        //                close: function () {
+        //                    this.result.confirmCallback(updated_dataset_data);
+        //                },
+        //                dismiss: function () {
+        //                    this.result.cancelCallback();
+        //                }
+        //            }
+        //
+        //            spyOn(modal, 'open').and.returnValue(fakeModal);
+        //
+        //            scope.updateDataset(old_dataset_data[0]);
+        //            //            call scope.modalInstance.close(updated_dataset_data) ---> need to expose modal instance to scope!
+        //            //            expect(service.updateDataset).toHaveBeenCalled();
+        //            //            expect(scope.datasetList).not.toBe(undefined);
+        //            //            expect(scope.datasetList[0]).toEqual(updated_dataset_data);
+        //        });
+
 
     });
 
@@ -195,21 +203,21 @@ describe('cliffhanger.datasets module', function () {
     describe('DatasetUpdateModalCtrl', function () {
         beforeEach(inject(function ($controller, $rootScope, $log, $q) {
             scope = $rootScope.$new();
-            
+
             modalInstance = {
                 dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
                 close: jasmine.createSpy('uibModalInstance.close'),
-                
+
                 result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
-            
+
             mockTag = {
                 name: 'test tag to remove',
                 description: 'test tag desc'
             };
-            
+
             mockDataset = {
                 name: 'test',
                 description: 'desc',
@@ -232,7 +240,7 @@ describe('cliffhanger.datasets module', function () {
                     }
                 ]
             };
-            
+
             //mockDatasetList = [mockDataset];
 
             //create mock datasetService
@@ -272,14 +280,14 @@ describe('cliffhanger.datasets module', function () {
             expect(scope.input).not.toBeNull();
             expect(modalInstance.close).toHaveBeenCalled();
         });
-        
-        
+
+
         it('should be able to add a tag to an attribute', function () {
-            scope.replaceTag(0,mockTag);
+            scope.replaceTag(0, mockTag);
             expect(mockDataset.attributes[0].tag).toBe(mockTag);
         });
-            
-        
+
+
         it('should be able to remove a tag from an attribute', function () {
             scope.removeTag(1);
             expect(mockDataset.attributes[1].tag.name).toBe('<EMPTY>');
@@ -287,23 +295,16 @@ describe('cliffhanger.datasets module', function () {
 
         });
 
-        /*it('should be able to update name', function () {
-            scope.input = {
-                name: 'new'
-                , description: 'desc'
-            }
-            scope.edit(mockDataset.name, scope.input, mockDatasetList);
-            expect(mockDatasetList[0].name).toBe('new');
-        });
 
+        /*
         it('should be able to update description', function () {
             scope.input = {
-                name: 'test'
-                , description: 'new'
+                name: 'test',
+                description: 'new'
             }
             scope.edit(mockDataset.name, scope.input, mockDatasetList);
             expect(mockDatasetList[0].description).toBe('new');
-        });*/
+        }); */
 
     });
 
