@@ -71,6 +71,11 @@
                     <li class="list-group-item " ng-repeat="a in d.attributes ">
                         <checkbox ng-model="a.selected " ng-change="changeColumns(a, selectedColumns, d) "></checkbox>
                         <label uib-tooltip="{{a.description}} ">{{a.col_name}}</label>
+                        <div class="input-group col-md-5 form-inline pull-right">
+                            <span class="input-group-addon">Alias</span>
+                            <input type="text" ng-model="a.alias" class="form-control">
+                        </div>
+
                     </li>
                 </ul>
             </li>
@@ -118,7 +123,7 @@
         <h4>Preview of Results <small>after running Constructed Query</small></h4>
         <p>Note: Preview will only show up to 100 results.</p>
         <uib-alert type="info " ng-show="loadingPreview ">Loading...</uib-alert>
-        <div id="queryResultsTable ">
+        <div id="queryResultsTable">
             <table class="table table-bordered ">
                 <thead>
                     <th ng-repeat="column in tableResult.colNames "> {{column}} </th>
