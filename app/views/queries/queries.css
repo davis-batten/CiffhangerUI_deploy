@@ -13,3 +13,7 @@
 h3 small {
     padding-left: .5em;
 }
+
+.dropdown-menu li {
+    cursor: pointer;
+}

@@ -27,6 +27,9 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
         $event.stopPropagation();
         $scope.status.isopen = !$scope.status.isopen;
     };
+    $scope.setSort = function (sort) {
+        $scope.propertyName = sort;
+    };
     $scope.getAllQueries = function () {
         queryService.getAllQueries().then(function (data) {
             $log.debug('response', data);
