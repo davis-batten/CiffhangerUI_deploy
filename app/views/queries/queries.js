@@ -143,7 +143,7 @@ datasets.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalIns
     };
 });
 //controller for instance of QueryDeleteModal
-datasets.controller('QueryDeleteModalCtrl', function ($scope, $uibModalInstance, $log, query, queryService) {
+datasets.controller('QueryDeleteModalCtrl', function ($scope, $uibModalInstance, $log, query) {
     $scope.query = query;
     //complete modal
     $scope.delete = function () {

@@ -70,11 +70,8 @@
                     <li class="list-group-item " ng-repeat="a in d.attributes ">
                         <checkbox ng-model="a.selected " ng-change="changeColumns(a, selectedColumns, d) "></checkbox>
                         <label uib-tooltip="{{a.description}} ">{{a.col_name}}</label>
-                        <div class="input-group col-md-5 form-inline pull-right">
-                            <span class="input-group-addon">Alias</span>
-                            <input type="text" ng-model="a.alias" class="form-control">
-                        </div>
-
+                        <div class="input-group col-md-5 form-inline pull-right"> <span class="input-group-addon">Alias</span>
+                            <input type="text" ng-model="a.alias" class="form-control"> </div>
                     </li>
                 </ul>
             </li>
@@ -135,6 +132,7 @@
         <button class="btn btn-success" type="button" ng-click="download=! download" ng-disabled="loadingPreview">Download Full Results</button>
         <div uib-collapse="isCollapsed">
             <hr>
+            <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
             <div class="well well-sm">
                 <form name="saveQueryAs">
                     <div class="form-group">
