@@ -31,7 +31,7 @@
                     <h4><strong>Datasets </strong><small><em> Select one to add to query</em></small></h4>
                     <ul class="list-group">
                         <li class="list-group-item" ng-repeat="d in datasets" ng-if="alreadyUsedDatasets.indexOf(d) == -1">
-                            <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="selectedDatasets.length == 2 && !d.selected"></checkbox>
+                            <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="selectedDatasets.length == (numJoins+1) && !d.selected"></checkbox>
                             <label>{{d.name}}</label>
                         </li>
                     </ul>
@@ -40,7 +40,7 @@
                     <h4><strong>Tags  </strong><small><em>Select a join tag</em></small></h4>
                     <ul class="list-group ">
                         <li class="list-group-item " ng-repeat="t in tags | orderBy: 'name' ">
-                            <checkbox ng-model="t.selected " ng-change="change(t, selectedTags)" ng-disabled="!t.selected && selectedTags.length==1 "></checkbox>
+                            <checkbox ng-model="t.selected " ng-change="change(t, selectedTags)" ng-disabled="!t.selected && selectedTags.length == numJoins"></checkbox>
                             <label>{{t.name}}</label>
                         </li>
                     </ul>
@@ -55,7 +55,8 @@
     <div class="modal-footer ">
         <button class="btn btn-danger pull-left " type="button " ng-click="cancel() ">Cancel</button>
         <button class="btn btn-primary pull-left " type="button " ng-click="previous() ">Previous</button>
-        <button class="btn btn-info " type="button " ng-click="next() " ng-disabled="selectedTags.length !=1 ">Next</button>
+        <button class="btn btn-primary" type="button" ng-click="addAnotherJoin()">Add Another Join</button>
+        <button class="btn btn-info " type="button " ng-click="next() " ng-disabled="selectedTags.length != 1">Next</button>
     </div>
 </div>
 <!-- Third step of modal -->
@@ -63,11 +64,11 @@
     <div class="modal-body ">
         <h4><strong>Columns  </strong><small><em>Select columns to show in table</em></small></h4>
         <ul>
-            <li class="list-group-item " ng-repeat="d in datasets | filter:{selected:true} ">
+            <li class="list-group-item " ng-repeat="d in selectedDatasets ">
                 <checkbox ng-change="selectAllFromDataset(d) " ng-model="selected[d.name] "></checkbox>
                 <label>{{d.name}}</label>
                 <ul class="list-group " id="columnList ">
-                    <li class="list-group-item " ng-repeat="a in d.attributes " ng-if="a.tag.name !=selectedTags[0].name ">
+                    <li class="list-group-item " ng-repeat="a in d.attributes ">
                         <checkbox ng-model="a.selected " ng-change="changeColumns(a, selectedColumns, d) "></checkbox>
                         <label uib-tooltip="{{a.description}} ">{{a.col_name}}</label>
                     </li>
@@ -117,7 +118,7 @@
         <h4>Preview of Results <small>after running Constructed Query</small></h4>
         <p>Note: Preview will only show up to 100 results.</p>
         <uib-alert type="info " ng-show="loadingPreview ">Loading...</uib-alert>
-        <div class=" " id="queryResultsTable ">
+        <div id="queryResultsTable ">
             <table class="table table-bordered ">
                 <thead>
                     <th ng-repeat="column in tableResult.colNames "> {{column}} </th>
