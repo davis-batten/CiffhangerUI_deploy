@@ -17,14 +17,17 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     $scope.isCollapsed = true;
     $scope.download = false;
     $scope.loadingPreview = false;
+
+    $scope.alreadyUsedDatasets = [];
+
+    $scope.numJoins = 0;
     //method responsible for handling changes due to checkboxes
     //d -> item selected/deselected
     //selections -> array to add/remove item
     $scope.change = function (d, selections) {
             if (d.selected) {
                 selections.push(d);
-            }
-            else {
+            } else {
                 for (var i = 0; i < selections.length; i++) {
                     $log.debug(selections[i]);
                     if (selections[i].name == d.name) {
@@ -41,8 +44,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             if (column.selected) {
                 column.db_table_name = dataset.db_table_name;
                 selections.push(column);
-            }
-            else {
+            } else {
                 for (var i = 0; i < selections.length; i++) {
                     $log.debug(selections[i]);
                     if (selections[i].name == column.name) {
@@ -54,26 +56,28 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
         }
         //load the joinable tags only in the selected datasets
     $scope.loadTags = function () {
-            for (var i = 0; i < $scope.selectedDatasets[0].tags.length; i++) {
-                var tagA = $scope.selectedDatasets[0].tags[i];
-                for (var j = 0; j < $scope.selectedDatasets[1].tags.length; j++) {
-                    var tagB = $scope.selectedDatasets[1].tags[j];
-                    //if tags match, aren't EMPTY and are not a duplicate
-                    if (tagA.name == tagB.name && tagA.name != '<EMPTY>' && $scope.tags.indexOf(tagA) == -1) {
-                        $scope.tags.push(tagA);
-                        break;
+            if ($scope.selectedDatasets[$scope.numJoins] != undefined) {
+                for (var i = 0; i < $scope.selectedDatasets[$scope.numJoins - 1].tags.length; i++) {
+                    var tagA = $scope.selectedDatasets[$scope.numJoins - 1].tags[i];
+                    for (var j = 0; j < $scope.selectedDatasets[$scope.numJoins].tags.length; j++) {
+                        var tagB = $scope.selectedDatasets[$scope.numJoins].tags[j];
+                        //if tags match, aren't EMPTY and are not a duplicate
+                        if (tagA.name == tagB.name && tagA.name != '<EMPTY>' && $scope.tags.indexOf(tagA) == -1) {
+                            $scope.tags.push(tagA);
+                            break;
+                        }
                     }
                 }
-            }
-            $log.debug($scope.tags);
+                $log.debug($scope.tags);
+            } else $scope.tags = [];
         }
         //advance the modal to the next step
     $scope.next = function () {
         $scope.step++;
         if ($scope.step == 2) {
-            $scope.loadTags();
-        }
-        else if ($scope.step == 4) $scope.buildQuery();
+            $scope.numJoins++;
+            $log.debug($scope.numJoins);
+        } else if ($scope.step == 4) $scope.buildQuery();
         else if ($scope.step == 5) {
             $scope.runQuery($scope.query);
         }
@@ -81,11 +85,33 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
+        if ($scope.step == 1) {
+            //deselect all datasets
+            for (var i = 0; i < $scope.datasets.length; i++) {
+                $scope.datasets[i].selected = false;
+            }
+
+            $scope.selectedDatasets = [];
+            $scope.alreadyUsedDatasets = [];
+            $scope.numJoins--;
+            $scope.tags = [];
+            $log.debug('datasets', $scope.datasets);
+            $log.debug('selectedDatasets', $scope.selectedDatasets);
+        }
         if ($scope.step < $scope.maxSteps) {
             $scope.progressType = null;
             $scope.tableResult = null;
         }
     };
+
+    $scope.archiveDatasets = function () {
+        for (var i = 0; i < $scope.selectedDatasets.length; i++) {
+            if ($scope.alreadyUsedDatasets.indexOf($scope.selectedDatasets[i]) == -1) {
+                $scope.alreadyUsedDatasets.push($scope.selectedDatasets[i]);
+            }
+        }
+    }
+
     $scope.selectAllFromDataset = function (dataset) {
             for (var i = 0; i < dataset.attributes.length; i++) {
                 var a = dataset.attributes[i];
@@ -141,10 +167,10 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     $scope.buildQuery = function () {
         //query input packaged
         var queryInput = {
-            datasets: $scope.selectedDatasets
-            , joinTag: $scope.selectedTags
-            , addJoinColumn: $scope.addJoinColumn
-            , columns: $scope.selectedColumns
+            datasets: $scope.selectedDatasets,
+            joinTag: $scope.selectedTags,
+            addJoinColumn: true,
+            columns: $scope.selectedColumns
         }
         queryService.buildQuery(queryInput).then(function (response) {
             //success callback
@@ -152,8 +178,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
                 $scope.query = response.data;
                 $scope.progressType = 'success';
                 //failure callback
-            }
-            else {
+            } else {
                 $scope.progressType = 'danger';
                 $scope.buildQueryError = true;
                 $log.error(response.data);
@@ -164,8 +189,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     $scope.save = function () {
         if ($scope.statement != undefined) {
             $scope.newQuery.sqlString = $scope.query + $scope.statement.text;
-        }
-        else {
+        } else {
             $scope.newQuery.sqlString = $scope.query;
         }
         if ($scope.newQuery.description == null || $scope.newQuery.description == undefined) {
@@ -184,8 +208,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             else if (($scope.statement.where == null && $scope.statement.limit != null) || ($scope.statement.where == "" && $scope.statement.limit != null)) {
                 $scope.query = $scope.query.replace(";", "");
                 $scope.statement.text = "\nLIMIT " + $scope.statement.limit + ";";
-            }
-            else {
+            } else {
                 $log.debug(data);
             }
             $log.debug($scope.statement);
@@ -210,4 +233,10 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
                 $log.error('Failed to connect to server');
             });
     };
+
+    $scope.$watch('datasets', function () {
+        if ($scope.step == 2) {
+            $scope.loadTags();
+        }
+    }, true);
 });
