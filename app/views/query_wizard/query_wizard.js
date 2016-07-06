@@ -18,23 +18,25 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     $scope.download = false;
     $scope.loadingPreview = false;
     $scope.alreadyUsedDatasets = [];
+    $scope.alreadyUsedTags = [];
     $scope.numJoins = 0;
     //method responsible for handling changes due to checkboxes
     //d -> item selected/deselected
     //selections -> array to add/remove item
     $scope.change = function (d, selections) {
             if (d.selected) {
-                selections.push(d);
+                if (selections.indexOf(d) > -1) selections.push(angular.copy(d));
+                else selections.push(d);
             }
             else {
                 for (var i = 0; i < selections.length; i++) {
-                    $log.debug(selections[i]);
+                    $log.debug('remove?', selections[i]);
                     if (selections[i].name == d.name) {
                         selections.splice(i, 1);
                     }
                 }
             }
-            $log.debug(selections);
+            $log.debug('selected', selections);
         }
         //method responsible for handling changes due to checkboxes
         //d -> item selected/deselected
@@ -57,6 +59,8 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
         //load the joinable tags only in the selected datasets
     $scope.loadTags = function () {
             if ($scope.selectedDatasets[$scope.numJoins] != undefined) {
+                $log.debug('tags in i', $scope.selectedDatasets[$scope.numJoins].tags);
+                $log.debug('tags in (i -1)', $scope.selectedDatasets[$scope.numJoins - 1].tags);
                 for (var i = 0; i < $scope.selectedDatasets[$scope.numJoins - 1].tags.length; i++) {
                     var tagA = $scope.selectedDatasets[$scope.numJoins - 1].tags[i];
                     for (var j = 0; j < $scope.selectedDatasets[$scope.numJoins].tags.length; j++) {
@@ -79,7 +83,12 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             $scope.numJoins++;
             $log.debug($scope.numJoins);
         }
-        else if ($scope.step == 4) $scope.buildQuery();
+        else if ($scope.step == 3) {
+            $scope.archiveTags();
+        }
+        else if ($scope.step == 4) {
+            $scope.buildQuery();
+        }
         else if ($scope.step == 5) {
             $scope.runQuery($scope.query);
         }
@@ -111,17 +120,21 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             }
         }
     }
+    $scope.archiveTags = function () {
+        for (var i = 0; i < $scope.selectedTags.length; i++) {
+            $scope.alreadyUsedTags.push($scope.selectedTags[i]);
+        }
+        $log.debug('archivedTags', $scope.alreadyUsedTags);
+    }
     $scope.selectAllFromDataset = function (dataset) {
             for (var i = 0; i < dataset.attributes.length; i++) {
                 var a = dataset.attributes[i];
                 //select all
                 if ($scope.selected[dataset.name]) {
                     //add column to selection
-                    if (a.tag.name != $scope.selectedTags[0].name) {
-                        a.db_table_name = dataset.db_table_name;
-                        a.selected = true;
-                        $scope.selectedColumns.push(a);
-                    }
+                    a.db_table_name = dataset.db_table_name;
+                    a.selected = true;
+                    $scope.selectedColumns.push(a);
                 }
                 //deselect all
                 else {
@@ -142,23 +155,22 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     //add where and limit clause to SQL query string
     $scope.addToQuery = function () {
         if (($scope.statement.where == undefined && $scope.statement.limit == undefined) || ($scope.statement.where == "" && $scope.statement.limit == "") || ($scope.statement.where == undefined && $scope.statement.limit == "") || ($scope.statement.where == "" && $scope.statement.limit == undefined)) {
-            $scope.query = $scope.query.replace(";", "");
-            $scope.statement.text = ";";
+            $scope.statement.text = "";
         }
         //adding both WHERE and LIMIT statement
         else if (($scope.statement.where != undefined && $scope.statement.limit != undefined && $scope.statement.where != "" && $scope.statement.limit != "")) {
             $scope.query = $scope.query.replace(";", "");
-            $scope.statement.text = "\nWHERE " + $scope.statement.where + "\n" + "LIMIT " + $scope.statement.limit + ";";
+            $scope.statement.text = "\nWHERE " + $scope.statement.where + "\n" + "LIMIT " + $scope.statement.limit;
         }
         //adding WHERE and not LIMIT
         else if (($scope.statement.where != undefined && $scope.statement.limit == undefined) || ($scope.statement.where != undefined && $scope.statement.limit == "")) {
             $scope.query = $scope.query.replace(";", "");
-            $scope.statement.text = "\nWHERE " + $scope.statement.where + ";";
+            $scope.statement.text = "\nWHERE " + $scope.statement.where;
         }
         //adding LIMIT and not WHERE
         else if (($scope.statement.where == undefined && $scope.statement.limit != undefined) || ($scope.statement.where == "" && $scope.statement.limit != null)) {
             $scope.query = $scope.query.replace(";", "");
-            $scope.statement.text = "\nLIMIT " + $scope.statement.limit + ";";
+            $scope.statement.text = "\nLIMIT " + $scope.statement.limit;
         }
         $log.debug($scope.statement);
     };
@@ -167,7 +179,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
         //query input packaged
         var queryInput = {
             datasets: $scope.selectedDatasets
-            , joinTag: $scope.selectedTags
+            , joinTag: $scope.alreadyUsedTags
             , addJoinColumn: true
             , columns: $scope.selectedColumns
         }
@@ -226,9 +238,22 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
                 $log.error('Failed to connect to server');
             });
     };
-    $scope.$watch('datasets', function () {
+    $scope.$watch('selectedDatasets', function () {
         if ($scope.step == 2) {
+            $log.debug("load tags");
             $scope.loadTags();
         }
     }, true);
+    $scope.addAnotherJoin = function () {
+        $log.debug('add another join');
+        $scope.archiveDatasets();
+        $scope.archiveTags();
+        for (var i = 0; i < $scope.datasets.length; i++) {
+            $scope.datasets[i].selected = false;
+        }
+        $scope.selectedTags = [];
+        $scope.tags = [];
+        $scope.numJoins++;
+        $log.debug('dataset', $scope.selectedDatasets);
+    }
 });

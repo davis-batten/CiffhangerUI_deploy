@@ -2,7 +2,7 @@
 angular.module('cliffhanger.queries').service('queryService', function ($log, $http, $rootScope, $q) {
     //this service method formats a new query on the backend
     this.buildQuery = function (input) {
-        $log.debug('json query input', JSON.stringify(input));
+        $log.debug('input', input);
         return $http.post($rootScope.baseUrl + '/query/build', input).then(
             //success callback
             function (response) {
@@ -86,8 +86,7 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
             if (response.data.status == 'Success') {
                 $log.info('Successfully retrieved queries');
                 return response.data;
-            }
-            else {
+            } else {
                 $log.warn('Failed to retrieve queries');
                 return $q.reject(response.data);
             };
