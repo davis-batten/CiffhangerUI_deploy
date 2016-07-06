@@ -35,7 +35,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
             $log.debug('response', data);
             if (data.status == 'Success') {
                 $log.debug('data obj', data.data);
-                $scope.queries = eval(data.data);
+                $scope.queriesList = eval(data.data);
                 /*
                 if ($scope.queries.length > 1) {
                     $scope.queries = data.data.sort(ignoreCase);
@@ -43,7 +43,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                 */
             }
             else {
-                $scope.queries = [];
+                $scope.queriesList = [];
             }
         })
     };
@@ -78,13 +78,13 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
         modalInstance.result.then(function (q) {
             $log.warn('Deleted', q);
             $scope.showProgressBar = true;
-            for (i in $scope.queries) {
-                if (q.name == $scope.queries[i].name) {
+            for (i in $scope.queriesList) {
+                if (q.name == $scope.queriesList[i].name) {
                     queryService.deleteQuery(q).then(function (res) {
                         $scope.showProgressBar = false;
                         if (res.status == 'Success') {
-                            $scope.queries.splice(i, 1);
-                            if ($scope.queries.length == 0) $scope.showNoQueriesMessage = true;
+                            $scope.queriesList.splice(i, 1);
+                            if ($scope.queriesList.length == 0) $scope.showNoQueriesMessage = true;
                         }
                         else {
                             $scope.alerts.push({

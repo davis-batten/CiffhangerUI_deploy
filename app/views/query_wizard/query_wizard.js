@@ -199,12 +199,12 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     };
     //complete the modal
     $scope.save = function () {
-        //if ($scope.statement != undefined) {
-        // $scope.newQuery.sqlString = $scope.query + $scope.statement.text;
-        //}
-        //else {
-        $scope.newQuery.sqlString = $scope.query;
-        // }
+        if ($scope.statement != undefined) {
+            $scope.newQuery.sqlString = $scope.query + $scope.statement.text;
+        }
+        else {
+            $scope.newQuery.sqlString = $scope.query;
+        }
         if ($scope.newQuery.description == null || $scope.newQuery.description == undefined) {
             $scope.newQuery.description = "";
         }
