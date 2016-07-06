@@ -94,3 +94,15 @@
         </div>
     </div>
 </script>
+<!-- Delete Query Modal -->
+<script type="text/ng-template" id="queryDelete.html">
+    <div class="modal-header">
+        <h3 class="modal-title"> Delete Query</h3> </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete <em><strong>{{query.name}}</strong></em>? This action cannot be undone!</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
+        <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
