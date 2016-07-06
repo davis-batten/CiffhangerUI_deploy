@@ -12,7 +12,7 @@
         <h4><strong>Datasets </strong><small><em> Select one to start</em></small></h4>
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="d in datasets">
-                <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)"></checkbox>
+                <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="selectedDatasets.length == 1 && !d.selected"></checkbox>
                 <label>{{d.name}}</label>
             </li>
         </ul>
@@ -31,7 +31,7 @@
                     <h4><strong>Datasets </strong><small><em> Select one to add to query</em></small></h4>
                     <ul class="list-group">
                         <li class="list-group-item" ng-repeat="d in datasets" ng-if="alreadyUsedDatasets.indexOf(d) == -1">
-                            <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)"></checkbox>
+                            <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="selectedDatasets.length == 2 && !d.selected"></checkbox>
                             <label>{{d.name}}</label>
                         </li>
                     </ul>

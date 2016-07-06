@@ -85,6 +85,19 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
+        if ($scope.step == 1) {
+            //deselect all datasets
+            for (var i = 0; i < $scope.datasets.length; i++) {
+                $scope.datasets[i].selected = false;
+            }
+
+            $scope.selectedDatasets = [];
+            $scope.alreadyUsedDatasets = [];
+            $scope.numJoins--;
+            $scope.tags = [];
+            $log.debug('datasets', $scope.datasets);
+            $log.debug('selectedDatasets', $scope.selectedDatasets);
+        }
         if ($scope.step < $scope.maxSteps) {
             $scope.progressType = null;
             $scope.tableResult = null;
@@ -156,7 +169,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
         var queryInput = {
             datasets: $scope.selectedDatasets,
             joinTag: $scope.selectedTags,
-            addJoinColumn: $scope.addJoinColumn,
+            addJoinColumn: true,
             columns: $scope.selectedColumns
         }
         queryService.buildQuery(queryInput).then(function (response) {
