@@ -24,22 +24,30 @@
 </div>
 <!-- Second step of modal -->
 <div ng-show="step==2 ">
-    <div class="modal-body ">
-        <h4><strong>Datasets </strong><small><em> Select one to add to query</em></small></h4>
-        <ul class="list-group">
-            <li class="list-group-item" ng-repeat="d in datasets" ng-if="alreadyUsedDatasets.indexOf(d) == -1">
-                <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)"></checkbox>
-                <label>{{d.name}}</label>
-            </li>
-        </ul>
-        <h4><strong>Tags  </strong><small><em>Select a join tag</em></small></h4>
-        <ul class="list-group ">
-            <li class="list-group-item " ng-repeat="t in tags | orderBy: 'name' ">
-                <checkbox ng-model="t.selected " ng-change="change(t, selectedTags)" ng-disabled="!t.selected && selectedTags.length==1 "></checkbox>
-                <label>{{t.name}}</label>
-            </li>
-        </ul>
-        <h4 class="text-danger " ng-show="tags.length==0 ">No joinable tags for the selected datasets</h4>
+    <div class="modal-body">
+        <form>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4><strong>Datasets </strong><small><em> Select one to add to query</em></small></h4>
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="d in datasets" ng-if="alreadyUsedDatasets.indexOf(d) == -1">
+                            <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)"></checkbox>
+                            <label>{{d.name}}</label>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h4><strong>Tags  </strong><small><em>Select a join tag</em></small></h4>
+                    <ul class="list-group ">
+                        <li class="list-group-item " ng-repeat="t in tags | orderBy: 'name' ">
+                            <checkbox ng-model="t.selected " ng-change="change(t, selectedTags)" ng-disabled="!t.selected && selectedTags.length==1 "></checkbox>
+                            <label>{{t.name}}</label>
+                        </li>
+                    </ul>
+                    <h4 class="text-danger " ng-show="tags.length==0 && selectedDatasets[numJoins] != undefined">No joinable tags for the selected datasets</h4>
+                </div>
+            </div>
+        </form>
         <!--
         <label>Show selected tag in table</label>
         <checkbox ng-model="addJoinColumn "></checkbox> -->
