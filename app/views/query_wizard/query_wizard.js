@@ -245,6 +245,10 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
                 $scope.loadingPreview = false;
                 $scope.progressType = 'danger';
                 $scope.runQueryError = true;
+                $scope.alerts.push({
+                    msg: "Run Query Failed"
+                    , type: 'danger'
+                });
                 $log.error('Failed to connect to server');
             });
     };
