@@ -17,3 +17,23 @@ h3 small {
 .dropdown-menu li {
     cursor: pointer;
 }
+
+#query_item {
+    margin: 1em;
+    /*
+    clear: both;
+    height: 4em;*/
+    font-size: 1em;
+}
+
+#query_item label {
+    line-height: 2em;
+    vertical-align: middle;
+    margin-left: 0.75em;
+}
+
+#query_item button {
+    display: inline-block;
+    float: right;
+    margin-left: .5em;
+}

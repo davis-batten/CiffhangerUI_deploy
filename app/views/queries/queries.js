@@ -1,4 +1,3 @@
-'use strict';
 angular.module('cliffhanger.queries', ['ngRoute', 'ngSanitize', 'ngCsv']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/analyst/queries', {
         templateUrl: 'views/queries/queries.html'
@@ -35,7 +34,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
             $log.debug('response', data);
             if (data.status == 'Success') {
                 $log.debug('data obj', data.data);
-                $scope.queriesList = eval(data.data);
+                $scope.queryList = eval(data.data);
                 /*
                 if ($scope.queries.length > 1) {
                     $scope.queries = data.data.sort(ignoreCase);
@@ -43,7 +42,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                 */
             }
             else {
-                $scope.queriesList = [];
+                $scope.queryList = [];
             }
         })
     };
@@ -78,13 +77,13 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
         modalInstance.result.then(function (q) {
             $log.warn('Deleted', q);
             $scope.showProgressBar = true;
-            for (i in $scope.queriesList) {
-                if (q.name == $scope.queriesList[i].name) {
+            for (i in $scope.queryList) {
+                if (q.name == $scope.queryList[i].name) {
                     queryService.deleteQuery(q).then(function (res) {
                         $scope.showProgressBar = false;
                         if (res.status == 'Success') {
-                            $scope.queriesList.splice(i, 1);
-                            if ($scope.queriesList.length == 0) $scope.showNoQueriesMessage = true;
+                            $scope.queryList.splice(i, 1);
+                            if ($scope.queryList.length == 0) $scope.showNoQueriesMessage = true;
                         }
                         else {
                             $scope.alerts.push({
