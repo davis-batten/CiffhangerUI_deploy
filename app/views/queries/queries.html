@@ -37,14 +37,15 @@
     </div>
 -->
     <ul class="list-group" id="query_list">
-        <li class="list-group-item active col-md-4" id="query_item" ng-repeat="q in queryList | orderBy:propertyName | filter:query">
+        <li class="list-group-item active col-md-4 col-sm-4" id="query_item" ng-repeat="q in queryList | orderBy:propertyName | filter:query">
             <div>
-                <button class="btn btn-danger" type="button" ng-click="deleteQuery(q)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
-                <button class="btn btn-info" type="button" ng-click="view(q)"> View</button>
-                <br>
                 <label>{{q.name}}</label>
                 <br>
                 <p><small>{{q.description}}</small></p>
+                <br>
+                <button class="btn btn-danger" type="button" ng-click="deleteQuery(q)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
+                <button class="btn btn-info" type="button" ng-click="view(q)"> View</button>
+
             </div>
         </li>
     </ul>

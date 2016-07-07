@@ -37,6 +37,7 @@ h3 small {
     line-height: 2em;
     vertical-align: middle;
     margin-left: 0.75em;
+    height: 6em;
 }
 
 #query_item button {
