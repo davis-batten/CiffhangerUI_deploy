@@ -20,7 +20,7 @@
         </div>
         <div class="col-sm-4">
             <div id="custom-search-input">
-                <input type="text" size="36" ng-model="query.name" placeholder="Search" uib-typeahead="q.name for q in queries | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
+                <input type="text" size="36" ng-model="query.name" placeholder="Search" uib-typeahead="q.name for q in queryList | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
         </div>
     </div>
     <hr>
@@ -37,7 +37,7 @@
     </div>
 -->
     <ul class="list-group" id="query_list">
-        <li class="list-group-item active" id="dataset_item" ng-repeat="q in queries | orderBy:propertyName | filter:query">
+        <li class="list-group-item active" id="query_item" ng-repeat="q in queryList | orderBy:propertyName | filter:query">
             <label>{{q.name}}</label> <small>{{q.description}}</small>
             <button class="btn btn-danger" type="button" ng-click="deleteQuery(q)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
             <button class="btn btn-info" type="button" ng-click="view(q)"> View</button>
@@ -49,15 +49,20 @@
     <!-- First step of modal -->
     <div ng-show="step == 1">
         <div class="modal-header">
-            <h3 class="modal-title">{{query.name}}<small>{{query.description}}</small></h3> </div>
+            <h3 class="modal-title inline">{{query.name}}<small>{{query.description}}</small></h3>
+            <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+        </div>
         <div class="modal-body"> <pre>{{query.sqlString}}</pre> </div>
         <div class="modal-footer">
             <button class="btn btn-success" type="button" ng-click="next()">Run</button>
-            <button class="btn btn-danger" type="button" ng-click="cancel()">Close</button>
         </div>
     </div>
     <!-- Second step of modal -->
     <div ng-show="step == 2">
+        <div class="modal-header">
+            <h3 class="modal-title inline">{{query.name}}<small>{{query.description}}</small></h3>
+            <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+        </div>
         <div class="modal-body">
             <h4>Preview of Results <small>after running {{query.name}}</small></h4>
             <p>Note: Preview will only show up to 100 results.</p>
@@ -75,8 +80,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-danger pull-left" type="button" ng-click="cancel()">Close</button>
-            <button class="btn btn-success" type="button" ng-click="download = !download" ng-disabled="loadingPreview">Download Full Results</button>
+            <button class="btn btn-success" type="button" ng-click="download = !download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table">Download</button>
             <div uib-collapse="!download">
                 <hr>
                 <div class="well well-sm">
@@ -85,12 +89,24 @@
                             <label for="filename" class="pull-left">Filename</label>
                             <input type="text" class="form-control" name="name" id="filename" ng-model="filename" required>.csv </div>
                         <div class="form-group">
-                            <button class="btn btn-info" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="{{filename}}.csv">Save As CSV</button>
-                            <button class="btn btn-danger pull-left" type="button" ng-click="download = !download">Cancel</button>
+                            <button class="btn btn-info" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="{{filename}}.csv">Download As CSV</button>
+                            <button class="btn btn-danger pull-left" type="button" ng-click="download = !download">Cancel Download</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+    </div>
+</script>
+<!-- Delete Query Modal -->
+<script type="text/ng-template" id="queryDelete.html">
+    <div class="modal-header">
+        <h3 class="modal-title"> Delete Query</h3> </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete <em><strong>{{query.name}}</strong></em>? This action cannot be undone!</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
+        <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>

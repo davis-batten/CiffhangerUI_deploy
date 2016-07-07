@@ -1,7 +1,8 @@
-describe('cliffhanger.queries module', function () {
+describe('cliffhanger.query_wizard module', function () {
     beforeEach(angular.mock.module('ngRoute'));
     beforeEach(angular.mock.module('ngSanitize'));
     beforeEach(angular.mock.module('ngCsv'));
+    beforeEach(angular.mock.module('cliffhanger.query_wizard'));
     beforeEach(angular.mock.module('cliffhanger.queries'));
     describe('query wizard controller', function () {
         beforeEach(inject(function ($controller, $rootScope, _$log_, queryService, $q) {
@@ -188,14 +189,16 @@ describe('cliffhanger.queries module', function () {
         //step 2 - join tag select
         it('should load the correct tags for the selected datasets', function () {
             scope.selectedDatasets = mockDatasets;
+            scope.numJoins = 1;
             scope.loadTags();
+            scope.$apply();
             expect(scope.tags).toEqual([
                 {
                     "name": "ZIP"
                 }
             ]);
         });
-        //TODO test add WHERE and LIMIT clause
+
         it('should be able to add a WHERE/LIMIT clause to the query', function () {
             scope.statement = {};
             scope.query = "SELECT * FROM table;";
@@ -203,7 +206,7 @@ describe('cliffhanger.queries module', function () {
             scope.statement.limit = "100";
             scope.addToQuery();
             expect(scope.statement.text).not.toBeNull();
-            expect(scope.statement.text).toEqual("\nWHERE assaults = 10\nLIMIT 100;");
+            expect(scope.statement.text).toEqual("\nWHERE assaults = 10\nLIMIT 100");
         });
         it('should be able to add a WHERE clause without a LIMIT clause', function () {
             scope.statement = {};
@@ -212,7 +215,7 @@ describe('cliffhanger.queries module', function () {
             scope.statement.limit = null;
             scope.addToQuery();
             expect(scope.statement.text).not.toBeNull();
-            expect(scope.statement.text).toEqual("\nWHERE assaults = 10;");
+            expect(scope.statement.text).toEqual("\nWHERE assaults = 10");
         });
         it('should be able to add a LIMIT clause without a WHERE clause', function () {
             scope.statement = {};
@@ -221,7 +224,7 @@ describe('cliffhanger.queries module', function () {
             scope.statement.limit = "110";
             scope.addToQuery();
             expect(scope.statement.text).not.toBeNull();
-            expect(scope.statement.text).toEqual("\nLIMIT 110;");
+            expect(scope.statement.text).toEqual("\nLIMIT 110");
         });
         it('should be able to add a WHERE/LIMIT clause and then change it', function () {
             scope.statement = {};
@@ -230,12 +233,12 @@ describe('cliffhanger.queries module', function () {
             scope.statement.limit = "100";
             scope.addToQuery();
             expect(scope.statement.text).not.toBeNull();
-            expect(scope.statement.text).toEqual("\nWHERE assaults = 10\nLIMIT 100;");
+            expect(scope.statement.text).toEqual("\nWHERE assaults = 10\nLIMIT 100");
             scope.statement.where = "assaults > 0";
             scope.statement.limit = "20";
             scope.addToQuery();
             expect(scope.statement.text).not.toBeNull();
-            expect(scope.statement.text).toEqual("\nWHERE assaults > 0\nLIMIT 20;");
+            expect(scope.statement.text).toEqual("\nWHERE assaults > 0\nLIMIT 20");
         });
         //step 4 - query compilation step
         it('should show a green progress bar on the build query step', function () {
@@ -306,5 +309,42 @@ describe('cliffhanger.queries module', function () {
             expect(scope.newQuery.description).toEqual("test query description");
             expect(scope.newQuery.sqlString).toEqual("SELECT * FROM table WHERE * > 10");
         });
+
+
+        //new tests
+        it('should add duplicates to the selection array', function () {
+            var tag = {
+                name: "ZIP",
+                selected: true
+            }
+            var arr = []
+            scope.change(tag, arr);
+            expect(arr.length).toBe(1);
+            expect(arr[0].name).toEqual(tag.name);
+
+            scope.change(tag, arr);
+            expect(arr.length).toBe(2);
+            expect(arr[1].name).toEqual(tag.name);
+        });
+
+        it('should be able to add another join', function () {
+            spyOn(scope, "archiveDatasets");
+            spyOn(scope, "archiveTags");
+
+            scope.addAnotherJoin();
+
+            expect(scope.archiveDatasets).toHaveBeenCalled();
+            expect(scope.archiveTags).toHaveBeenCalled();
+            for (var i = 0; i < mockDatasets.length; i++) {
+                expect(mockDatasets[i].selected).toBeFalsy();
+            }
+        });
+
+        it('should be able to select all tags in dataset', function () {
+            scope.selected[mockDatasets[0].name] = true;
+            scope.selectAllFromDataset(mockDatasets[0]);
+            scope.$apply();
+            expect(scope.selectedColumns.length).toBe(2);
+        })
     });
 });
