@@ -252,7 +252,7 @@ describe('cliffhanger.query_wizard module', function () {
             scope.step = scope.maxSteps - 2;
             scope.next();
             scope.$apply();
-            expect(scope.query).toEqual('SELECT * FROM table;');
+            expect(scope.query).toEqual('SELECT * FROM table');
         });
         it('should show a red progress bar in the event of an error', function () {
             serviceError = true;
