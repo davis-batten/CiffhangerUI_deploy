@@ -35,7 +35,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
             $log.debug('response', data);
             if (data.status == 'Success') {
                 $log.debug('data obj', data.data);
-                $scope.queries = eval(data.data);
+                $scope.queriesList = eval(data.data);
                 /*
                 if ($scope.queries.length > 1) {
                     $scope.queries = data.data.sort(ignoreCase);
@@ -43,7 +43,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                 */
             }
             else {
-                $scope.queries = [];
+                $scope.queriesList = [];
             }
         })
     };
@@ -60,16 +60,60 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                 }
             }
         });
-    }
+    };
+    //opens deleteQuery modal for query q
+    $scope.deleteQuery = function (q) {
+        $log.log(q);
+        var modalInstance = $uibModal.open({
+            templateUrl: 'queryDelete.html'
+            , controller: 'QueryDeleteModalCtrl'
+            , size: 'md'
+            , resolve: {
+                query: function () {
+                    return q;
+                }
+            }
+        });
+        //on modal completion
+        modalInstance.result.then(function (q) {
+            $log.warn('Deleted', q);
+            $scope.showProgressBar = true;
+            for (i in $scope.queriesList) {
+                if (q.name == $scope.queriesList[i].name) {
+                    queryService.deleteQuery(q).then(function (res) {
+                        $scope.showProgressBar = false;
+                        if (res.status == 'Success') {
+                            $scope.queriesList.splice(i, 1);
+                            if ($scope.queriesList.length == 0) $scope.showNoQueriesMessage = true;
+                        }
+                        else {
+                            $scope.alerts.push({
+                                msg: res
+                                , type: 'danger'
+                            });
+                        }
+                    }, function (res) {
+                        $scope.showProgressBar = false;
+                        $scope.alerts.push({
+                            msg: "Problem communicating with server!"
+                            , type: 'danger'
+                        });
+                    });
+                }
+            }
+            $log.log($scope.data);
+        });
+    };
 });
 //controller for an instance of ViewQueryModal
 datasets.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInstance, $log, query, queryService) {
     $scope.query = query;
+    $scope.maxSteps = 2;
     $scope.step = 1; //what step is the modal on
     //advance the modal to the next step
     $scope.next = function () {
         $scope.step++;
-        if ($scope.step == 2) {
+        if ($scope.step == $scope.maxSteps) {
             $scope.runQuery($scope.query);
         }
     };
@@ -96,5 +140,17 @@ datasets.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalIns
                 $scope.runQueryError = true;
                 $log.error('Failed to connect to server');
             });
+    };
+});
+//controller for instance of QueryDeleteModal
+datasets.controller('QueryDeleteModalCtrl', function ($scope, $uibModalInstance, $log, query) {
+    $scope.query = query;
+    //complete modal
+    $scope.delete = function () {
+        $uibModalInstance.close(query);
+    };
+    //dismiss modal
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
     };
 });

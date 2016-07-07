@@ -20,7 +20,7 @@
         </div>
         <div class="col-sm-4">
             <div id="custom-search-input">
-                <input type="text" size="36" ng-model="query.name" placeholder="Search" uib-typeahead="q.name for q in queries | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
+                <input type="text" size="36" ng-model="query.name" placeholder="Search" uib-typeahead="q.name for q in queriesList | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
         </div>
     </div>
     <hr>
@@ -37,7 +37,7 @@
     </div>
 -->
     <ul class="list-group" id="query_list">
-        <li class="list-group-item active" id="dataset_item" ng-repeat="q in queries | orderBy:propertyName | filter:query">
+        <li class="list-group-item active" id="dataset_item" ng-repeat="q in queriesList | orderBy:propertyName | filter:query">
             <label>{{q.name}}</label> <small>{{q.description}}</small>
             <button class="btn btn-danger" type="button" ng-click="deleteQuery(q)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
             <button class="btn btn-info" type="button" ng-click="view(q)"> View</button>
@@ -92,5 +92,17 @@
                 </div>
             </div>
         </div>
+    </div>
+</script>
+<!-- Delete Query Modal -->
+<script type="text/ng-template" id="queryDelete.html">
+    <div class="modal-header">
+        <h3 class="modal-title"> Delete Query</h3> </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete <em><strong>{{query.name}}</strong></em>? This action cannot be undone!</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
+        <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>
