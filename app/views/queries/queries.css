@@ -19,14 +19,21 @@ h3 small {
 }
 
 #query_item {
-    margin: 1em;
     /*
     clear: both;
     height: 4em;*/
     font-size: 1em;
+    height: 16em;
+    border: 0.75em solid white;
 }
 
 #query_item label {
+    line-height: 2em;
+    vertical-align: middle;
+    margin-left: 0.75em;
+}
+
+#query_item p {
     line-height: 2em;
     vertical-align: middle;
     margin-left: 0.75em;
