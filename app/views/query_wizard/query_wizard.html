@@ -18,7 +18,7 @@
         </ul>
     </div>
     <div class=" modal-footer ">
-        <button class="btn btn-danger pull-left " type="button " ng-click="cancel() ">Cancel</button>
+        <button class="btn btn-danger pull-left " type="button " ng-click="cancel() ">Exit</button>
         <button class="btn btn-info " type="button " ng-click="archiveDatasets(); next()" ng-disabled="selectedDatasets.length !=1">Next</button>
     </div>
 </div>
@@ -53,7 +53,7 @@
         <checkbox ng-model="addJoinColumn "></checkbox> -->
     </div>
     <div class="modal-footer ">
-        <button class="btn btn-danger pull-left " type="button " ng-click="cancel() ">Cancel</button>
+        <button class="btn btn-danger pull-left " type="button " ng-click="cancel() ">Exit</button>
         <button class="btn btn-primary pull-left " type="button " ng-click="previous() ">Previous</button>
         <button class="btn btn-primary" type="button" ng-click="addAnotherJoin()">Add Another Join</button>
         <button class="btn btn-info " type="button " ng-click="next() " ng-disabled="selectedTags.length != 1">Next</button>
@@ -82,7 +82,7 @@
         </ul>
     </div>
     <div class="modal-footer ">
-        <button class="btn btn-danger pull-left " type="button " ng-click="cancel() ">Cancel</button>
+        <button class="btn btn-danger pull-left " type="button " ng-click="cancel() ">Exit</button>
         <button class="btn btn-primary pull-left " type="button " ng-click="previous() ">Previous</button>
         <button class="btn btn-info " type="button " ng-click="next() ">Next</button>
     </div>
@@ -112,7 +112,7 @@
         </div>
     </div>
     <div class="modal-footer ">
-        <button class="btn btn-danger pull-left " type="button " ng-click="cancel() ">Cancel</button>
+        <button class="btn btn-danger pull-left " type="button " ng-click="cancel() ">Exit</button>
         <button class="btn btn-primary pull-left " type="button " ng-click="previous() ">Previous</button>
         <button class="btn btn-success " type="button " ng-click="next() ">Run</button>
     </div>
@@ -136,10 +136,11 @@
         </div>
     </div>
     <div class="modal-footer ">
-        <button class="btn btn-danger pull-left " type="button " ng-click="cancel() ">Cancel</button>
+        <button class="btn btn-danger pull-left " type="button " ng-click="cancel() ">Exit</button>
         <button class="btn btn-primary pull-left " type="button " ng-click="previous() " ng-disabled="loadingPreview ">Previous</button>
-        <button class="btn btn-info " type="button " ng-click="isCollapsed=! isCollapsed " ng-disabled="loadingPreview ">Save To Queries</button>
-        <button class="btn btn-success " type="button " ng-click="download=! download " ng-disabled="loadingPreview ">Download Full Results</button>
+        <button class="btn btn-success " type="button " ng-click="isCollapsed=! isCollapsed " ng-disabled="loadingPreview ">Save To Queries</button>
+        <hr>
+        <button class="btn btn-info " type="button " ng-click="download=! download " ng-disabled="loadingPreview ">Download Full Results</button>
         <div uib-collapse="isCollapsed ">
             <hr>
             <div class="well well-sm ">
@@ -152,7 +153,7 @@
                         <input type="text " class="form-control " id="description " ng-model="newQuery.description "> </div>
                     <div class="form-group ">
                         <button class="btn btn-info " type="button " ng-disabled="name.$invalid " ng-click="save() ">Save</button>
-                        <button class="btn btn-danger pull-left " type="button " ng-click="isCollapsed=! isCollapsed ">Cancel</button>
+                        <button class="btn btn-danger pull-left " type="button " ng-click="isCollapsed=! isCollapsed ">Exit</button>
                     </div>
                 </form>
             </div>
@@ -166,7 +167,7 @@
                         <input type="text " class="form-control " name="name " id="filename " ng-model="filename " required>.csv </div>
                     <div class="form-group ">
                         <button class="btn btn-info " type="button " ng-csv="tableResult.rows " csv-header="tableResult.colNames " filename="{{filename}}.csv ">Save As CSV</button>
-                        <button class="btn btn-danger pull-left " type="button " ng-click="download=! download ">Cancel</button>
+                        <button class="btn btn-danger pull-left " type="button " ng-click="download=! download ">Exit</button>
                     </div>
                 </form>
             </div>
