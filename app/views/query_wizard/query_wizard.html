@@ -9,7 +9,7 @@
 <!-- First step of modal -->
 <div ng-show="step == 1">
     <div class="modal-body">
-        <h4><strong>Datasets </strong><small><em> Select one to start</em></small></h4>
+        <h4><strong>Datasets </strong><small><em ng-hide="datasets == 0"> Select one to start</em><em ng-hide="datasets != 0">Must choose at least two datasets from the Compare tab to create a query.</em></small></h4>
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="d in datasets">
                 <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="selectedDatasets.length == 1 && !d.selected"></checkbox>
@@ -145,7 +145,7 @@
                         <label for="queryDesc " class="pull-left ">Description</label>
                         <input type="text " class="form-control " id="description " ng-model="newQuery.description "> </div>
                     <div class="form-group ">
-                        <button class="btn btn-info " type="button " ng-disabled="name.$invalid " ng-click="save() ">Save</button>
+                        <button class="btn btn-info " type="button " ng-disabled="name.$invalid " ng-click="save()">Save</button>
                         <button class="btn btn-danger pull-left " type="button " ng-click="isCollapsed=! isCollapsed ">Cancel</button>
                     </div>
                 </form>
