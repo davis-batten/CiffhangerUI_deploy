@@ -15,6 +15,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     $scope.selectedColumns = []; //select columns for query
     //for save query dropdown
     $scope.isCollapsed = true;
+    $scope.showExit = false;
     $scope.download = false;
     $scope.loadingPreview = false;
     $scope.alreadyUsedDatasets = [];
@@ -211,9 +212,10 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
         queryService.saveQuery($scope.newQuery).then(function (data) {
             if (data.status == 'Success') {
                 $scope.alerts.push({
-                    msg: "Query Saved!"
+                    msg: "Query Successfully Saved!"
                     , type: 'success'
                 });
+                $scope.showExit = true;
                 $log.debug(data);
             }
             else {
