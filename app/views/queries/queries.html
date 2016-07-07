@@ -65,8 +65,9 @@
         </div>
         <div class="modal-body">
             <h4>Preview of Results <small>after running {{query.name}}</small></h4>
-            <p>Note: Preview will only show up to 100 results.</p>
+            <p><em>Note: Preview will only show up to 100 results.</em></p>
             <uib-alert type="info" ng-show="loadingPreview">Loading...</uib-alert>
+            <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
             <div class="" id="queryResultsTable">
                 <table class="table table-bordered">
                     <thead>
@@ -80,6 +81,7 @@
             </div>
         </div>
         <div class="modal-footer">
+            <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
             <button class="btn btn-success" type="button" ng-click="download = !download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table">Download</button>
             <div uib-collapse="!download">
                 <hr>

@@ -105,9 +105,10 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     };
 });
 //controller for an instance of ViewQueryModal
-datasets.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInstance, $log, query, queryService) {
+queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInstance, $log, query, queryService) {
     $scope.query = query;
     $scope.maxSteps = 2;
+    $scope.tableResult = {};
     $scope.step = 1; //what step is the modal on
     //advance the modal to the next step
     $scope.next = function () {
@@ -119,6 +120,10 @@ datasets.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalIns
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
+        if ($scope.step < $scope.maxSteps) {
+            $scope.progressType = null;
+            $scope.tableResult = null;
+        }
     };
     //dismiss the modal
     $scope.cancel = function () {
@@ -137,12 +142,16 @@ datasets.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalIns
                 $scope.loadingPreview = false;
                 $scope.progressType = 'danger';
                 $scope.runQueryError = true;
+                $scope.alerts.push({
+                    msg: "Run Query Failed"
+                    , type: 'danger'
+                });
                 $log.error('Failed to connect to server');
             });
     };
 });
 //controller for instance of QueryDeleteModal
-datasets.controller('QueryDeleteModalCtrl', function ($scope, $uibModalInstance, $log, query) {
+queries.controller('QueryDeleteModalCtrl', function ($scope, $uibModalInstance, $log, query) {
     $scope.query = query;
     //complete modal
     $scope.delete = function () {
