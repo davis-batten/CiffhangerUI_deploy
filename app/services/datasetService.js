@@ -35,7 +35,7 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
         //this service method gets all existing Datasets from the backend
     this.getAllDatasets = function () {
             return $http.get($rootScope.baseUrl + '/dataset/list').then(function (response) { //success callback
-                $log.info(response); //list all data from response 
+                $log.info(response); //list all data from response
                 if (response.data.status == 'Success') {
                     $log.info('Successfully retrived datasets');
                     return response.data;
