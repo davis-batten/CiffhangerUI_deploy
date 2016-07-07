@@ -26,6 +26,13 @@ h4 small {
 }
 
 #columnList {
+    margin-top: 15px;
+    margin-bottom: 15px;
     max-height: 200px;
     overflow: auto;
+}
+
+#alias-item {
+    margin-top: -4px;
+    margin-bottom: 5px;
 }

@@ -51,10 +51,10 @@
         <label>Show selected tag in table</label>
         <checkbox ng-model="addJoinColumn "></checkbox> -->
     </div>
-    <div class="modal-footer ">
-        <button class="btn btn-warning pull-left " type="button " ng-click="previous() ">Back</button>
+    <div class="modal-footer">
+        <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
         <button class="btn btn-primary" type="button" ng-click="addAnotherJoin()">Add Another Join</button>
-        <button class="btn btn-info " type="button " ng-click="next() " ng-disabled="selectedTags.length != 1">Next</button>
+        <button class="btn btn-info" type="button" ng-click="next()" ng-disabled="selectedTags.length != 1">Next</button>
     </div>
 </div>
 <!-- Third step of modal -->
@@ -63,13 +63,13 @@
         <h4><strong>Columns  </strong><small><em>Select columns to show in table</em></small></h4>
         <ul>
             <li class="list-group-item " ng-repeat="d in selectedDatasets ">
-                <checkbox ng-change="selectAllFromDataset(d) " ng-model="selected[d.name] "></checkbox>
+                <checkbox ng-change="selectAllFromDataset(d)" ng-model="selected[d.name]"></checkbox>
                 <label>{{d.name}}</label>
-                <ul class="list-group " id="columnList ">
-                    <li class="list-group-item " ng-repeat="a in d.attributes ">
-                        <checkbox ng-model="a.selected " ng-change="changeColumns(a, selectedColumns, d) "></checkbox>
-                        <label uib-tooltip="{{a.description}} ">{{a.col_name}}</label>
-                        <div class="input-group col-md-5 form-inline pull-right"> <span class="input-group-addon">Alias</span>
+                <ul class="list-group" id="columnList">
+                    <li class="list-group-item" ng-repeat="a in d.attributes">
+                        <checkbox ng-model="a.selected" ng-change="changeColumns(a, selectedColumns, d)"></checkbox>
+                        <label uib-tooltip="{{a.description}}">{{a.col_name}}</label>
+                        <div class="input-group col-md-5 form-inline pull-right" id="alias-item"> <span class="input-group-addon">Alias</span>
                             <input type="text" ng-model="a.alias" class="form-control"> </div>
                     </li>
                 </ul>
@@ -108,8 +108,9 @@
 <div ng-show="step==5">
     <div class="modal-body">
         <h4>Preview of Results <small>after running Constructed Query</small></h4>
-        <p>Note: Preview will only show up to 100 results.</p>
+        <p><em>Note: Preview will only show up to 100 results.</em></p>
         <uib-alert type="info " ng-show="loadingPreview ">Loading...</uib-alert>
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
         <div id="queryResultsTable">
             <table class="table table-bordered ">
                 <thead>
@@ -124,9 +125,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-warning pull-left" type="button" ng-click="previous()" ng-disabled="loadingPreview">Back</button>
-        <div class="col-sm-6 center-block">
-            <button class="btn btn-info" type="button" ng-click="isCollapsed=! isCollapsed" ng-disabled="loadingPreview">Save Query</button>
-        </div>
+        <button class="btn btn-info pull-left" type="button" ng-click="isCollapsed=! isCollapsed" ng-disabled="loadingPreview">Save Query</button>
         <button class="btn btn-success" type="button" ng-click="download=! download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table">Download</button>
         <div uib-collapse="isCollapsed">
             <hr>
@@ -156,7 +155,7 @@
                         <input type="text" class="form-control" name="name" id="filename" ng-model="filename" required>.csv </div>
                     <div class="form-group">
                         <button class="btn btn-info" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="{{filename}}.csv">Save As CSV</button>
-                        <button class="btn btn-danger pull-left" type="button" ng-click="download=! download">Cancel</button>
+                        <button class="btn btn-danger pull-left" type="button" ng-click="download=! download">Cancel Download</button>
                     </div>
                 </form>
             </div>
