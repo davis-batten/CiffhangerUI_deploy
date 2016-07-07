@@ -203,7 +203,7 @@ describe('cliffhanger.queries module', function () {
             scope.statement.limit = "100";
             scope.addToQuery();
             expect(scope.statement.text).not.toBeNull();
-            expect(scope.statement.text).toEqual("\nWHERE assaults = 10\nLIMIT 100;");
+            expect(scope.statement.text).toEqual("\nWHERE assaults = 10\nLIMIT 100");
         });
         it('should be able to add a WHERE clause without a LIMIT clause', function () {
             scope.statement = {};
@@ -212,7 +212,7 @@ describe('cliffhanger.queries module', function () {
             scope.statement.limit = null;
             scope.addToQuery();
             expect(scope.statement.text).not.toBeNull();
-            expect(scope.statement.text).toEqual("\nWHERE assaults = 10;");
+            expect(scope.statement.text).toEqual("\nWHERE assaults = 10");
         });
         it('should be able to add a LIMIT clause without a WHERE clause', function () {
             scope.statement = {};
@@ -230,12 +230,12 @@ describe('cliffhanger.queries module', function () {
             scope.statement.limit = "100";
             scope.addToQuery();
             expect(scope.statement.text).not.toBeNull();
-            expect(scope.statement.text).toEqual("\nWHERE assaults = 10\nLIMIT 100;");
+            expect(scope.statement.text).toEqual("\nWHERE assaults = 10\nLIMIT 100");
             scope.statement.where = "assaults > 0";
             scope.statement.limit = "20";
             scope.addToQuery();
             expect(scope.statement.text).not.toBeNull();
-            expect(scope.statement.text).toEqual("\nWHERE assaults > 0\nLIMIT 20;");
+            expect(scope.statement.text).toEqual("\nWHERE assaults > 0\nLIMIT 20");
         });
         //step 4 - query compilation step
         it('should show a green progress bar on the build query step', function () {
@@ -249,7 +249,7 @@ describe('cliffhanger.queries module', function () {
             scope.step = scope.maxSteps - 2;
             scope.next();
             scope.$apply();
-            expect(scope.query).toEqual('SELECT * FROM table;');
+            expect(scope.query).toEqual('SELECT * FROM table');
         });
         it('should show a red progress bar in the event of an error', function () {
             serviceError = true;
