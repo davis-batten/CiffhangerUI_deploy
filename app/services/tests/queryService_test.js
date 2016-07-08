@@ -24,4 +24,9 @@ describe("query service", function () {
             expect(response).toEqual(test_build_resp);
         });
     });
+    //TODO test runQuery
+    //TODO test getAllQueries
+    //TODO test getQuery
+    //TODO test saveQuery
+    //TODO test deleteQuery
 });

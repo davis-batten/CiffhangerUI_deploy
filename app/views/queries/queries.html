@@ -37,10 +37,16 @@
     </div>
 -->
     <ul class="list-group" id="query_list">
-        <li class="list-group-item active" id="query_item" ng-repeat="q in queryList | orderBy:propertyName | filter:query">
-            <label>{{q.name}}</label> <small>{{q.description}}</small>
-            <button class="btn btn-danger" type="button" ng-click="deleteQuery(q)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
-            <button class="btn btn-info" type="button" ng-click="view(q)"> View</button>
+        <li class="list-group-item active col-md-4 col-sm-4" id="query_item" ng-repeat="q in queryList | orderBy:propertyName | filter:query">
+            <div id="query_item_content">
+                <label>{{q.name}}</label>
+                <br>
+                <p><small>{{q.description}}</small></p>
+                <div class="button-footer">
+                    <button class="btn btn-danger" type="button" ng-click="deleteQuery(q)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
+                    <button class="btn btn-info" type="button" ng-click="view(q)"> View</button>
+                </div>
+            </div>
         </li>
     </ul>
 </div>
@@ -49,8 +55,13 @@
     <!-- First step of modal -->
     <div ng-show="step == 1">
         <div class="modal-header">
-            <h3 class="modal-title inline">{{query.name}}<small>{{query.description}}</small></h3>
-            <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+            <div class="row">
+                <div class="col-xs-11">
+                    <h3 class="modal-title inline">{{query.name}}<small>{{query.description}}</small></h3> </div>
+                <div class="col-xs-1">
+                    <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+                </div>
+            </div>
         </div>
         <div class="modal-body"> <pre>{{query.sqlString}}</pre> </div>
         <div class="modal-footer">
@@ -60,13 +71,18 @@
     <!-- Second step of modal -->
     <div ng-show="step == 2">
         <div class="modal-header">
-            <h3 class="modal-title inline">{{query.name}}<small>{{query.description}}</small></h3>
-            <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+            <div class="row">
+                <div class="col-xs-11">
+                    <h3 class="modal-title inline">{{query.name}}<small>{{query.description}}</small></h3> </div>
+                <div class="col-xs-1">
+                    <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+                </div>
+            </div>
         </div>
         <div class="modal-body">
             <h4>Preview of Results <small>after running {{query.name}}</small></h4>
-            <p>Note: Preview will only show up to 100 results.</p>
-            <uib-alert type="info" ng-show="loadingPreview">Loading...</uib-alert>
+            <p><em>Note: Preview will only show up to 100 results.</em></p> <img id="loadingIcon" src="../../resources/rolling_loader.svg" ng-show="loadingPreview">
+            <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
             <div class="" id="queryResultsTable">
                 <table class="table table-bordered">
                     <thead>
@@ -80,6 +96,7 @@
             </div>
         </div>
         <div class="modal-footer">
+            <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
             <button class="btn btn-success" type="button" ng-click="download = !download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table">Download</button>
             <div uib-collapse="!download">
                 <hr>

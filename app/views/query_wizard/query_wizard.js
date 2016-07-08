@@ -85,8 +85,9 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             $scope.archiveTags();
         } else if ($scope.step == 4) {
             $scope.buildQuery();
-        } else if ($scope.step == 5) {
-            $scope.runQuery($scope.query);
+        }
+        else if ($scope.step == 5) {
+            $scope.runQuery();
         }
     };
     //go back a step in the modal

@@ -32,8 +32,12 @@ h4 small {
     overflow: auto;
 }
 
+#loadingIcon {
+    display: block;
+    margin: auto;
+}
+
 #alias-item {
     margin-top: -4px;
     margin-bottom: 5px;
-
 }
