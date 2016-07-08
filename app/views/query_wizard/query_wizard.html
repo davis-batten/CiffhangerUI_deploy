@@ -78,13 +78,14 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
-        <button class="btn btn-info" type="button" ng-click="next()">Next</button>
+        <button class="btn btn-info" type="button" ng-click="next()" ng-disabled="selectedColumns.length < 1">Next</button>
     </div>
 </div>
 <!-- Fourth step of modal -->
 <div ng-show="step==4">
     <div class="modal-body">
-        <h4>Constructed Query</h4> <pre>{{query}}{{statement.text}}</pre>
+        <h4>Constructed Query</h4> <pre>{{query[0]}}{{statement.text}}</pre>
+        <uib-alert ng-repeat="alert in dataTypeCheck" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
         <div class="form-group">
             <label for="where">Manual WHERE clause</label><small>  Example Input: table.column > x</small>
             <input type="text" class="form-control" id="where" ng-model="statement.where"> </div>
