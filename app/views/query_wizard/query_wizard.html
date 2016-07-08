@@ -13,8 +13,9 @@
         <h4><strong>Datasets </strong><small><em> Select one to start</em></small></h4>
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="d in datasets">
-                <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="selectedDatasets.length == 1 && !d.selected"></checkbox>
-                <label>{{d.name}}</label>
+                <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="(selectedDatasets.length == 1 && !d.selected) || d.db_table_name == null"></checkbox>
+                <label>{{d.name}}<span class="glyphicon glyphicon-exclamation-sign no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset"></span>
+                </label>
             </li>
         </ul>
     </div>
@@ -31,8 +32,9 @@
                     <h4><strong>Datasets </strong><small><em> Select one to add to query</em></small></h4>
                     <ul class="list-group">
                         <li class="list-group-item" ng-repeat="d in datasets" ng-if="alreadyUsedDatasets.indexOf(d) == -1">
-                            <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="selectedDatasets.length == (numJoins+1) && !d.selected"></checkbox>
-                            <label>{{d.name}}</label>
+                            <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="(selectedDatasets.length == (numJoins+1) && !d.selected) || d.db_table_name == null"></checkbox>
+                            <label>{{d.name}}<span class="glyphicon glyphicon-exclamation-sign no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset"></span>
+                            </label>
                         </li>
                     </ul>
                 </div>
@@ -108,8 +110,8 @@
 <div ng-show="step==5">
     <div class="modal-body">
         <h4>Preview of Results <small>after running Constructed Query</small></h4>
-        <p><em>Note: Preview will only show up to 100 results.</em></p>
-        <uib-alert type="info " ng-show="loadingPreview ">Loading...</uib-alert>
+        <p>Note: Preview will only show up to 100 results.</p>
+        <img id="loadingIcon" src="../../resources/rolling_loader.svg" ng-show="loadingPreview">>
         <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
         <div id="queryResultsTable">
             <table class="table table-bordered ">
