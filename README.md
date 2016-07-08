@@ -6,56 +6,54 @@ This project is the front-end for the Cliffhanger app.
 Installation: 
 -------------
 
-    Make sure you have the following node_modules installed: 
-        - angular-ui-bootstrap
-        - bower (global)
-        - forever (global)
-        - http-server
-        - jasmine-core
-        - karma-chrome-launcher
-        - karma-html-reporter
-        - karma-jasmine
-        - karma-junit-reporter \*
-        - lodash
-        - ng-tags-input \*
-        - node-http-server \*
-        - shelljs \*
+Make sure you have the following node_modules installed: 
+    - angular-ui-bootstrap
+    - bower (global)
+    - forever (global)
+    - http-server
+    - jasmine-core
+    - karma-chrome-launcher
+    - karma-html-reporter
+    - karma-jasmine
+    - karma-junit-reporter \*
+    - lodash
+    - ng-tags-input \*
+    - node-http-server \*
+    - shelljs \*
         
-    Make sure you have the following bower_components installed:
-        - angular
-        - angular-animate
-        - angular-bootstrap-checkbox
-        - angular-loader
-        - angular-mocks
-        - angular-route
-        - angular-sanitize
-        - angular-tags
-        - angular-ui-bootstrap-bower \*
-        - angular-ui-grid \*
-        - bootstrap
-        - bootstrap-css \*
-        - font-awesome \*
-        - jquery
-        - ng-csv
-        - ng-tags-input
+Make sure you have the following bower_components installed:
+    - angular
+    - angular-animate
+    - angular-bootstrap-checkbox
+    - angular-loader
+    - angular-mocks
+    - angular-route
+    - angular-sanitize
+    - angular-tags
+    - angular-ui-bootstrap-bower \*
+    - angular-ui-grid \* 
+    - bootstrap
+    - bootstrap-css \*
+    - font-awesome \*
+    - jquery
+    - ng-csv
+    - ng-tags-input
         
-    Note: Just running "npm start" should take care of installing most of these.
+Note: Just running "npm start" should take care of installing most of these.
     
-    *Items marked with an * may not be necessary to run/test app.*
+*Items marked with an * may not be necessary to run/test app.*
     
 How To Use:
 -----------
 
-    To run the project locally on a webserver execute the following command at the project root folder:
-        `npm start`
-    This will start the app at the default location of localhost:8000.
+To run the project locally on a webserver execute the following command at the project root folder: `npm start`
+This will start the app at the default location of localhost:8000.
 
-    To test the project execute the following command at the project root folder:
-        `npm test`
-    Then open a webbrowser at localhost:9876, test results will be output both to the command line and karma_html/index.html.
+To test the project execute the following command at the project root folder: `npm test`
+Then open a webbrowser at localhost:9876, test results will be output both to the command line and karma_html/index.html.
     
     
-    **Production deployment instructions __comming soon__**!
+**Production deployment instructions __comming soon__**!
 
 
 File Directory Format:
@@ -89,4 +87,4 @@ File Directory Format:
     swagger.yaml -- API documentation using OpenAPI specs
     
     
-    Note: Files in the form \*_test.js are Jasmine tests
+    Note: Files in the form *_test.js are Jasmine tests
