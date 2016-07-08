@@ -1,0 +1,45 @@
+
+> cliffhanger-front-end@0.0.0 prestart /home/cliffhanger/CiffhangerUI_deploy
+> npm install
+
+npm WARN lifecycle cliffhanger-front-end@0.0.0~postinstall: cannot run in wd %s %s (wd=%s) cliffhanger-front-end@0.0.0 bower install --allow-root /home/cliffhanger/CiffhangerUI_deploy
+npm WARN optional Skipping failed optional dependency /karma/chokidar/fsevents:
+npm WARN notsup Not compatible with your operating system or architecture: fsevents@1.0.12
+
+> cliffhanger-front-end@0.0.0 start /home/cliffhanger/CiffhangerUI_deploy
+> http-server -p 8000 -c-1 ./app
+
+[33mStarting up http-server, serving [39m[36m./app[39m[33m
+Available on:[39m
+[32m  http://127.0.0.1:8000[39m
+[32m  http://10.6.1.4:8000[39m
+Hit CTRL-C to stop the server
+[Wed Jun 22 2016 15:38:55 GMT+0000 (UTC)] "[36mGET[39m [36m/[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:55 GMT+0000 (UTC)] "[36mGET[39m [36m/app.css[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:55 GMT+0000 (UTC)] "[36mGET[39m [36m/views/datasets/datasets.css[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:55 GMT+0000 (UTC)] "[36mGET[39m [36m/views/tags/tags.css[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:55 GMT+0000 (UTC)] "[36mGET[39m [36m/bower_components/bootstrap/dist/css/bootstrap.css[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:55 GMT+0000 (UTC)] "[36mGET[39m [36m/bower_components/ng-tags-input/ng-tags-input.css[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:55 GMT+0000 (UTC)] "[36mGET[39m [36m/bower_components/ng-tags-input/ng-tags-input.bootstrap.css[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:55 GMT+0000 (UTC)] "[36mGET[39m [36m/bower_components/angular/angular.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/bower_components/angular-route/angular-route.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/components/version/version.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/components/version/version-directive.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/components/version/interpolate-filter.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/components/ui-bootstrap/ui-bootstrap-tpls.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/bower_components/ng-tags-input/ng-tags-input.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/app.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/views/dashboard/dashboard.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/views/datasets/datasets.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/views/queries/queries.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/views/compare/compare.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/views/tags/tags.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/services/datasetService.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/services/tagService.js[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/bower_components/bootstrap/dist/css/bootstrap.css.map[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/bower_components/ng-tags-input/ng-tags-input.css.map[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/bower_components/ng-tags-input/ng-tags-input.bootstrap.css.map[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[31mGET[39m [31m/bower_components/ng-tags-input/ng-tags-input.css.map[39m" Error ([31m404[39m): "[31mNot found[39m"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[31mGET[39m [31m/bower_components/ng-tags-input/ng-tags-input.bootstrap.css.map[39m" Error ([31m404[39m): "[31mNot found[39m"
+[Wed Jun 22 2016 15:38:56 GMT+0000 (UTC)] "[36mGET[39m [36m/views/dashboard/dashboard.html[39m" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
