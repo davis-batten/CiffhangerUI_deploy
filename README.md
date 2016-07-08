@@ -1,9 +1,11 @@
-#CliffhangerUI
+CliffhangerUI
+=============
 
 This project is the front-end for the Cliffhanger app.
 
-##Installation: 
-    
+Installation: 
+-------------
+
     ###Make sure you have the following node_modules installed: 
         - angular-ui-bootstrap
         - bower (global)
@@ -41,18 +43,15 @@ This project is the front-end for the Cliffhanger app.
     
     *Items marked with an * may not be necessary to run/test app.*
     
-##How To Use:
+How To Use:
+-----------
 
     To run the project locally on a webserver execute the following command at the project root folder:
-        ```
-        npm start
-        ```
+        `npm start`
     This will start the app at the default location of localhost:8000.
 
     To test the project execute the following command at the project root folder:
-        ```
-        npm test
-        ```
+        `npm test`
     Then open a webbrowser at localhost:9876, test results will be output both to the command line and karma_html/index.html.
     
     
@@ -60,6 +59,7 @@ This project is the front-end for the Cliffhanger app.
 
 
 File Directory Format:
+----------------------
 
     api_target -- files for web version of API documentation
     app -- all files to do with the app itself
