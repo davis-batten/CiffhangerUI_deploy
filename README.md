@@ -22,22 +22,22 @@ Make sure you have the following node_modules installed:
         - shelljs \*
         
 Make sure you have the following bower_components installed:
-    - angular
-    - angular-animate
-    - angular-bootstrap-checkbox
-    - angular-loader
-    - angular-mocks
-    - angular-route
-    - angular-sanitize
-    - angular-tags
-    - angular-ui-bootstrap-bower \*
-    - angular-ui-grid \* 
-    - bootstrap
-    - bootstrap-css \*
-    - font-awesome \*
-    - jquery
-    - ng-csv
-    - ng-tags-input
+- angular
+- angular-animate
+- angular-bootstrap-checkbox
+- angular-loader
+- angular-mocks
+- angular-route
+- angular-sanitize
+- angular-tags
+- angular-ui-bootstrap-bower \*
+- angular-ui-grid \*  
+- bootstrap
+- bootstrap-css \*
+- font-awesome \*
+- jquery
+- ng-csv
+- ng-tags-input
         
 Note: Just running "npm start" should take care of installing most of these.
     
