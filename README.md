@@ -6,7 +6,7 @@ This project is the front-end for the Cliffhanger app.
 Installation: 
 -------------
 
-    ###Make sure you have the following node_modules installed: 
+    Make sure you have the following node_modules installed: 
         - angular-ui-bootstrap
         - bower (global)
         - forever (global)
@@ -21,7 +21,7 @@ Installation:
         - node-http-server \*
         - shelljs \*
         
-    ###Make sure you have the following bower_components installed:
+    Make sure you have the following bower_components installed:
         - angular
         - angular-animate
         - angular-bootstrap-checkbox
