@@ -9,32 +9,32 @@ describe('cliffhanger.query_wizard module', function () {
             scope = $rootScope.$new();
             mockQueryService = queryService;
             modalInstance = {
-                close: jasmine.createSpy('uibModalInstance.close'),
-                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
-                result: {
+                close: jasmine.createSpy('uibModalInstance.close')
+                , dismiss: jasmine.createSpy('uibModalInstance.dismiss')
+                , result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
             mockDatasets = [
                 {
-                    name: 'test1',
-                    description: 'test desc 1',
-                    attributes: [
+                    name: 'test1'
+                    , description: 'test desc 1'
+                    , attributes: [
                         {
-                            "name": "attr1",
-                            "tag": {
+                            "name": "attr1"
+                            , "tag": {
                                 "name": "ZIP"
                             }
                         }
                         , {
-                            "name": "attr2",
-                            "tag": {
+                            "name": "attr2"
+                            , "tag": {
                                 "name": "SSN"
                             }
                         }
-                    ],
-                    selected: true,
-                    tags: [
+                    ]
+                    , selected: true
+                    , tags: [
                         {
                             "name": "ZIP"
                         }
@@ -43,24 +43,24 @@ describe('cliffhanger.query_wizard module', function () {
                         }
                     ]
                     }, {
-                    name: 'test2',
-                    description: 'test desc 2',
-                    attributes: [
+                    name: 'test2'
+                    , description: 'test desc 2'
+                    , attributes: [
                         {
-                            "name": "attr3",
-                            "tag": {
+                            "name": "attr3"
+                            , "tag": {
                                 "name": "ZIP"
                             }
                         }
                         , {
-                            "name": "attr4",
-                            "tag": {
+                            "name": "attr4"
+                            , "tag": {
                                 "name": "NAME"
                             }
                         }
-                    ],
-                    selected: true,
-                    tags: [
+                    ]
+                    , selected: true
+                    , tags: [
                         {
                             "name": "ZIP"
                         }
@@ -69,24 +69,24 @@ describe('cliffhanger.query_wizard module', function () {
                         }
                     ]
                     }, {
-                    name: 'test3',
-                    description: 'test desc 3',
-                    attributes: [
+                    name: 'test3'
+                    , description: 'test desc 3'
+                    , attributes: [
                         {
-                            "name": "attr4",
-                            "tag": {
+                            "name": "attr4"
+                            , "tag": {
                                 "name": "COUNTY"
                             }
                         }
                         , {
-                            "name": "attr5",
-                            "tag": {
+                            "name": "attr5"
+                            , "tag": {
                                 "name": "COUNTRY"
                             }
                         }
-                    ],
-                    selected: false,
-                    tags: [
+                    ]
+                    , selected: false
+                    , tags: [
                         {
                             "name": "COUNTY"
                         }
@@ -103,12 +103,12 @@ describe('cliffhanger.query_wizard module', function () {
                     status: 'Error'
                 }
                 var testTableResult = {
-                    colCount: 2,
-                    colNames: [
+                    colCount: 2
+                    , colNames: [
                         "test.col1"
                         , "test.col2"
-                    ],
-                    rows: [
+                    ]
+                    , rows: [
                         [
                             1
                             , "abc"
@@ -133,8 +133,8 @@ describe('cliffhanger.query_wizard module', function () {
                     status: 'Error'
                 }
                 var good_result = {
-                    data: "SELECT * FROM table;",
-                    status: 'Success'
+                    data: "SELECT * FROM table;"
+                    , status: 'Success'
                 }
                 var deferred = $q.defer();
                 if (serviceError) deferred.resolve(bad_result);
@@ -142,10 +142,10 @@ describe('cliffhanger.query_wizard module', function () {
                 return deferred.promise;
             })
             queryWizardCtrl = $controller('QueryWizardCtrl', {
-                $scope: scope,
-                $uibModalInstance: modalInstance,
-                datasets: mockDatasets,
-                queryService: mockQueryService
+                $scope: scope
+                , $uibModalInstance: modalInstance
+                , datasets: mockDatasets
+                , queryService: mockQueryService
             })
         }));
         // -----------Modal operations----------------------
@@ -156,14 +156,6 @@ describe('cliffhanger.query_wizard module', function () {
             scope.cancel();
             expect(modalInstance.dismiss).toHaveBeenCalledWith('cancel');
         });
-        /*
-        it('should close the modal with submit', function () {
-            //This test will always fail because scope.submit is not implemented
-            scope.submit();
-            expect(scope.query).not.toBeNull();
-            expect(modalInstance.close).toHaveBeenCalled();
-        });
-        */
         it('should advance to the next step', function () {
             scope.selectedDatasets = mockDatasets;
             scope.next();
@@ -198,7 +190,6 @@ describe('cliffhanger.query_wizard module', function () {
                 }
             ]);
         });
-
         it('should be able to add a WHERE/LIMIT clause to the query', function () {
             scope.statement = {};
             scope.query = "SELECT * FROM table;";
@@ -252,7 +243,7 @@ describe('cliffhanger.query_wizard module', function () {
             scope.step = scope.maxSteps - 2;
             scope.next();
             scope.$apply();
-            expect(scope.query).toEqual('SELECT * FROM table');
+            expect(scope.query).toEqual('SELECT * FROM table;');
         });
         it('should show a red progress bar in the event of an error', function () {
             serviceError = true;
@@ -273,6 +264,27 @@ describe('cliffhanger.query_wizard module', function () {
             scope.next();
             scope.$apply();
             expect(scope.tableResult).not.toBeNull();
+            expect(scope.tableResult).toEqual({
+                colCount: 2
+                , colNames: [
+                        "test.col1"
+                        , "test.col2"
+                    ]
+                , rows: [
+                        [
+                            1
+                            , "abc"
+                        ]
+                        , [
+                            2
+                            , "def"
+                        ]
+                        , [
+                            3
+                            , "ghi"
+                        ]
+                    ]
+            });
             expect(scope.tableResult.colCount).toEqual(2);
             expect(scope.tableResult.colNames[1]).toBe("test.col2");
             expect(scope.tableResult.rows[0][1]).toBe("abc");
@@ -309,37 +321,30 @@ describe('cliffhanger.query_wizard module', function () {
             expect(scope.newQuery.description).toEqual("test query description");
             expect(scope.newQuery.sqlString).toEqual("SELECT * FROM table WHERE * > 10");
         });
-
-
         //new tests
         it('should add duplicates to the selection array', function () {
             var tag = {
-                name: "ZIP",
-                selected: true
+                name: "ZIP"
+                , selected: true
             }
             var arr = []
             scope.change(tag, arr);
             expect(arr.length).toBe(1);
             expect(arr[0].name).toEqual(tag.name);
-
             scope.change(tag, arr);
             expect(arr.length).toBe(2);
             expect(arr[1].name).toEqual(tag.name);
         });
-
         it('should be able to add another join', function () {
             spyOn(scope, "archiveDatasets");
             spyOn(scope, "archiveTags");
-
             scope.addAnotherJoin();
-
             expect(scope.archiveDatasets).toHaveBeenCalled();
             expect(scope.archiveTags).toHaveBeenCalled();
             for (var i = 0; i < mockDatasets.length; i++) {
                 expect(mockDatasets[i].selected).toBeFalsy();
             }
         });
-
         it('should be able to select all tags in dataset', function () {
             scope.selected[mockDatasets[0].name] = true;
             scope.selectAllFromDataset(mockDatasets[0]);
