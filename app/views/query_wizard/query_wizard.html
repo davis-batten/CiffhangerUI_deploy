@@ -114,7 +114,7 @@
     <div class="modal-body">
         <h4>Preview of Results <small>after running Constructed Query</small></h4>
         <p><em>Note: Preview will only show up to 100 results.</em></p> <img id="loadingIcon" src="../../resources/rolling_loader.svg" ng-show="loadingPreview">
-<uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
         <div id="queryResultsTable">
             <table class="table table-bordered ">
                 <thead>
