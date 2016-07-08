@@ -53,7 +53,7 @@ To test the project execute the following command at the project root folder: `n
 Then open a webbrowser at localhost:9876, test results will be output both to the command line and karma_html/index.html.
     
     
-**Production deployment instructions __comming soon__**!
+**Production deployment instructions *coming soon*!**
 
 
 File Directory Format:
