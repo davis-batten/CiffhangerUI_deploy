@@ -243,7 +243,7 @@ describe('cliffhanger.query_wizard module', function () {
             scope.step = scope.maxSteps - 2;
             scope.next();
             scope.$apply();
-            expect(scope.query).toEqual('SELECT * FROM table');
+            expect(scope.query).toEqual('SELECT * FROM table;');
         });
         it('should show a red progress bar in the event of an error', function () {
             serviceError = true;
@@ -264,6 +264,27 @@ describe('cliffhanger.query_wizard module', function () {
             scope.next();
             scope.$apply();
             expect(scope.tableResult).not.toBeNull();
+            expect(scope.tableResult).toEqual({
+                colCount: 2
+                , colNames: [
+                        "test.col1"
+                        , "test.col2"
+                    ]
+                , rows: [
+                        [
+                            1
+                            , "abc"
+                        ]
+                        , [
+                            2
+                            , "def"
+                        ]
+                        , [
+                            3
+                            , "ghi"
+                        ]
+                    ]
+            });
             expect(scope.tableResult.colCount).toEqual(2);
             expect(scope.tableResult.colNames[1]).toBe("test.col2");
             expect(scope.tableResult.rows[0][1]).toBe("abc");

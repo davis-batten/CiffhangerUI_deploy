@@ -113,8 +113,8 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     //advance the modal to the next step
     $scope.next = function () {
         $scope.step++;
-        if ($scope.step == $scope.maxSteps) {
-            $scope.runQuery($scope.query);
+        if ($scope.step == 2) {
+            $scope.runQuery();
         }
     };
     //go back a step in the modal

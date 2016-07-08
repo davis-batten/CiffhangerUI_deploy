@@ -133,9 +133,10 @@ describe('cliffhanger.queries module', function () {
             expect(scope.query.dateCreated).toEqual(testDate);
         });
         it('should run the query and return a table result object', function () {
-            scope.step = 1;
+            scope.step = scope.maxSteps - 1;
             scope.next();
             scope.$apply();
+            expect(scope.query.sqlString).toEqual('SELECT * FROM table;');
             expect(scope.tableResult).not.toBeNull();
             expect(scope.tableResult).toEqual({
                 colCount: 2

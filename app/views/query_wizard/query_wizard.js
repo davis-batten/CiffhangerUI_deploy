@@ -91,7 +91,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             $scope.buildQuery();
         }
         else if ($scope.step == 5) {
-            $scope.runQuery($scope.query);
+            $scope.runQuery();
         }
     };
     //go back a step in the modal
