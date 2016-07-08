@@ -7,37 +7,37 @@ Installation:
 -------------
 
 Make sure you have the following node_modules installed: 
-        - angular-ui-bootstrap
-        - bower (global)
-        - forever (global)
-        - http-server
-        - jasmine-core
-        - karma-chrome-launcher
-        - karma-html-reporter
-        - karma-jasmine
-        - karma-junit-reporter \*
-        - lodash
-        - ng-tags-input \*
-        - node-http-server \*
-        - shelljs \*
+-   angular-ui-bootstrap
+-   bower (global)
+-   forever (global)
+-   http-server
+-   jasmine-core
+-   karma-chrome-launcher
+-   karma-html-reporter
+-   karma-jasmine
+-   karma-junit-reporter \*
+-   lodash
+-   ng-tags-input \*
+-   node-http-server \*
+-   shelljs \*
         
 Make sure you have the following bower_components installed:
-- angular
-- angular-animate
-- angular-bootstrap-checkbox
-- angular-loader
-- angular-mocks
-- angular-route
-- angular-sanitize
-- angular-tags
-- angular-ui-bootstrap-bower \*
-- angular-ui-grid \*  
-- bootstrap
-- bootstrap-css \*
-- font-awesome \*
-- jquery
-- ng-csv
-- ng-tags-input
+-   angular
+-   angular-animate
+-   angular-bootstrap-checkbox
+-   angular-loader
+-   angular-mocks
+-   angular-route
+-   angular-sanitize
+-   angular-tags
+-   angular-ui-bootstrap-bower \*
+-   angular-ui-grid \*  
+-   bootstrap
+-   bootstrap-css \*
+-   font-awesome \*
+-   jquery
+-   ng-csv
+-   ng-tags-input
         
 Note: Just running "npm start" should take care of installing most of these.
     
@@ -53,7 +53,7 @@ To test the project execute the following command at the project root folder: `n
 Then open a webbrowser at localhost:9876, test results will be output both to the command line and karma_html/index.html.
     
     
-**Production deployment instructions __comming soon__**!
+**Production deployment instructions *coming soon*!**
 
 
 File Directory Format:
