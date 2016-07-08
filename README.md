@@ -7,19 +7,19 @@ Installation:
 -------------
 
 Make sure you have the following node_modules installed: 
-    - angular-ui-bootstrap
-    - bower (global)
-    - forever (global)
-    - http-server
-    - jasmine-core
-    - karma-chrome-launcher
-    - karma-html-reporter
-    - karma-jasmine
-    - karma-junit-reporter \*
-    - lodash
-    - ng-tags-input \*
-    - node-http-server \*
-    - shelljs \*
+        - angular-ui-bootstrap
+        - bower (global)
+        - forever (global)
+        - http-server
+        - jasmine-core
+        - karma-chrome-launcher
+        - karma-html-reporter
+        - karma-jasmine
+        - karma-junit-reporter \*
+        - lodash
+        - ng-tags-input \*
+        - node-http-server \*
+        - shelljs \*
         
 Make sure you have the following bower_components installed:
     - angular
