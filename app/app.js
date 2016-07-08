@@ -6,6 +6,7 @@ app = angular.module('cliffhanger', [
     , 'ngTagsInput'
     , 'ngSanitize'
     , 'ngCsv'
+    , 'ui.grid'
     , 'cliffhanger.version',
 
     //My modules
@@ -26,8 +27,8 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
 }]).run(function ($rootScope) {
     //set base Url for the REST API
 
-    //    $rootScope.baseUrl = 'http://localhost:8080/cliffhanger'; //development
-    $rootScope.baseUrl = 'http://hangingonbyanicepick.eastus2.cloudapp.azure.com:8080/cliffhanger-0.1'; //production
+    $rootScope.baseUrl = 'http://localhost:8080/cliffhanger'; //development
+    //$rootScope.baseUrl = 'http://hangingonbyanicepick.eastus2.cloudapp.azure.com:8080/cliffhanger-0.1'; //production
 
 }).directive('prevent-default', function ($rootScope) {
 
