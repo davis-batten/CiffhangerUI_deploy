@@ -9,7 +9,8 @@
 
 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
     <div id="login">
-        <form class="form" role="form" id="login-form">
+        <h3>Login</h3>
+        <form class="form" role="form" id="login-form" name="loginForm">
             <div class="form-group">
                 <label for="inputUsername">Username</label>
                 <input ng-model="username" type="text" class="form-control" id="inputUsername" placeholder="Username" required>
@@ -19,7 +20,33 @@
                 <input ng-model="password" type="password" class="form-control" id="inputPassword" placeholder="Password" required>
             </div>
             <div class="form-group">
-                <button ng-click="login()" type="submit" class="btn btn-primary btn-block">Sign In</button>
+                <button ng-click="login()" type="submit" class="btn btn-primary btn-block" ng-disabled="loginForm.$invalid">Sign In</button>
+            </div>
+        </form>
+        <hr>
+        <h3>New Account</h3>
+        <form class="form" role="form" id="register-form" name="registerForm">
+            <div class="form-group">
+                <label for="inputNewUsername">Username</label>
+                <input ng-model="newUser.username" type="text" class="form-control" id="inputNewUsername" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <label for="inputNewPassword1">Password</label>
+                <input ng-model="newUser.password" type="password" class="form-control" id="inputNewPassword1" placeholder="Password" required>
+            </div>
+            <div class="form-group">
+                <label for="inputNewPassword2">Confirm Password</label>
+                <input ng-model="newUser.passwordConfirm" type="password" class="form-control" id="inputNewPassword2" placeholder="Password" required>
+            </div>
+            <label>Select a user role:</label>
+            <div class="btn-group">
+                <label class="btn btn-primary" ng-model="newUser.role" uib-btn-radio="'ANALYST'">Analyst</label>
+                <label class="btn btn-primary" ng-model="newUser.role" uib-btn-radio="'DEVELOPER'">Developer</label>
+            </div>
+            <br>
+            <br>
+            <div class="form-group">
+                <button ng-click="register()" type="submit" class="btn btn-success btn-block" ng-disabled="invalidNewUser || registerForm.$invalid">Create</button>
             </div>
         </form>
     </div>

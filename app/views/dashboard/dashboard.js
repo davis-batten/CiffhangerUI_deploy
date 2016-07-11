@@ -11,6 +11,8 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
 
 .controller('DashboardCtrl', function ($rootScope, $log, $scope, $q, $filter, $location) {
 
+    $scope.newUser = {};
+
     $rootScope.theme = {};
 
     $rootScope.theme.color = "white";
@@ -62,10 +64,27 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
         $location.url("analyst/compare");
     }
 
+    $scope.$watch('newUser', function () {
+        if ($scope.newUser.role == null || $scope.newUser.password != $scope.newUser.passwordConfirm) {
+            $scope.invalidNewUser = true;
+        } else $scope.invalidNewUser = false;
+    }, true)
+
     $scope.login = function () {
         var input = {
             username: $scope.username,
             password: $scope.password
+        }
+        $log.debug(input);
+
+        //TODO
+    }
+
+    $scope.register = function () {
+        var input = {
+            username: $scope.newUser.username,
+            password: $scope.newUser.password,
+            role: $scope.newUser.role
         }
         $log.debug(input);
 
