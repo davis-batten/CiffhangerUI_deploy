@@ -4,9 +4,18 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         templateUrl: 'views/compare/compare.html'
         , controller: 'CompareCtrl'
     });
-}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal) {
-    $scope.rows = []; //scope object for storing the rows of the table
-    var dirty = {}; //object for determining if a row is in need of updating
+}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, uiGridConstants) {
+    
+    $scope.matrix = {
+        columnDefs: [
+            {name: 'datasetName', displayName: 'Dataset', field:'datasetName', eneablePinning: true, pinnedLeft: true, width: 160, enableColumnMenu: false}
+        ],
+        data: [],
+        onRegisterApi: function(gridApi) {
+            $scope.gridApi = gridApi;
+        }
+    };
+    
     $scope.allTagsSelected = false; //are all the tags selected?s
     $scope.allDatasetsSelected = false; //are all the datasets selected?
     $scope.selectedTags = [];
@@ -83,90 +92,45 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         return deferred.promise;
     };
     
-    //table needs to be changed due to a change in $scope.selectedTags
-    $scope.$watch('selectedTags', function () {
-        $log.debug('tag watcher', $scope.rows);
-        //mark all rows as dirty (in need of update)
-        for (var i in dirty) {
-            if (dirty.hasOwnProperty(i)) {
-                dirty[i] = true;
-            }
-        }
-        $scope.updateTable();
-    }, true);
-    
-    //table needs to be changed due to a change in $scope.selectedDatasets
-    $scope.$watch('selectedDatasets', function () {
-        $log.debug('dataset watcher', $scope.rows);
-        //mark all rows as dirty (in need of update)
-        for (var i in dirty) {
-            if (dirty.hasOwnProperty(i)) {
-                dirty[i] = true;
-            }
-        }
-        $scope.updateTable();
-    }, true);
-    
     //onclick method for select all tags button
     $scope.selectAllTags = function () {
-            $scope.selectedTags = angular.copy($scope.tags);
-            $scope.allTagsSelected = true;
+        $scope.selectedTags = angular.copy($scope.tags);
+        $scope.matrix.columnDefs = [
+            {name: 'datasetName', displayName: 'Dataset', field:'datasetName', eneablePinning: true, pinnedLeft: true, width: 160, enableColumnMenu: false}
+        ];
+        for (var i in $scope.selectedTags) {
+             $scope.showTag($scope.selectedTags[i]);
+        }
+        $scope.allTagsSelected = true;
+//        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
     }
     
         //onclick method for select all datasets button
     $scope.selectAllDatasets = function () {
-            $scope.selectedDatasets = angular.copy($scope.datasets);
-            $scope.allDatasetsSelected = true;
+        $scope.selectedDatasets = angular.copy($scope.datasets);
+        $scope.matrix.data.splice(0,$scope.matrix.data.length);
+        for (var i in $scope.selectedDatasets) {
+             $scope.selectDataset($scope.selectedDatasets[i]);
+        }
+        $scope.allDatasetsSelected = true;
+
     }
     
         //onclick method for deselect all tags button
     $scope.deselectAllTags = function () {
-            $scope.selectedTags = [];
-            $scope.allTagsSelected = false;
+        $scope.selectedTags.splice(0,$scope.selectedTags.length)
+        $scope.matrix.columnDefs.splice(1, $scope.matrix.columnDefs.length-1)
+        $scope.allTagsSelected = false;
+//        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
+
     }
     
         //onclick method for deselect all datasets button
     $scope.deselectAllDatasets = function () {
-            $scope.selectedDatasets = [];
-            $scope.allDatasetsSelected = false;
+        $scope.selectedDatasets = [];
+        $scope.matrix.data.splice(0,$scope.matrix.data.length);
+        $scope.allDatasetsSelected = false;
     }
-    
-        //format row for display in table
-    $scope.buildRow = function (dataset) {
-            //$log.debug('build row', dataset);
-            //if row not created or is dirty
-            if ($scope.rows[dataset.name] == undefined || dirty[dataset.name]) {
-                //sort attributes by column name
-                var attr = dataset.attributes.sort(function (a, b) {
-                    return (a.col_name).localeCompare(b.col_name);
-                });
-                var row = [];
-                //add cells
-                for (var t in $scope.selectedTags) {
-                    var type = 'danger';
-                    var cols = "";
-                    var found = false;
-                    for (var a in attr) {
-                        //if column matches tag add green cell (or add column name to existing cell)
-                        if (attr[a].tag.name == $scope.selectedTags[t].name) {
-                            if (cols != "") cols += ", ";
-                            cols += (attr[a].col_name);
-                            type = 'success';
-                            found = true;
-                        }
-                    }
-                    if (cols == []) cols = null; //make it an empty red cell
-                    row.push({
-                        name: cols
-                        , type: $scope.selectedTags[t]
-                        , class: type
-                    });
-                }
-                $log.log(row);
-                dirty[dataset.name] = false; //row no longer needs updating
-                $scope.rows[dataset.name] = row; //add created row to scope bound variable
-            }
-        }
     
         //output log data - for testing only
     $scope.log = function () {
@@ -174,15 +138,6 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             $log.info('tags', $scope.selectedTags);
             $log.info('datasets', $scope.selectedDatasets);
     }
-    
-        //helper function to update all rows in the table
-    $scope.updateTable = function () {
-        for (var d in $scope.selectedDatasets) {
-            $scope.buildRow($scope.selectedDatasets[d]);
-        }
-    }
-    
-    $scope.updateTable(); //call to initalize the table
     
     //Add empty tag column to table
     $scope.allowUntagged = function () {
@@ -214,6 +169,10 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
                 }
             }
         }
+        $scope.matrix.columnDefs.splice(1,$scope.matrix.columnDefs.length-1);
+        for(var i in $scope.selectedTags) {
+            $scope.showTag($scope.selectedTags[i]);
+        }
         $log.debug($scope.selectedTags);
     }
     
@@ -233,6 +192,10 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
                         }
                     }
                 }
+            }
+            $scope.matrix.data.splice(0,$scope.matrix.data.length);
+            for (var i in $scope.selectedDatasets) {
+                $scope.selectDataset($scope.selectedDatasets[i]);
             }
             $log.debug($scope.selectedTags);
         }
@@ -255,17 +218,71 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         });
     };
     
-//    var columnDefs = [
-//        { name: '' }
-//    ];
-//    
-//    $scope.addTag = function(tag) {
-//        $log.info(tag);
-//    };
     
-//    $scope.matrix = {
-//    columnDefs: columnDefs1,
-//    data: data1
-//  };
+    $scope.selectDataset = function(dataset) {
+        $log.info("dataset selected: " +dataset.name);
+        var newMatrixDataEntry = {
+            datasetName: dataset.name,
+            datasetObj: dataset
+        };
+        for (var i in $scope.selectedTags) {
+            // check if dataset has that tag on one of its columns
+            var cellContent = getCellContent(dataset, $scope.selectedTags[i])
+            newMatrixDataEntry[$scope.selectedTags[i].name] = cellContent;
+        }
+        $scope.matrix.data.push(newMatrixDataEntry);
+    }
+    
+    $scope.deselectDataset = function(dataset) {
+        for (var i in $scope.matrix.data) {
+            if ($scope.matrix.data[i].datasetObj.name == dataset.name) {
+                $scope.matrix.data.splice(i,1);
+                break;
+            }
+        }
+    }
+    
+    var getCellContent = function(dataset, tag) {
+        var cellContent = "";
+        for (var j in dataset.attributes) {
+            if (tag.name == dataset.attributes[j].tag.name) {
+                if (cellContent != "") cellContent += ", ";
+                cellContent += dataset.attributes[j].col_name;
+            }
+        }
+        return cellContent;
+    }
+    
+    
+    $scope.showTag = function(tag) {
+        $log.info("tag selected: " +tag.name);
+        // Add a cell to each row
+        for (var i in $scope.matrix.data) {
+            var cellContent = getCellContent($scope.matrix.data[i].datasetObj, tag);
+            $scope.matrix.data[i][tag.name] = cellContent;
+        }
+        $scope.matrix.columnDefs.push(
+            {
+                name: tag.name, 
+                width: 100, 
+                field: tag.name, 
+                enableColumnMenu: false,
+                cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) {
+                    if (grid.getCellValue(row,col) != "") {
+                        return 'match';
+                    }
+                }
+            }
+        );
+    };
+    
+     $scope.hideTag = function(tag) {
+        for (var i in $scope.matrix.columnDefs) {
+            if ($scope.matrix.columnDefs[i].field == tag.name) {
+                $scope.matrix.columnDefs.splice(i,1);
+                break;
+            }
+        }
+     }
  
 });
