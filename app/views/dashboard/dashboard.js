@@ -70,8 +70,9 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
         if ($scope.newUser.role == null || $scope.newUser.password != $scope.newUser.passwordConfirm) {
             $scope.invalidNewUser = true;
         } else $scope.invalidNewUser = false;
-    }, true)
+    }, true);
 
+    //TODO
     $scope.login = function () {
         var input = {
             username: $scope.username,
@@ -79,9 +80,14 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
         }
         $log.debug(input);
 
-        //TODO
+        //authenticate against REST service
+
+        //update $rootScope with user profile details
+
+        //navigate to home page for user's role
     }
 
+    //TODO
     $scope.register = function () {
         var input = {
             username: $scope.newUser.username,
@@ -90,7 +96,9 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
         }
         $log.debug(input);
 
-        //TODO
+        //create new user with REST service
+
+        //if successfull, use login() to authenticate
     }
 
 
