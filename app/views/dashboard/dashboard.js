@@ -64,6 +64,8 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
         $location.url("analyst/compare");
     }
 
+
+    //validate the newUser object on changes
     $scope.$watch('newUser', function () {
         if ($scope.newUser.role == null || $scope.newUser.password != $scope.newUser.passwordConfirm) {
             $scope.invalidNewUser = true;

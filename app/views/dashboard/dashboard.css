@@ -5,6 +5,12 @@
 
 #login {
     background: lightgrey;
-    padding: 2em;
+    padding: 1em 2em;
+    margin: 1em;
+}
+
+#register {
+    background: lightgrey;
+    padding: 1em 2em;
     margin: 1em;
 }
