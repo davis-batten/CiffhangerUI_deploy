@@ -7,6 +7,7 @@ app = angular.module('cliffhanger', [
     , 'ngSanitize'
     , 'ngCsv'
     , 'ui.grid'
+    , 'ui.grid.pinning'
     , 'cliffhanger.version',
 
     //My modules
