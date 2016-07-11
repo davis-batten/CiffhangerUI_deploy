@@ -31,6 +31,7 @@ h3 small {
     line-height: 2em;
     vertical-align: middle;
     margin-left: 0.75em;
+    margin-bottom: 0px;
 }
 
 #query_item p {
@@ -38,10 +39,19 @@ h3 small {
     vertical-align: middle;
     margin-left: 0.75em;
     height: 6em;
+    margin-bottom: 0px;
 }
+
+#query_item_content {}
 
 #query_item button {
     display: inline-block;
     float: right;
     margin-left: .5em;
+}
+
+#query_item .button-footer {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
 }

@@ -11,11 +11,13 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
     $scope.allDatasetsSelected = false; //are all the datasets selected?
     $scope.selectedTags = [];
     $scope.selectedDatasets = [];
+
     //alphabetically compare two object name strings, ignoring case
     var ignoreCase = function (a, b) {
             return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-        }
+        };
         //helper method to initialize all the necessary scope variables using asynchrounous calls
+
     function initalize() {
         datasetService.getAllDatasets().then(function (data) {
             if (data.status == 'Success') {
@@ -52,6 +54,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         });
     }
     initalize();
+
     //filter the tags available to the typeahead
     $scope.filterTags = function (query) {
         var deferred = $q.defer();
@@ -65,6 +68,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         deferred.resolve(filteredTags);
         return deferred.promise;
     };
+
     //filter the datasets available to the typeahead
     $scope.filterDatasets = function (query) {
         var deferred = $q.defer();
@@ -78,6 +82,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         deferred.resolve(filteredDatasets);
         return deferred.promise;
     };
+
     //table needs to be changed due to a change in $scope.selectedTags
     $scope.$watch('selectedTags', function () {
         $log.debug('tag watcher', $scope.rows);
@@ -89,6 +94,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         }
         $scope.updateTable();
     }, true);
+
     //table needs to be changed due to a change in $scope.selectedDatasets
     $scope.$watch('selectedDatasets', function () {
         $log.debug('dataset watcher', $scope.rows);
@@ -100,26 +106,31 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         }
         $scope.updateTable();
     }, true);
+
     //onclick method for select all tags button
     $scope.selectAllTags = function () {
             $scope.selectedTags = angular.copy($scope.tags);
             $scope.allTagsSelected = true;
-        }
+    }
+
         //onclick method for select all datasets button
     $scope.selectAllDatasets = function () {
             $scope.selectedDatasets = angular.copy($scope.datasets);
             $scope.allDatasetsSelected = true;
-        }
+    }
+
         //onclick method for deselect all tags button
     $scope.deselectAllTags = function () {
             $scope.selectedTags = [];
             $scope.allTagsSelected = false;
-        }
+    }
+
         //onclick method for deselect all datasets button
     $scope.deselectAllDatasets = function () {
             $scope.selectedDatasets = [];
             $scope.allDatasetsSelected = false;
-        }
+    }
+
         //format row for display in table
     $scope.buildRow = function (dataset) {
             //$log.debug('build row', dataset);
@@ -156,19 +167,23 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
                 $scope.rows[dataset.name] = row; //add created row to scope bound variable
             }
         }
+
         //output log data - for testing only
     $scope.log = function () {
             $log.info('rows', $scope.rows);
             $log.info('tags', $scope.selectedTags);
             $log.info('datasets', $scope.selectedDatasets);
-        }
+    }
+
         //helper function to update all rows in the table
     $scope.updateTable = function () {
         for (var d in $scope.selectedDatasets) {
             $scope.buildRow($scope.selectedDatasets[d]);
         }
     }
+
     $scope.updateTable(); //call to initalize the table
+
     //Add empty tag column to table
     $scope.allowUntagged = function () {
             var empty = {
@@ -177,13 +192,15 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             $scope.tags.push(empty);
             $scope.selectedTags.push(empty);
             $scope.untagged = true;
-        }
+    }
+
         //remove empty tag column from table
     $scope.removeUntagged = function () {
         $scope.tags.pop();
         $scope.selectedTags.pop();
         $scope.untagged = false;
     }
+
     $scope.selectRelevantTags = function () {
         $scope.selectedTags = [];
         for (var d = 0; d < $scope.selectedDatasets.length; d++) {
@@ -199,6 +216,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         }
         $log.debug($scope.selectedTags);
     }
+
     $scope.selectRelevantDatasets = function () {
             $scope.selectedDatasets = [];
             for (var t = 0; t < $scope.selectedTags.length; t++) {
@@ -218,6 +236,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             }
             $log.debug($scope.selectedTags);
         }
+
         //opens query wizard modal
     $scope.openQueryWizard = function () {
         var modalInstance = $uibModal.open({
@@ -235,4 +254,18 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             //TODO
         });
     };
+
+//    var columnDefs = [
+//        { name: '' }
+//    ];
+//
+//    $scope.addTag = function(tag) {
+//        $log.info(tag);
+//    };
+
+//    $scope.matrix = {
+//    columnDefs: columnDefs1,
+//    data: data1
+//  };
+
 });
