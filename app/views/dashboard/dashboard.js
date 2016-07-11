@@ -11,6 +11,10 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
 
 .controller('DashboardCtrl', function ($rootScope, $log, $scope, $q, $filter, $location) {
 
+    $rootScope.theme = {};
+
+    $rootScope.theme.color = "white";
+
     $scope.testGlobal = function () {
         $log.log($rootScope);
     };
@@ -47,13 +51,25 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
     $scope.pickDeveloper = function () {
         $rootScope.isDeveloper = true;
         $rootScope.isAnalyst = false;
+        $rootScope.theme.color = "green";
         $location.path("developer/datasets");
     }
 
     $scope.pickAnalyst = function () {
         $rootScope.isAnalyst = true;
         $rootScope.isDeveloper = false;
+        $rootScope.theme.color = "blue";
         $location.url("analyst/compare");
+    }
+
+    $scope.login = function () {
+        var input = {
+            username: $scope.username,
+            password: $scope.password
+        }
+        $log.debug(input);
+
+        //TODO
     }
 
 

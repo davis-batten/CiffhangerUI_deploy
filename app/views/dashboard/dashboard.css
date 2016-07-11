@@ -2,3 +2,9 @@
     text-align: center;
     margin: auto;
 }
+
+#login {
+    background: lightgrey;
+    padding: 2em;
+    margin: 1em;
+}
