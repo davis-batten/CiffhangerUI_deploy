@@ -67,9 +67,13 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
 
     //validate the newUser object on changes
     $scope.$watch('newUser', function () {
-        if ($scope.newUser.role == null || $scope.newUser.password != $scope.newUser.passwordConfirm) {
-            $scope.invalidNewUser = true;
-        } else $scope.invalidNewUser = false;
+        //check that passwords match
+        if ($scope.newUser.password != $scope.newUser.passwordConfirm) $scope.passwordMismatch = true;
+        else $scope.passwordMismatch = false;
+
+        //check that a role was selected
+        if ($scope.newUser.role == null) $scope.invalidRole = true;
+        else $scope.invalidNewUser = false;
     }, true);
 
     //TODO

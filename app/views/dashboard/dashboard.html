@@ -44,6 +44,7 @@
                     <label for="inputNewPassword2">Confirm Password</label>
                     <input ng-model="newUser.passwordConfirm" type="password" class="form-control" id="inputNewPassword2" placeholder="Password" required>
                 </div>
+                <div class="alert alert-danger" ng-show="passwordMismatch">Passwords must match</div>
                 <label>Select a user role:</label>
                 <div class="btn-group">
                     <label class="btn btn-primary" ng-model="newUser.role" uib-btn-radio="'ANALYST'">Analyst</label>
@@ -52,7 +53,7 @@
                 <br>
                 <hr>
                 <div class="form-group">
-                    <button ng-click="register()" type="submit" class="btn btn-success btn-block" ng-disabled="invalidNewUser || registerForm.$invalid">Create</button>
+                    <button ng-click="register()" type="submit" class="btn btn-success btn-block" ng-disabled="invalidRole || passwordMismatch || registerForm.$invalid">Create</button>
                 </div>
             </form>
         </div>
