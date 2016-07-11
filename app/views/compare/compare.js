@@ -21,12 +21,17 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
     $scope.selectedTags = [];
     $scope.selectedDatasets = [];
     
+    var emptyTag = {
+            name: '<EMPTY>',
+            description: ''
+        };
+
     //alphabetically compare two object name strings, ignoring case
     var ignoreCase = function (a, b) {
             return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
         };
         //helper method to initialize all the necessary scope variables using asynchrounous calls
-    
+
     function initalize() {
         datasetService.getAllDatasets().then(function (data) {
             if (data.status == 'Success') {
@@ -63,7 +68,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         });
     }
     initalize();
-    
+
     //filter the tags available to the typeahead
     $scope.filterTags = function (query) {
         var deferred = $q.defer();
@@ -77,7 +82,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         deferred.resolve(filteredTags);
         return deferred.promise;
     };
-    
+
     //filter the datasets available to the typeahead
     $scope.filterDatasets = function (query) {
         var deferred = $q.defer();
@@ -91,7 +96,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         deferred.resolve(filteredDatasets);
         return deferred.promise;
     };
-    
+
     //onclick method for select all tags button
     $scope.selectAllTags = function () {
         $scope.selectedTags = angular.copy($scope.tags);
@@ -101,10 +106,11 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         for (var i in $scope.selectedTags) {
              $scope.showTag($scope.selectedTags[i]);
         }
+        $scope.allowUntagged();
         $scope.allTagsSelected = true;
 //        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
     }
-    
+
         //onclick method for select all datasets button
     $scope.selectAllDatasets = function () {
         $scope.selectedDatasets = angular.copy($scope.datasets);
@@ -115,7 +121,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         $scope.allDatasetsSelected = true;
 
     }
-    
+
         //onclick method for deselect all tags button
     $scope.deselectAllTags = function () {
         $scope.selectedTags.splice(0,$scope.selectedTags.length)
@@ -124,14 +130,14 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
 //        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
 
     }
-    
+
         //onclick method for deselect all datasets button
     $scope.deselectAllDatasets = function () {
         $scope.selectedDatasets = [];
         $scope.matrix.data.splice(0,$scope.matrix.data.length);
         $scope.allDatasetsSelected = false;
     }
-    
+
         //output log data - for testing only
     $scope.log = function () {
             $log.info('rows', $scope.rows);
@@ -141,21 +147,23 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
     
     //Add empty tag column to table
     $scope.allowUntagged = function () {
-            var empty = {
-                name: '<EMPTY>'
-            }
-            $scope.tags.push(empty);
-            $scope.selectedTags.push(empty);
-            $scope.untagged = true;
+        $scope.selectedTags.push(emptyTag);
+        $scope.showTag(emptyTag);
+        $scope.untagged = true;
     }
-    
+
         //remove empty tag column from table
     $scope.removeUntagged = function () {
-        $scope.tags.pop();
-        $scope.selectedTags.pop();
+        for (var i in $scope.selectedTags) {
+            if ($scope.selectedTags[i].field == emptyTag.name) {
+                $scope.selectedTags.splice(i,1);
+                break;
+            }
+        }
+        $scope.hideTag(emptyTag);
         $scope.untagged = false;
     }
-    
+
     $scope.selectRelevantTags = function () {
         $scope.selectedTags = [];
         for (var d = 0; d < $scope.selectedDatasets.length; d++) {
@@ -175,7 +183,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         }
         $log.debug($scope.selectedTags);
     }
-    
+
     $scope.selectRelevantDatasets = function () {
             $scope.selectedDatasets = [];
             for (var t = 0; t < $scope.selectedTags.length; t++) {
@@ -199,7 +207,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             }
             $log.debug($scope.selectedTags);
         }
-    
+
         //opens query wizard modal
     $scope.openQueryWizard = function () {
         var modalInstance = $uibModal.open({
