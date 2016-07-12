@@ -134,7 +134,7 @@
         <button class="btn btn-success" type="button" ng-click="download=! download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table">Download</button>
         <div uib-collapse="isCollapsed">
             <hr>
-     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+            <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
             <div class="well well-sm">
                 <form name="saveQueryAs">
                     <div class="form-group">
