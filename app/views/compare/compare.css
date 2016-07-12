@@ -29,12 +29,3 @@ td {
 .match {
     background-color: palegreen !important;
 }
-
-.navbar-brand {
-    display: flex;
-    align-items: center;
-}
-
-.navbar-brand>img {
-    padding: 7px 14px;
-}
