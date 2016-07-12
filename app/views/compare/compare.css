@@ -1,4 +1,4 @@
-.table-bordered {
+<<<<<<< HEAD .table-bordered {
     border-color: #999999 !important;
 }
 
@@ -45,5 +45,5 @@ td {
 }
 
 .matrix-no-match-cell {
-    background-color: whitesmoke!important;
+    background-color: whitesmoke !important;
 }

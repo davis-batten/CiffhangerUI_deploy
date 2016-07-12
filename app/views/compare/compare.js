@@ -32,7 +32,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         onRegisterApi: function (gridApi) {
             $scope.gridApi = gridApi;
         },
-        minRowsToShow: 8
+        minRowsToShow: 10
     };
 
     var emptyTag = {
