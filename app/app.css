@@ -99,4 +99,42 @@ footer {
     margin-top: 0.5em;
 }
 
+
 /* ------------------ Custom theme options ---------------------- */
+
+.navbar-an {
+    border: none !important;
+    background-color: #66B2FF !important;
+    color: white !important;
+    border-radius: 0px !important;
+}
+
+.navbar-dev {
+    border: none !important;
+    background-color: #88C95C !important;
+    color: white !important;
+    border-radius: 0px !important;
+}
+
+.navbar-an > .active > a {
+    background-color: #A9C4EB !important;
+}
+
+.navbar-dev > .active > a {
+    background-color: #B9E0A5 !important;
+}
+
+.navbar-nav > li > a {
+    color: white !important;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    padding-left: 2px !important;
+    color: white !important;
+}
+
+.navbar-brand>img {
+    padding: 7px 12px;
+}
