@@ -4,7 +4,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         templateUrl: 'views/compare/compare.html'
         , controller: 'CompareCtrl'
     });
-}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, uiGridConstants) {
+}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal) {
     
     $scope.matrix = {
         columnDefs: [
@@ -155,7 +155,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         //remove empty tag column from table
     $scope.removeUntagged = function () {
         for (var i in $scope.selectedTags) {
-            if ($scope.selectedTags[i].field == emptyTag.name) {
+            if ($scope.selectedTags[i].name == emptyTag.name) {
                 $scope.selectedTags.splice(i,1);
                 break;
             }
