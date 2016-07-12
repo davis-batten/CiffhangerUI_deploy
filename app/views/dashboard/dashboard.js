@@ -73,7 +73,7 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
 
         //check that a role was selected
         if ($scope.newUser.role == null) $scope.invalidRole = true;
-        else $scope.invalidNewUser = false;
+        else $scope.invalidRole = false;
     }, true);
 
     //TODO
