@@ -1,5 +1,27 @@
-.matrix {
+<<<<<<< HEAD .table-bordered {
+    border-color: #999999 !important;
 }
+
+.table-bordered th,
+td,
+tr {
+    border-color: #999999 !important;
+}
+
+.table-bordered tbody {
+    border-color: #999999 !important;
+}
+
+.table-bordered tbody tr,
+td {
+    border-color: #999999 !important;
+}
+
+#compareTable {
+    overflow: auto;
+}
+
+.matrix {}
 
 .matrix-header {
     background-color: darkgray !important;
@@ -16,6 +38,15 @@
 .matrix-match-cell {
     background-color: palegreen !important;
     border: 1px solid white !important;
+}
+
+#matrix_container {
+    background: white;
+}
+
+.match {
+    background-color: #dff0d8 !important;
+    border: 1px solid grey;
 }
 
 .matrix-no-match-cell {

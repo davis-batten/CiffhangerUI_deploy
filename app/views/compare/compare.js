@@ -3,20 +3,29 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         templateUrl: 'views/compare/compare.html',
         controller: 'CompareCtrl'
     });
-}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal) {
-    
+
+}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, uiGridConstants, $rootScope) {
+
+    $scope.allTagsSelected = false; //are all the tags selected?s
+    $scope.allDatasetsSelected = false; //are all the datasets selected?
+    $scope.selectedTags = [];
+    $scope.selectedDatasets = [];
+
+    //set theme color
+    $rootScope.theme.color = 'blue';
+
     $scope.matrix = {
         columnDefs: [
             {
-                name: 'datasetName'
-                , displayName: 'Dataset'
-                , field: 'datasetName'
-                , eneablePinning: true
-                , pinnedLeft: true
-                , width: 200
-                , enableColumnMenu: false
-                , headerCellClass: 'matrix-header'
-                , cellClass: 'matrix-row-header'
+                name: 'datasetName',
+                displayName: 'Dataset',
+                field: 'datasetName',
+                eneablePinning: true,
+                pinnedLeft: true,
+                width: 200,
+                enableColumnMenu: false,
+                headerCellClass: 'matrix-header',
+                cellClass: 'matrix-row-header'
             }
         ],
         data: [],
@@ -96,18 +105,18 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
     };
     //onclick method for select all tags button
     $scope.selectAllTags = function () {
-            $scope.selectedTags = angular.copy($scope.tags);
-            $scope.matrix.columnDefs = [
-                {
-                    name: 'datasetName'
-                    , displayName: 'Dataset'
-                    , field: 'datasetName'
-                    , eneablePinning: true
-                    , pinnedLeft: true
-                    , width: 200
-                    , enableColumnMenu: false
-                    , headerCellClass: 'matrix-header'
-                    , cellClass: 'matrix-row-header'
+        $scope.selectedTags = angular.copy($scope.tags);
+        $scope.matrix.columnDefs = [
+            {
+                name: 'datasetName',
+                displayName: 'Dataset',
+                field: 'datasetName',
+                eneablePinning: true,
+                pinnedLeft: true,
+                width: 200,
+                enableColumnMenu: false,
+                headerCellClass: 'matrix-header',
+                cellClass: 'matrix-row-header'
                 }
         ];
         for (var i in $scope.selectedTags) {
@@ -274,12 +283,12 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             $scope.matrix.data[i][tag.name] = cellContent;
         }
         $scope.matrix.columnDefs.push({
-            name: tag.name
-            , width: 200
-            , field: tag.name
-            , enableColumnMenu: false
-            , headerCellClass: 'matrix-header'
-            , cellClass: function (grid, row, col, rowRenderIndex, colRenderIndex) {
+            name: tag.name,
+            width: 200,
+            field: tag.name,
+            enableColumnMenu: false,
+            headerCellClass: 'matrix-header',
+            cellClass: function (grid, row, col, rowRenderIndex, colRenderIndex) {
                 if (grid.getCellValue(row, col) != "") {
                     return 'matrix-match-cell';
                 } else return 'matrix-no-match-cell';

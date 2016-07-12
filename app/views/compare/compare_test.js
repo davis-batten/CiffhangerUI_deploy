@@ -119,7 +119,7 @@ describe('cliffhanger.compare module', function () {
         });
 
         it('selecting a tag should add a column correctly and deselecting it should remove the correct column', function () {
-            
+
             // Test adding a tag to matrix
             scope.selectDataset(scope.datasets[0]);
             scope.showTag({
@@ -132,7 +132,7 @@ describe('cliffhanger.compare module', function () {
             }
             expect(foundTag).toBeTruthy();
             expect(scope.matrix.data[0].ZIP).toEqual("col_1");
-            
+
             // Test removing a tag to matrix
             scope.hideTag({
                 name: 'stuff',
@@ -144,10 +144,10 @@ describe('cliffhanger.compare module', function () {
             }
             expect(foundTag).toBeFalsy();
         });
-        
-        
+
+
         it('should be able to add all tags exactly once to the matrix and remove them all', function () {
-            
+
             // test add all
             scope.selectAllTags();
             var emptyIsAdded = false;
@@ -161,15 +161,15 @@ describe('cliffhanger.compare module', function () {
             }
             expect(emptyIsAdded).toBeTruthy();
             expect(scope.matrix.columnDefs.length).toBe(scope.tags.length+2);
-            
+
             // test remove all
             scope.deselectAllTags();
             expect(scope.matrix.columnDefs.length).toBe(1);
-            
+
         });
-        
+
         it('should be able to add/remove all datasets to the matrix exactly once', function () {
-            
+
              // test add all
             scope.selectAllDatasets();
             for (var i in scope.datasets) {
@@ -180,7 +180,7 @@ describe('cliffhanger.compare module', function () {
                 expect(datasetIsAdded).toBeTruthy();
             }
             expect(scope.matrix.data.length).toBe(scope.datasets.length)
-            
+
             // test remove all
             scope.deselectAllDatasets();
             expect(scope.matrix.data.length).toBe(0)
@@ -194,7 +194,7 @@ describe('cliffhanger.compare module', function () {
             expect(scope.matrix.data.length).toBe(1);
             expect(scope.matrix.data[0].name).toEqual("abc");
         });
-        
+
         it('should be able to add relevant tags based on selected datasets', function () {
             scope.selectDataset(scope.datasets[0]);
             scope.selectRelevantTags();
@@ -210,7 +210,7 @@ describe('cliffhanger.compare module', function () {
             expect(zipTagSelected).toBeTruthy();
             expect(emptyTagSelected).toBeTruthy();
         });
-        
+
         it('should be able to filter tags', function () {
             scope.filterTags("ZI").then(function (resp) {
                 expect(resp).toBe({
@@ -230,7 +230,7 @@ describe('cliffhanger.compare module', function () {
 
         it('should, on selectDataset, make a row of data with correctly formatted cells', function () {
             scope.selectAllTags();
-            var dset = 
+            var dset =
             {
                 name: 'abc',
                 description: '',
@@ -267,7 +267,7 @@ describe('cliffhanger.compare module', function () {
             expect(scope.matrix.data[0].SSN).toEqual("");
 
         });
-         
+
 
     });
 });
