@@ -443,6 +443,21 @@ paths:
       responses:
         200:
           description: Success
+    
+
+  /user/delete/{username}:
+    delete:
+      description: Delete a `User`
+      parameters:
+        -
+          name: username
+          in: path
+          type: string
+          required: true
+          description: the name of the user to be deleted
+      responses:
+        200:
+          description: Success
           
 definitions:
   Dataset:
@@ -520,9 +535,3 @@ definitions:
     properties:
       roleID: 
         type: string
-      
-          
-
-
-
-
