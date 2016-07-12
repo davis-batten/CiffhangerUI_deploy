@@ -419,6 +419,8 @@ definitions:
         type: string
       db_table_name:
         type: string
+      createdBy:
+        type: string
       #add attributes
       attributes:
         type: array
