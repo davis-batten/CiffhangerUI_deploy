@@ -11,6 +11,8 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
 
 .controller('DashboardCtrl', function ($rootScope, $log, $scope, $q, $filter, $location) {
 
+    $scope.newUser = {};
+
     $rootScope.theme = {};
 
     $rootScope.theme.color = "white";
@@ -62,6 +64,19 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
         $location.url("analyst/compare");
     }
 
+
+    //validate the newUser object on changes
+    $scope.$watch('newUser', function () {
+        //check that passwords match
+        if ($scope.newUser.password != $scope.newUser.passwordConfirm) $scope.passwordMismatch = true;
+        else $scope.passwordMismatch = false;
+
+        //check that a role was selected
+        if ($scope.newUser.role == null) $scope.invalidRole = true;
+        else $scope.invalidNewUser = false;
+    }, true);
+
+    //TODO
     $scope.login = function () {
         var input = {
             username: $scope.username,
@@ -69,7 +84,25 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
         }
         $log.debug(input);
 
-        //TODO
+        //authenticate against REST service
+
+        //update $rootScope with user profile details
+
+        //navigate to home page for user's role
+    }
+
+    //TODO
+    $scope.register = function () {
+        var input = {
+            username: $scope.newUser.username,
+            password: $scope.newUser.password,
+            role: $scope.newUser.role
+        }
+        $log.debug(input);
+
+        //create new user with REST service
+
+        //if successfull, use login() to authenticate
     }
 
 
