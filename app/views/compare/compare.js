@@ -3,6 +3,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         templateUrl: 'views/compare/compare.html',
         controller: 'CompareCtrl'
     });
+
 }]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, uiGridConstants, $rootScope) {
 
     $scope.allTagsSelected = false; //are all the tags selected?s
@@ -22,7 +23,9 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
                 eneablePinning: true,
                 pinnedLeft: true,
                 width: 200,
-                enableColumnMenu: false
+                enableColumnMenu: false,
+                headerCellClass: 'matrix-header',
+                cellClass: 'matrix-row-header'
             }
         ],
         data: [],
@@ -105,7 +108,6 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
     };
     //onclick method for select all tags button
     $scope.selectAllTags = function () {
-
         $scope.selectedTags = angular.copy($scope.tags);
         $scope.matrix.columnDefs = [
             {
@@ -115,8 +117,10 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
                 eneablePinning: true,
                 pinnedLeft: true,
                 width: 200,
-                enableColumnMenu: false
-            }
+                enableColumnMenu: false,
+                headerCellClass: 'matrix-header',
+                cellClass: 'matrix-row-header'
+                }
         ];
         for (var i in $scope.selectedTags) {
             $scope.showTag($scope.selectedTags[i]);
@@ -285,17 +289,16 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             $scope.matrix.data[i][tag.name] = cellContent;
         }
         $scope.matrix.columnDefs.push({
-
             name: tag.name,
             width: 200,
             field: tag.name,
             enableColumnMenu: false,
+            headerCellClass: 'matrix-header',
             cellClass: function (grid, row, col, rowRenderIndex, colRenderIndex) {
                 if (grid.getCellValue(row, col) != "") {
-                    return 'match';
-                }
-            },
-            cellTemplate: 'views/compare/cell_template.html'
+                    return 'matrix-match-cell';
+                } else return 'matrix-no-match-cell';
+            }
         });
 
 
