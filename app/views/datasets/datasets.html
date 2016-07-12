@@ -82,6 +82,10 @@
             <div class="form-group">
                 <label for="newDatasetTableName">Database Table Name</label>
                 <input type="text" class="form-control" id="newDatasetTableName" ng-model="input.db_table_name"> </div>
+            <div class="form-group">
+                <label for="datasetCreatedBy">Dataset Created By</label>
+                <label>{{dataset.createdBy}}</label> </div>
+
             <div>
                 <label for="editAttributeTable">Attributes</label>
                 <table id="editAttributeTable" class="table table-bordered">
@@ -179,6 +183,8 @@
                 <br> {{d.description}}
                 <br> <strong>Database Table Name</strong>
                 <br> {{d.db_table_name}}
+                <br> <strong>Dataset Created By</strong>
+                <br> {{d.createdBy}}
                 <br> <strong>Tags</strong>
                 <ul class="inline-list">
                     <li ng-repeat="t in d.tags | orderBy:'name'" ng-if="t.name != '<EMPTY>'"><span class="label label-info">{{t.name}}</span></li>

@@ -2,7 +2,9 @@
 angular.module('cliffhanger.datasets').service('datasetService', function ($log, $http, $rootScope, $q) {
     //this service method creates a new Dataset on the backend
     this.addDataset = function (newDataset) {
+            newDataset.createdBy += $rootScope.username;
             $log.log("calling addDataset with: " + JSON.stringify(newDataset));
+            //$log.log("newDataSet createdBy: " + JSON.stringify(newDataset.createdBy));
             return $http.post($rootScope.baseUrl + '/dataset/create', newDataset).then(
                 //success callback
                 function (response) {
