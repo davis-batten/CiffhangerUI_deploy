@@ -85,8 +85,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             $scope.archiveTags();
         } else if ($scope.step == 4) {
             $scope.buildQuery();
-        }
-        else if ($scope.step == 5) {
+        } else if ($scope.step == 5) {
             $scope.runQuery();
         }
     };
@@ -184,6 +183,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             if (response.status == 'Success') {
                 $scope.query = response.data;
                 $scope.progressType = 'success';
+                $log.debug('response', response);
                 if ($scope.query[1] == true) {
                     $scope.dataTypeCheck.push({
                         msg: "Join Attributes data type mismatch.",
@@ -202,9 +202,9 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     //complete the modal
     $scope.save = function () {
         if ($scope.statement != undefined) {
-            $scope.newQuery.sqlString = $scope.query + $scope.statement.text;
+            $scope.newQuery.sqlString = $scope.query[0] + $scope.statement.text;
         } else {
-            $scope.newQuery.sqlString = $scope.query;
+            $scope.newQuery.sqlString = $scope.query[0];
         }
         if ($scope.newQuery.description == null || $scope.newQuery.description == undefined) {
             $scope.newQuery.description = "";
@@ -230,9 +230,9 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     $scope.runQuery = function () {
         $scope.loadingPreview = true;
         if ($scope.statement != undefined) {
-            var query = $scope.query + $scope.statement.text;
+            var query = $scope.query[0] + $scope.statement.text;
         } else {
-            var query = $scope.query;
+            var query = $scope.query[0];
         }
         queryService.runQuery(query).then(function (response) { //success callback
                 $scope.loadingPreview = false;

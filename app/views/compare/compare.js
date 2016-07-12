@@ -1,69 +1,77 @@
-'use strict';
 angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/analyst/compare', {
-        templateUrl: 'views/compare/compare.html'
-        , controller: 'CompareCtrl'
+        templateUrl: 'views/compare/compare.html',
+        controller: 'CompareCtrl'
     });
 }]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, uiGridConstants) {
-    
-    $scope.matrix = {
-        columnDefs: [
-            {name: 'datasetName', displayName: 'Dataset', field:'datasetName', eneablePinning: true, pinnedLeft: true, width: 160, enableColumnMenu: false}
-        ],
-        data: [],
-        onRegisterApi: function(gridApi) {
-            $scope.gridApi = gridApi;
-        }
-    };
-    
+
     $scope.allTagsSelected = false; //are all the tags selected?s
     $scope.allDatasetsSelected = false; //are all the datasets selected?
     $scope.selectedTags = [];
     $scope.selectedDatasets = [];
-    
+
+
+    $scope.matrix = {
+        columnDefs: [
+            {
+                name: 'datasetName',
+                displayName: 'Dataset',
+                field: 'datasetName',
+                eneablePinning: true,
+                pinnedLeft: true,
+                width: 200,
+                enableColumnMenu: false
+            }
+        ],
+        data: [],
+        onRegisterApi: function (gridApi) {
+            $scope.gridApi = gridApi;
+        },
+        minRowsToShow: 8
+    };
+
+
     var emptyTag = {
-            name: '<EMPTY>',
-            description: ''
-        };
+        name: '<EMPTY>',
+        description: ''
+    };
 
     //alphabetically compare two object name strings, ignoring case
     var ignoreCase = function (a, b) {
-            return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-        };
-        //helper method to initialize all the necessary scope variables using asynchrounous calls
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+    };
+    //helper method to initialize all the necessary scope variables using asynchrounous calls
 
     function initalize() {
         datasetService.getAllDatasets().then(function (data) {
             if (data.status == 'Success') {
                 $scope.datasets = data.data.sort(ignoreCase);
-            }
-            else {
+            } else {
                 $scope.alerts.push({
-                    msg: data
-                    , type: 'danger'
+                    msg: data,
+                    type: 'danger'
                 });
             }
         }, function (res) {
             $scope.alerts.push({
-                msg: "Failed to load datasets"
-                , type: 'danger'
+                msg: "Failed to load datasets",
+                type: 'danger'
             });
         });
         tagService.getAllTags().then(function (data) {
             if (data.status == 'Success') {
                 $scope.tags = data.data.sort(ignoreCase);
                 $scope.tags.splice(0, 1); //remove empty tag from beginning of tag list
-            }
-            else {
+            } else {
                 $scope.alerts.push({
-                    msg: data.data
-                    , type: 'danger'
+                    msg: data.data,
+                    type: 'danger'
                 });
             }
         }, function (res) {
             $scope.alerts.push({
-                msg: "Failed to load datasets"
-                , type: 'danger'
+                msg: "Failed to load datasets",
+                type: 'danger'
             });
         });
     }
@@ -101,50 +109,58 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
     $scope.selectAllTags = function () {
         $scope.selectedTags = angular.copy($scope.tags);
         $scope.matrix.columnDefs = [
-            {name: 'datasetName', displayName: 'Dataset', field:'datasetName', eneablePinning: true, pinnedLeft: true, width: 160, enableColumnMenu: false}
+            {
+                name: 'datasetName',
+                displayName: 'Dataset',
+                field: 'datasetName',
+                eneablePinning: true,
+                pinnedLeft: true,
+                width: 200,
+                enableColumnMenu: false
+            }
         ];
         for (var i in $scope.selectedTags) {
-             $scope.showTag($scope.selectedTags[i]);
+            $scope.showTag($scope.selectedTags[i]);
         }
         $scope.allowUntagged();
         $scope.allTagsSelected = true;
-//        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
+        //        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
     }
 
-        //onclick method for select all datasets button
+    //onclick method for select all datasets button
     $scope.selectAllDatasets = function () {
         $scope.selectedDatasets = angular.copy($scope.datasets);
-        $scope.matrix.data.splice(0,$scope.matrix.data.length);
+        $scope.matrix.data.splice(0, $scope.matrix.data.length);
         for (var i in $scope.selectedDatasets) {
-             $scope.selectDataset($scope.selectedDatasets[i]);
+            $scope.selectDataset($scope.selectedDatasets[i]);
         }
         $scope.allDatasetsSelected = true;
 
     }
 
-        //onclick method for deselect all tags button
+    //onclick method for deselect all tags button
     $scope.deselectAllTags = function () {
-        $scope.selectedTags.splice(0,$scope.selectedTags.length)
-        $scope.matrix.columnDefs.splice(1, $scope.matrix.columnDefs.length-1)
+        $scope.selectedTags.splice(0, $scope.selectedTags.length)
+        $scope.matrix.columnDefs.splice(1, $scope.matrix.columnDefs.length - 1)
         $scope.allTagsSelected = false;
-//        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
+        //        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
 
     }
 
-        //onclick method for deselect all datasets button
+    //onclick method for deselect all datasets button
     $scope.deselectAllDatasets = function () {
         $scope.selectedDatasets = [];
-        $scope.matrix.data.splice(0,$scope.matrix.data.length);
+        $scope.matrix.data.splice(0, $scope.matrix.data.length);
         $scope.allDatasetsSelected = false;
     }
 
-        //output log data - for testing only
+    //output log data - for testing only
     $scope.log = function () {
-            $log.info('rows', $scope.rows);
-            $log.info('tags', $scope.selectedTags);
-            $log.info('datasets', $scope.selectedDatasets);
+        $log.info('rows', $scope.rows);
+        $log.info('tags', $scope.selectedTags);
+        $log.info('datasets', $scope.selectedDatasets);
     }
-    
+
     //Add empty tag column to table
     $scope.allowUntagged = function () {
         $scope.selectedTags.push(emptyTag);
@@ -152,11 +168,11 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         $scope.untagged = true;
     }
 
-        //remove empty tag column from table
+    //remove empty tag column from table
     $scope.removeUntagged = function () {
         for (var i in $scope.selectedTags) {
             if ($scope.selectedTags[i].field == emptyTag.name) {
-                $scope.selectedTags.splice(i,1);
+                $scope.selectedTags.splice(i, 1);
                 break;
             }
         }
@@ -177,44 +193,44 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
                 }
             }
         }
-        $scope.matrix.columnDefs.splice(1,$scope.matrix.columnDefs.length-1);
-        for(var i in $scope.selectedTags) {
+        $scope.matrix.columnDefs.splice(1, $scope.matrix.columnDefs.length - 1);
+        for (var i in $scope.selectedTags) {
             $scope.showTag($scope.selectedTags[i]);
         }
         $log.debug($scope.selectedTags);
     }
 
     $scope.selectRelevantDatasets = function () {
-            $scope.selectedDatasets = [];
-            for (var t = 0; t < $scope.selectedTags.length; t++) {
-                var tag = $scope.selectedTags[t];
-                for (var d = 0; d < $scope.datasets.length; d++) {
-                    var dataset = $scope.datasets[d];
-                    if (dataset.tags.map(function (obj) {
+        $scope.selectedDatasets = [];
+        for (var t = 0; t < $scope.selectedTags.length; t++) {
+            var tag = $scope.selectedTags[t];
+            for (var d = 0; d < $scope.datasets.length; d++) {
+                var dataset = $scope.datasets[d];
+                if (dataset.tags.map(function (obj) {
+                        return obj.name;
+                    }).indexOf(tag.name) != -1 && tag.name != '<EMPTY>') {
+                    if ($scope.selectedDatasets.map(function (obj) {
                             return obj.name;
-                        }).indexOf(tag.name) != -1 && tag.name != '<EMPTY>') {
-                        if ($scope.selectedDatasets.map(function (obj) {
-                                return obj.name;
-                            }).indexOf(dataset.name) == -1) {
-                            $scope.selectedDatasets.push(dataset);
-                        }
+                        }).indexOf(dataset.name) == -1) {
+                        $scope.selectedDatasets.push(dataset);
                     }
                 }
             }
-            $scope.matrix.data.splice(0,$scope.matrix.data.length);
-            for (var i in $scope.selectedDatasets) {
-                $scope.selectDataset($scope.selectedDatasets[i]);
-            }
-            $log.debug($scope.selectedTags);
         }
+        $scope.matrix.data.splice(0, $scope.matrix.data.length);
+        for (var i in $scope.selectedDatasets) {
+            $scope.selectDataset($scope.selectedDatasets[i]);
+        }
+        $log.debug($scope.selectedTags);
+    }
 
-        //opens query wizard modal
+    //opens query wizard modal
     $scope.openQueryWizard = function () {
         var modalInstance = $uibModal.open({
-            templateUrl: 'views/query_wizard/query_wizard.html'
-            , controller: 'QueryWizardCtrl'
-            , size: 'lg'
-            , resolve: {
+            templateUrl: 'views/query_wizard/query_wizard.html',
+            controller: 'QueryWizardCtrl',
+            size: 'lg',
+            resolve: {
                 datasets: function () {
                     return angular.copy($scope.selectedDatasets);
                 }
@@ -225,10 +241,10 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             //TODO
         });
     };
-    
-    
-    $scope.selectDataset = function(dataset) {
-        $log.info("dataset selected: " +dataset.name);
+
+
+    $scope.selectDataset = function (dataset) {
+        $log.info("dataset selected: " + dataset.name);
         var newMatrixDataEntry = {
             datasetName: dataset.name,
             datasetObj: dataset
@@ -239,18 +255,19 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             newMatrixDataEntry[$scope.selectedTags[i].name] = cellContent;
         }
         $scope.matrix.data.push(newMatrixDataEntry);
+        $log.debug($scope.matrix);
     }
-    
-    $scope.deselectDataset = function(dataset) {
+
+    $scope.deselectDataset = function (dataset) {
         for (var i in $scope.matrix.data) {
             if ($scope.matrix.data[i].datasetObj.name == dataset.name) {
-                $scope.matrix.data.splice(i,1);
+                $scope.matrix.data.splice(i, 1);
                 break;
             }
         }
     }
-    
-    var getCellContent = function(dataset, tag) {
+
+    var getCellContent = function (dataset, tag) {
         var cellContent = "";
         for (var j in dataset.attributes) {
             if (tag.name == dataset.attributes[j].tag.name) {
@@ -260,37 +277,38 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         }
         return cellContent;
     }
-    
-    
-    $scope.showTag = function(tag) {
-        $log.info("tag selected: " +tag.name);
+
+
+    $scope.showTag = function (tag) {
+        $log.info("tag selected: " + tag.name);
         // Add a cell to each row
         for (var i in $scope.matrix.data) {
             var cellContent = getCellContent($scope.matrix.data[i].datasetObj, tag);
             $scope.matrix.data[i][tag.name] = cellContent;
         }
-        $scope.matrix.columnDefs.push(
-            {
-                name: tag.name, 
-                width: 100, 
-                field: tag.name, 
-                enableColumnMenu: false,
-                cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) {
-                    if (grid.getCellValue(row,col) != "") {
-                        return 'match';
-                    }
+        $scope.matrix.columnDefs.push({
+            name: tag.name,
+            width: 200,
+            field: tag.name,
+            enableColumnMenu: false,
+            cellClass: function (grid, row, col, rowRenderIndex, colRenderIndex) {
+                if (grid.getCellValue(row, col) != "") {
+                    return 'match';
                 }
-            }
-        );
+            },
+            cellTemplate: 'views/compare/cell_template.html'
+        });
+
+
     };
-    
-     $scope.hideTag = function(tag) {
+
+    $scope.hideTag = function (tag) {
         for (var i in $scope.matrix.columnDefs) {
             if ($scope.matrix.columnDefs[i].field == tag.name) {
-                $scope.matrix.columnDefs.splice(i,1);
+                $scope.matrix.columnDefs.splice(i, 1);
                 break;
             }
         }
-     }
- 
+    }
+
 });
