@@ -3,16 +3,23 @@
 
 .matrix-header {
     background-color: darkgray !important;
+    border: 1px solid white !important;
+
 }
 
 .matrix-row-header {
-    background-color: whitesmoke!important;
+    background-color: whitesmoke !important;
+    border: 1px solid white !important;
+
 }
 
 .matrix-match-cell {
     background-color: palegreen !important;
+    border: 1px solid white !important;
 }
 
 .matrix-no-match-cell {
     background-color: whitesmoke !important;
+    border: 1px solid white !important;
+
 }
