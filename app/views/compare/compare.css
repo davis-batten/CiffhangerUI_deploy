@@ -21,11 +21,9 @@ td {
     overflow: auto;
 }
 
-.grid {
-    width: 100%;
-    height: 100%;
-}
+.grid {}
 
 .match {
-    background-color: palegreen !important;
+    background-color: #dff0d8 !important;
+    border: 1px solid grey;
 }
