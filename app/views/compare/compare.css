@@ -23,6 +23,10 @@ td {
 
 .grid {}
 
+#matrix_container {
+    background: white;
+}
+
 .match {
     background-color: #dff0d8 !important;
     border: 1px solid grey;

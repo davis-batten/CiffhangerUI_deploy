@@ -3,13 +3,15 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         templateUrl: 'views/compare/compare.html',
         controller: 'CompareCtrl'
     });
-}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, uiGridConstants) {
+}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, uiGridConstants, $rootScope) {
 
     $scope.allTagsSelected = false; //are all the tags selected?s
     $scope.allDatasetsSelected = false; //are all the datasets selected?
     $scope.selectedTags = [];
     $scope.selectedDatasets = [];
 
+    //set theme color
+    $rootScope.theme.color = 'blue';
 
     $scope.matrix = {
         columnDefs: [

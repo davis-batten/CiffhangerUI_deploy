@@ -138,3 +138,35 @@ footer {
 .navbar-brand>img {
     padding: 7px 12px;
 }
+
+.navbar-spacing {
+    margin-top: 0.6em;
+    margin-bottom: 0em;
+    margin-right: 0em;
+    margin-left: 0.25em;
+}
+
+.navbar-dropdown {
+    height: 40px;
+}
+
+.verticalLine {
+    background: rgba(255, 255, 255, .6);
+    border-radius: 1px;
+    width: 2px;
+    height: 40px;
+    display: inline-block;
+    vertical-align: bottom;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-top: 5px!important;
+    margin-bottom: 2px !important;
+}
+
+.blue {
+    background: #d9edf7 !important
+}
+
+.green {
+    background: #dff0d8 !important
+}
