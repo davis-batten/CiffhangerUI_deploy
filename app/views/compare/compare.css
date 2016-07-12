@@ -1,26 +1,3 @@
-.table-bordered {
-    border-color: #999999 !important;
-}
-
-.table-bordered th,
-td,
-tr {
-    border-color: #999999 !important;
-}
-
-.table-bordered tbody {
-    border-color: #999999 !important;
-}
-
-.table-bordered tbody tr,
-td {
-    border-color: #999999 !important;
-}
-
-#compareTable {
-    overflow: auto;
-}
-
 .matrix {
 }
 
@@ -37,5 +14,5 @@ td {
 }
 
 .matrix-no-match-cell {
-    background-color: whitesmoke!important;
+    background-color: whitesmoke !important;
 }
