@@ -45,6 +45,33 @@ describe('cliffhanger.users module', function () {
             });
             spyOn(mockUserService, 'register').and.callFake(function () {
                 //TODO
+                var deferred = $q.defer();
+
+                if (!serviceError) {
+
+                    var user = {
+                        username: 'testUsername',
+                        password: 'testPassword',
+                        role: {
+                            roleID: 'DEVELOPER'
+                        }
+                    }
+
+                    var response = {
+                        data: user,
+                        status: 'Success'
+                    }
+
+                    deferred.resolve(response);
+                    root.$apply();
+                } else {
+                    var badResponse = {
+                        data: 'Unsuccessful register!',
+                        status: 'Error'
+                    }
+                    deferred.resolve(badResponse);
+                }
+                return deferred.promise;
             });
 
             loginCtrl = $controller('LoginCtrl', {
