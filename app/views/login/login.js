@@ -111,7 +111,7 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
             }, //error
             function (error) {
                 $log.error(error);
-                //TODO add unsuccessful account creation alert
+                //add unsuccessful account creation alert
                 $scope.alerts.push('Failed to connect to authentication service!');
             });
     }

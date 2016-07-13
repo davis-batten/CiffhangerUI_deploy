@@ -407,7 +407,7 @@ paths:
         200:
           description: Success
           #TODO add schema
-          
+
   /user/create:
     post:
       description: create a `User`
@@ -420,7 +420,7 @@ paths:
           name: input
           in: body
           required: true
-          schema: 
+          schema:
             $ref: '#/definitions/UserProfile'
       responses:
         200:
@@ -438,12 +438,12 @@ paths:
           name: input
           in: body
           required: true
-          schema: 
+          schema:
             $ref: '#/definitions/UserProfile'
       responses:
         200:
           description: Success
-    
+
   /user/update/{username}:
     put:
       description: update a `User`
@@ -459,7 +459,7 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/UserProfile'
-      responses: 
+      responses:
         200:
           description: Success
 
@@ -476,7 +476,7 @@ paths:
       responses:
         200:
           description: Success
-          
+
   /user/getAllUsers:
     get:
       produces:
@@ -494,7 +494,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/UserProfile'
-          
+
 definitions:
   Dataset:
     description: A `dataset skeleton` representing the meta-data about a dataset
@@ -566,13 +566,13 @@ definitions:
     required:
       - username
       - password
-      
+
   Role:
     properties:
-      roleID: 
+      roleID:
         type: string
-      
-          
+
+
 
 
 
