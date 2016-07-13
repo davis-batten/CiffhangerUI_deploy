@@ -4,7 +4,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         controller: 'CompareCtrl'
     });
 
-}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, uiGridConstants, $rootScope) {
+}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, $rootScope) {
 
     $scope.allTagsSelected = false; //are all the tags selected?s
     $scope.allDatasetsSelected = false; //are all the datasets selected?
@@ -127,7 +127,6 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         }
         $scope.allowUntagged();
         $scope.allTagsSelected = true;
-        //        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
     }
 
     //onclick method for select all datasets button
@@ -146,8 +145,6 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         $scope.selectedTags.splice(0, $scope.selectedTags.length)
         $scope.matrix.columnDefs.splice(1, $scope.matrix.columnDefs.length - 1)
         $scope.allTagsSelected = false;
-        //        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
-
     }
 
     //onclick method for deselect all datasets button

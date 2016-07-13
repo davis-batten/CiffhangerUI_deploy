@@ -7,7 +7,7 @@ angular.module('cliffhanger.users', ['ngRoute'])
     });
 }])
 
-.controller('LoginCtrl', function ($rootScope, $log, $scope, $q, $filter, $location, userService) {
+.controller('LoginCtrl', function ($rootScope, $log, $scope, $q, $location, userService) {
 
     $scope.newUser = {};
 
@@ -63,17 +63,17 @@ angular.module('cliffhanger.users', ['ngRoute'])
                         //analyst
                         if ($rootScope.user.role.roleID == 'ANALYST') {
                             $rootScope.theme.color = 'blue';
-                            $location.url('analyst/compare');
+                            $location.path('analyst/compare');
                         }
                         //developer
                         else if ($rootScope.user.role.roleID == 'DEVELOPER') {
                             $rootScope.theme.color = 'green';
-                            $location.url('developer/datasets');
+                            $location.path('developer/datasets');
                         }
                         //superuser
                         else {
                             $rootScope.theme.color = 'white';
-                            $location.url('admin/');
+                            $location.path('admin/');
                         }
                     }
                     //error
@@ -84,6 +84,7 @@ angular.module('cliffhanger.users', ['ngRoute'])
                 //error
                 function (error) {
                     $log.error(error);
+                    $scope.alert = error.data;
                     //TODO add unsuccessful login alert
                 });
 

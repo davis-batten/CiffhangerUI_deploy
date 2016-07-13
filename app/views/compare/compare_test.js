@@ -10,6 +10,9 @@ describe('cliffhanger.compare module', function () {
             scope = $rootScope.$new();
             modal = $uibModal;
 
+            root = $rootScope;
+            root.theme = {}
+
             //create mock datasetService
             mockDatasetService = {
                 getAllDatasets: function () {
@@ -36,6 +39,7 @@ describe('cliffhanger.compare module', function () {
                 $log: $log,
                 $q: $q,
                 $filter: $filter,
+                $rootScope: root,
                 $uibModal: modal,
                 tagService: mockTagService,
                 datasetService: mockDatasetService
@@ -71,7 +75,7 @@ describe('cliffhanger.compare module', function () {
                         }
                     }
                 ],
-                tags: {
+                tags: [
                     {
                         name: 'ZIP',
                         description: 'zipcode'
@@ -80,7 +84,7 @@ describe('cliffhanger.compare module', function () {
                         name: '<EMPTY>',
                         description: ''
                     }
-                }
+                ]
             }, {
                 name: 'def',
                 description: '',
@@ -160,7 +164,7 @@ describe('cliffhanger.compare module', function () {
                 expect(tagIsAdded).toBeTruthy();
             }
             expect(emptyIsAdded).toBeTruthy();
-            expect(scope.matrix.columnDefs.length).toBe(scope.tags.length+2);
+            expect(scope.matrix.columnDefs.length).toBe(scope.tags.length + 2);
 
             // test remove all
             scope.deselectAllTags();
@@ -170,7 +174,7 @@ describe('cliffhanger.compare module', function () {
 
         it('should be able to add/remove all datasets to the matrix exactly once', function () {
 
-             // test add all
+            // test add all
             scope.selectAllDatasets();
             for (var i in scope.datasets) {
                 var datasetIsAdded = false;
@@ -202,8 +206,8 @@ describe('cliffhanger.compare module', function () {
             var zipTagSelected = false;
             var emptyTagSelected = false;
             for (var i in scope.matrix.columnDefs) {
-                if (scope.matrix.columnDefs[i].name == 'ZIP')  zipTagSelected = true;
-                if (scope.matrix.columnDefs[i].name == '<EMPTY>')  emptyTagSelected = true;
+                if (scope.matrix.columnDefs[i].name == 'ZIP') zipTagSelected = true;
+                if (scope.matrix.columnDefs[i].name == '<EMPTY>') emptyTagSelected = true;
 
             }
             expect(scope.matrix.columnDefs.length).toBe(3);
@@ -230,8 +234,7 @@ describe('cliffhanger.compare module', function () {
 
         it('should, on selectDataset, make a row of data with correctly formatted cells', function () {
             scope.selectAllTags();
-            var dset =
-            {
+            var dset = {
                 name: 'abc',
                 description: '',
                 attributes: [
