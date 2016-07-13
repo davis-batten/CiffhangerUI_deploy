@@ -10,6 +10,8 @@ describe('cliffhanger.users module', function () {
             location = $location;
             mockUserService = userService;
 
+            scope.alerts = [];
+
             //create mockUserService spies
             serviceError = false;
             spyOn(mockUserService, 'login').and.callFake(function () {
@@ -63,7 +65,6 @@ describe('cliffhanger.users module', function () {
                     }
 
                     deferred.resolve(response);
-                    root.$apply();
                 } else {
                     var badResponse = {
                         data: 'Unsuccessful register!',
@@ -91,7 +92,6 @@ describe('cliffhanger.users module', function () {
 
         it('should be able to login', function () {
             root.$apply();
-
             scope.login();
             scope.$apply();
 
@@ -111,6 +111,28 @@ describe('cliffhanger.users module', function () {
 
             expect(root.theme.color).not.toBe('green');
             expect(location.path()).not.toBe('/developer/datasets');
+        })
+
+        it('should be able to register a new user', function () {
+            spyOn(scope, 'login');
+
+            scope.register();
+            scope.$apply();
+
+            expect(mockUserService.register).toHaveBeenCalled();
+            expect(scope.login).toHaveBeenCalled();
+        })
+
+        it('should display alert if failed to register a new user', function () {
+            spyOn(scope, 'login');
+            serviceError = true;
+
+            scope.register();
+            scope.$apply();
+
+            expect(mockUserService.register).toHaveBeenCalled();
+            expect(scope.login).not.toHaveBeenCalled();
+            expect(scope.alerts[0]).toEqual('Unsuccessful register!');
         })
 
     })
