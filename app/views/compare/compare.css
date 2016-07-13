@@ -1,49 +1,25 @@
-<<<<<<< HEAD .table-bordered {
-    border-color: #999999 !important;
+.matrix {
 }
-
-.table-bordered th,
-td,
-tr {
-    border-color: #999999 !important;
-}
-
-.table-bordered tbody {
-    border-color: #999999 !important;
-}
-
-.table-bordered tbody tr,
-td {
-    border-color: #999999 !important;
-}
-
-#compareTable {
-    overflow: auto;
-}
-
-.matrix {}
 
 .matrix-header {
     background-color: darkgray !important;
+    border: 1px solid white !important;
+
 }
 
 .matrix-row-header {
-    background-color: whitesmoke!important;
+    background-color: whitesmoke !important;
+    border: 1px solid white !important;
+
 }
 
 .matrix-match-cell {
     background-color: palegreen !important;
-}
-
-#matrix_container {
-    background: white;
-}
-
-.match {
-    background-color: #dff0d8 !important;
-    border: 1px solid grey;
+    border: 1px solid white !important;
 }
 
 .matrix-no-match-cell {
     background-color: whitesmoke !important;
+    border: 1px solid white !important;
+
 }

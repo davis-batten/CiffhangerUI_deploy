@@ -29,9 +29,6 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             }
         ],
         data: [],
-        onRegisterApi: function (gridApi) {
-            $scope.gridApi = gridApi;
-        },
         minRowsToShow: 10
     };
 
