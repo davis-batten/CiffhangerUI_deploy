@@ -180,6 +180,7 @@
             </div>
             <div id="navbar5" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-sup navbar-right">
+                    <li><a href="#/superuser/users">User Management</a></li>
                     <li class="active"><a href="#/developer/datasets">Data Management</a></li>
                     <li><a href="#/developer/tags">Tag Management</a></li>
                     <li><a href="#/analyst/compare">Compare</a></li>
@@ -219,10 +220,9 @@
     <div class="status-message" ng-show="showNoDatasetsMessage"> NO DATASETS </div>
     <uib-progressbar value="100" class="progress-striped active" ng-show="showProgressBar">Loading...</uib-progressbar>
     <ul class="list-group" id="dataset_list">
-        <li class="list-group-item" id="dataset_item" ng-repeat="d in datasetList | orderBy:'name' | filter:query">
-            <label>{{d.name}}</label> <span class="glyphicon glyphicon-exclamation-sign no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset!"></span>
+        <li class="list-group-item" id="dataset_item" ng-repeat="d in datasetList | orderBy:'name' | filter:query" ng-click="moreInfo[$index]=!moreInfo[$index]">
+            <label>{{d.name}} <small> Click to toggle info</small></label> <span class="glyphicon glyphicon-exclamation-sign no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset!"></span>
             <button class="btn btn-danger" type="button" ng-click="deleteDataset(d)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
-            <button class="btn btn-default" type="button" ng-click="moreInfo[$index]=!moreInfo[$index]" uib-tooltip="Info"> <span class="glyphicon glyphicon-info-sign"></span></button>
             <button class="btn btn-info" type="button" ng-click="updateDataset(d)" uib-tooltip="Edit"> <span class="glyphicon glyphicon-edit"></span></button>
             <div class="more_info" ng-show="moreInfo[$index]"> <strong>Description</strong>
                 <br> {{d.description}}

@@ -33,5 +33,6 @@ tagQueryResults.label {
 }
 
 small {
+    cursor: default;
     opacity: .8;
 }

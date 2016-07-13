@@ -68,7 +68,7 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
                             $rootScope.isAnalyst = false;
                             $rootScope.isDeveloper = false;
                             $rootScope.theme.color = 'light-gray';
-                            $location.path('developer/datasets'); //temporary until super user landing page created
+                            $location.path('superuser/users'); //temporary until super user landing page created
                         }
                     }
                     //error

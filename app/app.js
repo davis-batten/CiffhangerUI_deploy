@@ -12,6 +12,7 @@ app = angular.module('cliffhanger', [
 
     //My modules
     'cliffhanger.users'
+    , 'cliffhanger.superuser'
     , 'cliffhanger.datasets'
     , 'cliffhanger.compare'
     , 'cliffhanger.queries'
