@@ -15,28 +15,25 @@ angular.module('cliffhanger.users', ['ngRoute'])
 
     $rootScope.theme.color = 'white';
 
+    //alerts for errors
     $scope.alerts = [];
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);
     }
 
-    $scope.testGlobal = function () {
-        $log.log($rootScope);
-    };
-
-    $scope.pickDeveloper = function () {
-        $rootScope.isDeveloper = true;
-        $rootScope.isAnalyst = false;
-        $rootScope.theme.color = 'green';
-        $location.path('developer/datasets');
-    }
-
-    $scope.pickAnalyst = function () {
-        $rootScope.isAnalyst = true;
-        $rootScope.isDeveloper = false;
-        $rootScope.theme.color = 'blue';
-        $location.url('analyst/compare');
-    }
+    //    $scope.pickDeveloper = function () {
+    //        $rootScope.isDeveloper = true;
+    //        $rootScope.isAnalyst = false;
+    //        $rootScope.theme.color = 'green';
+    //        $location.path('developer/datasets');
+    //    }
+    //
+    //    $scope.pickAnalyst = function () {
+    //        $rootScope.isAnalyst = true;
+    //        $rootScope.isDeveloper = false;
+    //        $rootScope.theme.color = 'blue';
+    //        $location.url('analyst/compare');
+    //    }
 
 
     //validate the newUser object on changes
@@ -50,7 +47,7 @@ angular.module('cliffhanger.users', ['ngRoute'])
         else $scope.invalidRole = false;
     }, true);
 
-    //TODO
+    //log in as an existing user
     $scope.login = function () {
         var input = {
             username: $scope.username,
@@ -98,7 +95,7 @@ angular.module('cliffhanger.users', ['ngRoute'])
 
     }
 
-    //TODO
+    //create a new user account
     $scope.register = function () {
         var input = {
             username: $scope.newUser.username,
