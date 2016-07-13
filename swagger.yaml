@@ -444,6 +444,24 @@ paths:
         200:
           description: Success
     
+  /user/updateUser/{username}:
+    put:
+      description: update a `User`
+      parameters:
+        -
+          name: username
+          in: path
+          type: string
+          required: true
+        -
+          name: input
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserProfile'
+      responses: 
+        200:
+          description: Success
 
   /user/delete/{username}:
     delete:
@@ -454,10 +472,28 @@ paths:
           in: path
           type: string
           required: true
-          description: the name of the user to be deleted
+          description: the name od the user to be deleted
       responses:
         200:
           description: Success
+          
+  /user/getAllUsers:
+    get:
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: success
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: either "Success" or "Error"
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/UserProfile'
           
 definitions:
   Dataset:
@@ -535,3 +571,8 @@ definitions:
     properties:
       roleID: 
         type: string
+      
+          
+
+
+
