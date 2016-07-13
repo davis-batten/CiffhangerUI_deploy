@@ -9,6 +9,8 @@ describe('cliffhanger.tags module', function () {
         beforeEach(inject(function ($controller, $rootScope, $q, _$log_, $uibModal, tagService) {
             scope = $rootScope.$new();
             modal = $uibModal;
+            root = $rootScope;
+            root.theme = {}
             $log = _$log_;
 
             test_tag_data = [
@@ -42,6 +44,7 @@ describe('cliffhanger.tags module', function () {
                 $scope: scope,
                 $uibModal: modal,
                 $log: $log,
+                $rootScope: root,
                 tagService: tagService
 
             });
