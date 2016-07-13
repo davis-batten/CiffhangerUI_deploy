@@ -36,7 +36,7 @@ describe('cliffhanger.users module', function () {
                     root.$apply();
                 } else {
                     var badResponse = {
-                        data: 'Unsuccessful login',
+                        data: 'Unsuccessful login!',
                         status: 'Error'
                     }
                     deferred.resolve(badResponse);
@@ -80,7 +80,7 @@ describe('cliffhanger.users module', function () {
             scope.$apply();
 
             expect(mockUserService.login).toHaveBeenCalled();
-
+            expect(scope.alerts[0]).toEqual('Unsuccessful login!');
 
             expect(root.theme.color).not.toBe('green');
             expect(location.path()).not.toBe('/developer/datasets');

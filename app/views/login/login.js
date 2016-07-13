@@ -13,7 +13,12 @@ angular.module('cliffhanger.users', ['ngRoute'])
 
     $rootScope.theme = {};
 
-    $rootScope.theme.color = "white";
+    $rootScope.theme.color = 'white';
+
+    $scope.alerts = [];
+    $scope.closeAlert = function (index) {
+        $scope.alerts.splice(index, 1);
+    }
 
     $scope.testGlobal = function () {
         $log.log($rootScope);
@@ -22,15 +27,15 @@ angular.module('cliffhanger.users', ['ngRoute'])
     $scope.pickDeveloper = function () {
         $rootScope.isDeveloper = true;
         $rootScope.isAnalyst = false;
-        $rootScope.theme.color = "green";
-        $location.path("developer/datasets");
+        $rootScope.theme.color = 'green';
+        $location.path('developer/datasets');
     }
 
     $scope.pickAnalyst = function () {
         $rootScope.isAnalyst = true;
         $rootScope.isDeveloper = false;
-        $rootScope.theme.color = "blue";
-        $location.url("analyst/compare");
+        $rootScope.theme.color = 'blue';
+        $location.url('analyst/compare');
     }
 
 
@@ -79,12 +84,13 @@ angular.module('cliffhanger.users', ['ngRoute'])
                     //error
                     else {
                         $log.error(response.data);
+                        $scope.alerts.push(response.data);
                     }
                 },
                 //error
                 function (error) {
-                    $log.error(error);
-                    $scope.alert = error.data;
+                    $log.error('error', error);
+                    $scope.alerts.push('Failed to connect to authentication service!');
                     //TODO add unsuccessful login alert
                 });
 
@@ -116,12 +122,15 @@ angular.module('cliffhanger.users', ['ngRoute'])
                 //error
                 else {
                     $log.error(response.data);
+                    $scope.alerts.push(response.data);
+
                 }
             },
             //error
             function (error) {
                 $log.error(error);
                 //TODO add unsuccessful account creation alert
+                $scope.alerts.push('Failed to connect to authentication service!');
             });
     }
 
