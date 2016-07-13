@@ -11,7 +11,7 @@ app = angular.module('cliffhanger', [
     , 'cliffhanger.version',
 
     //My modules
-    'cliffhanger.dashboard'
+    'cliffhanger.users'
     , 'cliffhanger.datasets'
     , 'cliffhanger.compare'
     , 'cliffhanger.queries'
@@ -25,10 +25,12 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
     $routeProvider.otherwise({
         redirectTo: '/'
     });
-}]).run(function ($rootScope) {
+}]).run(function ($rootScope, userService) {
+    $rootScope.theme = {}
+    $rootScope.logout = userService.logout;
     //set base Url for the REST API
-    //      $rootScope.baseUrl = 'http://localhost:8080/cliffhanger'; //development
-    $rootScope.baseUrl = 'http://hangingonbyanicepick.eastus2.cloudapp.azure.com:8080/cliffhanger-0.1'; //production
+    $rootScope.baseUrl = 'http://localhost:8080/cliffhanger'; //development
+    //$rootScope.baseUrl = 'http://hangingonbyanicepick.eastus2.cloudapp.azure.com:8080/cliffhanger-0.1'; //production
 }).directive('prevent-default', function ($rootScope) {
     var linkFn = function (scope, element, attrs) {
         $(element).on("click", function (event) {
@@ -36,7 +38,7 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
         });
     };
     return {
-        restrict: 'A',
-        link: linkFn
+        restrict: 'A'
+        , link: linkFn
     }
 });

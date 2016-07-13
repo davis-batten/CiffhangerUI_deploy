@@ -6,25 +6,30 @@ angular.module('cliffhanger.queries', ['ngRoute', 'ngSanitize', 'ngCsv']).config
 }]);
 var queries = angular.module('cliffhanger.queries');
 //main controller for queries page
-queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryService) {
+queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryService, $rootScope) {
     $scope.selected = [];
     $scope.showNoQueriesMessage = false;
     $scope.download = false;
+    //queries sorted by date created by default
+    $scope.propertyName = 'dateCreated';
     $scope.alerts = []; //list of alerts to show to user
     //closes an alert
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);
     };
-    //alphabetically compare two strings, ignoring case
-    /*var ignoreCase = function (a, b) {
-        return a.meta_name.toLowerCase().localeCompare(b.meta_name.toLowerCase());
-    };
-    */
-    //for sort by
-    $scope.toggleDropdown = function ($event) {
+    //set theme color
+    $rootScope.theme.color = 'blue';
+    //for logout dropdown
+    $scope.toggleLogoutDropdown = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.status.isopen = !$scope.status.isopen;
+        $scope.status.logoutisopen = !$scope.status.logoutisopen;
+    };
+    //for sort by dropdown
+    $scope.toggleSortByDropdown = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.status.sortbyisopen = !$scope.status.sortbyisopen;
     };
     $scope.setSort = function (sort) {
         $scope.propertyName = sort;

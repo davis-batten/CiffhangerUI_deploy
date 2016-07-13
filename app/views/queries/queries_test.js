@@ -12,27 +12,29 @@ describe('cliffhanger.queries module', function () {
         beforeEach(inject(function ($controller, $rootScope, $q, $log, $uibModal, queryService) {
             scope = $rootScope.$new();
             modal = $uibModal;
+            root = $rootScope;
+            root.theme = {}
             $log = $log;
             mockQueryService = queryService;
             test_query_data = [
                 {
-                    name: "test1"
-                    , description: "test1 desc"
-                    , dateCreated: testDate
-                    , sqlString: "SELECT * FROM table;"
+                    name: "test1",
+                    description: "test1 desc",
+                    dateCreated: testDate,
+                    sqlString: "SELECT * FROM table;"
                 }
                 , {
-                    name: "test2"
-                    , description: "test2 desc"
-                    , dateCreated: testDate
-                    , sqlString: "SELECT * FROM table;"
+                    name: "test2",
+                    description: "test2 desc",
+                    dateCreated: testDate,
+                    sqlString: "SELECT * FROM table;"
                 }
             ];
             mockQuery = {
-                name: "test"
-                , description: "desc"
-                , dateCreated: testDate
-                , sqlString: "SELECT * FROM table;"
+                name: "test",
+                description: "desc",
+                dateCreated: testDate,
+                sqlString: "SELECT * FROM table;"
             };
             deferred = $q.defer();
             resp = {};
@@ -48,12 +50,12 @@ describe('cliffhanger.queries module', function () {
                     status: 'Error'
                 }
                 var testTableResult = {
-                    colCount: 2
-                    , colNames: [
+                    colCount: 2,
+                    colNames: [
                         "test.col1"
                         , "test.col2"
-                    ]
-                    , rows: [
+                    ],
+                    rows: [
                         [
                             1
                             , "abc"
@@ -74,10 +76,11 @@ describe('cliffhanger.queries module', function () {
                 return deferred.promise;
             })
             queriesCtrl = $controller('QueriesCtrl', {
-                $scope: scope
-                , $uibModal: modal
-                , $log: $log
-                , queryService: mockQueryService
+                $scope: scope,
+                $uibModal: modal,
+                $log: $log,
+                $rootScope: root,
+                queryService: mockQueryService
             })
         }));
         it('should have a QueriesCtrl controller', function () {
@@ -96,18 +99,18 @@ describe('cliffhanger.queries module', function () {
         beforeEach(inject(function ($controller, $rootScope, $log) {
             scope = $rootScope.$new();
             modalInstance = {
-                close: jasmine.createSpy('uibModalInstance.close')
-                , dismiss: jasmine.createSpy('uibModalInstance.dismiss')
-                , result: {
+                close: jasmine.createSpy('uibModalInstance.close'),
+                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
+                result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
             viewQueryModalCtrl = $controller('ViewQueryModalInstanceCtrl', {
-                $scope: scope
-                , $uibModalInstance: modalInstance
-                , $log: $log
-                , query: mockQuery
-                , queryService: mockQueryService
+                $scope: scope,
+                $uibModalInstance: modalInstance,
+                $log: $log,
+                query: mockQuery,
+                queryService: mockQueryService
             });
         }));
         it('should instantiate the viewQueryModalInstanceCtrl controller', function () {
@@ -171,17 +174,17 @@ describe('cliffhanger.queries module', function () {
         beforeEach(inject(function ($controller, $rootScope, $log) {
             scope = $rootScope.$new();
             modalInstance = {
-                dismiss: jasmine.createSpy('uibModalInstance.dismiss')
-                , close: jasmine.createSpy('uibModalInstance.close')
-                , result: {
+                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
+                close: jasmine.createSpy('uibModalInstance.close'),
+                result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
             queryDeleteCtrl = $controller('QueryDeleteModalCtrl', {
-                $scope: scope
-                , $uibModalInstance: modalInstance
-                , $log: $log
-                , query: mockQuery
+                $scope: scope,
+                $uibModalInstance: modalInstance,
+                $log: $log,
+                query: mockQuery
             });
         }));
         it('should be able accept and close the modal', function () {
