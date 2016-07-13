@@ -407,8 +407,94 @@ paths:
         200:
           description: Success
           #TODO add schema
+          
+  /user/create:
+    post:
+      description: create a `User`
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        -
+          name: input
+          in: body
+          required: true
+          schema: 
+            $ref: '#/definitions/UserProfile'
+      responses:
+        200:
+          description: Success
 
+  /user/login:
+    post:
+      description: login as a specific `User`
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        -
+          name: input
+          in: body
+          required: true
+          schema: 
+            $ref: '#/definitions/UserProfile'
+      responses:
+        200:
+          description: Success
+    
+  /user/update/{username}:
+    put:
+      description: update a `User`
+      parameters:
+        -
+          name: username
+          in: path
+          type: string
+          required: true
+        -
+          name: input
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserProfile'
+      responses: 
+        200:
+          description: Success
 
+  /user/delete/{username}:
+    delete:
+      description: Delete a `User`
+      parameters:
+        -
+          name: username
+          in: path
+          type: string
+          required: true
+          description: the name od the user to be deleted
+      responses:
+        200:
+          description: Success
+          
+  /user/getAllUsers:
+    get:
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: success
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: either "Success" or "Error"
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/UserProfile'
+          
 definitions:
   Dataset:
     description: A `dataset skeleton` representing the meta-data about a dataset
@@ -464,6 +550,29 @@ definitions:
         format: date-time
       sqlString:
         type: string
+
+  UserProfile:
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+      queries:
+        type: array
+        items:
+          $ref: '#/definitions/Query'
+      role:
+        $ref: '#/definitions/Role'
+    required:
+      - username
+      - password
+      
+  Role:
+    properties:
+      roleID: 
+        type: string
+      
+          
 
 
 

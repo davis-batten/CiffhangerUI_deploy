@@ -12,6 +12,7 @@ app = angular.module('cliffhanger', [
 
     //My modules
     'cliffhanger.users'
+    , 'cliffhanger.superuser'
     , 'cliffhanger.datasets'
     , 'cliffhanger.compare'
     , 'cliffhanger.queries'
@@ -38,7 +39,7 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
         });
     };
     return {
-        restrict: 'A'
-        , link: linkFn
+        restrict: 'A',
+        link: linkFn
     }
 });
