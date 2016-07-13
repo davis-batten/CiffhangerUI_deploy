@@ -30,7 +30,6 @@ angular.module('cliffhanger.superuser')
         }
 
         this.logout = function () {
-            //TODO
             $rootScope.user = {}
         }
 
@@ -40,7 +39,6 @@ angular.module('cliffhanger.superuser')
                     //success callback
                     function (response) {
                         $log.info('Success!', response);
-                        //                        $rootScope.user = response.data.data;
                         return response.data;
                     },
                     //error callback
