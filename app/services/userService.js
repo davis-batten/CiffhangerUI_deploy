@@ -53,5 +53,55 @@ angular.module('cliffhanger.users')
                 );
         }
 
+        this.getAllUsers = function () {
+            return $http.get($rootScope.baseUrl + 'user/getAllUsers')
+                .then(
+                    //success callback
+                    function (response) {
+                        $log.info('Success', response);
+                        return response.data;
+                    },
+                    //Error callback
+                    function (response) {
+                        $log.warn('Failure');
+                        $log.warn(response);
+                        return $q.reject(response.data);
+                    }
+                );
+        }
+
+        this.updateUser = function (username, newUser) {
+            return $http.put($rootScope.baseUrl + 'user/update/' + username, newUser)
+                .then(
+                    //Success callback
+                    function (response) {
+                        $log.info('Success', response);
+                        return response.data;
+                    },
+                    //Error callback
+                    function (response) {
+                        $log.warn('Failure');
+                        $log.warn(response);
+                        return $q.reject(response.data);
+                    }
+                );
+        }
+
+        this.deleteUser = function (username) {
+            return $http.delete($rootScope.baseUrl + 'user/delete/' + username)
+                .then(
+                    //Success callback
+                    function (response) {
+                        $log.info('Success', response);
+                        return response.data;
+                    },
+                    //Error callback
+                    function (response) {
+                        $log.warn('Failure');
+                        $log.warn(response);
+                        return $q.reject(response.data);
+                    }
+                );
+        }
 
     });

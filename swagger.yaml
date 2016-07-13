@@ -444,7 +444,7 @@ paths:
         200:
           description: Success
     
-  /user/updateUser/{username}:
+  /user/update/{username}:
     put:
       description: update a `User`
       parameters:
