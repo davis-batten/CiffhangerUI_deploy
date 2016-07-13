@@ -64,6 +64,12 @@ angular.module('cliffhanger.dashboard', ['ngRoute'])
         $location.url("analyst/compare");
     }
 
+    $scope.pickSuperUser = function () {
+        $rootScope.isSuper = true;
+        $rootScope.isDeveloper = false;
+        $rootScope.isAnalyst = false;
+        $rootScope.theme.color = "";
+    }
 
     //validate the newUser object on changes
     $scope.$watch('newUser', function () {
