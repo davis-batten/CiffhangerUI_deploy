@@ -6,7 +6,7 @@ angular.module('cliffhanger.datasets', ['ngRoute']).config(['$routeProvider', fu
 }]);
 var datasets = angular.module('cliffhanger.datasets');
 //main controller for dataset page
-datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService) {
+datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService, $rootScope) {
     $scope.selected = [];
     $scope.showNoDatasetsMessage = false;
     $scope.alerts = []; //list of alerts to show to user
@@ -14,6 +14,10 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);
     };
+
+    //set theme color
+    $rootScope.theme.color = 'green';
+
     //alphabetically compare two strings, ignoring case
     var ignoreCase = function (a, b) {
             return a.meta_name.toLowerCase().localeCompare(b.meta_name.toLowerCase());

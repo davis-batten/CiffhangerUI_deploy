@@ -24,7 +24,7 @@ h3 small {
     height: 4em;*/
     font-size: 1em;
     height: 16em;
-    border: 0.75em solid white;
+    border: 0.75em solid #d9edf7;
 }
 
 #query_item label {
