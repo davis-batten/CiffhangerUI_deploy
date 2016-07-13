@@ -1,5 +1,5 @@
 //service for dealing with Meta-Types on the Grails backend using REST API
-angular.module('cliffhanger.users')
+angular.module('cliffhanger.superuser')
     .service('userService', function ($log, $http, $rootScope, $q) {
 
         $rootScope.user = {}
@@ -54,7 +54,7 @@ angular.module('cliffhanger.users')
         }
 
         this.getAllUsers = function () {
-            return $http.get($rootScope.baseUrl + 'user/getAllUsers')
+            return $http.get($rootScope.baseUrl + '/user/getAllUsers')
                 .then(
                     //success callback
                     function (response) {
@@ -71,7 +71,7 @@ angular.module('cliffhanger.users')
         }
 
         this.updateUser = function (username, newUser) {
-            return $http.put($rootScope.baseUrl + 'user/update/' + username, newUser)
+            return $http.put($rootScope.baseUrl + '/user/update/' + username, newUser)
                 .then(
                     //Success callback
                     function (response) {
@@ -88,7 +88,7 @@ angular.module('cliffhanger.users')
         }
 
         this.deleteUser = function (username) {
-            return $http.delete($rootScope.baseUrl + 'user/delete/' + username)
+            return $http.delete($rootScope.baseUrl + '/user/delete/' + username)
                 .then(
                     //Success callback
                     function (response) {
@@ -103,5 +103,4 @@ angular.module('cliffhanger.users')
                     }
                 );
         }
-
     });
