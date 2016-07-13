@@ -71,16 +71,17 @@
 <!-- Page Content -->
 <div class="container-fluid">
     <div class="col-md-3 panel panel-default" id="controls">
-        <h3>Tags</h3>
-        <button class="btn btn-warning" ng-click="add()"><span class="glyphicon glyphicon-plus"></span> Add Tag</button>
-        <h5>Search</h5>
-        <div id="custom-search-input">
-            <input type="text" size="30" ng-model="query.name" uib-typeahead="t.name for t in tags | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
+        <div class="panel-body">
+            <button class="btn btn-warning" ng-click="add()"><span class="glyphicon glyphicon-plus"></span> Add Tag</button>
+            <hr>
+            <div id="custom-search-input">
+                <input type="text" size="30" ng-model="query.name" placeholder="Search" uib-typeahead="t.name for t in tags | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
+        </div>
     </div>
     <div class="col-md-9 pull-right" id="tagQueryResults">
         <ul>
             <li id="list_item" ng-repeat="t in tags | orderBy:'name' | filter:query" class="list-group-item" ng-if="t.name != '<EMPTY>'">
-                <label>{{t.name}}</label> <small>{{t.description}}</small>
+                <label>{{t.name}} </label><small> {{t.description}}</small>
                 <button class="btn btn-danger" type="button" uib-tooltip="Delete" ng-click="delete(t)"> <span class="glyphicon glyphicon-trash"></span></button>
                 <button class="btn btn-info" type="button" uib-tooltip="Edit" ng-click="update(t)"> <span class="glyphicon glyphicon-edit"></span></button>
             </li>
