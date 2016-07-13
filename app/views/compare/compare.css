@@ -1,31 +1,25 @@
-.table-bordered {
-    border-color: #999999 !important;
+.matrix {
 }
 
-.table-bordered th,
-td,
-tr {
-    border-color: #999999 !important;
+.matrix-header {
+    background-color: darkgray !important;
+    border: 1px solid white !important;
+
 }
 
-.table-bordered tbody {
-    border-color: #999999 !important;
+.matrix-row-header {
+    background-color: whitesmoke !important;
+    border: 1px solid white !important;
+
 }
 
-.table-bordered tbody tr,
-td {
-    border-color: #999999 !important;
-}
-
-#compareTable {
-    overflow: auto;
-}
-
-.grid {
-    width: 100%;
-    height: 100%;
-}
-
-.match {
+.matrix-match-cell {
     background-color: palegreen !important;
+    border: 1px solid white !important;
+}
+
+.matrix-no-match-cell {
+    background-color: whitesmoke !important;
+    border: 1px solid white !important;
+
 }

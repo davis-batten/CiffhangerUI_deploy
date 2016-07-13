@@ -1,10 +1,15 @@
-'use strict';
 angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/analyst/compare', {
         templateUrl: 'views/compare/compare.html'
         , controller: 'CompareCtrl'
     });
-}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, uiGridConstants) {
+}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, uiGridConstants, $rootScope) {
+    $scope.allTagsSelected = false; //are all the tags selected?s
+    $scope.allDatasetsSelected = false; //are all the datasets selected?
+    $scope.selectedTags = [];
+    $scope.selectedDatasets = [];
+    //set theme color
+    $rootScope.theme.color = 'blue';
     $scope.matrix = {
         columnDefs: [
             {
@@ -13,27 +18,15 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
                 , field: 'datasetName'
                 , eneablePinning: true
                 , pinnedLeft: true
-                , width: 160
+                , width: 200
                 , enableColumnMenu: false
+                , headerCellClass: 'matrix-header'
+                , cellClass: 'matrix-row-header'
             }
         ]
         , data: []
-        , onRegisterApi: function (gridApi) {
-            $scope.gridApi = gridApi;
-        }
+        , minRowsToShow: 10
     };
-    $scope.allTagsSelected = false; //are all the tags selected?s
-    $scope.allDatasetsSelected = false; //are all the datasets selected?
-    $scope.selectedTags = [];
-    $scope.selectedDatasets = [];
-    //navbar toggle for small screen
-    /*implement later
-    $scope.toggleNavDropdown = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.status.navopen = !$scope.status.navopen;
-    };
-    */
     var emptyTag = {
         name: '<EMPTY>'
         , description: ''
@@ -115,8 +108,10 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
                     , field: 'datasetName'
                     , eneablePinning: true
                     , pinnedLeft: true
-                    , width: 160
+                    , width: 200
                     , enableColumnMenu: false
+                    , headerCellClass: 'matrix-header'
+                    , cellClass: 'matrix-row-header'
                 }
         ];
             for (var i in $scope.selectedTags) {
@@ -124,7 +119,6 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             }
             $scope.allowUntagged();
             $scope.allTagsSelected = true;
-            //        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
         }
         //onclick method for select all datasets button
     $scope.selectAllDatasets = function () {
@@ -140,7 +134,6 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             $scope.selectedTags.splice(0, $scope.selectedTags.length)
             $scope.matrix.columnDefs.splice(1, $scope.matrix.columnDefs.length - 1)
             $scope.allTagsSelected = false;
-            //        $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
         }
         //onclick method for deselect all datasets button
     $scope.deselectAllDatasets = function () {
@@ -242,6 +235,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             newMatrixDataEntry[$scope.selectedTags[i].name] = cellContent;
         }
         $scope.matrix.data.push(newMatrixDataEntry);
+        $log.debug($scope.matrix);
     }
     $scope.deselectDataset = function (dataset) {
         for (var i in $scope.matrix.data) {
@@ -270,13 +264,15 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         }
         $scope.matrix.columnDefs.push({
             name: tag.name
-            , width: 100
+            , width: 200
             , field: tag.name
             , enableColumnMenu: false
+            , headerCellClass: 'matrix-header'
             , cellClass: function (grid, row, col, rowRenderIndex, colRenderIndex) {
                 if (grid.getCellValue(row, col) != "") {
-                    return 'match';
+                    return 'matrix-match-cell';
                 }
+                else return 'matrix-no-match-cell';
             }
         });
     };

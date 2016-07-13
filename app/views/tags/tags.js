@@ -5,10 +5,12 @@ var tags = angular.module('cliffhanger.tags', ['ngRoute']).config(['$routeProvid
     });
 }]);
 //main controller for /#/developer/tags
-tags.controller('TagCtrl', function ($scope, $uibModal, $log, tagService) {
+tags.controller('TagCtrl', function ($scope, $uibModal, $log, tagService, $rootScope) {
     $scope.selected = undefined;
     $scope.noResults = false;
     $scope.alerts = []; //list of alerts to show to user
+    //set theme color
+    $rootScope.theme.color = 'green';
     //closes an alert
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);
