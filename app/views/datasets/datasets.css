@@ -6,12 +6,26 @@
     clear: both;
     height: 4em;*/
     font-size: 1em;
+    cursor: pointer;
+}
+
+#dataset_item:hover {
+    border-color: #B9E0A5 !important;
+    background-color: #B9E0A5 !important;
 }
 
 #dataset_item label {
     line-height: 2em;
     vertical-align: middle;
     margin-left: 0.75em;
+    cursor: pointer;
+}
+
+#dataset_item label small {
+    font-weight: 400;
+    padding-left: .5em;
+    color: white !important;
+    cursor: pointer;
 }
 
 #dataset_item button {
