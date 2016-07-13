@@ -26,15 +26,11 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
         redirectTo: '/'
     });
 }]).run(function ($rootScope, userService) {
-
     $rootScope.theme = {}
-
     $rootScope.logout = userService.logout;
-
     //set base Url for the REST API
     $rootScope.baseUrl = 'http://localhost:8080/cliffhanger'; //development
     //$rootScope.baseUrl = 'http://hangingonbyanicepick.eastus2.cloudapp.azure.com:8080/cliffhanger-0.1'; //production
-
 }).directive('prevent-default', function ($rootScope) {
     var linkFn = function (scope, element, attrs) {
         $(element).on("click", function (event) {
@@ -42,7 +38,7 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
         });
     };
     return {
-        restrict: 'A',
-        link: linkFn
+        restrict: 'A'
+        , link: linkFn
     }
 });

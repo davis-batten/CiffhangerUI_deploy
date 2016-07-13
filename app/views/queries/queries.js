@@ -1,7 +1,7 @@
 angular.module('cliffhanger.queries', ['ngRoute', 'ngSanitize', 'ngCsv']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/analyst/queries', {
-        templateUrl: 'views/queries/queries.html',
-        controller: 'QueriesCtrl'
+        templateUrl: 'views/queries/queries.html'
+        , controller: 'QueriesCtrl'
     });
 }]);
 var queries = angular.module('cliffhanger.queries');
@@ -10,21 +10,26 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     $scope.selected = [];
     $scope.showNoQueriesMessage = false;
     $scope.download = false;
+    //queries sorted by date created by default
+    $scope.propertyName = 'dateCreated';
     $scope.alerts = []; //list of alerts to show to user
     //closes an alert
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);
     };
-
-
     //set theme color
     $rootScope.theme.color = 'blue';
-
-    //for sort by
-    $scope.toggleDropdown = function ($event) {
+    //for logout dropdown
+    $scope.toggleLogoutDropdown = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.status.isopen = !$scope.status.isopen;
+        $scope.status.logoutisopen = !$scope.status.logoutisopen;
+    };
+    //for sort by dropdown
+    $scope.toggleSortByDropdown = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.status.sortbyisopen = !$scope.status.sortbyisopen;
     };
     $scope.setSort = function (sort) {
         $scope.propertyName = sort;
@@ -40,7 +45,8 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                     $scope.queries = data.data.sort(ignoreCase);
                 }
                 */
-            } else {
+            }
+            else {
                 $scope.queryList = [];
             }
         })
@@ -49,10 +55,10 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     //opens view modal
     $scope.view = function (q) {
         var modalInstance = $uibModal.open({
-            templateUrl: 'viewQueryModalContent.html',
-            controller: 'ViewQueryModalInstanceCtrl',
-            size: 'lg',
-            resolve: {
+            templateUrl: 'viewQueryModalContent.html'
+            , controller: 'ViewQueryModalInstanceCtrl'
+            , size: 'lg'
+            , resolve: {
                 query: function () {
                     return q;
                 }
@@ -63,10 +69,10 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     $scope.deleteQuery = function (q) {
         $log.log(q);
         var modalInstance = $uibModal.open({
-            templateUrl: 'queryDelete.html',
-            controller: 'QueryDeleteModalCtrl',
-            size: 'md',
-            resolve: {
+            templateUrl: 'queryDelete.html'
+            , controller: 'QueryDeleteModalCtrl'
+            , size: 'md'
+            , resolve: {
                 query: function () {
                     return q;
                 }
@@ -83,17 +89,18 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                         if (res.status == 'Success') {
                             $scope.queryList.splice(i, 1);
                             if ($scope.queryList.length == 0) $scope.showNoQueriesMessage = true;
-                        } else {
+                        }
+                        else {
                             $scope.alerts.push({
-                                msg: res,
-                                type: 'danger'
+                                msg: res
+                                , type: 'danger'
                             });
                         }
                     }, function (res) {
                         $scope.showProgressBar = false;
                         $scope.alerts.push({
-                            msg: "Problem communicating with server!",
-                            type: 'danger'
+                            msg: "Problem communicating with server!"
+                            , type: 'danger'
                         });
                     });
                 }
@@ -141,8 +148,8 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
                 $scope.progressType = 'danger';
                 $scope.runQueryError = true;
                 $scope.alerts.push({
-                    msg: "Run Query Failed",
-                    type: 'danger'
+                    msg: "Run Query Failed"
+                    , type: 'danger'
                 });
                 $log.error('Failed to connect to server');
             });

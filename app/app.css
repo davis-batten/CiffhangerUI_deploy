@@ -116,12 +116,23 @@ footer {
     border-radius: 0px !important;
 }
 
+.navbar-sup {
+    border: none !important;
+    background-color: #696969 !important;
+    color: white !important;
+    border-radius: 0px !important;
+}
+
 .navbar-an > .active > a {
     background-color: #A9C4EB !important;
 }
 
 .navbar-dev > .active > a {
     background-color: #B9E0A5 !important;
+}
+
+.navbar-sup > .active > a {
+    background-color: #8A8A8A !important;
 }
 
 .navbar-nav > li > a {
@@ -164,9 +175,13 @@ footer {
 }
 
 .blue {
-    background: #d9edf7 !important
+    background: #d9edf7 !important;
 }
 
 .green {
-    background: #dff0d8 !important
+    background: #dff0d8 !important;
+}
+
+.light-gray {
+    background: #C7C7C7 !important;
 }

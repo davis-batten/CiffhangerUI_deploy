@@ -1,35 +1,83 @@
-<!-- Navbar -->
-<nav class="navbar navbar-default navbar-dev">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <!-- Fix for small screens -->
-            <!--
+<!-- Developer Navbar -->
+<div ng-hide="isSuper">
+    <nav class="navbar navbar-default navbar-dev">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <!-- Fix for small screens -->
+                <!--
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar5"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
 -->
-            <a class="navbar-brand" href="#/"><img style="width: 60px;" src="resources/cliffhangerlogo-white.png" alt="Cliffhanger Logo">CLIFFHANGER</a>
+                <a class="navbar-brand" href="#/"><img style="width: 60px;" src="resources/cliffhangerlogo-white.png" alt="Cliffhanger Logo">CLIFFHANGER</a>
+            </div>
+            <div id="navbar5" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-dev navbar-right">
+                    <li><a href="#/developer/datasets">Data Management</a></li>
+                    <li class="active"><a href="#/developer/tags">Tag Management</a></li>
+                    <li><a href="#">Message Board</a></li>
+                    <li>
+                        <div class="verticalLine navbar-spacing"></div>
+                    </li>
+                    <li class="dropdown navbar-spacing navbar-dropdown">
+                        <div class="btn-group" uib-dropdown is-open="status.isopen">
+                            <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"> {{$root.user.username}} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                <li role="menuitem"><a href="#/" ng-click="$root.logout()">Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
         </div>
-        <div id="navbar5" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-dev navbar-right">
-                <li><a href="#/developer/datasets">Data Management</a></li>
-                <li class="active"><a href="#/developer/tags">Tag Management</a></li>
-                <li><a href="#">Message Board</a></li>
-            </ul>
+        <!--/.container-fluid -->
+    </nav>
+</div>
+<!-- Superuser Navbar -->
+<div ng-show="isSuper">
+    <nav class="navbar navbar-default navbar-sup">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <!-- Fix for small screens -->
+                <!--
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar5"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+-->
+                <a class="navbar-brand" href="#/"><img style="width: 60px;" src="resources/cliffhangerlogo-white.png" alt="Cliffhanger Logo">CLIFFHANGER</a>
+            </div>
+            <div id="navbar5" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-sup navbar-right">
+                    <li><a href="#/developer/datasets">Data Management</a></li>
+                    <li class="active"><a href="#/developer/tags">Tag Management</a></li>
+                    <li><a href="#/analyst/compare">Compare</a></li>
+                    <li><a href="#/analyst/queries">Query Management</a></li>
+                    <li><a href="#">Message Board</a></li>
+                    <li>
+                        <div class="verticalLine navbar-spacing"></div>
+                    </li>
+                    <li class="dropdown navbar-spacing navbar-dropdown">
+                        <div class="btn-group" uib-dropdown is-open="status.isopen">
+                            <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"> {{$root.user.username}} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                <li role="menuitem"><a href="#/" ng-click="$root.logout()">Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
         </div>
-        <!--/.nav-collapse -->
-    </div>
-    <!--/.container-fluid -->
-</nav>
+        <!--/.container-fluid -->
+    </nav>
+</div>
 <!-- Page Content -->
 <div class="container-fluid">
-    <div class="col-md-4 panel panel-default" id="controls">
+    <div class="col-md-3 panel panel-default" id="controls">
         <h3>Tags</h3>
         <button class="btn btn-warning" ng-click="add()"><span class="glyphicon glyphicon-plus"></span> Add Tag</button>
         <h5>Search</h5>
         <div id="custom-search-input">
-            <input type="text" size="45" ng-model="query.name" uib-typeahead="t.name for t in tags | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
+            <input type="text" size="30" ng-model="query.name" uib-typeahead="t.name for t in tags | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
     </div>
-    <br>
-    <div class="col-md-8 pull-right" id="tagQueryResults">
+    <div class="col-md-9 pull-right" id="tagQueryResults">
         <ul>
             <li id="list_item" ng-repeat="t in tags | orderBy:'name' | filter:query" class="list-group-item" ng-if="t.name != '<EMPTY>'">
                 <label>{{t.name}}</label> <small>{{t.description}}</small>
