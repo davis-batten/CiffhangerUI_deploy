@@ -17,7 +17,7 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
             },
             numComments: 5,
             createDate: new Date(),
-            open: false
+            open: open
         },
         {
             subject: "Can't change username",
@@ -29,7 +29,7 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
             },
             numComments: 1,
             createDate: new Date(),
-            open: true
+            open: false
         },
         {
             subject: "No results for a join query",
@@ -45,12 +45,14 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
         }
     ]
 
-    $scope.roleStyle = function (issue) {
-        var role = issue.opener.role.roleID;
-        if (role == "DEVELOPER") return "label label-success";
-        else if (role == "ANALYST") return "label label-primary";
-        else return "label label-default";
-    }
+    $scope.loadIssues =
+
+        $scope.roleStyle = function (issue) {
+            var role = issue.opener.role.roleID;
+            if (role == "DEVELOPER") return "label label-success";
+            else if (role == "ANALYST") return "label label-primary";
+            else return "label label-default";
+        }
 
     $scope.openStyle = function (issue) {
         if (issue.open) return "glyphicon glyphicon-ok-circle text-success";

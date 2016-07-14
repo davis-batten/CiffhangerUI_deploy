@@ -6,6 +6,7 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
     });
 }]).controller('IssueCtrl', function ($rootScope, $log, $scope, $q) {
 
+    //test issue data
     $scope.issue = {
         subject: "Can't load table testHiveTable",
         opener: {
@@ -15,9 +16,10 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
             }
         },
         createDate: new Date(),
-        open: false
+        open: true
     }
 
+    //test comment data
     $scope.comments = [
         {
             commentBy: {
@@ -81,6 +83,31 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
         if (user.role.roleID == "DEVELOPER") return "text-success";
         else if (user.role.roleID == "ANALYST") return "text-primary";
         else return "text-muted";
+    }
+
+    //open the issue
+    $scope.openIssue = function () {
+        //TODO
+        $scope.issue.open = true; //for testing only
+    }
+
+    //close the issue
+    $scope.closeIssue = function () {
+        //TODO
+        $scope.issue.open = false; //for testing only
+    }
+
+    //post a new comment
+    $scope.postComment = function () {
+        //TODO
+
+        //for testing
+        var comment = {
+            commentBy: $rootScope.user,
+            body: $scope.newComment,
+            createDate: new Date(),
+        }
+        $scope.comments.push(comment);
     }
 
 });

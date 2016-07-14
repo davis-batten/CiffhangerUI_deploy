@@ -17,7 +17,7 @@
                     <div align="center" class="openIcon pull-left"> <span ng-class="openStyle(issue)" uib-tooltip="{{openTooltip(issue)}}"></span> </div>
                     <div class="issueText pull-left">
                         <h4 class="issueHeading"><a>{{issue.subject}}</a></h4>
-                        <p><small>Opened on {{issue.createDate.toUTCString()}} by </small><span ng-class="roleStyle(issue)">{{issue.opener.username}}</span></p>
+                        <p><small>Opened on {{issue.createDate | date : 'short'}} by </small><span ng-class="roleStyle(issue)">{{issue.opener.username}}</span></p>
                     </div>
                     <div class="pull-right commentCount"> <span class="glyphicon glyphicon-comment"></span>
                         <wbr>{{issue.numComments}} </div>

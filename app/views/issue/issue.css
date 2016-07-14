@@ -3,9 +3,9 @@
     font-size: 1em;
 }
 
-#openLabel {
+.openLabel {
     display: inline-block;
-    margin-top: 0em;
+    margin: 0;
 }
 
 .comment {
@@ -14,6 +14,7 @@
 
 .closeText {
     margin-left: 1.5em;
+    font-size: 1.2em;
 }
 
 #commentForm {
