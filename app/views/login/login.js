@@ -1,7 +1,7 @@
 angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/', {
-        templateUrl: 'views/login/login.html'
-        , controller: 'LoginCtrl'
+        templateUrl: 'views/login/login.html',
+        controller: 'LoginCtrl'
     });
 }]).controller('LoginCtrl', function ($rootScope, $log, $scope, $q, $location, userService) {
     $scope.newUser = {};
@@ -37,8 +37,8 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
     //log in as an existing user
     $scope.login = function () {
             var input = {
-                username: $scope.username
-                , password: $scope.password
+                username: $scope.username,
+                password: $scope.password
             }
             $log.debug(input);
             //authenticate against REST service
@@ -68,7 +68,7 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
                             $rootScope.isAnalyst = false;
                             $rootScope.isDeveloper = false;
                             $rootScope.theme.color = 'light-gray';
-                            $location.path('developer/datasets'); //temporary until super user landing page created
+                            $location.path('superuser/users'); //temporary until super user landing page created
                         }
                     }
                     //error
@@ -86,9 +86,9 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
         //create a new user account
     $scope.register = function () {
         var input = {
-            username: $scope.newUser.username
-            , password: $scope.newUser.password
-            , role: {
+            username: $scope.newUser.username,
+            password: $scope.newUser.password,
+            role: {
                 roleID: $scope.newUser.role
             }
         }
@@ -111,7 +111,7 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
             }, //error
             function (error) {
                 $log.error(error);
-                //TODO add unsuccessful account creation alert
+                //add unsuccessful account creation alert
                 $scope.alerts.push('Failed to connect to authentication service!');
             });
     }

@@ -12,11 +12,14 @@ app = angular.module('cliffhanger', [
 
     //My modules
     'cliffhanger.users'
+    , 'cliffhanger.superuser'
     , 'cliffhanger.datasets'
     , 'cliffhanger.compare'
     , 'cliffhanger.queries'
     , 'cliffhanger.query_wizard'
-    , 'cliffhanger.tags'
+    , 'cliffhanger.tags',
+    'cliffhanger.messageboard',
+    'cliffhanger.issue'
 
 ]).
 config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
@@ -25,12 +28,22 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
     $routeProvider.otherwise({
         redirectTo: '/'
     });
-}]).run(function ($rootScope, userService) {
+}]).run(function ($rootScope, $location, userService) {
     $rootScope.theme = {}
     $rootScope.logout = userService.logout;
     //set base Url for the REST API
     $rootScope.baseUrl = 'http://localhost:8080/cliffhanger'; //development
     //$rootScope.baseUrl = 'http://hangingonbyanicepick.eastus2.cloudapp.azure.com:8080/cliffhanger-0.1'; //production
+
+
+    var path = function () {
+        return $location.path();
+    };
+    $rootScope.$watch(path, function (newVal, oldVal) {
+        $rootScope.activetab = newVal;
+    });
+
+
 }).directive('prevent-default', function ($rootScope) {
     var linkFn = function (scope, element, attrs) {
         $(element).on("click", function (event) {
@@ -38,7 +51,7 @@ config(['$locationProvider', '$routeProvider', function ($locationProvider, $rou
         });
     };
     return {
-        restrict: 'A'
-        , link: linkFn
+        restrict: 'A',
+        link: linkFn
     }
 });

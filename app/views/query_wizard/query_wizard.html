@@ -48,7 +48,7 @@
                     <h4><strong>Datasets </strong><small><em> Select one to add to query</em></small></h4>
                     <ul class="list-group">
                         <li class="list-group-item" ng-repeat="d in datasets" ng-if="alreadyUsedDatasets.indexOf(d) == -1">
-                            <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="(selectedDatasets.length == (numJoins+1) && !d.selected) || d.db_table_name == null"></checkbox>
+                            <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="selectedDatasets.length == (numJoins+1) && !d.selected || d.db_table_name == null"></checkbox>
                             <label>{{d.name}}<span class="glyphicon glyphicon-exclamation-sign no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset"></span> </label>
                         </li>
                     </ul>
