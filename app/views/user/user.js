@@ -36,6 +36,7 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
     };
     $scope.getAllUsers();
 
+
     //opens update user modal for user u
     $scope.updateUser = function (u) {
         $log.log(u);
@@ -45,26 +46,29 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
             controller: 'UpdateUserModalCtrl',
             size: 'lg',
             resolve: {
-                dataset: function () {
+                user: function () {
                     return u;
                 }
             }
         });
         //executes changes (or carries unchanged values through)
-        modalInstance.result.then(function (u) {
-            if (u.username == "") {
+
+        modalInstance.result.then(function (input) {
+            if (input.username == "") {
                 $scope.alerts.push({
                     msg: 'Cannot update username to empty value',
                     type: 'danger'
                 });
             } else {
-                userService.updateUser(nameTemp, u).then(
+                userService.updateUser(nameTemp, input).then(
                     //success callback
                     function (resp) {
                         if (resp.status == 'Success') {
                             for (i in $scope.userList) {
                                 if (nameTemp == $scope.userList[i].username) {
-                                    $scope.userList[i] = resp.data;
+                                    $scope.userList[i].username = input.username;
+                                    $scope.userList[i].password = input.password;
+                                    $scope.userList[i].role = input.role;
                                 }
                             }
                         }
@@ -88,16 +92,50 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
         });
     };
 
+
+    $scope.deleteUser = function (u) {
+        $log.warn('delete', u);
+        var modalInstance = $uibModal.open({
+            templateUrl: 'userDelete.html',
+            controller: 'UserDeleteModalCtrl',
+            size: 'md',
+            resolve: {
+                user: function () {
+                    return u;
+                }
+            }
+        });
+        //on modal completion
+        modalInstance.result.then(function (u) {
+                $log.warn('Deleted', u);
+                userService.deleteUser(u.username).then(function (response) {
+                    for (i in $scope.userList) {
+                        if (u.name == $scope.userList[i].username) {
+                            $scope.userList.splice(i, 1)
+                        }
+                    }
+                })
+            },
+            function (response) {
+                $scope.alerts.push({
+                    msg: 'Problem communicating',
+                    type: 'danger'
+                })
+                $log.error('Failure')
+            });
+    };
 });
 
-//controller for an instance of ViewQueryModal
-users.controller('UpdateUserModalCtrl', function ($scope, $uibModalInstance, $log, user, userService) {
+//controller for an instance of UpdateUserModal
+users.controller('UpdateUserModalCtrl', function ($scope, $uibModalInstance, $log, user) {
     $scope.user = user;
     //gets input from user
     $scope.input = {
         username: user.username,
         password: user.password,
-        role: user.role
+        role: {
+            roleID: $scope.user.role
+        }
     };
     //complete modal
     $scope.complete = function () {
@@ -107,19 +145,16 @@ users.controller('UpdateUserModalCtrl', function ($scope, $uibModalInstance, $lo
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
-    //run the query
-    $scope.updateUser = function () {
-        var newUser = $scope.user;
-        userService.updateUser(newUser).then(function (response) {
-                $scope.tableResult = response;
-                $scope.progressType = 'success';
-            }, //failure to connect
-            function (data) {
-                $scope.alerts.push({
-                    msg: "Update User Failed",
-                    type: 'danger'
-                });
-                $log.error('Failed to connect to server');
-            });
+});
+//controller for instance of UserDeleteModal
+users.controller('UserDeleteModalCtrl', function ($scope, $uibModalInstance, $log, user) {
+    $scope.user = user;
+    //complete modal
+    $scope.delete = function () {
+        $uibModalInstance.close(user);
+    };
+    //dismiss modal
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
     };
 });

@@ -1,9 +1,10 @@
 <div ng-include="'/views/navbar.html'"></div>
+
 <!-- Page Content -->
 <div class="container-fluid">
     <div class="col-md-3 panel panel-default" id="controls">
         <div class="panel-body">
-            <button class="btn btn-warning" ng-click="add()"><span class="glyphicon glyphicon-plus"></span> Add Tag</button>
+            <button class="btn btn-primary" ng-click="add()"><span class="glyphicon glyphicon-plus"></span> Add Tag</button>
             <hr>
             <div id="custom-search-input">
                 <input type="text" size="30" ng-model="query.name" placeholder="Search" uib-typeahead="t.name for t in tags | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>

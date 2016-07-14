@@ -3,9 +3,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-6">
-            <input type="text" ng-model="searchText" uib-typeahead="issue.subject for issue in issues | filter:$viewValue | limitTo:8" class="form-control" placeholder="Search Issues">
-        </div>
-
+            <input type="text" ng-model="searchText" uib-typeahead="issue.subject for issue in issues | filter:$viewValue | limitTo:8" class="form-control" placeholder="Search Issues"> </div>
         <button id="addIssueBtn" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-plus"></span>
             <wbr>Open New Issue</button>
         <button id="addIssueBtn" class="btn btn-default pull-right"><span class="glyphicon glyphicon-refresh"></span>
@@ -16,17 +14,13 @@
         <ul class="list-group issue">
             <li class="list-group-item" ng-click="openThread()" ng-repeat="issue in issues | filter: searchText">
                 <div class="row">
-                    <div align="center" class="openIcon pull-left">
-                        <span ng-class="openStyle(issue)" uib-tooltip="{{openTooltip(issue)}}"></span>
-                    </div>
+                    <div align="center" class="openIcon pull-left"> <span ng-class="openStyle(issue)" uib-tooltip="{{openTooltip(issue)}}"></span> </div>
                     <div class="issueText pull-left">
                         <h4 class="issueHeading"><a>{{issue.subject}}</a></h4>
                         <p><small>Opened on {{issue.createDate.toUTCString()}} by </small><span ng-class="roleStyle(issue)">{{issue.opener.username}}</span></p>
                     </div>
-                    <div class="pull-right commentCount">
-                        <span class="glyphicon glyphicon-comment"></span>
-                        <wbr>{{issue.numComments}}
-                    </div>
+                    <div class="pull-right commentCount"> <span class="glyphicon glyphicon-comment"></span>
+                        <wbr>{{issue.numComments}} </div>
                 </div>
             </li>
         </ul>

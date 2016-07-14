@@ -14,6 +14,7 @@
     margin: .25em;
     padding: 1em;
     list-style-type: none;
+    background-color: #8A8A8A !important;
 }
 
 #list_item button {
