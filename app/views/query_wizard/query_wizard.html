@@ -1,6 +1,7 @@
 <!-- Query Wizard Modal Template -->
 <div class="query-wizard-header">
-    <div class="modal-header">
+    <!-- Regular modal header -->
+    <div class="modal-header" ng-show="!shouldShowNotifyDevsForm">
         <div class="row">
             <div class="col-xs-11">
                 <h3 class="modal-title inline">Query Wizard</h3>
@@ -10,6 +11,17 @@
             </div>
         </div>
         <uib-progressbar max="maxSteps" value="step" type="{{progressType}}">{{step}} / {{maxSteps}}</uib-progressbar>
+    </div>
+    <!-- Submit problem to devs modal header -->
+    <div class="modal-header" ng-show="shouldShowNotifyDevsForm">
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title inline">Report a Problem</h3>
+                <div class="col-xs-1">
+                    <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!-- First step of modal -->
@@ -111,8 +123,9 @@
     </div>
 </div>
 <!-- Fifth step of modal -->
-<div ng-show="step==5">
-    <div class="modal-body">
+<div ng-show="step==5 && !shouldShowNotifyDevsForm">
+    <!-- normal modal body -->
+    <div class="modal-body" ng-show="noProblem">
         <h4>Preview of Results <small>after running Constructed Query</small></h4>
         <p><em>Note: Preview will only show up to 100 results.</em></p> <img id="loadingIcon" src="../../resources/rolling_loader.svg" ng-show="loadingPreview">
         <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
@@ -128,10 +141,16 @@
             </table>
         </div>
     </div>
+    <!-- modal body when error -->
+    <div class="modal-body" ng-show="!noProblem">
+        <h4>No Results </h4>
+        <p ng-show="connectionFailed"> Failed to connect </p>
+    </div>
     <div class="modal-footer">
         <button class="btn btn-warning pull-left" type="button" ng-click="previous()" ng-disabled="loadingPreview">Back</button>
         <button class="btn btn-info pull-left" type="button" ng-click="isCollapsed=! isCollapsed" ng-disabled="loadingPreview">Save Query</button>
-        <button class="btn btn-success" type="button" ng-click="download=! download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table">Download</button>
+        <button class="btn btn-success" type="button" ng-click="download=! download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table" ng-show="noProblem">Download</button>
+        <button class="btn btn-success" type="button" ng-click="showNotifyDevsForm()" ng-show="!showProblem">Contact Developers</button>
         <div uib-collapse="isCollapsed">
             <hr>
             <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
@@ -166,5 +185,23 @@
                 </form>
             </div>
         </div>
+    </div>
+</div>
+<div ng-show="shouldShowNotifyDevsForm">
+    <div class="modal-body">
+        <p>Here you can notify your developers that you are having a problem using Cliffhanger or joining datasets. This opens a discussion board where you and a developer can comment back and forth about the problem. This discussion board will remain open until the problem is resolved. </p>
+        <form name="notifyDevsForm">
+            <div class="form-group">
+                <label for="subject">Subject </label>
+                <textarea class="form-control" rows="2" name="subject" id="problemSubject" ng-model="newProblemInput.subject">
+            </div>
+            <div class="form-group">
+                <label for="datasetDesc">Message </label>
+                <textarea class="form-control" rows="8" id="problemMessage" ng-model="newProblemInput.message">
+            </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning pull-left" type="button" ng-click="hideNotifyDevsForm()">Cancel</button>
+        <button class="btn btn-success" type="button" ng-click="reportProblem()">Send to Developers</button>
     </div>
 </div>

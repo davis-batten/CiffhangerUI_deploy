@@ -1,6 +1,6 @@
 'use strict';
 var query_wizard = angular.module('cliffhanger.query_wizard', ['ngRoute', 'ngSanitize', 'ngCsv']);
-query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets, queryService) {
+query_wizard.controller('QueryWizardCtrl', function ($scope, $rootscope, $uibModalInstance, $log, datasets, queryService) {
     $scope.query = {}; //container for query
     $scope.alerts = [];
     $scope.dataTypeCheck = [];
@@ -22,6 +22,15 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     $scope.alreadyUsedDatasets = [];
     $scope.alreadyUsedTags = [];
     $scope.numJoins = 0;
+    $scope.noProblem = true;
+    $scope.connectionFailed = false;
+    $scope.newProblemInput = {
+        subject: '',
+        message: '',
+        username: $rootScope.user.username
+    }
+    $scope.showCreateIssue = false;
+
     //method responsible for handling changes due to checkboxes
     //d -> item selected/deselected
     //selections -> array to add/remove item
@@ -89,6 +98,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             $scope.runQuery();
         }
     };
+    
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
@@ -109,6 +119,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             $scope.tableResult = null;
         }
     };
+    
     $scope.archiveDatasets = function () {
         for (var i = 0; i < $scope.selectedDatasets.length; i++) {
             if ($scope.alreadyUsedDatasets.indexOf($scope.selectedDatasets[i]) == -1) {
@@ -243,10 +254,10 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
                 $scope.loadingPreview = false;
                 $scope.progressType = 'danger';
                 $scope.runQueryError = true;
-                $scope.alerts.push({
-                    msg: "Run Query Failed",
-                    type: 'danger'
-                });
+                $scope.noProblem = false;
+                $scope.connectionFailed = true;
+                $scope.newProblemInput.message = "Cliffhanger Report: HTTP call during method runQuery() in QueryService.js was not status 200. There is likely a problem with the REST service or Hive. \n Query used: "+ query;
+
                 $log.error('Failed to connect to server');
             });
     };
@@ -268,4 +279,17 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
         $scope.numJoins++;
         $log.debug('dataset', $scope.selectedDatasets);
     };
+
+    $scope.showNotifyDevsForm = function () {
+        $scope.shouldShowNotifyDevsForm = true;
+    };
+    
+    $scope.hideNotifyDevsForm = function () {
+        $scope.shouldShowNotifyDevsForm = false;
+    };
+    
+    $scope.reportProblem = function () {
+        // TODO
+    };
+    
 });

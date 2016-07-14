@@ -2,20 +2,22 @@
 }
 
 .matrix-header {
-    background-color: darkgray !important;
+    background-color: lightgrey !important;
     border: 1px solid white !important;
-
+    color: black;
+    font-style: normal;
 }
 
 .matrix-row-header {
     background-color: whitesmoke !important;
     border: 1px solid white !important;
-
+    color: black;
 }
 
 .matrix-match-cell {
     background-color: palegreen !important;
     border: 1px solid white !important;
+    color: black;
 }
 
 .matrix-no-match-cell {
