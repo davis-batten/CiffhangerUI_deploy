@@ -4,8 +4,18 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
         controller: 'IssueCtrl',
         activetab: 'messageboard'
     });
-}]).controller('IssueCtrl', function ($rootScope, $log, $scope, $q) {
+}]).controller('IssueCtrl', function ($rootScope, $log, $scope, $q, issueService) {
 
+    //list of alerts
+    $scope.alerts = [];
+
+    $scope.closeAlert = function (index) {
+        $scope.alerts.splice(index, 1);
+    };
+
+    //TODO load issue/comment data
+
+    //test issue data
     $scope.issue = {
         subject: "Can't load table testHiveTable",
         opener: {
@@ -15,9 +25,10 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
             }
         },
         createDate: new Date(),
-        open: false
+        open: true
     }
 
+    //test comment data
     $scope.comments = [
         {
             commentBy: {
@@ -81,6 +92,93 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
         if (user.role.roleID == "DEVELOPER") return "text-success";
         else if (user.role.roleID == "ANALYST") return "text-primary";
         else return "text-muted";
+    }
+
+    //open the issue
+    $scope.openIssue = function () {
+        //TODO
+        $scope.issue.open = true; //for testing only
+        issueService.openIssue().then(
+            //success
+            function (response) {
+                if (response.status == 'Success') {
+                    //reload issue
+                }
+                //error
+                else {
+                    $scope.alerts.push({
+                        msg: response.data,
+                        type: "danger"
+                    });
+                }
+            },
+            //error
+            function (error) {
+                $scope.alerts.push({
+                    msg: "Failed to connect to server.",
+                    type: "danger"
+                });
+            });
+    }
+
+    //close the issue
+    $scope.closeIssue = function () {
+        //TODO
+        $scope.issue.open = false; //for testing only
+        issueService.closeIssue().then(
+            //success
+            function (response) {
+                if (response.status == 'Success') {
+                    //reload issue
+                }
+                //error
+                else {
+                    $scope.alerts.push({
+                        msg: response.data,
+                        type: "danger"
+                    });
+                }
+            },
+            //error
+            function (error) {
+                $scope.alerts.push({
+                    msg: "Failed to connect to server.",
+                    type: "danger"
+                });
+            });
+    }
+
+    //post a new comment
+    $scope.postComment = function () {
+        //TODO
+        var comment = {
+            commentBy: $rootScope.user,
+            body: $scope.newComment,
+            createDate: new Date(),
+        }
+
+        $scope.comments.push(comment); //for testing only
+        issueService.postComment(comment).then(
+            //success
+            function (response) {
+                if (response.status == 'Success') {
+                    //reload comments
+                }
+                //error
+                else {
+                    $scope.alerts.push({
+                        msg: response.data,
+                        type: "danger"
+                    });
+                }
+            },
+            //error
+            function (error) {
+                $scope.alerts.push({
+                    msg: "Failed to connect to server.",
+                    type: "danger"
+                });
+            });
     }
 
 });

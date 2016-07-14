@@ -4,7 +4,14 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
         controller: 'MessageBoardCtrl',
         activetab: 'messageboard'
     });
-}]).controller('MessageBoardCtrl', function ($rootScope, $log, $scope, $q, $location) {
+}]).controller('MessageBoardCtrl', function ($rootScope, $log, $scope, $q, $location, issueService) {
+
+    //list of alerts
+    $scope.alerts = [];
+
+    $scope.closeAlert = function (index) {
+        $scope.alerts.splice(index, 1);
+    };
 
     $scope.issues = [
         {
@@ -17,7 +24,7 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
             },
             numComments: 5,
             createDate: new Date(),
-            open: false
+            open: open
         },
         {
             subject: "Can't change username",
@@ -29,7 +36,7 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
             },
             numComments: 1,
             createDate: new Date(),
-            open: true
+            open: false
         },
         {
             subject: "No results for a join query",
@@ -44,6 +51,31 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
             open: true
         }
     ]
+
+    $scope.loadIssues = function () {
+        issueService.getAllIssues().then(
+            //success
+            function (response) {
+                if (response.status == 'Success') {
+                    $scope.issues = response.data;
+                }
+                //error
+                else {
+                    $scope.alerts.push({
+                        msg: response.data,
+                        type: "danger"
+                    });
+                }
+            },
+            //error
+            function (error) {
+                $scope.alerts.push({
+                    msg: "Failed to connect to server.",
+                    type: "danger"
+                });
+            }
+        )
+    }
 
     $scope.roleStyle = function (issue) {
         var role = issue.opener.role.roleID;
