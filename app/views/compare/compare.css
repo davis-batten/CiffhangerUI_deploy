@@ -1,19 +1,35 @@
+.btn-default {
+    background-color: whitesmoke !important;
+}
+
+tags-input {
+    background-color: whitesmoke !important;
+}
+
+tags-input .tags {
+    background-color: whitesmoke !important;
+}
+
+.input {
+    background-color: whitesmoke !important;
+}
+
 .matrix {
     border: none !important;
 }
 
 .matrix-header {
-    background-color: darkgray !important;
+    background-color: #c7c7c7 !important;
     border-right: 1px solid white !important;
-    border-top: none !important;
-    border-bottom: none !important;
+    border-bottom: 1px solid white !important;
 }
 
 .matrix-row-header {
     background-color: whitesmoke !important;
     border-right: 1px solid white !important;
+    border-left: 1px solid white !important;
     border-top: none !important;
-    border-bottom: none !important;
+    border-bottom: 1px solid white !important;
 }
 
 .matrix-match-cell {
