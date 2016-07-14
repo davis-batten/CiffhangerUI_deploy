@@ -182,13 +182,14 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
     };
 });
 //controller for an instance of AddDatasetModal
-datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalInstance, $log, tagService) {
+datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalInstance, $log, tagService, $rootScope) {
     $scope.step = 1; //what step is the modal on
     $scope.input = { //what is the input from the user
         name: "",
         description: "",
         db_table_name: "",
-        attributes: []
+        attributes: [],
+        createdBy: $rootScope.user.username
     };
     $scope.newAttribute = {
         col_name: "",

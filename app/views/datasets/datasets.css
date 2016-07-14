@@ -6,10 +6,13 @@
     clear: both;
     height: 4em;*/
     font-size: 1em;
+    color: white;
     cursor: pointer;
+    background-color: #8A8A8A !important;
 }
 
 #dataset_item:hover {
+    color: #696969 !important;
     border-color: #B9E0A5 !important;
     background-color: #B9E0A5 !important;
 }
@@ -24,7 +27,7 @@
 #dataset_item label small {
     font-weight: 400;
     padding-left: .5em;
-    color: white !important;
+    color: #8A8A8A !important;
     cursor: pointer;
 }
 
