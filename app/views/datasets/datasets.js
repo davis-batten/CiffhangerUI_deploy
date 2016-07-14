@@ -1,12 +1,16 @@
 angular.module('cliffhanger.datasets', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/developer/datasets', {
         templateUrl: 'views/datasets/datasets.html',
-        controller: 'DatasetsCtrl'
+        controller: 'DatasetsCtrl',
+        activetab: 'datasets'
     });
 }]);
 var datasets = angular.module('cliffhanger.datasets');
 //main controller for dataset page
 datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService, $rootScope) {
+
+    $log.warn($rootScope);
+
     $scope.selected = [];
     $scope.showNoDatasetsMessage = false;
     $scope.alerts = []; //list of alerts to show to user

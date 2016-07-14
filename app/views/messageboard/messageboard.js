@@ -1,7 +1,8 @@
 angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/messageboard', {
         templateUrl: 'views/messageboard/messageboard.html',
-        controller: 'MessageBoardCtrl'
+        controller: 'MessageBoardCtrl',
+        activetab: 'messageboard'
     });
 }]).controller('MessageBoardCtrl', function ($rootScope, $log, $scope, $q, $location) {
 

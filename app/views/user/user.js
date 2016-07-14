@@ -1,7 +1,8 @@
 angular.module('cliffhanger.superuser', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/superuser/users', {
         templateUrl: 'views/user/user.html',
-        controller: 'UsersCtrl'
+        controller: 'UsersCtrl',
+        activetab: 'users'
     });
 }]);
 var users = angular.module('cliffhanger.superuser');
@@ -21,6 +22,7 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
         $event.stopPropagation();
         $scope.status.logoutisopen = !$scope.status.logoutisopen;
     };
+
     $scope.getAllUsers = function () {
         userService.getAllUsers().then(function (data) {
             $log.debug('response', data);
@@ -33,6 +35,7 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
         })
     };
     $scope.getAllUsers();
+
 
     //opens update user modal for user u
     $scope.updateUser = function (u) {
@@ -49,6 +52,7 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
             }
         });
         //executes changes (or carries unchanged values through)
+
         modalInstance.result.then(function (input) {
             if (input.username == "") {
                 $scope.alerts.push({
@@ -87,6 +91,7 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
             }
         });
     };
+
 
     $scope.deleteUser = function (u) {
         $log.warn('delete', u);
