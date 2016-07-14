@@ -1,25 +1,38 @@
 .matrix {
+    border: none !important;
 }
 
 .matrix-header {
     background-color: darkgray !important;
-    border: 1px solid white !important;
-
+    border-right: 1px solid white !important;
+    border-top: none !important;
+    border-bottom: none !important;
 }
 
 .matrix-row-header {
     background-color: whitesmoke !important;
-    border: 1px solid white !important;
-
+    border-right: 1px solid white !important;
+    border-top: none !important;
+    border-bottom: none !important;
 }
 
 .matrix-match-cell {
     background-color: palegreen !important;
-    border: 1px solid white !important;
+    border-right: 1px solid white !important;
+    border-bottom: 1px solid white !important;
 }
 
 .matrix-no-match-cell {
     background-color: whitesmoke !important;
-    border: 1px solid white !important;
+    border-right: 1px solid white !important;
+    border-bottom: 1px solid white !important;
+}
 
+.ui-grid-top-panel {
+    background: none !important;
+    background-color: #d9edf7 !important;
+}
+
+.ui-grid-header {
+    border: none !important;
 }

@@ -2,6 +2,8 @@
     position: fixed;
     padding: 1em;
     padding-top: 0;
+    color: white !important;
+    background-color: #8A8A8A !important;
 }
 
 #metaQueryResults {
@@ -13,6 +15,7 @@
 #list_item {
     margin: .25em;
     padding: 1em;
+    color: white !important;
     list-style-type: none;
     background-color: #8A8A8A !important;
 }
