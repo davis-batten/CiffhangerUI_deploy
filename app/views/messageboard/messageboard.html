@@ -11,10 +11,10 @@
             </div>
             <div id="navbar5" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-sup navbar-right">
-                    <li><a href="#/developer/datasets">Data Management</a></li>
-                    <li><a href="#/developer/tags">Tag Management</a></li>
+                    <li><a href="#/developer/datasets">Datasets</a></li>
+                    <li><a href="#/developer/tags">Tags</a></li>
                     <li><a href="#/analyst/compare">Compare</a></li>
-                    <li><a href="#/analyst/queries">Query Management</a></li>
+                    <li><a href="#/analyst/queries">Saved Queries</a></li>
                     <li class="active"><a href="#">Message Board</a></li>
                     <li>
                         <div class="verticalLine navbar-spacing"></div>
@@ -34,13 +34,10 @@
         <!--/.container-fluid -->
     </nav>
 </div>
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-6">
-            <input type="text" ng-model="searchText" uib-typeahead="issue.subject for issue in issues | filter:$viewValue | limitTo:8" class="form-control" placeholder="Search Issues">
-        </div>
-
+            <input type="text" ng-model="searchText" uib-typeahead="issue.subject for issue in issues | filter:$viewValue | limitTo:8" class="form-control" placeholder="Search Issues"> </div>
         <button id="addIssueBtn" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-plus"></span>
             <wbr>Open New Issue</button>
     </div>
@@ -49,17 +46,13 @@
         <ul class="list-group issue">
             <li class="list-group-item" ng-click="openThread()" ng-repeat="issue in issues | filter: searchText">
                 <div class="row">
-                    <div align="center" class="openIcon pull-left">
-                        <span ng-class="openStyle(issue)" uib-tooltip="{{openTooltip(issue)}}"></span>
-                    </div>
+                    <div align="center" class="openIcon pull-left"> <span ng-class="openStyle(issue)" uib-tooltip="{{openTooltip(issue)}}"></span> </div>
                     <div class="issueText pull-left">
                         <h4 class="issueHeading"><a>{{issue.subject}}</a></h4>
                         <p><small>Opened on {{issue.createDate.toUTCString()}} by </small><span ng-class="roleStyle(issue)">{{issue.opener.username}}</span></p>
                     </div>
-                    <div class="pull-right commentCount">
-                        <span class="glyphicon glyphicon-comment"></span>
-                        <wbr>{{issue.numComments}}
-                    </div>
+                    <div class="pull-right commentCount"> <span class="glyphicon glyphicon-comment"></span>
+                        <wbr>{{issue.numComments}} </div>
                 </div>
             </li>
         </ul>
