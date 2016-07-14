@@ -11,11 +11,11 @@
             </div>
             <div id="navbar5" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-sup navbar-right">
-                    <li class="active"><a href="#/superuser/users">User Management</a></li>
-                    <li><a href="#/developer/datasets">Data Management</a></li>
-                    <li><a href="#/developer/tags">Tag Management</a></li>
+                    <li class="active"><a href="#/superuser/users">Users</a></li>
+                    <li><a href="#/developer/datasets">Datasets</a></li>
+                    <li><a href="#/developer/tags">Tags</a></li>
                     <li><a href="#/analyst/compare">Compare</a></li>
-                    <li><a href="#/analyst/queries">Query Management</a></li>
+                    <li><a href="#/analyst/queries">Saved Queries</a></li>
                     <li><a href="#">Message Board</a></li>
                     <li>
                         <div class="verticalLine navbar-spacing"></div>
@@ -66,8 +66,7 @@
                 <br>
                 <div class="button-footer">
                     <button class="btn btn-danger" type="button" ng-click="deleteUser(u)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
-                    <button class="btn btn-info" type="button" ng-click="updateUser(u)"><span class="glyphicon glyphicon-edit"></span>
-                    </button>
+                    <button class="btn btn-info" type="button" ng-click="updateUser(u)"><span class="glyphicon glyphicon-edit"></span> </button>
                 </div>
             </div>
         </li>
@@ -93,7 +92,6 @@
         <button class="btn btn-success" type="button" ng-click="complete()">Save Changes</button>
         <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
     </div>
-</script>
 </script>
 <!-- Delete Query Modal -->
 <script type="text/ng-template" id="userDelete.html">
