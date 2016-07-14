@@ -3,8 +3,8 @@ angular.module('cliffhanger.superuser').service('userService', function ($log, $
     $rootScope.user = {}
     this.login = function (username, password) {
         var input = {
-            username: username
-            , password: password
+            username: username,
+            password: password
         }
         return $http.post($rootScope.baseUrl + '/user/login', input).then(
             //success callback
@@ -65,7 +65,7 @@ angular.module('cliffhanger.superuser').service('userService', function ($log, $
         //this service method gets an existing user from the backend
     this.getUser = function (username) {
         $log.log(JSON.stringify(username));
-        return $http.get($rootScope.baseUrl + '/user/get' + username).then(
+        return $http.get($rootScope.baseUrl + '/user/get/' + username).then(
             //success callback
             function (response) {
                 $log.info('Success!');

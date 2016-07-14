@@ -37,10 +37,9 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
             return $http.get($rootScope.baseUrl + '/dataset/list').then(function (response) { //success callback
                 $log.info(response); //list all data from response
                 if (response.data.status == 'Success') {
-                    $log.info('Successfully retrived datasets');
+                    $log.info('Successfully retrieved datasets');
                     return response.data;
-                }
-                else {
+                } else {
                     $log.warn('Failed to retrieve datasets');
                     return $q.reject(response.data);
                 }
@@ -68,8 +67,7 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
             if (response.data.status == 'Success') {
                 $log.info('Successfully deleted dataset ' + datasetName);
                 return response.data;
-            }
-            else {
+            } else {
                 $log.warn('Failed to delete ' + datasetName);
                 return $q.reject(response.data);
             }
