@@ -4,7 +4,14 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
         controller: 'MessageBoardCtrl',
         activetab: 'messageboard'
     });
-}]).controller('MessageBoardCtrl', function ($rootScope, $log, $scope, $q, $location) {
+}]).controller('MessageBoardCtrl', function ($rootScope, $log, $scope, $q, $location, issueService) {
+
+    //list of alerts
+    $scope.alerts = [];
+
+    $scope.closeAlert = function (index) {
+        $scope.alerts.splice(index, 1);
+    };
 
     $scope.issues = [
         {
@@ -45,14 +52,37 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
         }
     ]
 
-    $scope.loadIssues =
+    $scope.loadIssues = function () {
+        issueService.getAllIssues().then(
+            //success
+            function (response) {
+                if (response.status == 'Success') {
+                    $scope.issues = response.data;
+                }
+                //error
+                else {
+                    $scope.alerts.push({
+                        msg: response.data,
+                        type: "danger"
+                    });
+                }
+            },
+            //error
+            function (error) {
+                $scope.alerts.push({
+                    msg: "Failed to connect to server.",
+                    type: "danger"
+                });
+            }
+        )
+    }
 
-        $scope.roleStyle = function (issue) {
-            var role = issue.opener.role.roleID;
-            if (role == "DEVELOPER") return "label label-success";
-            else if (role == "ANALYST") return "label label-primary";
-            else return "label label-default";
-        }
+    $scope.roleStyle = function (issue) {
+        var role = issue.opener.role.roleID;
+        if (role == "DEVELOPER") return "label label-success";
+        else if (role == "ANALYST") return "label label-primary";
+        else return "label label-default";
+    }
 
     $scope.openStyle = function (issue) {
         if (issue.open) return "glyphicon glyphicon-ok-circle text-success";
