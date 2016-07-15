@@ -1,53 +1,17 @@
-<!-- Superuser Navbar -->
-<div ng-show="isSuper">
-    <nav class="navbar navbar-default navbar-sup">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <!-- Fix for small screens -->
-                <!--
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar5"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
--->
-                <a class="navbar-brand" href="#/"><img style="width: 60px;" src="resources/cliffhangerlogo-white.png" alt="Cliffhanger Logo">CLIFFHANGER</a>
-            </div>
-            <div id="navbar5" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-sup navbar-right">
-                    <li class="active"><a href="#/superuser/users">User Management</a></li>
-                    <li><a href="#/developer/datasets">Data Management</a></li>
-                    <li><a href="#/developer/tags">Tag Management</a></li>
-                    <li><a href="#/analyst/compare">Compare</a></li>
-                    <li><a href="#/analyst/queries">Query Management</a></li>
-                    <li><a href="#">Message Board</a></li>
-                    <li>
-                        <div class="verticalLine navbar-spacing"></div>
-                    </li>
-                    <li class="dropdown navbar-spacing navbar-dropdown">
-                        <div class="btn-group" uib-dropdown is-open="status.logoutisopen">
-                            <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"> {{$root.user.username}} <span class="caret"></span> </button>
-                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                                <li role="menuitem"><a href="#/" ng-click="$root.logout()">Logout</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-        <!--/.container-fluid -->
-    </nav>
-</div>
+<div ng-include="'/views/navbar.html'"></div>
 <!-- Page Content -->
 <div class="container-fluid">
     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
     <div class="row">
         <div class="col-sm-2">
-            <div class="btn-group" uib-dropdown is-open="status.sortbyisopen">
-                <button id="sortBy-button" class="btn btn-warning dropdown-toggle" type="button" uib-dropdown-toggle> Sort By <span class="caret"></span></button>
-                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="sortBy-button">
-                    <!--
-                   <li role="menuitem"><a prevent-default ng-click="setSort('dateCreated')">Date Created</a></li>
-<li role="menuitem"><a>Date Last Run</a></li>
-<li role="menuitem"><a prevent-default ng-click="setSort('name')">Name A-Z</a></li>
--->
+            <div class="btn-group" uib-dropdown is-open="status.filterbyisopen">
+                <button id="filterBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle> Filter <span class="caret"></span></button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filterBy-button">
+                   <li role="menuitem"><a prevent-default ng-click="setFilter('ANALYST')">Analysts</a></li>
+                    <li role="menuitem"><a prevent-default ng-click="setFilter('DEVELOPER')">Developers</a></li>
+                    <li role="menuitem"><a prevent-default ng-click="setFilter('ADMIN')">Admins</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li role="menuitem"><a prevent-default ng-click="setFilter(null)">All</a></li>
                 </ul>
             </div>
         </div>
@@ -59,15 +23,16 @@
     <hr>
     <div class="status-message" ng-show="showNoUsersMessage"> NO USERS </div>
     <uib-progressbar value="100" class="progress-striped active" ng-show="showProgressBar">Loading...</uib-progressbar>
-    <ul class="list-group" id="query_list">
-        <li class="list-group-item active col-md-3 col-sm-3" id="user_item" ng-repeat="u in userList | orderBy:userName | filter:user">
+    <ul class="list-group" id="user_list">
+        <li class="list-group-item col-md-3 col-sm-3" id="user_item" ng-repeat="u in userList | filter:query | orderBy:userName">
             <div id="user_item_content">
                 <label>{{u.username}}</label>
                 <br>
+                <label>{{u.role.roleID}}</label>
+                <br>
                 <div class="button-footer">
                     <button class="btn btn-danger" type="button" ng-click="deleteUser(u)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
-                    <button class="btn btn-info" type="button" ng-click="updateUser(u)"><span class="glyphicon glyphicon-edit"></span>
-                    </button>
+                    <button class="btn btn-info" type="button" ng-click="updateUser(u)"><span class="glyphicon glyphicon-edit"></span> </button>
                 </div>
             </div>
         </li>
@@ -76,7 +41,7 @@
 <!-- View Query Modal -->
 <script type="text/ng-template" id="userUpdate.html">
     <div class="modal-header">
-        <h3 class="modal-title">Edit {{user.username}}</h3> </div>
+        <h3 class="modal-title">Edit {{user.role.roleID}}{{user.username}}</h3> </div>
     <div class="modal-body">
         <div class="form-group">
             <label for="username">Username</label>
@@ -85,15 +50,14 @@
             <label for="password">Password</label>
             <input type="text" class="form-control" id="password" ng-model="input.password"> </div>
         <div class="btn-group">
-            <label class="btn btn-primary" ng-model="input.role" uib-btn-radio="'ANALYST'">Analyst</label>
-            <label class="btn btn-primary" ng-model="input.role" uib-btn-radio="'DEVELOPER'">Developer</label>
+            <label class="btn btn-primary" ng-model="input.role.roleID" uib-btn-radio="'ANALYST'">Analyst</label>
+            <label class="btn btn-primary" ng-model="input.role.roleID" uib-btn-radio="'DEVELOPER'">Developer</label>
         </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-success" type="button" ng-click="complete()">Save Changes</button>
         <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
     </div>
-</script>
 </script>
 <!-- Delete Query Modal -->
 <script type="text/ng-template" id="userDelete.html">

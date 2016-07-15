@@ -1,0 +1,22 @@
+#issueDetails {
+    display: inline-block;
+    font-size: 1em;
+}
+
+.openLabel {
+    display: inline-block;
+    margin: 0;
+}
+
+.comment {
+    margin: 1.5em;
+}
+
+.closeText {
+    margin-left: 1.5em;
+    font-size: 1.2em;
+}
+
+#commentForm {
+    margin: 1.5em;
+}

@@ -1,83 +1,9 @@
-<div ng-hide="isSuper">
-    <nav class="navbar navbar-default navbar-an">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <!-- Fix for small screens -->
-                <!--
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar5"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
--->
-                <a class="navbar-brand" href="#/" ng-click="$root.logout()"><img style="width: 60px;" src="resources/cliffhangerlogo-white.png" alt="Cliffhanger Logo">CLIFFHANGER</a>
-            </div>
-            <div id="navbar5" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-an navbar-right">
-                    <li class="active"><a href="#/analyst/compare">Compare</a></li>
-                    <li><a href="#/analyst/queries">Query Management</a></li>
-                    <li><a href="#">Message Board</a></li>
-                    <li>
-                        <div class="verticalLine navbar-spacing"></div>
-                    </li>
-                    <li class="dropdown navbar-spacing navbar-dropdown">
-                        <div class="btn-group" uib-dropdown is-open="status.isopen">
-                            <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"> {{$root.user.username}} <span class="caret"></span> </button>
-                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                                <li role="menuitem"><a href="#/" ng-click="$root.logout()">Logout</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-        <!--/.container-fluid -->
-    </nav>
-</div>
-<!-- Superuser Navbar -->
-<div ng-show="isSuper" ng-hide="isAnalyst">
-    <nav class="navbar navbar-default navbar-sup">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <!-- Fix for small screens -->
-                <!--
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar5"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
--->
-                <a class="navbar-brand" href="#/"><img style="width: 60px;" src="resources/cliffhangerlogo-white.png" alt="Cliffhanger Logo">CLIFFHANGER</a>
-            </div>
-            <div id="navbar5" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-sup navbar-right">
-                    <li><a href="#/superuser/users">User Management</a></li>
-                    <li><a href="#/developer/datasets">Data Management</a></li>
-                    <li><a href="#/developer/tags">Tag Management</a></li>
-                    <li class="active"><a href="#/analyst/compare">Compare</a></li>
-                    <li><a href="#/analyst/queries">Query Management</a></li>
-                    <li><a href="#">Message Board</a></li>
-                    <li>
-                        <div class="verticalLine navbar-spacing"></div>
-                    </li>
-                    <li class="dropdown navbar-spacing navbar-dropdown">
-                        <div class="btn-group" uib-dropdown is-open="status.isopen">
-                            <button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled"> {{$root.user.username}} <span class="caret"></span> </button>
-                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                                <li role="menuitem"><a href="#/" ng-click="$root.logout()">Logout</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-        <!--/.container-fluid -->
-    </nav>
-</div>
 <!-- Page Content -->
+<div ng-include="'/views/navbar.html'"></div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6">
             <h4>Datasets</h4>
-            <tags-input ng-model="selectedDatasets" on-tag-added="selectDataset($tag)" on-tag-removed="deselectDataset($tag)" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Click to add datasets to selection">
-                <auto-complete source="filterDatasets($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true" max-results-to-show="1000"></auto-complete>
-            </tags-input>
-            <p ng-show="noDatasetResults">No Results</p>
-            <br>
             <div class="btn-toolbar">
                 <div class="btn-group">
                     <button class="btn btn-default btn-sm" ng-click="selectAllDatasets()">Select All</button>
@@ -85,14 +11,14 @@
                 </div>
                 <button class="btn btn-default btn-sm" ng-click="selectRelevantDatasets()" ng-show="selectedTags.length" uib-tooltip="Select all Datasets that have at least one of the selected Tags">Select Relevant</button>
             </div>
-        </div>
+            <br>
+            <tags-input ng-model="selectedDatasets" on-tag-added="selectDataset($tag)" on-tag-removed="deselectDataset($tag)" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Click to add datasets to selection">
+                <auto-complete source="filterDatasets($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true" max-results-to-show="1000"></auto-complete>
+            </tags-input>
+            <p ng-show="noDatasetResults">No Results</p>
+            <br> </div>
         <div class="col-md-6">
             <h4>Tags</h4>
-            <tags-input ng-model="selectedTags" on-tag-added="showTag($tag)" on-tag-removed="hideTag($tag)" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Click to add tags to selection">
-                <auto-complete source="filterTags($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true" max-results-to-show="1000"></auto-complete>
-            </tags-input>
-            <p ng-show="noTagResults">No Results</p>
-            <br>
             <div class="btn-toolbar">
                 <div class="btn-group">
                     <button class="btn btn-default btn-sm" ng-click="selectAllTags()">Select All</button>
@@ -102,14 +28,19 @@
                 <button class="btn btn-default btn-sm" ng-click="removeUntagged()" ng-show="untagged">Hide Untagged Attributes</button>
                 <button class="btn btn-default btn-sm" ng-click="selectRelevantTags()" ng-show="selectedDatasets.length" uib-tooltip="Select all Tags that are in at least one of the selected Datasets">Select Relevant</button>
             </div>
-        </div>
+            <br>
+            <tags-input ng-model="selectedTags" on-tag-added="showTag($tag)" on-tag-removed="hideTag($tag)" add-from-autocomplete-only="true" display-property="name" spellcheck="false" placeholder="Click to add tags to selection">
+                <auto-complete source="filterTags($query)" min-length="1" display-property="name" load-on-focus="true" load-on-empty="true" max-results-to-show="1000"></auto-complete>
+            </tags-input>
+            <p ng-show="noTagResults">No Results</p>
+            <br> </div>
     </div>
     <hr>
-    <div id="matrix_container">
-        <div id="compare_matrix" ui-grid="matrix" class="matrix" ui-grid-pinning></div>
+    <div class="btn-group-center">
+        <button class="btn btn-success" ng-click="openQueryWizard()" uib-tooltip="Combine data to create a custom table" ng-hide="selectedDatasets.length < 1">Build Custom Table</button>
     </div>
     <br>
-    <div class="btn-group-center">
-        <button class="btn btn-success" ng-click="openQueryWizard()" uib-tooltip="Combine data to create a custom table">Build Custom Table</button>
+    <div id="matrix_container">
+        <div id="compare_matrix" ui-grid="matrix" class="matrix" ui-grid-pinning ng-hide="selectedTags.length < 1 && selectedDatasets.length < 1"></div>
     </div>
 </div>

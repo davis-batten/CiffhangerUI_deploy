@@ -2,6 +2,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
     $routeProvider.when('/analyst/compare', {
         templateUrl: 'views/compare/compare.html'
         , controller: 'CompareCtrl'
+        , activetab: 'compare'
     });
 }]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, $rootScope) {
     $scope.allTagsSelected = false; //are all the tags selected?s
@@ -16,7 +17,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
                 name: 'datasetName'
                 , displayName: 'Dataset'
                 , field: 'datasetName'
-                , eneablePinning: true
+                , enablePinning: true
                 , pinnedLeft: true
                 , width: 200
                 , enableColumnMenu: false
@@ -106,7 +107,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
                     name: 'datasetName'
                     , displayName: 'Dataset'
                     , field: 'datasetName'
-                    , eneablePinning: true
+                    , enablePinning: true
                     , pinnedLeft: true
                     , width: 200
                     , enableColumnMenu: false

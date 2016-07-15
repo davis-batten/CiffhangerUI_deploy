@@ -1,7 +1,8 @@
 angular.module('cliffhanger.superuser', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/superuser/users', {
-        templateUrl: 'views/user/user.html'
-        , controller: 'UsersCtrl'
+        templateUrl: 'views/user/user.html',
+        controller: 'UsersCtrl',
+        activetab: 'users'
     });
 }]);
 var users = angular.module('cliffhanger.superuser');
@@ -21,14 +22,26 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
         $event.stopPropagation();
         $scope.status.logoutisopen = !$scope.status.logoutisopen;
     };
+    //for filter dropdown
+    $scope.toggleFilterDropdown = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.status.filterbyisopen = !$scope.status.filterbyisopen;
+    };
+    //for filter
+    $scope.setFilter = function (userRole) {
+        if (userRole != null){
+            $scope.query = {role:{roleID:userRole}};
+        }
+        else $scope.query = '';
+    }
     $scope.getAllUsers = function () {
         userService.getAllUsers().then(function (data) {
             $log.debug('response', data);
             if (data.status == 'Success') {
                 $log.debug('data obj', data.data);
                 $scope.userList = eval(data.data);
-            }
-            else {
+            } else {
                 $scope.userList = [];
             }
         })
@@ -39,11 +52,11 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
         $log.log(u);
         var nameTemp = u.username;
         var modalInstance = $uibModal.open({
-            templateUrl: 'userUpdate.html'
-            , controller: 'UpdateUserModalCtrl'
-            , size: 'lg'
-            , resolve: {
-                dataset: function () {
+            templateUrl: 'userUpdate.html',
+            controller: 'UpdateUserModalCtrl',
+            size: 'lg',
+            resolve: {
+                user: function () {
                     return u;
                 }
             }
@@ -52,11 +65,10 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
         modalInstance.result.then(function (input) {
             if (input.username == "") {
                 $scope.alerts.push({
-                    msg: 'Cannot update username to empty value'
-                    , type: 'danger'
+                    msg: 'Cannot update username to empty value',
+                    type: 'danger'
                 });
-            }
-            else {
+            } else {
                 userService.updateUser(nameTemp, input).then(
                     //success callback
                     function (resp) {
@@ -73,20 +85,51 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
                         else {
                             $log.warn("Failed to update");
                             $scope.alerts.push({
-                                msg: 'Failed to update user on backend'
-                                , type: 'danger'
+                                msg: 'Failed to update user on backend',
+                                type: 'danger'
                             });
                         }
                     }, //error callback
                     function () {
                         $log.error("Failed to connect");
                         $scope.alerts.push({
-                            msg: 'Failed to connect'
-                            , type: 'danger'
+                            msg: 'Failed to connect',
+                            type: 'danger'
                         });
                     });
             }
         });
+    };
+    $scope.deleteUser = function (u) {
+        $log.warn('delete', u);
+        var modalInstance = $uibModal.open({
+            templateUrl: 'userDelete.html',
+            controller: 'UserDeleteModalCtrl',
+            size: 'md',
+            resolve: {
+                user: function () {
+                    return u;
+                }
+            }
+        });
+        //on modal completion
+        modalInstance.result.then(function (u) {
+                $log.warn('Deleted', u);
+                userService.deleteUser(u.username).then(function (response) {
+                    for (i in $scope.userList) {
+                        if (u.name == $scope.userList[i].username) {
+                            $scope.userList.splice(i, 1)
+                        }
+                    }
+                })
+            },
+            function (response) {
+                $scope.alerts.push({
+                    msg: 'Problem communicating',
+                    type: 'danger'
+                })
+                $log.error('Failure')
+            });
     };
 });
 //controller for an instance of UpdateUserModal
@@ -94,13 +137,27 @@ users.controller('UpdateUserModalCtrl', function ($scope, $uibModalInstance, $lo
     $scope.user = user;
     //gets input from user
     $scope.input = {
-        username: user.username
-        , password: user.password
-        , role: user.role
+        username: user.username,
+        password: user.password,
+        role: {
+            roleID: $scope.user.role
+        }
     };
     //complete modal
     $scope.complete = function () {
         $uibModalInstance.close($scope.input);
+    };
+    //dismiss modal
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
+//controller for instance of UserDeleteModal
+users.controller('UserDeleteModalCtrl', function ($scope, $uibModalInstance, $log, user) {
+    $scope.user = user;
+    //complete modal
+    $scope.delete = function () {
+        $uibModalInstance.close(user);
     };
     //dismiss modal
     $scope.cancel = function () {

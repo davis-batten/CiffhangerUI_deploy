@@ -2,6 +2,9 @@
     position: fixed;
     padding: 1em;
     padding-top: 0;
+    color: white !important;
+    background-color: #B9E0A5 !important;
+    border: none !important;
 }
 
 #metaQueryResults {
@@ -13,7 +16,10 @@
 #list_item {
     margin: .25em;
     padding: 1em;
+    color: #696969 !important;
     list-style-type: none;
+    background-color: #B9E0A5 !important;
+    border: none !important;
 }
 
 #list_item button {

@@ -25,6 +25,8 @@ h3 small {
     font-size: 1em;
     height: 16em;
     border: 0.75em solid #d9edf7;
+    color: #696969;
+    background-color: #A9C4EB !important;
 }
 
 #query_item label {
