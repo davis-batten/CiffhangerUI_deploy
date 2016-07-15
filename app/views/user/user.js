@@ -22,7 +22,19 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
         $event.stopPropagation();
         $scope.status.logoutisopen = !$scope.status.logoutisopen;
     };
-
+    //for filter dropdown
+    $scope.toggleFilterDropdown = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.status.filterbyisopen = !$scope.status.filterbyisopen;
+    };
+    //for filter
+    $scope.setFilter = function (userRole) {
+        if (userRole != null){
+            $scope.query = {role:{roleID:userRole}};
+        }
+        else $scope.query = '';
+    }
     $scope.getAllUsers = function () {
         userService.getAllUsers().then(function (data) {
             $log.debug('response', data);

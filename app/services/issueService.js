@@ -34,10 +34,15 @@ angular.module('cliffhanger.issue').service('issueService', function ($log, $htt
             });
     }
 
-    //(re)open an issue
-    this.openIssue = function () {
+    //toggle open/close an issue
+    this.toggleOpen = function (threadId, closerUsername) {
         //TODO
-        return $http.get(baseUrl + '/discussionThread/open').then(
+        var closer = {
+            closer: closerUsername
+        }
+
+        $log.info('closer', closer);
+        return $http.put(baseUrl + '/discussionThread/toggleOpen/' + threadId, closer).then(
             //success callback
             function (response) {
                 $log.debug(response);
@@ -50,21 +55,6 @@ angular.module('cliffhanger.issue').service('issueService', function ($log, $htt
             });
     }
 
-    //close an issue
-    this.closeIssue = function () {
-        //TODO
-        return $http.get(baseUrl + '/discussionThread/close').then(
-            //success callback
-            function (response) {
-                $log.debug(response);
-                return response.data;
-            },
-            //error callback
-            function (response) {
-                $log.error(response);
-                return $q.reject(response.data);
-            });
-    }
 
     //post a new comment
     this.postComment = function (newComment) {
@@ -83,9 +73,9 @@ angular.module('cliffhanger.issue').service('issueService', function ($log, $htt
     }
 
     //fetch all comments for an issue
-    this.getComments = function (issue) {
+    this.getComments = function (threadId) {
 
-        return $http.get(baseUrl + '/comment/getAllByThreadId/' + issue.threadId).then(
+        return $http.get(baseUrl + '/comment/getAllByThreadId/' + threadId).then(
             //success callback
             function (response) {
                 $log.debug(response);

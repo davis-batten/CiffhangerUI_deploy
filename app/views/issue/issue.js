@@ -1,10 +1,10 @@
 angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/issue', {
+    $routeProvider.when('/issue/:threadId', {
         templateUrl: 'views/issue/issue.html',
         controller: 'IssueCtrl',
         activetab: 'messageboard'
     });
-}]).controller('IssueCtrl', function ($rootScope, $log, $scope, $q, issueService) {
+}]).controller('IssueCtrl', function ($rootScope, $log, $scope, $q, issueService, $routeParams) {
 
     //list of alerts
     $scope.alerts = [];
@@ -87,22 +87,16 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
         }
     ]
 
-
-    $scope.roleStyle = function (user) {
-        if (user.role.roleID == "DEVELOPER") return "text-success";
-        else if (user.role.roleID == "ANALYST") return "text-primary";
-        else return "text-muted";
-    }
-
-    //open the issue
-    $scope.openIssue = function () {
-        //TODO
-        $scope.issue.open = true; //for testing only
-        issueService.openIssue().then(
+    $scope.loadIssue = function () {
+        $log.info('user', $rootScope.user);
+        var threadId = $routeParams.threadId;
+        //load all comments by threadId
+        issueService.getComments(threadId).then(
             //success
             function (response) {
                 if (response.status == 'Success') {
-                    //reload issue
+                    $scope.comments = response.data;
+                    $scope.issue = $scope.comments[0].thread;
                 }
                 //error
                 else {
@@ -121,15 +115,24 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
             });
     }
 
-    //close the issue
-    $scope.closeIssue = function () {
-        //TODO
-        $scope.issue.open = false; //for testing only
-        issueService.closeIssue().then(
+    $scope.loadIssue();
+
+
+    $scope.roleStyle = function (user) {
+        if (user.role.roleID == "DEVELOPER") return "text-success";
+        else if (user.role.roleID == "ANALYST") return "text-primary";
+        else return "text-muted";
+    }
+
+    $scope.toggleOpen = function () {
+
+        //        $scope.issue.open = false; //for testing only
+        issueService.toggleOpen($routeParams.threadId, $rootScope.user.username).then(
             //success
             function (response) {
                 if (response.status == 'Success') {
                     //reload issue
+                    $scope.loadIssue();
                 }
                 //error
                 else {
@@ -158,7 +161,13 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
         }
 
         $scope.comments.push(comment); //for testing only
-        issueService.postComment(comment).then(
+
+        var newComment = {
+            threadId: $routeParams.threadId,
+            body: $scope.newComment,
+            userId: $rootScope.user.username
+        }
+        issueService.postComment(newComment).then(
             //success
             function (response) {
                 if (response.status == 'Success') {
