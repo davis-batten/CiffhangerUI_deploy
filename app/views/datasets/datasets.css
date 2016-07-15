@@ -24,8 +24,12 @@
 #dataset_item label small {
     font-weight: 400;
     padding-left: .5em;
-    color: white !important;
+    color: white;
     cursor: pointer;
+}
+
+#dataset_item:hover label small {
+    color: black !important
 }
 
 #dataset_item button {

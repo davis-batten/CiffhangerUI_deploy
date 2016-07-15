@@ -1,5 +1,5 @@
-//service for dealing with Meta-Types on the Grails backend using REST API
-angular.module('cliffhanger.superuser').service('userService', function ($log, $http, $rootScope, $q) {
+//service for dealing with users on the Grails backend using REST API
+angular.module('cliffhanger.users').service('userService', function ($log, $http, $rootScope, $q) {
     $rootScope.user = {}
     this.login = function (username, password) {
         var input = {

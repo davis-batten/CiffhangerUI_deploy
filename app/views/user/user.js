@@ -110,7 +110,7 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
                 $log.warn('Deleted', u);
                 userService.deleteUser(u.username).then(function (response) {
                     for (i in $scope.userList) {
-                        if (u.name == $scope.userList[i].username) {
+                        if (u.username == $scope.userList[i].username) {
                             $scope.userList.splice(i, 1)
                         }
                     }
