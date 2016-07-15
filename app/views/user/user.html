@@ -4,14 +4,14 @@
     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
     <div class="row">
         <div class="col-sm-2">
-            <div class="btn-group" uib-dropdown is-open="status.sortbyisopen">
-                <button id="sortBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle> Sort By <span class="caret"></span></button>
-                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="sortBy-button">
-                    <!--
-                   <li role="menuitem"><a prevent-default ng-click="setSort('dateCreated')">Date Created</a></li>
-<li role="menuitem"><a>Date Last Run</a></li>
-<li role="menuitem"><a prevent-default ng-click="setSort('name')">Name A-Z</a></li>
--->
+            <div class="btn-group" uib-dropdown is-open="status.filterbyisopen">
+                <button id="filterBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle> Filter <span class="caret"></span></button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filterBy-button">
+                   <li role="menuitem"><a prevent-default ng-click="setFilter('ANALYST')">Analysts</a></li>
+                    <li role="menuitem"><a prevent-default ng-click="setFilter('DEVELOPER')">Developers</a></li>
+                    <li role="menuitem"><a prevent-default ng-click="setFilter('ADMIN')">Admins</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li role="menuitem"><a prevent-default ng-click="setFilter(null)">All</a></li>
                 </ul>
             </div>
         </div>
@@ -24,7 +24,7 @@
     <div class="status-message" ng-show="showNoUsersMessage"> NO USERS </div>
     <uib-progressbar value="100" class="progress-striped active" ng-show="showProgressBar">Loading...</uib-progressbar>
     <ul class="list-group" id="user_list">
-        <li class="list-group-item col-md-2 col-sm-2" id="user_item" ng-repeat="u in userList | orderBy:userName">
+        <li class="list-group-item col-md-3 col-sm-3" id="user_item" ng-repeat="u in userList | filter:query | orderBy:userName">
             <div id="user_item_content">
                 <label>{{u.username}}</label>
                 <br>
