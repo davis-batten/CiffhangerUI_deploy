@@ -35,23 +35,39 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     $scope.setSort = function (sort) {
         $scope.propertyName = sort;
     };
-    $scope.getAllQueries = function () {
-        queryService.getAllQueries().then(function (data) {
-            $log.debug('response', data);
-            if (data.status == 'Success') {
-                $log.debug('data obj', data.data);
-                $scope.queryList = eval(data.data);
-                /*
-                if ($scope.queries.length > 1) {
-                    $scope.queries = data.data.sort(ignoreCase);
-                }
-                */
-            } else {
-                $scope.queryList = [];
+
+    $scope.getQueries = function () {
+        if ($rootScope.user.role.roleID == 'ANALYST') {
+            $scope.getUserQueries = function () {
+                queryService.getUserQueries().then(function (data) {
+                    $log.debug('response', data);
+                    if (data.status == 'Success') {
+                        $log.debug('data obj', data.data);
+                        $scope.queryList = eval(data.data);
+                    } else {
+                        $scope.queryList = [];
+                    }
+                })
             }
-        })
-    };
-    $scope.getAllQueries();
+            $scope.getUserQueries();
+        } else {
+            $scope.getAllQueries = function () {
+                queryService.getAllQueries().then(function (data) {
+                    $log.debug('response', data);
+                    if (data.status == 'Success') {
+                        $log.debug('data obj', data.data);
+                        $scope.queryList = eval(data.data);
+                    } else {
+                        $scope.queryList = [];
+                    }
+                })
+            };
+            $scope.getAllQueries();
+
+        }
+    }
+    $scope.getQueries();
+
     //opens view modal
     $scope.view = function (q) {
         var modalInstance = $uibModal.open({
@@ -68,6 +84,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     //opens deleteQuery modal for query q
     $scope.deleteQuery = function (q) {
         $log.log(q);
+        var user = $rootScope.user;
         var modalInstance = $uibModal.open({
             templateUrl: 'queryDelete.html',
             controller: 'QueryDeleteModalCtrl',
@@ -79,12 +96,12 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
             }
         });
         //on modal completion
-        modalInstance.result.then(function (q) {
+        modalInstance.result.then(function (q, user) {
             $log.warn('Deleted', q);
             $scope.showProgressBar = true;
             for (i in $scope.queryList) {
                 if (q.name == $scope.queryList[i].name) {
-                    queryService.deleteQuery(q).then(function (res) {
+                    queryService.deleteQuery(q, user).then(function (res) {
                         $scope.showProgressBar = false;
                         if (res.status == 'Success') {
                             $scope.queryList.splice(i, 1);

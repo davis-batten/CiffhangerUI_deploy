@@ -1,6 +1,6 @@
 'use strict';
 var query_wizard = angular.module('cliffhanger.query_wizard', ['ngRoute', 'ngSanitize', 'ngCsv']);
-query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets, queryService) {
+query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets, queryService, $rootScope) {
     $scope.query = {}; //container for query
     $scope.alerts = [];
     $scope.dataTypeCheck = [];
