@@ -99,7 +99,6 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
 
 
     $scope.openThread = function (issue) {
-        //TODO
         $log.log(issue);
         $rootScope.issueId = issue.threadId;
         $location.path("/issue/" + issue.threadId);

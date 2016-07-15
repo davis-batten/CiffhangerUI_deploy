@@ -34,6 +34,21 @@ angular.module('cliffhanger.issue').service('issueService', function ($log, $htt
             });
     }
 
+    //get a single issue
+    this.getIssue = function (threadId) {
+        return $http.get(baseUrl + '/discussionThread/get/' + threadId).then(
+            //success callback
+            function (response) {
+                $log.debug(response);
+                return response.data;
+            },
+            //error callback
+            function (response) {
+                $log.error(response);
+                return $q.reject(response.data);
+            });
+    }
+
     //toggle open/close an issue
     this.toggleOpen = function (threadId, closerUsername) {
         //TODO

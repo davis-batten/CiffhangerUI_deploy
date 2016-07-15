@@ -2,7 +2,7 @@ describe("user service", function () {
     var userService, httpBackend, baseUrl, $q, root;
 
     beforeEach(function () {
-        angular.mock.module("cliffhanger.users");
+        angular.mock.module("cliffhanger.superuser");
         inject(function ($injector, $httpBackend) {
             userService = $injector.get("userService");
             httpBackend = $injector.get("$httpBackend");

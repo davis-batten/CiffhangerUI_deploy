@@ -1,6 +1,7 @@
 describe('cliffhanger.users module', function () {
     beforeEach(angular.mock.module('ngRoute'));
     beforeEach(angular.mock.module('cliffhanger.users'));
+    beforeEach(angular.mock.module('cliffhanger.superuser'));
 
     var scope, root, mockUserService, loginCtrl, location;
     describe('LoginCtrl', function () {
