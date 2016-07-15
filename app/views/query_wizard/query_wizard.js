@@ -1,6 +1,6 @@
 'use strict';
 var query_wizard = angular.module('cliffhanger.query_wizard', ['ngRoute', 'ngSanitize', 'ngCsv']);
-query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, $log, datasets, queryService) {
+query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibModalInstance, $log, datasets, queryService) {
     $scope.query = {}; //container for query
     $scope.alerts = [];
     $scope.dataTypeCheck = [];
@@ -22,6 +22,16 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
     $scope.alreadyUsedDatasets = [];
     $scope.alreadyUsedTags = [];
     $scope.numJoins = 0;
+    $scope.queryRanFine = true;
+    $scope.connectionFailed = false;
+    $scope.noResults = false;
+    $scope.newProblemInput = {
+        subject: '',
+        message: '',
+        username: $rootScope.user.username
+    }
+    $scope.shouldShowNotifyDevsForm = false;
+
     //method responsible for handling changes due to checkboxes
     //d -> item selected/deselected
     //selections -> array to add/remove item
@@ -89,6 +99,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             $scope.runQuery();
         }
     };
+    
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
@@ -109,6 +120,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             $scope.tableResult = null;
         }
     };
+    
     $scope.archiveDatasets = function () {
         for (var i = 0; i < $scope.selectedDatasets.length; i++) {
             if ($scope.alreadyUsedDatasets.indexOf($scope.selectedDatasets[i]) == -1) {
@@ -227,6 +239,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
             $log.debug($scope.statement);
         });
     };
+    
     $scope.runQuery = function () {
         $scope.loadingPreview = true;
         if ($scope.statement != undefined) {
@@ -236,20 +249,29 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
         }
         queryService.runQuery(query).then(function (response) { //success callback
                 $scope.loadingPreview = false;
-                $scope.tableResult = response;
-                $scope.progressType = 'success';
+                if ($scope.tableResult.rows == undefined || $scope.tableResult.rows.length == 0) {
+                    // no results
+                    $scope.progressType = 'danger';
+                    $scope.queryRanFine = false;
+                    $scope.noResults = true;
+                    $scope.newProblemInput.message = "Cliffhanger Report: Running the join query succeeded but the result table was empty. \nQuery used: "+query;
+                } else {
+                    $scope.tableResult = response;
+                    $scope.progressType = 'success';
+                } 
+
             }, //failure to connect
             function (data) {
                 $scope.loadingPreview = false;
                 $scope.progressType = 'danger';
-                $scope.runQueryError = true;
-                $scope.alerts.push({
-                    msg: "Run Query Failed",
-                    type: 'danger'
-                });
+                $scope.queryRanFine = false;
+                $scope.connectionFailed = true;
+                $scope.newProblemInput.message = "Cliffhanger Report: HTTP call during method runQuery() in QueryService.js was not status 200. There is likely a problem with the REST service or Hive. \nQuery used: "+ query;
+
                 $log.error('Failed to connect to server');
             });
     };
+    
     $scope.$watch('selectedDatasets', function () {
         if ($scope.step == 2) {
             $log.debug("load tags");
@@ -268,4 +290,17 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $uibModalInstance, 
         $scope.numJoins++;
         $log.debug('dataset', $scope.selectedDatasets);
     };
+
+    $scope.showNotifyDevsForm = function () {
+        $scope.shouldShowNotifyDevsForm = true;
+    };
+    
+    $scope.hideNotifyDevsForm = function () {
+        $scope.shouldShowNotifyDevsForm = false;
+    };
+    
+    $scope.reportProblem = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+    
 });
