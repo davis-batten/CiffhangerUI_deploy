@@ -1,8 +1,8 @@
 angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/analyst/compare', {
-        templateUrl: 'views/compare/compare.html',
-        controller: 'CompareCtrl',
-        activetab: 'compare'
+        templateUrl: 'views/compare/compare.html'
+        , controller: 'CompareCtrl'
+        , activetab: 'compare'
     });
 }]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, $rootScope) {
     $scope.allTagsSelected = false; //are all the tags selected?s
@@ -14,23 +14,23 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
     $scope.matrix = {
         columnDefs: [
             {
-                name: 'datasetName',
-                displayName: 'Dataset',
-                field: 'datasetName',
-                eneablePinning: true,
-                pinnedLeft: true,
-                width: 200,
-                enableColumnMenu: false,
-                headerCellClass: 'matrix-header',
-                cellClass: 'matrix-row-header'
+                name: 'datasetName'
+                , displayName: 'Dataset'
+                , field: 'datasetName'
+                , enablePinning: true
+                , pinnedLeft: true
+                , width: 200
+                , enableColumnMenu: false
+                , headerCellClass: 'matrix-header'
+                , cellClass: 'matrix-row-header'
             }
-        ],
-        data: [],
-        minRowsToShow: 10
+        ]
+        , data: []
+        , minRowsToShow: 10
     };
     var emptyTag = {
-        name: '<EMPTY>',
-        description: ''
+        name: '<EMPTY>'
+        , description: ''
     };
     //alphabetically compare two object name strings, ignoring case
     var ignoreCase = function (a, b) {
@@ -41,32 +41,34 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         datasetService.getAllDatasets().then(function (data) {
             if (data.status == 'Success') {
                 $scope.datasets = data.data.sort(ignoreCase);
-            } else {
+            }
+            else {
                 $scope.alerts.push({
-                    msg: data,
-                    type: 'danger'
+                    msg: data
+                    , type: 'danger'
                 });
             }
         }, function (res) {
             $scope.alerts.push({
-                msg: "Failed to load datasets",
-                type: 'danger'
+                msg: "Failed to load datasets"
+                , type: 'danger'
             });
         });
         tagService.getAllTags().then(function (data) {
             if (data.status == 'Success') {
                 $scope.tags = data.data.sort(ignoreCase);
                 $scope.tags.splice(0, 1); //remove empty tag from beginning of tag list
-            } else {
+            }
+            else {
                 $scope.alerts.push({
-                    msg: data.data,
-                    type: 'danger'
+                    msg: data.data
+                    , type: 'danger'
                 });
             }
         }, function (res) {
             $scope.alerts.push({
-                msg: "Failed to load datasets",
-                type: 'danger'
+                msg: "Failed to load datasets"
+                , type: 'danger'
             });
         });
     }
@@ -102,15 +104,15 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             $scope.selectedTags = angular.copy($scope.tags);
             $scope.matrix.columnDefs = [
                 {
-                    name: 'datasetName',
-                    displayName: 'Dataset',
-                    field: 'datasetName',
-                    eneablePinning: true,
-                    pinnedLeft: true,
-                    width: 200,
-                    enableColumnMenu: false,
-                    headerCellClass: 'matrix-header',
-                    cellClass: 'matrix-row-header'
+                    name: 'datasetName'
+                    , displayName: 'Dataset'
+                    , field: 'datasetName'
+                    , enablePinning: true
+                    , pinnedLeft: true
+                    , width: 200
+                    , enableColumnMenu: false
+                    , headerCellClass: 'matrix-header'
+                    , cellClass: 'matrix-row-header'
                 }
         ];
             for (var i in $scope.selectedTags) {
@@ -208,10 +210,10 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         //opens query wizard modal
     $scope.openQueryWizard = function () {
         var modalInstance = $uibModal.open({
-            templateUrl: 'views/query_wizard/query_wizard.html',
-            controller: 'QueryWizardCtrl',
-            size: 'lg',
-            resolve: {
+            templateUrl: 'views/query_wizard/query_wizard.html'
+            , controller: 'QueryWizardCtrl'
+            , size: 'lg'
+            , resolve: {
                 datasets: function () {
                     return angular.copy($scope.selectedDatasets);
                 }
@@ -225,8 +227,8 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
     $scope.selectDataset = function (dataset) {
         $log.info("dataset selected: " + dataset.name);
         var newMatrixDataEntry = {
-            datasetName: dataset.name,
-            datasetObj: dataset
+            datasetName: dataset.name
+            , datasetObj: dataset
         };
         for (var i in $scope.selectedTags) {
             // check if dataset has that tag on one of its columns
@@ -262,15 +264,16 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             $scope.matrix.data[i][tag.name] = cellContent;
         }
         $scope.matrix.columnDefs.push({
-            name: tag.name,
-            width: 200,
-            field: tag.name,
-            enableColumnMenu: false,
-            headerCellClass: 'matrix-header',
-            cellClass: function (grid, row, col, rowRenderIndex, colRenderIndex) {
+            name: tag.name
+            , width: 200
+            , field: tag.name
+            , enableColumnMenu: false
+            , headerCellClass: 'matrix-header'
+            , cellClass: function (grid, row, col, rowRenderIndex, colRenderIndex) {
                 if (grid.getCellValue(row, col) != "") {
                     return 'matrix-match-cell';
-                } else return 'matrix-no-match-cell';
+                }
+                else return 'matrix-no-match-cell';
             }
         });
     };
