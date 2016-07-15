@@ -1,6 +1,6 @@
 'use strict';
 var query_wizard = angular.module('cliffhanger.query_wizard', ['ngRoute', 'ngSanitize', 'ngCsv']);
-query_wizard.controller('QueryWizardCtrl', function ($scope, $rootscope, $uibModalInstance, $log, datasets, queryService) {
+query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibModalInstance, $log, datasets, queryService) {
     $scope.query = {}; //container for query
     $scope.alerts = [];
     $scope.dataTypeCheck = [];
@@ -22,14 +22,15 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootscope, $uibMod
     $scope.alreadyUsedDatasets = [];
     $scope.alreadyUsedTags = [];
     $scope.numJoins = 0;
-    $scope.noProblem = true;
+    $scope.queryRanFine = true;
     $scope.connectionFailed = false;
+    $scope.noResults = false;
     $scope.newProblemInput = {
         subject: '',
         message: '',
         username: $rootScope.user.username
     }
-    $scope.showCreateIssue = false;
+    $scope.shouldShowNotifyDevsForm = false;
 
     //method responsible for handling changes due to checkboxes
     //d -> item selected/deselected
@@ -238,6 +239,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootscope, $uibMod
             $log.debug($scope.statement);
         });
     };
+    
     $scope.runQuery = function () {
         $scope.loadingPreview = true;
         if ($scope.statement != undefined) {
@@ -247,20 +249,29 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootscope, $uibMod
         }
         queryService.runQuery(query).then(function (response) { //success callback
                 $scope.loadingPreview = false;
-                $scope.tableResult = response;
-                $scope.progressType = 'success';
+                if ($scope.tableResult.rows == undefined || $scope.tableResult.rows.length == 0) {
+                    // no results
+                    $scope.progressType = 'danger';
+                    $scope.queryRanFine = false;
+                    $scope.noResults = true;
+                    $scope.newProblemInput.message = "Cliffhanger Report: Running the join query succeeded but the result table was empty. \nQuery used: "+query;
+                } else {
+                    $scope.tableResult = response;
+                    $scope.progressType = 'success';
+                } 
+
             }, //failure to connect
             function (data) {
                 $scope.loadingPreview = false;
                 $scope.progressType = 'danger';
-                $scope.runQueryError = true;
-                $scope.noProblem = false;
+                $scope.queryRanFine = false;
                 $scope.connectionFailed = true;
-                $scope.newProblemInput.message = "Cliffhanger Report: HTTP call during method runQuery() in QueryService.js was not status 200. There is likely a problem with the REST service or Hive. \n Query used: "+ query;
+                $scope.newProblemInput.message = "Cliffhanger Report: HTTP call during method runQuery() in QueryService.js was not status 200. There is likely a problem with the REST service or Hive. \nQuery used: "+ query;
 
                 $log.error('Failed to connect to server');
             });
     };
+    
     $scope.$watch('selectedDatasets', function () {
         if ($scope.step == 2) {
             $log.debug("load tags");
@@ -289,7 +300,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootscope, $uibMod
     };
     
     $scope.reportProblem = function () {
-        // TODO
+        $uibModalInstance.dismiss('cancel');
     };
     
 });
