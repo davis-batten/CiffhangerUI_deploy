@@ -12,8 +12,9 @@
     </div>
     <br>
     <div class="container-fluid">
+        <!--<checkbox ng-model="filter" ng-true-value="open" ng-false-value="">Open Only</checkbox>-->
         <ul class="list-group issue">
-            <li class="list-group-item" ng-click="openThread()" ng-repeat="issue in issues | filter: searchText">
+            <li class="list-group-item" ng-click="openThread(issue)" ng-repeat="issue in issues | filter: getFilter()">
                 <div class="row">
                     <div align="center" class="openIcon pull-left"> <span ng-class="openStyle(issue)" uib-tooltip="{{openTooltip(issue)}}"></span> </div>
                     <div class="issueText pull-left">

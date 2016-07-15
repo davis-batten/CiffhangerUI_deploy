@@ -52,6 +52,7 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
         }
     ]
 
+    //load the list of all issues
     $scope.loadIssues = function () {
         issueService.getAllIssues().then(
             //success
@@ -77,6 +78,8 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
         )
     }
 
+    $scope.loadIssues();
+
     $scope.roleStyle = function (issue) {
         var role = issue.opener.role.roleID;
         if (role == "DEVELOPER") return "label label-success";
@@ -95,14 +98,37 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
     }
 
 
-    $scope.openThread = function () {
+    $scope.openThread = function (issue) {
         //TODO
-        $location.path("/issue");
+        $log.log(issue);
+        $rootScope.issueId = issue.threadId;
+        $location.path("/issue/" + issue.threadId);
     }
 
     $scope.newIssue = function () {
         //TODO
     }
+
+
+    // -------Custom filters--------
+    $scope.getFilter = function () {
+        switch ($scope.filter) {
+        case 'open':
+            return {
+                open: 'true'
+            };
+        case 'closed':
+            return {
+                open: 'false'
+            };
+        default:
+            return {
+                subject: $scope.searchText
+            };
+
+        }
+    }
+
 
 
 });
