@@ -4,7 +4,7 @@ describe("user service", function () {
     beforeEach(angular.mock.module('cliffhanger.superuser'));
 
     beforeEach(function () {
-        angular.mock.module("cliffhanger.users");
+        angular.mock.module("cliffhanger.superuser");
         inject(function ($injector, $httpBackend) {
             userService = $injector.get("userService");
             httpBackend = $injector.get("$httpBackend");
