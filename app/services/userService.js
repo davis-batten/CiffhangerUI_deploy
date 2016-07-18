@@ -62,22 +62,7 @@ angular.module('cliffhanger.users').service('userService', function ($log, $http
                     return $q.reject(response.data);
                 });
         }
-        //this service method gets an existing user from the backend
-    this.getUser = function (username) {
-        $log.log(JSON.stringify(username));
-        return $http.get($rootScope.baseUrl + '/user/get/' + username).then(
-            //success callback
-            function (response) {
-                $log.info('Success!');
-                $log.info(response);
-                return reponse.data;
-            }, //error callback
-            function (response) {
-                $log.warn('Failure!');
-                $log.warn(response);
-                return $q.reject(response.data);
-            });
-    }
+        //This service deletes a user
     this.deleteUser = function (username) {
         return $http.delete($rootScope.baseUrl + '/user/delete/' + username).then(
             //Success callback

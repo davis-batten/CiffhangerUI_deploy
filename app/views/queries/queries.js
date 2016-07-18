@@ -36,37 +36,18 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
         $scope.propertyName = sort;
     };
 
-    $scope.getQueries = function () {
-        if ($rootScope.user.role.roleID == 'ADMIN') {
-            $scope.getAllQueries = function () {
-                queryService.getAllQueries().then(function (data) {
-                    $log.debug('response', data);
-                    if (data.status == 'Success') {
-                        $log.debug('data obj', data.data);
-                        $scope.queryList = eval(data.data);
-                    } else {
-                        $scope.queryList = [];
-                    }
-                })
+    $scope.getAllQueries = function () {
+        queryService.getAllQueries().then(function (data) {
+            $log.debug('response', data);
+            if (data.status == 'Success') {
+                $log.debug('data obj', data.data);
+                $scope.queryList = eval(data.data);
+            } else {
+                $scope.queryList = [];
             }
-            $scope.getAllQueries();
-        } else {
-            $scope.getUserQueries = function () {
-                queryService.getUserQueries().then(function (data) {
-                    $log.debug('response', data);
-                    if (data.status == 'Success') {
-                        $log.debug('data obj', data.data);
-                        $scope.queryList = eval(data.data);
-                    } else {
-                        $scope.queryList = [];
-                    }
-                })
-            };
-            $scope.getUserQueries();
-
-        }
+        })
     }
-    $scope.getQueries();
+    $scope.getAllQueries();
 
     //opens view modal
     $scope.view = function (q) {
