@@ -85,6 +85,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     $scope.deleteQuery = function (q) {
         $log.log(q);
         var user = $rootScope.user;
+        $log.log(user);
         var modalInstance = $uibModal.open({
             templateUrl: 'queryDelete.html',
             controller: 'QueryDeleteModalCtrl',
@@ -101,7 +102,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
             $scope.showProgressBar = true;
             for (i in $scope.queryList) {
                 if (q.name == $scope.queryList[i].name) {
-                    queryService.deleteQuery(q, user).then(function (res) {
+                    queryService.deleteQuery(q).then(function (res) {
                         $scope.showProgressBar = false;
                         if (res.status == 'Success') {
                             $scope.queryList.splice(i, 1);

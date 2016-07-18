@@ -46,11 +46,9 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
                 });
         }
         //this service method deletes a specified query on the backend
-    this.deleteQuery = function (query, user) {
-            var queryId = query.id;
-            var user = $rootScope.user
-            $log.log(queryId)
-            return $http.delete($rootScope.baseUrl + '/query/delete/' + queryId, user).then(function (response) { //success callback
+    this.deleteQuery = function (query) {
+            $log.log(query)
+            return $http.delete($rootScope.baseUrl + '/query/delete/' + $rootScope.user.username, query).then(function (response) { //success callback
                 $log.info(response); //list all data from response
                 if (response.data.status == 'Success') {
                     $log.info('Successfully deleted query ' + query);
