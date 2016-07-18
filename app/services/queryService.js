@@ -80,7 +80,7 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
     }
 
     this.getUserQueries = function () {
-            return $http.get($rootScope.baseUrl + '/query/getUserQueries/' + $rootScope.user).then(function (response) { //success callback
+            return $http.get($rootScope.baseUrl + '/query/getUserQueries/' + $rootScope.user.username).then(function (response) { //success callback
                 $log.info(response); //list all data from response
                 if (response.data.status == 'Success') {
                     $log.info('Successfully retrieved queries');
