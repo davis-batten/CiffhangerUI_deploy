@@ -248,7 +248,7 @@ paths:
                     type: string
                     description: SQL query string
 
-  /query/save:
+  /query/save/{username}:
     post:
       description: Save a SQL `Query`
       produces:
@@ -256,6 +256,11 @@ paths:
       consumes:
         - application/json
       parameters:
+        -
+          name: username
+          in: path
+          required: true
+          type: string
         -
           name: body
           in: body
@@ -337,13 +342,17 @@ paths:
   /query/delete/{query_name}:
     delete:
       description: Delete a `Query`
+      consumes:
+        - application/json
+      produces:
+        - application/json
       parameters:
         -
-          name: query_name
-          in: path
-          type: string
+          name: input
+          in: body
           required: true
-          description: the name of the query to be deleted
+          schema:
+            $ref: '#/definitions/Query'
       responses:
         200:
           description: Success
@@ -627,6 +636,8 @@ definitions:
         type: string
         format: date-time
       sqlString:
+        type: string
+      createdBy:
         type: string
 
   UserProfile:

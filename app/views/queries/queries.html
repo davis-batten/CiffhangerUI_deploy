@@ -27,6 +27,8 @@
                 <label>{{q.name}}</label>
                 <br>
                 <p><small>{{q.description}}</small></p>
+                <br>
+                <p><small>{{q.createdBy}}</small></p>
                 <div class="button-footer">
                     <button class="btn btn-danger" type="button" ng-click="deleteQuery(q)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
                     <button class="btn btn-info" type="button" ng-click="view(q)"> View</button>

@@ -1,8 +1,8 @@
 angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/messageboard', {
-        templateUrl: 'views/messageboard/messageboard.html',
-        controller: 'MessageBoardCtrl',
-        activetab: 'messageboard'
+        templateUrl: 'views/messageboard/messageboard.html'
+        , controller: 'MessageBoardCtrl'
+        , activetab: 'messageboard'
     });
 }]).controller('MessageBoardCtrl', function ($rootScope, $log, $scope, $q, $location, issueService) {
     //list of alerts
@@ -11,44 +11,44 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
         $scope.alerts.splice(index, 1);
     };
     $scope.issues = [
-        {
-            subject: "Can't load table cliffhanger.testHiveTable",
-            opener: {
-                username: "dbatt",
-                role: {
-                    roleID: "DEVELOPER"
+            {
+                subject: "Can't load table cliffhanger.testHiveTable"
+                , opener: {
+                    username: "dbatt"
+                    , role: {
+                        roleID: "DEVELOPER"
+                    }
                 }
-            },
-            numComments: 5,
-            createDate: new Date(),
-            open: open
-        },
-        {
-            subject: "Can't change username",
-            opener: {
-                username: "colton",
-                role: {
-                    roleID: "ADMIN"
+                , numComments: 5
+                , createDate: new Date()
+                , open: open
+        }
+            , {
+                subject: "Can't change username"
+                , opener: {
+                    username: "colton"
+                    , role: {
+                        roleID: "ADMIN"
+                    }
                 }
-            },
-            numComments: 1,
-            createDate: new Date(),
-            open: false
-        },
-        {
-            subject: "No results for a join query",
-            opener: {
-                username: "heather",
-                role: {
-                    roleID: "ANALYST"
+                , numComments: 1
+                , createDate: new Date()
+                , open: false
+        }
+            , {
+                subject: "No results for a join query"
+                , opener: {
+                    username: "heather"
+                    , role: {
+                        roleID: "ANALYST"
+                    }
                 }
-            },
-            numComments: 3,
-            createDate: new Date(),
-            open: true
+                , numComments: 3
+                , createDate: new Date()
+                , open: true
         }
     ]
-    //load the list of all issues
+        //load the list of all issues
     $scope.loadIssues = function () {
         issueService.getAllIssues().then(
             //success
@@ -59,21 +59,47 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
                 //error
                 else {
                     $scope.alerts.push({
-                        msg: response.data,
-                        type: "danger"
+                        msg: response.data
+                        , type: "danger"
                     });
                 }
-            },
-            //error
+            }, //error
             function (error) {
                 $scope.alerts.push({
-                    msg: "Failed to connect to server.",
-                    type: "danger"
+                    msg: "Failed to connect to server."
+                    , type: "danger"
                 });
-            }
-        )
+            })
     }
     $scope.loadIssues();
+    //for filter dropdown
+    $scope.toggleFilterDropdown = function ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            $scope.status.filterbyisopen = !$scope.status.filterbyisopen;
+        }
+        //for filter
+    $scope.setFilter = function (filterText) {
+            if (filterText != null) {
+                $scope.searchText = {
+                    open: filterText
+                };
+            }
+            else $scope.searchText = '';
+        }
+        //for sort by dropdown
+    $scope.toggleSortByDropdown = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.status.sortbyisopen = !$scope.status.sortbyisopen;
+    }
+    $scope.setSort = function (sort) {
+        $scope.sortText = sort;
+        $scope.reverse = false;
+        if (sort == 'lastComment.createDate') {
+            $scope.reverse = true;
+        }
+    }
     $scope.roleStyle = function (issue) {
         var role = issue.opener.role.roleID;
         if (role == "DEVELOPER") return "label label-success";
@@ -89,29 +115,11 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
         else return "Closed";
     }
     $scope.openThread = function (issue) {
-        //TODO
         $log.log(issue);
         $rootScope.issueId = issue.threadId;
         $location.path("/issue/" + issue.threadId);
     }
     $scope.newIssue = function () {
         //TODO
-    }
-    // -------Custom filters--------
-    $scope.getFilter = function () {
-        switch ($scope.filter) {
-        case 'open':
-            return {
-                open: 'true'
-            };
-        case 'closed':
-            return {
-                open: 'false'
-            };
-        default:
-            return {
-                subject: $scope.searchText
-            };
-        }
     }
 });

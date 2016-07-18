@@ -1,8 +1,10 @@
 describe("user service", function () {
     var userService, httpBackend, baseUrl, $q, root;
 
+    beforeEach(angular.mock.module('cliffhanger.superuser'));
+
     beforeEach(function () {
-        angular.mock.module("cliffhanger.users");
+        angular.mock.module("cliffhanger.superuser");
         inject(function ($injector, $httpBackend) {
             userService = $injector.get("userService");
             httpBackend = $injector.get("$httpBackend");
@@ -15,7 +17,7 @@ describe("user service", function () {
     it("should be able to login a user", function () {
         var user = {
             username: 'test',
-            password: 'password'
+            password: 'password',
         }
         httpBackend.expect('POST', baseUrl + '/user/login', user).respond(200);
         userService.login();
