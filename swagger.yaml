@@ -44,28 +44,7 @@ paths:
                 description: either "Success" or "Error"
               data:
                 $ref: '#/definitions/Dataset'
-  /dataset/get/{dataset_name}:
-    get:
-      produces:
-        - application/json
-      description: Fetches an existing `Dataset`
-      parameters:
-        -
-          name: dataset_name
-          in: path
-          required: true
-          type: string
-      responses:
-        '200':
-          description: success
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                description: either "Success" or "Error"
-              data:
-                $ref: '#/definitions/Dataset'
+
   /dataset/list:
     get:
       produces:
@@ -124,6 +103,7 @@ paths:
       responses:
         200:
           description: OK
+
   /tag/create:
     post:
       description: Creates a new `Tag`
@@ -149,29 +129,7 @@ paths:
                 description: either "Success" or "Error"
               data:
                 $ref: '#/definitions/Tag'
-  /tag/get/{tag_name}:
-    get:
-      description: Fetch an existing `Tag`
-      produces:
-        - application/json
-      parameters:
-        -
-          name: tag_name
-          description: name of the `Tag` you are looking for
-          in: path
-          required: true
-          type: string
-      responses:
-        200:
-          description: success
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                description: either "Success" or "Error"
-              data:
-                $ref: '#/definitions/Tag'
+
   /tag/list:
     get:
       description: Gets all existing `Tags`
@@ -190,6 +148,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/Tag'
+
   /tag/update/{tag_name}:
     put:
       description: Updates an existing `Tag`.
@@ -220,6 +179,7 @@ paths:
                 description: either "Success" or "Error"
               data:
                 $ref: '#/definitions/Tag'
+
   /tag/delete/{tag_name}:
     delete:
       description: Deletes an existing `Tag`.
@@ -241,6 +201,7 @@ paths:
               status:
                 type: string
                 description: either "Success" or "Error"
+
   /query/build:
     post:
       description: Build a new SQL query string
@@ -373,26 +334,6 @@ paths:
                     type: string
                     description: a cell in the row
 
-  #/query/get/{query_name}
-  /query/get/{query_name}:
-    get:
-      description: Fetch a `Query`
-      produces:
-        - application/json
-      parameters:
-        -
-          name: query_name
-          in: path
-          type: string
-          required: true
-          description: the name of the query to be fetched
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: '#/definitions/Query'
-
-
   /query/delete/{query_name}:
     delete:
       description: Delete a `Query`
@@ -406,7 +347,6 @@ paths:
       responses:
         200:
           description: Success
-          #TODO add schema
 
   /user/create:
     post:
@@ -472,12 +412,12 @@ paths:
           in: path
           type: string
           required: true
-          description: the name od the user to be deleted
+          description: the name of the user to be deleted
       responses:
         200:
           description: Success
 
-  /user/getAllUsers:
+  /user/list:
     get:
       produces:
         - application/json
@@ -494,6 +434,142 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/UserProfile'
+
+  /comment/post:
+    post:
+      description: Post a comment to a discussion thread
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        -
+            name: threadId, userId, body
+            in: body
+            required: true
+            schema:
+              $ref: '#/definitions/Comment'
+      responses:
+        200:
+          description: Success
+          schema:
+              $ref: '#/definitions/Comment'
+
+  /comment/getAllByThread/{threadId}:
+    get:
+      description: Gets all comments associated with a given Discussion Thread Id
+      produces:
+        - application/json
+      parameters:
+        -
+            name: threadId
+            in: path
+            type: string
+            required: true
+            description: the Discussion Thread Id the comments are attached to
+      responses:
+        '200':
+          description: success
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: either "Success" or "Error"
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Comment'
+
+  /discussionThread/create:
+    post:
+      description: Create a discussion thread with the initial comment
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        -
+            name: subject, opener, body
+            in: body
+            required: true
+            schema:
+              $ref: '#/definitions/UserProfile'
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/DiscussionThread'
+
+  /discussionThread/list:
+    get:
+      description: Fetch every existing Discussion Thread
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DiscussionThread'
+
+  /discussionThread/get/{threadId}:
+    get:
+      description: Fetch a Discussion Thread
+      produces:
+        - application/json
+      parameters:
+        -
+          name: threadId
+          in: path
+          type: string
+          required: true
+          description: the name of the discussion thread to be fetched
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/DiscussionThread'
+
+  /discussionThread/delete/{threadId}:
+    delete:
+      description: Delete a 'Discussion Thread'
+      parameters:
+        -
+          name: threadId
+          in: path
+          type: string
+          required: true
+          description: the name of the discussion thread to be deleted
+      responses:
+        200:
+          description: Success
+
+
+  /discussionThread/open/{threadId}:
+    put:
+      description: Updates the status of the open/closed state on a Discussion Thread. Also sets the closedDate and closer values.
+      parameters:
+        -
+          name: threadId
+          in: path
+          type: string
+          required: true
+          description: the name of the discussion thread to be updated
+        -
+          name: closer
+          in: body
+          required: true
+          schema:
+            type: string
+            description: the name of the closer of the discussion thread issue.
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/DiscussionThread'
+
 
 definitions:
   Dataset:
@@ -574,6 +650,40 @@ definitions:
       roleID:
         type: string
 
+  Comment:
+    properties:
+      thread:
+        $ref: '#/definitions/DiscussionThread'
+      commentBy:
+        $ref: '#/definitions/UserProfile'
+      body:
+        type: string
+      createDate:
+        type: string
+        format: date-time
+
+  DiscussionThread:
+    properties:
+      id:
+        type: string
+      subject:
+        type: string
+      opener:
+        $ref: '#/definitions/UserProfile'
+      closer:
+        $ref: '#/definitions/UserProfile'
+      lastComment:
+        $ref: '#/definitions/Comment'
+      numComments:
+        type: integer
+      open:
+        type: boolean
+      createDate:
+        type: string
+        format: date-time
+      closeDate:
+        type: string
+        format: date-time
 
 
 
