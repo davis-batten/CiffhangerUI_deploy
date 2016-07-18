@@ -37,20 +37,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     };
 
     $scope.getQueries = function () {
-        if ($rootScope.user.role.roleID == 'ANALYST') {
-            $scope.getUserQueries = function () {
-                queryService.getUserQueries().then(function (data) {
-                    $log.debug('response', data);
-                    if (data.status == 'Success') {
-                        $log.debug('data obj', data.data);
-                        $scope.queryList = eval(data.data);
-                    } else {
-                        $scope.queryList = [];
-                    }
-                })
-            }
-            $scope.getUserQueries();
-        } else {
+        if ($rootScope.user.role.roleID == 'ADMIN') {
             $scope.getAllQueries = function () {
                 queryService.getAllQueries().then(function (data) {
                     $log.debug('response', data);
@@ -61,8 +48,21 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                         $scope.queryList = [];
                     }
                 })
-            };
+            }
             $scope.getAllQueries();
+        } else {
+            $scope.getUserQueries = function () {
+                queryService.getUserQueries().then(function (data) {
+                    $log.debug('response', data);
+                    if (data.status == 'Success') {
+                        $log.debug('data obj', data.data);
+                        $scope.queryList = eval(data.data);
+                    } else {
+                        $scope.queryList = [];
+                    }
+                })
+            };
+            $scope.getUserQueries();
 
         }
     }
@@ -83,9 +83,6 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     };
     //opens deleteQuery modal for query q
     $scope.deleteQuery = function (q) {
-        $log.log(q);
-        var user = $rootScope.user;
-        $log.log(user);
         var modalInstance = $uibModal.open({
             templateUrl: 'queryDelete.html',
             controller: 'QueryDeleteModalCtrl',
@@ -97,32 +94,25 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
             }
         });
         //on modal completion
-        modalInstance.result.then(function (q, user) {
+        modalInstance.result.then(function (q) {
             $log.warn('Deleted', q);
-            $scope.showProgressBar = true;
-            for (i in $scope.queryList) {
-                if (q.name == $scope.queryList[i].name) {
-                    queryService.deleteQuery(q).then(function (res) {
-                        $scope.showProgressBar = false;
-                        if (res.status == 'Success') {
-                            $scope.queryList.splice(i, 1);
-                            if ($scope.queryList.length == 0) $scope.showNoQueriesMessage = true;
-                        } else {
-                            $scope.alerts.push({
-                                msg: res,
-                                type: 'danger'
-                            });
-                        }
-                    }, function (res) {
-                        $scope.showProgressBar = false;
+            queryService.deleteQuery(q).then(function (response) {
+                for (i in $scope.queryList) {
+                    if (q.name == $scope.queryList[i].name) {
+                        $scope.queryList.splice(i, 1)
                         $scope.alerts.push({
-                            msg: "Problem communicating with server!",
-                            type: 'danger'
-                        });
-                    });
+                            msg: "Query deleted",
+                            type: 'success'
+                        })
+                    }
                 }
-            }
-            $log.log($scope.data);
+            }, function (response) {
+                $scope.alerts.push({
+                    msg: 'Problem communicating',
+                    type: 'danger'
+                })
+                $log.log($scope.data)
+            });
         });
     };
 });
