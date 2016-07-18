@@ -8,8 +8,7 @@ angular.module('cliffhanger.issue').service('issueService', function ($log, $htt
                 function (response) {
                     $log.debug(response);
                     return response.data;
-                }
-                , //error callback
+                }, //error callback
                 function (response) {
                     $log.error(response);
                     return $q.reject(response.data);
@@ -23,8 +22,7 @@ angular.module('cliffhanger.issue').service('issueService', function ($log, $htt
                 function (response) {
                     $log.debug(response);
                     return response.data;
-                }
-                , //error callback
+                }, //error callback
                 function (response) {
                     $log.error(response);
                     return $q.reject(response.data);
@@ -37,8 +35,7 @@ angular.module('cliffhanger.issue').service('issueService', function ($log, $htt
                 function (response) {
                     $log.debug(response);
                     return response.data;
-                }
-                , //error callback
+                }, //error callback
                 function (response) {
                     $log.error(response);
                     return $q.reject(response.data);
@@ -51,13 +48,12 @@ angular.module('cliffhanger.issue').service('issueService', function ($log, $htt
                 closer: closerUsername
             }
             $log.info('closer', closer);
-            return $http.put(baseUrl + '/discussionThread/toggleOpen/' + threadId, closer).then(
+            return $http.put(baseUrl + '/discussionThread/open/' + threadId, closer).then(
                 //success callback
                 function (response) {
                     $log.debug(response);
                     return response.data;
-                }
-                , //error callback
+                }, //error callback
                 function (response) {
                     $log.error(response);
                     return $q.reject(response.data);
@@ -70,8 +66,7 @@ angular.module('cliffhanger.issue').service('issueService', function ($log, $htt
                 function (response) {
                     $log.debug(response);
                     return response.data;
-                }
-                , //error callback
+                }, //error callback
                 function (response) {
                     $log.error(response);
                     return $q.reject(response.data);
@@ -84,8 +79,7 @@ angular.module('cliffhanger.issue').service('issueService', function ($log, $htt
             function (response) {
                 $log.debug(response);
                 return response.data;
-            }
-            , //error callback
+            }, //error callback
             function (response) {
                 $log.error(response);
                 return $q.reject(response.data);
