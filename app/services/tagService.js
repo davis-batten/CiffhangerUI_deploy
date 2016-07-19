@@ -48,30 +48,6 @@ angular.module('cliffhanger.tags')
 
 
 
-        //this service method gets an existing Meta-Type from the backend
-        this.getTag = function (name) {
-
-            $log.log(JSON.stringify(name));
-
-            $http.get($rootScope.baseUrl + '/tag/get' + name)
-                .then(
-                    //success callback
-                    function (response) {
-                        $log.info('Success!');
-                        $log.info(response);
-
-                        //$scope.data = (reponse.data.);
-                    },
-                    //error callback
-                    function (response) {
-                        $log.warn('Failure!');
-                        $log.warn(response);
-
-                    }
-                );
-        }
-
-
 
         //this service method gets all existing Meta-Types from the backend
         this.getAllTags = function () {
@@ -100,11 +76,11 @@ angular.module('cliffhanger.tags')
                 );
 
         }
-        
+
         this.deleteTag = function (tagName) {
-            
+
             return $http.delete($rootScope.baseUrl + '/tag/delete/' + tagName)
-            .then(
+                .then(
                     //success callback
                     function (response) {
                         $log.info('Success!');

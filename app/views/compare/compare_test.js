@@ -88,7 +88,8 @@ describe('cliffhanger.compare module', function () {
             }, {
                 name: 'def',
                 description: '',
-                attributes: []
+                attributes: [],
+                tags: []
         }];
         }));
 
@@ -97,30 +98,27 @@ describe('cliffhanger.compare module', function () {
 
         });
 
-        it('should be able to add <EMPTY> to tags', function () {
+        it('should be able to show and hide <EMPTY> column', function () {
             scope.allowUntagged();
             var found = false;
-            for (var i in scope.selectedTags) {
-                if (scope.selectedTags[i].name == "<EMPTY>") {
+            for (var i in scope.matrix.columnDefs) {
+                if (scope.matrix.columnDefs[i].field == "<EMPTY>") {
                     found = true;
                 }
             }
             expect(found).toBeTruthy();
-
-        });
-
-        it('should be able to remove <EMPTY> from tags', function () {
-            scope.allowUntagged();
-            var found = false;
-
+            
             scope.removeUntagged();
-            for (var i in scope.selectedTags) {
-                if (scope.selectedTags[i].name == "<EMPTY>") {
+            found = false;
+            for (var i in scope.matrix.columnDefs) {
+                if (scope.matrix.columnDefs[i].field == "<EMPTY>") {
                     found = true;
                 }
             }
             expect(found).toBeFalsy();
+
         });
+
 
         it('selecting a tag should add a column correctly and deselecting it should remove the correct column', function () {
 
@@ -154,17 +152,14 @@ describe('cliffhanger.compare module', function () {
 
             // test add all
             scope.selectAllTags();
-            var emptyIsAdded = false;
             for (var i in scope.tags) {
                 var tagIsAdded = false;
                 for (var j in scope.matrix.columnDefs) {
                     if (scope.tags[i].name == scope.matrix.columnDefs[j].name) tagIsAdded = true;
-                    if (scope.matrix.columnDefs[j].field == '<EMPTY>') emptyIsAdded = true;
                 }
                 expect(tagIsAdded).toBeTruthy();
             }
-            expect(emptyIsAdded).toBeTruthy();
-            expect(scope.matrix.columnDefs.length).toBe(scope.tags.length + 2);
+            expect(scope.matrix.columnDefs.length).toBe(scope.tags.length + 1);
 
             // test remove all
             scope.deselectAllTags();
@@ -191,28 +186,27 @@ describe('cliffhanger.compare module', function () {
         });
 
         it('should be able to add relevant datasets based on selected tags', function () {
+            scope.selectedTags.push(scope.tags[0]);
             scope.showTag(scope.tags[0]);
             scope.selectRelevantDatasets();
             expect(scope.selectedDatasets.length).toBe(1);
             expect(scope.selectedDatasets[0].name).toEqual("abc");
             expect(scope.matrix.data.length).toBe(1);
-            expect(scope.matrix.data[0].name).toEqual("abc");
+            expect(scope.matrix.data[0].datasetName).toEqual("abc");
         });
 
         it('should be able to add relevant tags based on selected datasets', function () {
+            scope.selectedDatasets.push(scope.datasets[0]);
             scope.selectDataset(scope.datasets[0]);
             scope.selectRelevantTags();
-            expect(scope.selectedTags.length).toBe(2);
+            expect(scope.selectedTags.length).toBe(1);
             var zipTagSelected = false;
-            var emptyTagSelected = false;
             for (var i in scope.matrix.columnDefs) {
                 if (scope.matrix.columnDefs[i].name == 'ZIP') zipTagSelected = true;
-                if (scope.matrix.columnDefs[i].name == '<EMPTY>') emptyTagSelected = true;
 
             }
-            expect(scope.matrix.columnDefs.length).toBe(3);
+            expect(scope.matrix.columnDefs.length).toBe(2);
             expect(zipTagSelected).toBeTruthy();
-            expect(emptyTagSelected).toBeTruthy();
         });
 
         it('should be able to filter tags', function () {

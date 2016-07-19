@@ -18,22 +18,6 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
                     return $q.reject(response.data);
                 });
         }
-        //this service method gets an existing Dataset from the backend
-    this.getDataset = function (name) {
-            $log.log(JSON.stringify(name));
-            return $http.get($rootScope.baseUrl + '/dataset/get' + name).then(
-                //success callback
-                function (response) {
-                    $log.info('Success!');
-                    $log.info(response);
-                    return response.data;
-                }, //error callback
-                function (response) {
-                    $log.warn('Failure!');
-                    $log.warn(response);
-                    return $q.reject(response.data);
-                });
-        }
         //this service method gets all existing Datasets from the backend
     this.getAllDatasets = function () {
             return $http.get($rootScope.baseUrl + '/dataset/list').then(function (response) { //success callback

@@ -118,7 +118,6 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             for (var i in $scope.selectedTags) {
                 $scope.showTag($scope.selectedTags[i]);
             }
-            $scope.allowUntagged();
             $scope.allTagsSelected = true;
         }
         //onclick method for select all datasets button
@@ -150,18 +149,11 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         }
         //Add empty tag column to table
     $scope.allowUntagged = function () {
-            $scope.selectedTags.push(emptyTag);
-            $scope.showTag(emptyTag);
-            $scope.untagged = true;
-        }
+        $scope.showTag(emptyTag);
+        $scope.untagged = true;
+    }
         //remove empty tag column from table
     $scope.removeUntagged = function () {
-        for (var i in $scope.selectedTags) {
-            if ($scope.selectedTags[i].field == emptyTag.name) {
-                $scope.selectedTags.splice(i, 1);
-                break;
-            }
-        }
         $scope.hideTag(emptyTag);
         $scope.untagged = false;
     }
