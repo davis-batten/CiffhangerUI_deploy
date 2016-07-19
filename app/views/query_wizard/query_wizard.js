@@ -1,6 +1,6 @@
 'use strict';
 var query_wizard = angular.module('cliffhanger.query_wizard', ['ngRoute', 'ngSanitize', 'ngCsv']);
-query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibModalInstance, $log, datasets, queryService) {
+query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibModalInstance, $log, datasets, queryService, issueService) {
     $scope.query = {}; //container for query
     $scope.alerts = [];
     $scope.dataTypeCheck = [];
@@ -25,10 +25,11 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.queryRanFine = true;
     $scope.connectionFailed = false;
     $scope.noResults = false;
+    $scope.postReportSubmissionMessage;
     $scope.newProblemInput = {
         subject: '',
-        message: '',
-        username: $rootScope.user.username
+        body: '',
+        opener: $rootScope.user.username
     }
     $scope.shouldShowNotifyDevsForm = false;
 
@@ -99,7 +100,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
             $scope.runQuery();
         }
     };
-    
+
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
@@ -120,7 +121,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
             $scope.tableResult = null;
         }
     };
-    
+
     $scope.archiveDatasets = function () {
         for (var i = 0; i < $scope.selectedDatasets.length; i++) {
             if ($scope.alreadyUsedDatasets.indexOf($scope.selectedDatasets[i]) == -1) {
@@ -239,7 +240,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
             $log.debug($scope.statement);
         });
     };
-    
+
     $scope.runQuery = function () {
         $scope.loadingPreview = true;
         if ($scope.statement != undefined) {
@@ -254,11 +255,11 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
                     $scope.progressType = 'danger';
                     $scope.queryRanFine = false;
                     $scope.noResults = true;
-                    $scope.newProblemInput.message = "Cliffhanger Report: Running the join query succeeded but the result table was empty. \nQuery used: "+query;
+                    $scope.newProblemInput.message = "Cliffhanger Report: Running the join query succeeded but the result table was empty. \nQuery used: " + query;
                 } else {
                     $scope.tableResult = response;
                     $scope.progressType = 'success';
-                } 
+                }
 
             }, //failure to connect
             function (data) {
@@ -266,12 +267,12 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
                 $scope.progressType = 'danger';
                 $scope.queryRanFine = false;
                 $scope.connectionFailed = true;
-                $scope.newProblemInput.message = "Cliffhanger Report: HTTP call during method runQuery() in QueryService.js was not status 200. There is likely a problem with the REST service or Hive. \nQuery used: "+ query;
+                $scope.newProblemInput.message = "Cliffhanger Report: HTTP call during method runQuery() in QueryService.js was not status 200. There is likely a problem with the REST service or Hive. \nQuery used: " + query;
 
                 $log.error('Failed to connect to server');
             });
     };
-    
+
     $scope.$watch('selectedDatasets', function () {
         if ($scope.step == 2) {
             $log.debug("load tags");
@@ -294,13 +295,20 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.showNotifyDevsForm = function () {
         $scope.shouldShowNotifyDevsForm = true;
     };
-    
+
     $scope.hideNotifyDevsForm = function () {
         $scope.shouldShowNotifyDevsForm = false;
     };
-    
+
     $scope.reportProblem = function () {
         $uibModalInstance.dismiss('cancel');
+        issueService.createIssue($scope.newProblemInput).then(function (response) {
+            // success
+            $scope.postReportSubmissionMessage = "Your problem has been reported to the developers."
+        }, function (data) {
+            // fail
+            $scope.postReportSubmissionMessage = "There was a problem reporting your problem."
+        });
     };
-    
+
 });
