@@ -90,13 +90,34 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
     $scope.loadIssue = function () {
         $log.info('user', $rootScope.user);
         var threadId = $routeParams.threadId;
+        //load issue metadata
+        issueService.getIssue(threadId).then( //success
+            function (response) {
+                if (response.status == 'Success') {
+                    $scope.issue = response.data;
+                }
+                //error
+                else {
+                    $scope.alerts.push({
+                        msg: response.data,
+                        type: "danger"
+                    });
+                }
+            },
+            //error
+            function (error) {
+                $scope.alerts.push({
+                    msg: "Failed to connect to server.",
+                    type: "danger"
+                });
+            });
+
         //load all comments by threadId
         issueService.getComments(threadId).then(
             //success
             function (response) {
                 if (response.status == 'Success') {
                     $scope.comments = response.data;
-                    $scope.issue = $scope.comments[0].thread;
                 }
                 //error
                 else {
@@ -153,14 +174,6 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
 
     //post a new comment
     $scope.postComment = function () {
-        //TODO
-        var comment = {
-            commentBy: $rootScope.user,
-            body: $scope.newComment,
-            createDate: new Date(),
-        }
-
-        $scope.comments.push(comment); //for testing only
 
         var newComment = {
             threadId: $routeParams.threadId,
@@ -171,7 +184,7 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
             //success
             function (response) {
                 if (response.status == 'Success') {
-                    //reload comments
+                    $scope.comments.push(response.data);
                 }
                 //error
                 else {

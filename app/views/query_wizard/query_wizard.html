@@ -132,11 +132,11 @@
         <div id="queryResultsTable">
             <table class="table table-bordered ">
                 <thead>
-                    <th ng-repeat="column in tableResult.colNames"> {{column}} </th>
+                    <th ng-repeat="column in tableResult.colNames track by $index"> {{column}} </th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="row in tableResult.rows | limitTo:100">
-                        <td ng-repeat="cell in row">{{cell}}</td>
+                    <tr ng-repeat="row in tableResult.rows | limitTo:100 track by $index">
+                        <td ng-repeat="cell in row track by $index">{{cell}}</td>
                 </tbody>
             </table>
         </div>
@@ -145,13 +145,13 @@
     <div class="modal-body" ng-show="!queryRanFine">
         <h4>No Results </h4>
         <p ng-show="connectionFailed"> Failed to connect </p>
-        <!--   
+<!--
         <p ng-show="noResults">
             The join query ran, but the resulting dataset was empty. <br><br>
             This means no matching data was found between the dataset's in their join columns. <br><br>
             Make sure that for each join operation, the sample data values have the same format(eg. when joining two datasets on phone numbers, if one dataset’s phone numbers are in the form (XXX)XXX-XXXX, the other must have them in exactly the same format and not something like XXXXXXXXXX). <br><br>
                 TODO: ADD TABLE W/ SAMPLE DATA VALUES LIKE MOCKUP
-            If there is a problem with how your data is formatted, report this to a developer and ask them to tranform the mismatched data to a common format. 
+            If there is a problem with how your data is formatted, report this to a developer and ask them to tranform the mismatched data to a common format.
         </p>
 -->
         <p ng-show="noResults">

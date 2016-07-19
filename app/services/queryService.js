@@ -34,7 +34,7 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
         }
         //this service method saves a query on the backend
     this.saveQuery = function (newQuery) {
-            return $http.post($rootScope.baseUrl + '/query/save', newQuery).then(
+            return $http.post($rootScope.baseUrl + '/query/save/' + $rootScope.user.username, newQuery).then(
                 //success callback
                 function (response) {
                     $log.debug('Success!');
@@ -46,16 +46,15 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
                 });
         }
         //this service method deletes a specified query on the backend
-    this.deleteQuery = function (toDelete) {
-            var queryName = toDelete.name;
-            return $http.delete($rootScope.baseUrl + '/query/delete/' + queryName).then(function (response) { //success callback
+    this.deleteQuery = function (query) {
+            $log.log(query)
+            return $http.post($rootScope.baseUrl + '/query/delete', query).then(function (response) { //success callback
                 $log.info(response); //list all data from response
                 if (response.data.status == 'Success') {
-                    $log.info('Successfully deleted query ' + queryName);
+                    $log.info('Successfully deleted query ', query);
                     return response.data;
-                }
-                else {
-                    $log.warn('Failed to delete ' + queryName);
+                } else {
+                    $log.warn('Failed to delete ', query);
                     return $q.reject(response.data);
                 }
             }, function (response) { //error callback
@@ -65,19 +64,32 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
         }
         //this service method gets an existing Query from the backend
     this.getQuery = function (name) {
-            $log.log(JSON.stringify(name));
-            return $http.get($rootScope.baseUrl + '/query/get' + name).then(
-                //success callback
-                function (response) {
-                    $log.info('Success!');
-                    $log.info(response);
+        $log.log(JSON.stringify(name));
+        return $http.get($rootScope.baseUrl + '/query/get' + name).then(
+            //success callback
+            function (response) {
+                $log.info('Success!');
+                $log.info(response);
+                return response.data;
+            }, //error callback
+            function (response) {
+                $log.warn('Failure!');
+                $log.warn(response);
+                return $q.reject(response.data);
+            });
+    }
+
+    this.getUserQueries = function () {
+            return $http.get($rootScope.baseUrl + '/query/getUserQueries/' + $rootScope.user.username).then(function (response) { //success callback
+                $log.info(response); //list all data from response
+                if (response.data.status == 'Success') {
+                    $log.info('Successfully retrieved queries');
                     return response.data;
-                }, //error callback
-                function (response) {
-                    $log.warn('Failure!');
-                    $log.warn(response);
+                } else {
+                    $log.warn('Failed to retrieve queries');
                     return $q.reject(response.data);
-                });
+                }
+            });
         }
         //this service method gets all existing Queries from the backend
     this.getAllQueries = function () {
@@ -86,8 +98,7 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
             if (response.data.status == 'Success') {
                 $log.info('Successfully retrieved queries');
                 return response.data;
-            }
-            else {
+            } else {
                 $log.warn('Failed to retrieve queries');
                 return $q.reject(response.data);
             };

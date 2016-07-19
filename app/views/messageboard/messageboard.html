@@ -1,10 +1,26 @@
 <div ng-include="'views/navbar.html'"></div>
-
 <div class="container-fluid">
     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</uib-alert>
     <div class="row">
         <div class="col-xs-6">
-            <input type="text" ng-model="searchText" uib-typeahead="issue.subject for issue in issues | filter:$viewValue | limitTo:8" class="form-control" placeholder="Search Issues"> </div>
+            <input type="text" ng-model="searchText.subject" uib-typeahead="issue.subject for issue in issues | filter:$viewValue | limitTo:8" class="form-control" placeholder="Search Issues"> </div>
+        <div class="btn-group" uib-dropdown is-open="status.filterbyisopen">
+            <button id="filterBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle> Filter <span class="caret"></span></button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filterBy-button">
+                <li role="menuitem"><a prevent-default ng-click="setFilter(true)">Open Issues</a></li>
+                <li role="menuitem"><a prevent-default ng-click="setFilter(false)">Closed Issues</a></li>
+                <li role="separator" class="divider"></li>
+                <li role="menuitem"><a prevent-default ng-click="setFilter(null)">All</a></li>
+            </ul>
+        </div>
+        <div class="btn-group" uib-dropdown is-open="status.sortbyisopen">
+            <button id="sortBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle> Sort By <span class="caret"></span></button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="sortBy-button">
+                <li role="menuitem"><a prevent-default ng-click="setSort('createDate')">Date Created</a></li>
+                <li role="menuitem"><a prevent-default ng-click="setSort('lastComment.createDate')">Most Recent Comment</a></li>
+                <li role="menuitem"><a prevent-default ng-click="setSort('subject')">Subject A-Z</a></li>
+            </ul>
+        </div>
         <button id="addIssueBtn" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-plus"></span>
             <wbr>Open New Issue</button>
         <button id="addIssueBtn" class="btn btn-default pull-right" ng-click="loadIssues()"><span class="glyphicon glyphicon-refresh"></span>
@@ -14,7 +30,7 @@
     <div class="container-fluid">
         <!--<checkbox ng-model="filter" ng-true-value="open" ng-false-value="">Open Only</checkbox>-->
         <ul class="list-group issue">
-            <li class="list-group-item" ng-click="openThread(issue)" ng-repeat="issue in issues | filter: getFilter()">
+            <li class="list-group-item" ng-click="openThread(issue)" ng-repeat="issue in issues | filter: searchText | orderBy:sortText:reverse">
                 <div class="row">
                     <div align="center" class="openIcon pull-left"> <span ng-class="openStyle(issue)" uib-tooltip="{{openTooltip(issue)}}"></span> </div>
                     <div class="issueText pull-left">
