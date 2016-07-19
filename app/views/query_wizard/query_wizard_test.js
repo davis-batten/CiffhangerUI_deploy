@@ -4,10 +4,12 @@ describe('cliffhanger.query_wizard module', function () {
     beforeEach(angular.mock.module('ngCsv'));
     beforeEach(angular.mock.module('cliffhanger.query_wizard'));
     beforeEach(angular.mock.module('cliffhanger.queries'));
+    beforeEach(angular.mock.module('cliffhanger.issue'));
     describe('query wizard controller', function () {
-        beforeEach(inject(function ($controller, $rootScope, _$log_, queryService, $q) {
+        beforeEach(inject(function ($controller, $rootScope, _$log_, queryService, $q, issueService) {
             scope = $rootScope.$new();
             mockQueryService = queryService;
+            mockIssueService = issueService;
             modalInstance = {
                 close: jasmine.createSpy('uibModalInstance.close'),
                 dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
@@ -15,6 +17,14 @@ describe('cliffhanger.query_wizard module', function () {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
+            mockUser = {
+                username: "mockUser",
+                password: "nnnnnnn",
+                role: {
+                    roleID: 'ADMIN'
+                }
+            }
+            $rootScope.user = mockUser;
             mockDatasets = [
                 {
                     name: 'test1',
@@ -145,12 +155,13 @@ describe('cliffhanger.query_wizard module', function () {
                 $scope: scope,
                 $uibModalInstance: modalInstance,
                 datasets: mockDatasets,
+                root: $rootScope,
                 queryService: mockQueryService
             })
         }));
         // -----------Modal operations----------------------
         it('should instantiate the QueryWizardCtrl controller', function () {
-            expect(queryWizardCtrl).not.toBeUndefined();
+            expect(queryWizardCtrl).toBeDefined();
         });
         it('should dismiss the modal with cancel', function () {
             scope.cancel();

@@ -23,7 +23,7 @@
     <div class="status-message" ng-show="showNoQueriesMessage"> NO QUERIES </div>
     <uib-progressbar value="100" class="progress-striped active" ng-show="showProgressBar">Loading...</uib-progressbar>
     <ul class="list-group" id="query_list">
-        <li class="list-group-item active col-md-4 col-sm-4" id="query_item" ng-repeat="q in queryList | orderBy:propertyName:reverse | filter:query">
+        <li class="list-group-item active col-md-4 col-sm-4" id="query_item" ng-repeat="q in queryList | orderBy:propertyName:reverse | filter:{createdBy : $rootScope.user.username}">
             <div id="query_item_content">
                 <label>{{q.name}}</label>
                 <br>

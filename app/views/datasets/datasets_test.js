@@ -49,6 +49,14 @@ describe('cliffhanger.datasets module', function () {
                 $rootScope: root,
                 datasetService: service
             });
+            mockUser = {
+                username: "mockUser",
+                password: "nnnnnnn",
+                role: {
+                    roleID: 'ADMIN'
+                }
+            }
+            $rootScope.user = mockUser;
         }));
         it('should have a DatasetsCtrl controller', function () {
             expect(datasetsCtrl).toBeDefined();
@@ -57,6 +65,14 @@ describe('cliffhanger.datasets module', function () {
     describe('AddDatasetModalInstanceCtrl', function () {
         beforeEach(inject(function ($controller, $rootScope, $log, $q) {
             scope = $rootScope.$new();
+            mockUser = {
+                username: "mockUser",
+                password: "nnnnnnn",
+                role: {
+                    roleID: 'ADMIN'
+                }
+            }
+            $rootScope.user = mockUser;
             modalInstance = {
                 close: jasmine.createSpy('uibModalInstance.close'),
                 dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
@@ -85,6 +101,7 @@ describe('cliffhanger.datasets module', function () {
                 $log: $log,
                 tagService: mockTagService
             });
+
         }));
         it('should instantiate the addDatasetModalInstanceCtrl controller', function () {
             expect(addDatasetModalCtrl).not.toBeUndefined();
@@ -240,6 +257,14 @@ describe('cliffhanger.datasets module', function () {
                 $log: $log,
                 dataset: mockDataset
             });
+            mockUser = {
+                username: "mockUser",
+                password: "nnnnnnn",
+                role: {
+                    roleID: 'ADMIN'
+                }
+            }
+            $rootScope.user = mockUser;
         }));
         it('should be able accept and close the modal', function () {
             scope.delete();
