@@ -2,6 +2,7 @@ angular.module('cliffhanger.issue').service('issueService', function ($log, $htt
     var baseUrl = $rootScope.baseUrl;
     //create a new issue thread
     this.createIssue = function (newIssue) {
+        newIssue.opener = $rootScope.user.username;
             //TODO
             return $http.post(baseUrl + '/discussionThread/create', newIssue).then(
                 //success callback
