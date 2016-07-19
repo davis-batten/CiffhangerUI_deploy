@@ -1,40 +1,24 @@
 <div ng-include="'/views/navbar.html'"></div>
-
 <div class="container-fluid">
-    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</uib-alert>
-    <a class="btn btn-default" href="#/messageboard">Return</a>
+    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</uib-alert> <a class="btn btn-default" href="#/messageboard">Return</a>
     <h2>{{issue.subject}}</h2>
-    <button class="btn btn-danger .openLabel" ng-hide="issue.open" ng-click="toggleOpen()" uib-tooltip="Open issue"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;Closed</span>
-    </button>
-    <button class="btn btn-success .openLabel" ng-show="issue.open" ng-click="toggleOpen()" uib-tooltip="Close issue"><span class="glyphicon glyphicon-ok-circle"></span>&nbsp;Open</span>
-    </button>
+    <button class="btn btn-danger .openLabel" ng-hide="issue.open" ng-click="toggleOpen()" uib-tooltip="Open issue"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp;Closed </button>
+    <button class="btn btn-success .openLabel" ng-show="issue.open" ng-click="toggleOpen()" uib-tooltip="Close issue"><span class="glyphicon glyphicon-ok-circle"></span>&nbsp;Open </button>
     <p id="issueDetails">&nbsp;<strong>{{issue.opener.username}}</strong> opened this issue &#8226; {{issue.createDate | date : 'shortDate'}} &#8226; {{comments.length}} comment(s)</p>
-
     <hr>
-
     <div class="panel panel-default comment" ng-repeat="comment in comments">
         <div class="panel-heading">
-            <h3 class="panel-title"><b ng-class="roleStyle(comment.commentBy)">{{comment.commentBy.username}}</b> &#8226; {{comment.createDate | date : 'short'}}</h3>
-        </div>
-        <div class="panel-body">
-            {{comment.body}}
-        </div>
+            <h3 class="panel-title"><b ng-class="roleStyle(comment.commentBy)">{{comment.commentBy.username}}</b> &#8226; {{comment.createDate | date : 'short'}}</h3> </div>
+        <div class="panel-body"> {{comment.body}} </div>
     </div>
-
     <p ng-show="!issue.open" class="text-danger closeText"><b>{{issue.closer.username}}</b> closed this issue</p>
-
     <hr>
-
     <div class="panel panel-default" id="commentForm" ng-show="issue.open">
-        <div class="panel-heading">
-            New Comment
-        </div>
+        <div class="panel-heading"> New Comment </div>
         <div class="panel-body">
             <textarea ng-model="newComment" class="form-control" rows="5" cols="40" placeholder="Leave a comment"></textarea>
             <br>
             <button class="btn btn-success pull-right" ng-click="postComment()" ng-disabled="(newComment.length == 0 || newComment == null || $root.user.username == null)">Comment</button>
         </div>
     </div>
-
-
 </div>

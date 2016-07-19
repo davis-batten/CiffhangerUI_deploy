@@ -4,13 +4,16 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
         , controller: 'MessageBoardCtrl'
         , activetab: 'messageboard'
     });
-}]).controller('MessageBoardCtrl', function ($rootScope, $log, $scope, $q, $location, issueService) {
+}]);
+var messageboard = angular.module('cliffhanger.messageboard');
+messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, $uibModal, $q, $location, issueService) {
     //list of alerts
     $scope.alerts = [];
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);
     };
     $scope.issues = [
+        /*
             {
                 subject: "Can't load table cliffhanger.testHiveTable"
                 , opener: {
@@ -47,8 +50,9 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
                 , createDate: new Date()
                 , open: true
         }
-    ]
-        //load the list of all issues
+        */
+    ];
+    //load the list of all issues
     $scope.loadIssues = function () {
         issueService.getAllIssues().then(
             //success
@@ -99,6 +103,10 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
         if (sort == 'lastComment.createDate') {
             $scope.reverse = true;
         }
+        else if (sort == 'createDateReverse') {
+            $scope.sortText = 'createDate';
+            $scope.reverse = true;
+        }
     }
     $scope.roleStyle = function (issue) {
         var role = issue.opener.role.roleID;
@@ -115,11 +123,44 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
         else return "Closed";
     }
     $scope.openThread = function (issue) {
-        $log.log(issue);
-        $rootScope.issueId = issue.threadId;
-        $location.path("/issue/" + issue.threadId);
-    }
+            $log.log(issue);
+            $rootScope.issueId = issue.threadId;
+            $location.path("/issue/" + issue.threadId);
+        }
+        //opens new issue modal
     $scope.newIssue = function () {
-        //TODO
+        var input = $scope.input;
+        var modalInstance = $uibModal.open({
+            templateUrl: 'newIssueModal.html'
+            , controller: 'NewIssueModalInstanceCtrl'
+            , size: 'lg'
+        });
+        modalInstance.result.then(function (input) {
+            $log.info('Modal dismissed at: ' + new Date());
+            $log.info(input);
+            issueService.createIssue(input).then(function (response) {
+                // success
+                $scope.issues.push(response.data);
+                $scope.postReportSubmissionMessage = "Your problem has been reported to the developers."
+            }, function (data) {
+                // fail
+                $scope.postReportSubmissionMessage = "There was a problem reporting your problem."
+            });
+        });
     }
+});
+//controller for instance of NewIssueModal
+messageboard.controller('NewIssueModalInstanceCtrl', function ($scope, $uibModalInstance, $log, $rootScope) {
+    $scope.input = {
+        subject: ''
+        , body: ''
+    };
+    //complete modal
+    $scope.submit = function () {
+        $uibModalInstance.close($scope.input);
+    };
+    //dismiss modal
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 });

@@ -16,12 +16,13 @@
         <div class="btn-group" uib-dropdown is-open="status.sortbyisopen">
             <button id="sortBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle> Sort By <span class="caret"></span></button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="sortBy-button">
-                <li role="menuitem"><a prevent-default ng-click="setSort('createDate')">Date Created</a></li>
+                <li role="menuitem"><a prevent-default ng-click="setSort('createDate')">Date Created (oldest first)</a></li>
+                <li role="menuitem"><a prevent-default ng-click="setSort('createDateReverse')">Date Created (newest first)</a></li>
                 <li role="menuitem"><a prevent-default ng-click="setSort('lastComment.createDate')">Most Recent Comment</a></li>
                 <li role="menuitem"><a prevent-default ng-click="setSort('subject')">Subject A-Z</a></li>
             </ul>
         </div>
-        <button id="addIssueBtn" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-plus"></span>
+        <button id="addIssueBtn" class="btn btn-primary pull-right" ng-click="newIssue()"><span class="glyphicon glyphicon-plus"></span>
             <wbr>Open New Issue</button>
         <button id="addIssueBtn" class="btn btn-default pull-right" ng-click="loadIssues()"><span class="glyphicon glyphicon-refresh"></span>
             <wbr>Refresh</button>
@@ -44,3 +45,30 @@
         </ul>
     </div>
 </div>
+<!-- New Issue Modal -->
+<script type="text/ng-template" id="newIssueModal.html">
+    <div class="modal-header">
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title">Start New Issue</h3> </div>
+            <div class="col-xs-1">
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <form name="notifyDevsForm">
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <textarea class="form-control" rows="1" name="subject" id="issueSubject" ng-model="input.subject"> </textarea>
+                </div>
+                <div class="form-group">
+                    <label for="msg">Message</label>
+                    <textarea class="form-control" rows="10" name="msg" id="issueMessage" ng-model="input.body"> </textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-success" type="button" ng-click="submit()">Post</button>
+        </div>
+</script>
