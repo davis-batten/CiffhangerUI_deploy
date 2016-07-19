@@ -1,8 +1,8 @@
 angular.module('cliffhanger.queries', ['ngRoute', 'ngSanitize', 'ngCsv']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/analyst/queries', {
-        templateUrl: 'views/queries/queries.html',
-        controller: 'QueriesCtrl',
-        activetab: 'queries'
+        templateUrl: 'views/queries/queries.html'
+        , controller: 'QueriesCtrl'
+        , activetab: 'queries'
     });
 }]);
 var queries = angular.module('cliffhanger.queries');
@@ -34,8 +34,12 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     };
     $scope.setSort = function (sort) {
         $scope.propertyName = sort;
+        $scope.reverse = false;
+        if (sort == 'dateCreatedReverse') {
+            $scope.propertyName = 'dateCreated';
+            $scope.reverse = true;
+        }
     };
-
     $scope.getQueries = function () {
         if ($rootScope.user.role.roleID == 'ADMIN') {
             $scope.getAllQueries = function () {
@@ -44,37 +48,38 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                     if (data.status == 'Success') {
                         $log.debug('data obj', data.data);
                         $scope.queryList = eval(data.data);
-                    } else {
+                    }
+                    else {
                         $scope.queryList = [];
                     }
                 })
             }
             $scope.getAllQueries();
-        } else {
+        }
+        else {
             $scope.getUserQueries = function () {
                 queryService.getUserQueries().then(function (data) {
                     $log.debug('response', data);
                     if (data.status == 'Success') {
                         $log.debug('data obj', data.data);
                         $scope.queryList = eval(data.data);
-                    } else {
+                    }
+                    else {
                         $scope.queryList = [];
                     }
                 })
             };
             $scope.getUserQueries();
-
         }
     }
     $scope.getQueries();
-
     //opens view modal
     $scope.view = function (q) {
         var modalInstance = $uibModal.open({
-            templateUrl: 'viewQueryModalContent.html',
-            controller: 'ViewQueryModalInstanceCtrl',
-            size: 'lg',
-            resolve: {
+            templateUrl: 'viewQueryModalContent.html'
+            , controller: 'ViewQueryModalInstanceCtrl'
+            , size: 'lg'
+            , resolve: {
                 query: function () {
                     return q;
                 }
@@ -84,10 +89,10 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     //opens deleteQuery modal for query q
     $scope.deleteQuery = function (q) {
         var modalInstance = $uibModal.open({
-            templateUrl: 'queryDelete.html',
-            controller: 'QueryDeleteModalCtrl',
-            size: 'md',
-            resolve: {
+            templateUrl: 'queryDelete.html'
+            , controller: 'QueryDeleteModalCtrl'
+            , size: 'md'
+            , resolve: {
                 query: function () {
                     return q;
                 }
@@ -101,15 +106,15 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                     if (q.name == $scope.queryList[i].name) {
                         $scope.queryList.splice(i, 1)
                         $scope.alerts.push({
-                            msg: "Query deleted",
-                            type: 'success'
+                            msg: "Query deleted"
+                            , type: 'success'
                         })
                     }
                 }
             }, function (response) {
                 $scope.alerts.push({
-                    msg: 'Problem communicating',
-                    type: 'danger'
+                    msg: 'Problem communicating'
+                    , type: 'danger'
                 })
                 $log.log($scope.data)
             });
@@ -155,8 +160,8 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
                 $scope.progressType = 'danger';
                 $scope.runQueryError = true;
                 $scope.alerts.push({
-                    msg: "Run Query Failed",
-                    type: 'danger'
+                    msg: "Run Query Failed"
+                    , type: 'danger'
                 });
                 $log.error('Failed to connect to server');
             });
