@@ -17,9 +17,9 @@ app = angular.module('cliffhanger', [
     , 'cliffhanger.compare'
     , 'cliffhanger.queries'
     , 'cliffhanger.query_wizard'
-    , 'cliffhanger.tags',
-    'cliffhanger.messageboard',
-    'cliffhanger.issue'
+    , 'cliffhanger.tags'
+    , 'cliffhanger.messageboard'
+    , 'cliffhanger.issue'
 
 ]).
 config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {

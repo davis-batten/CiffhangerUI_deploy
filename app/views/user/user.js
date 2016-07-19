@@ -47,8 +47,6 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
         })
     };
     $scope.getAllUsers();
-
-
     //opens update user modal for user u
     $scope.updateUser = function (u) {
         $log.log(u);
@@ -64,7 +62,6 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
             }
         });
         //executes changes (or carries unchanged values through)
-
         modalInstance.result.then(function (input) {
             if (input.username == "") {
                 $scope.alerts.push({
@@ -103,8 +100,6 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
             }
         });
     };
-
-
     $scope.deleteUser = function (u) {
         $log.warn('delete', u);
         var modalInstance = $uibModal.open({
@@ -137,7 +132,6 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
             });
     };
 });
-
 //controller for an instance of UpdateUserModal
 users.controller('UpdateUserModalCtrl', function ($scope, $uibModalInstance, $log, user) {
     $scope.user = user;
