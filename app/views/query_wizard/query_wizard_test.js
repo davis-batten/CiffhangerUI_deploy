@@ -4,10 +4,12 @@ describe('cliffhanger.query_wizard module', function () {
     beforeEach(angular.mock.module('ngCsv'));
     beforeEach(angular.mock.module('cliffhanger.query_wizard'));
     beforeEach(angular.mock.module('cliffhanger.queries'));
+    beforeEach(angular.mock.module('cliffhanger.issue'));
     describe('query wizard controller', function () {
-        beforeEach(inject(function ($controller, $rootScope, _$log_, queryService, $q) {
+        beforeEach(inject(function ($controller, $rootScope, _$log_, queryService, $q, issueService) {
             scope = $rootScope.$new();
             mockQueryService = queryService;
+            mockIssueService = issueService;
             modalInstance = {
                 close: jasmine.createSpy('uibModalInstance.close'),
                 dismiss: jasmine.createSpy('uibModalInstance.dismiss'),

@@ -2,6 +2,7 @@ describe("user service", function () {
     var userService, httpBackend, baseUrl, $q, root;
 
     beforeEach(angular.mock.module('cliffhanger.superuser'));
+    beforeEach(angular.mock.module('cliffhanger.users'));
 
     beforeEach(function () {
         angular.mock.module("cliffhanger.superuser");
