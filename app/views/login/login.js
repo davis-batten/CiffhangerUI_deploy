@@ -83,7 +83,7 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
             username: $scope.newUser.username,
             password: $scope.newUser.password,
             role: {
-                roleID: $scope.newUser.role
+                authority: $scope.newUser.role
             }
         }
         $log.debug(input);
@@ -93,8 +93,8 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
             function (response) {
                 if (response.status == 'Success') {
                     //use login() to authenticate
-                    $scope.username = response.data.username;
-                    $scope.password = response.data.password;
+                    $scope.username = $scope.newUser.username;
+                    $scope.password = $scope.newUser.password;
                     $scope.login();
                 }
                 //error
