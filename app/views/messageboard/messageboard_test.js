@@ -1,57 +1,59 @@
 describe('cliffhanger.messageboard module', function () {
     beforeEach(angular.mock.module('ngRoute'));
+    beforeEach(angular.mock.module('ui.bootstrap'));
     beforeEach(angular.mock.module('cliffhanger.issue'));
     beforeEach(angular.mock.module('cliffhanger.messageboard'));
     var scope, root, location, issues;
     describe('messageboard controller', function () {
-        beforeEach(inject(function ($controller, $rootScope, $log, $q, $location, issueService) {
+        beforeEach(inject(function ($controller, $rootScope, $log, $q, $location, $uibModal, issueService) {
             scope = $rootScope.$new();
             root = $rootScope;
             location = $location;
+            modal = $uibModal;
             serviceError = false;
             //test data
             issues = [
-                    {
-                        threadId: 1
-                        , subject: "Can't load table cliffhanger.testHiveTable"
-                        , opener: {
-                            username: "dbatt"
-                            , role: {
-                                roleID: "DEVELOPER"
-                            }
+                {
+                    threadId: 1
+                    , subject: "Can't load table cliffhanger.testHiveTable"
+                    , opener: {
+                        username: "dbatt"
+                        , role: {
+                            roleID: "DEVELOPER"
                         }
-                        , numComments: 5
-                        , createDate: new Date()
-                        , open: true
+                    }
+                    , numComments: 5
+                    , createDate: new Date()
+                    , open: true
                 }
                     , {
-                        threadId: 2
-                        , subject: "Can't change username"
-                        , opener: {
-                            username: "colton"
-                            , role: {
-                                roleID: "ADMIN"
-                            }
+                    threadId: 2
+                    , subject: "Can't change username"
+                    , opener: {
+                        username: "colton"
+                        , role: {
+                            roleID: "ADMIN"
                         }
-                        , numComments: 1
-                        , createDate: new Date()
-                        , open: false
+                    }
+                    , numComments: 1
+                    , createDate: new Date()
+                    , open: false
                 }
                     , {
-                        threadId: 3
-                        , subject: "No results for a join query"
-                        , opener: {
-                            username: "heather"
-                            , role: {
-                                roleID: "ANALYST"
-                            }
+                    threadId: 3
+                    , subject: "No results for a join query"
+                    , opener: {
+                        username: "heather"
+                        , role: {
+                            roleID: "ANALYST"
                         }
-                        , numComments: 3
-                        , createDate: new Date()
-                        , open: true
+                    }
+                    , numComments: 3
+                    , createDate: new Date()
+                    , open: true
                 }
-            ]
-                //mock issueService
+            ];
+            //mock issueService
             spyOn(issueService, "getAllIssues").and.callFake(function () {
                 var deferred = $q.defer();
                 if (!serviceError) {
@@ -76,6 +78,7 @@ describe('cliffhanger.messageboard module', function () {
                 , $q: $q
                 , $rootScope: root
                 , $location: location
+                , $uibModal: modal
                 , issueService: issueService
             });
         }));
@@ -83,17 +86,17 @@ describe('cliffhanger.messageboard module', function () {
             scope.$apply();
             expect(scope.issues).toBeDefined();
             expect(scope.issues).toEqual(issues);
-        })
+        });
         it('should be able to view an issue thread', function () {
-                scope.$apply();
-                scope.openThread(scope.issues[0]);
-                expect(scope.issues[0].threadId).toBe(1);
-                expect(location.path()).toBe('/issue/1');
-            })
-            //TODO test filters
-            //TODO test role/open styling
-            //TODO test new issue
+            scope.$apply();
+            scope.openThread(scope.issues[0]);
+            expect(scope.issues[0].threadId).toBe(1);
+            expect(location.path()).toBe('/issue/1');
+        });
+        //TODO test filters
+        //TODO test role/open styling
     });
+    //TODO test new issue
     describe('NewIssueModalInstanceCtrl', function () {
         beforeEach(inject(function ($controller, $rootScope, $log) {
             scope = $rootScope.$new();
