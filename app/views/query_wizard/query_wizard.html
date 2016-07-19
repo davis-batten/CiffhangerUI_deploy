@@ -132,11 +132,11 @@
         <div id="queryResultsTable">
             <table class="table table-bordered ">
                 <thead>
-                    <th ng-repeat="column in tableResult.colNames"> {{column}} </th>
+                    <th ng-repeat="column in tableResult.colNames track by $index"> {{column}} </th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="row in tableResult.rows | limitTo:100">
-                        <td ng-repeat="cell in row">{{cell}}</td>
+                    <tr ng-repeat="row in tableResult.rows | limitTo:100 track by $index">
+                        <td ng-repeat="cell in row track by $index">{{cell}}</td>
                 </tbody>
             </table>
         </div>
@@ -155,8 +155,11 @@
         </p>
 -->
         <p ng-show="noResults">
-            The join query ran, but the resulting dataset was empty. <br><br>
-            This means no matching data was found between the dataset's in their join columns. <br><br>
+            The join query ran, but the resulting dataset was empty.
+            <br>
+            <br> This means no matching data was found between the dataset's in their join columns.
+            <br>
+            <br>
         </p>
     </div>
     <!-- modal footer -->
@@ -204,19 +207,23 @@
 
 <!-- Report problem to dev form -->
 <div class="modal-body" ng-show="shouldShowNotifyDevsForm">
-    <p>Here you can notify your developers that you are having a problem using Cliffhanger or joining datasets. This opens a discussion board where you and a developer can comment back and forth about the problem. This discussion board will remain open until the problem is resolved. </p>
-    <form name="notifyDevsForm">
-        <div class="form-group">
-            <label for="subject">Subject </label>
-            <textarea class="form-control" rows="1" name="subject" id="problemSubject" ng-model="newProblemInput.subject"> </textarea>
-        </div>
-        <div class="form-group">
-            <label for="msg">Message </label>
-            <textarea class="form-control" rows="15" name="msg" id="problemMessage" ng-model="newProblemInput.message"> </textarea>
-        </div>
-    </form>
+    <div ng-show="!reportSubmitted">
+        <p>Here you can notify your developers that you are having a problem using Cliffhanger or joining datasets. This opens a discussion board where you and a developer can comment back and forth about the problem. This discussion board will remain open until the problem is resolved. </p>
+        <form name="notifyDevsForm">
+            <div class="form-group">
+                <label for="subject">Subject </label>
+                <textarea class="form-control" rows="1" name="subject" id="problemSubject" ng-model="newProblemInput.subject"> </textarea>
+            </div>
+            <div class="form-group">
+                <label for="msg">Message </label>
+                <textarea class="form-control" rows="15" name="msg" id="problemMessage" ng-model="newProblemInput.message"> </textarea>
+            </div>
+        </form>
+    </div>
+    <p ng-show="reportSubmitted">{{postReportSubmissionMessage}}</p>
 </div>
 <div class="modal-footer" ng-show="shouldShowNotifyDevsForm">
-    <button class="btn btn-warning pull-left" type="button" ng-click="hideNotifyDevsForm()">Cancel</button>
-    <button class="btn btn-success" type="button" ng-click="reportProblem()">Send to Developers</button>
+    <button class="btn btn-warning pull-left" ng-show="!reportSubmitted" type="button" ng-click="hideNotifyDevsForm()">Cancel</button>
+    <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="reportProblem()">Send to Developers</button>
+    <button class="btn btn-warning pull-left" ng-show="reportSubmitted" type="button" ng-click="hideNotifyDevsForm()">Return to Query</button>
 </div>

@@ -1,7 +1,7 @@
 'use strict';
 var query_wizard = angular.module('cliffhanger.query_wizard', ['ngRoute', 'ngSanitize', 'ngCsv']);
-
-query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibModalInstance, $log, datasets, queryService) {
+query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibModalInstance, $log, datasets, queryService, issueService) {
+    
     $scope.query = {}; //container for query
     $scope.alerts = [];
     $scope.dataTypeCheck = [];
@@ -26,10 +26,11 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.queryRanFine = true;
     $scope.connectionFailed = false;
     $scope.noResults = false;
+    $scope.postReportSubmissionMessage;
     $scope.newProblemInput = {
         subject: '',
-        message: '',
-        username: $rootScope.user.username
+        body: '',
+        opener: $rootScope.user.username
     }
     $scope.shouldShowNotifyDevsForm = false;
 
@@ -250,7 +251,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         }
         queryService.runQuery(query).then(function (response) { //success callback
                 $scope.loadingPreview = false;
-                if ($scope.tableResult.rows == undefined || $scope.tableResult.rows.length == 0) {
+                if (response.rows == undefined || response.rows.length == 0) {
                     // no results
                     $scope.progressType = 'danger';
                     $scope.queryRanFine = false;
@@ -302,6 +303,13 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
 
     $scope.reportProblem = function () {
         $uibModalInstance.dismiss('cancel');
+        issueService.createIssue($scope.newProblemInput).then(function (response) {
+            // success
+            $scope.postReportSubmissionMessage = "Your problem has been reported to the developers."
+        }, function (data) {
+            // fail
+            $scope.postReportSubmissionMessage = "There was a problem reporting your problem."
+        });
     };
 
 });
