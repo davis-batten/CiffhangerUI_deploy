@@ -15,6 +15,14 @@ describe('cliffhanger.query_wizard module', function () {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
+            mockUser = {
+                username: "mockUser",
+                password: "nnnnnnn",
+                role: {
+                    roleID: 'ADMIN'
+                }
+            }
+            $rootScope.user = mockUser;
             mockDatasets = [
                 {
                     name: 'test1',
@@ -145,12 +153,13 @@ describe('cliffhanger.query_wizard module', function () {
                 $scope: scope,
                 $uibModalInstance: modalInstance,
                 datasets: mockDatasets,
+                root: $rootScope,
                 queryService: mockQueryService
             })
         }));
         // -----------Modal operations----------------------
         it('should instantiate the QueryWizardCtrl controller', function () {
-            expect(queryWizardCtrl).not.toBeUndefined();
+            expect(queryWizardCtrl).toBeDefined();
         });
         it('should dismiss the modal with cancel', function () {
             scope.cancel();
