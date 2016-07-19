@@ -1,3 +1,8 @@
+//GLOBAL VARIABLES
+window.baseUrl = 'http://localhost:8080/cliffhanger'; //development
+//window.baseUrl = 'http://hangingonbyanicepick.eastus2.cloudapp.azure.com:8080/cliffhanger-0.1'; //production
+
+
 // Declare app level module which depends on views, and components
 app = angular.module('cliffhanger', [
     'ui.bootstrap'
@@ -8,6 +13,7 @@ app = angular.module('cliffhanger', [
     , 'ngCsv'
     , 'ui.grid'
     , 'ui.grid.pinning'
+    , 'angular-jwt'
     , 'cliffhanger.version',
 
     //My modules
@@ -21,19 +27,49 @@ app = angular.module('cliffhanger', [
     'cliffhanger.messageboard',
     'cliffhanger.issue'
 
-]).
-config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+]).config(function Config($locationProvider, $routeProvider, $httpProvider, jwtInterceptorProvider) {
     //set up URL mapping/routing
     $locationProvider.hashPrefix('');
     $routeProvider.otherwise({
         redirectTo: '/'
     });
-}]).run(function ($rootScope, $location, userService) {
+
+    //setup JWT intercept
+    jwtInterceptorProvider.tokenGetter = ['jwtHelper', '$http', 'config', function (jwtHelper, $http, config) {
+        var accessToken = localStorage.getItem('accessToken');
+        var refreshToken = localStorage.getItem('refreshToken');
+        //skip authentication for HTML requests
+        if (config.url.substr(config.url.length - 5) == '.html') {
+            return null;
+        }
+        //if token is expired and in need of refresh
+        else if (jwtHelper.isTokenExpired(accessToken)) {
+            return $http({
+                url: window.baseUrl + '/ouath/access_token',
+                skipAuthorization: true,
+                method: 'POST',
+                data: {
+                    grant_type: 'refresh_token',
+                    refresh_token: refreshToken
+                }
+            }).then(function (response) {
+                var newToken = response.data.access_token;
+                localStorage.setItem('accessToken', newToken);
+                return newToken;
+            });
+        }
+        //normal operation
+        else {
+            return accessToken;
+        }
+    }];
+    $httpProvider.interceptors.push('jwtInterceptor');
+
+}).run(function ($rootScope, $location, userService) {
     $rootScope.theme = {}
     $rootScope.logout = userService.logout;
     //set base Url for the REST API
-    $rootScope.baseUrl = 'http://localhost:8080/cliffhanger'; //development
-    //$rootScope.baseUrl = 'http://hangingonbyanicepick.eastus2.cloudapp.azure.com:8080/cliffhanger-0.1'; //production
+    $rootScope.baseUrl = window.baseUrl;
 
 
     var path = function () {

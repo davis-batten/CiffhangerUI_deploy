@@ -23,7 +23,8 @@
     "angular-mocks": "~1.5.0",
     "ng-tags-input": "^3.1.1",
     "ng-csv": "^0.3.6",
-    "angular-ui-grid": "^3.2.1"
+    "angular-ui-grid": "^3.2.1",
+    "angular-jwt": "^0.0.9"
   },
   "resolutions": {
     "angular": "1.5.7",
