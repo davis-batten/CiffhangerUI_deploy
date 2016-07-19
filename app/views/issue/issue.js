@@ -140,8 +140,9 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
 
 
     $scope.roleStyle = function (user) {
-        if (user.role.roleID == "DEVELOPER") return "text-success";
-        else if (user.role.roleID == "ANALYST") return "text-primary";
+        $log.debug('role user', user);
+        if (user.roles[0].authority == "ROLE_DEVELOPER") return "text-success";
+        else if (user.roles[0].authority == "ROLE_ANALYST") return "text-primary";
         else return "text-muted";
     }
 

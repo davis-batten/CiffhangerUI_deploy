@@ -37,7 +37,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     };
 
     $scope.getQueries = function () {
-        if ($rootScope.user.role.roleID == 'ADMIN') {
+        if ($rootScope.user.roles[0] == 'ADMIN') {
             $scope.getAllQueries = function () {
                 queryService.getAllQueries().then(function (data) {
                     $log.debug('response', data);

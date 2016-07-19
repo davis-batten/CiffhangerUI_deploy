@@ -74,7 +74,7 @@ angular.module('cliffhanger.issue').service('issueService', function ($log, $htt
         }
         //fetch all comments for an issue
     this.getComments = function (threadId) {
-        return $http.get(baseUrl + '/comment/getAllByThread/' + threadId).then(
+        return $http.get(baseUrl + '/comment/getByThread/' + threadId).then(
             //success callback
             function (response) {
                 $log.debug(response);
