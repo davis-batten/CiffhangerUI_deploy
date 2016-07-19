@@ -121,5 +121,31 @@ angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider'
     }
     $scope.newIssue = function () {
         //TODO
+        var modalInstance = $uibModal.open({
+            templateUrl: 'newIssueModalContent.html'
+            , controller: 'NewIssueModalInstanceCtrl'
+            , size: 'lg'
+        });
+        modalInstance.result.then(function (issue) {
+            $log.info('Modal dismissed at: ' + new Date());
+            $log.info(issue);
+            issueService.createIssue(issue).then(function (response) {
+                $scope.getAllIssues();
+            }, function (response) {
+                $log.error('Failure!');
+            });
+        });
     }
+});
+//controller for instance of NewIssueModal
+queries.controller('NewIssueModalInstanceCtrl', function ($scope, $uibModalInstance, $log, $rootScope) {
+    $scope.input = {};
+    //complete modal
+    $scope.submit = function () {
+        $uibModalInstance.close($scope.input);
+    };
+    //dismiss modal
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 });
