@@ -1,5 +1,5 @@
 <!-- Developer Navbar -->
-<div ng-show="$root.user.role.roleID == 'DEVELOPER'">
+<div ng-show="$root.user.roles[0] == 'ROLE_DEVELOPER'">
     <nav class="navbar navbar-default navbar-dev">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -33,7 +33,7 @@
     </nav>
 </div>
 <!-- Analyst Navbar -->
-<div ng-show="$root.user.role.roleID == 'ANALYST'">
+<div ng-show="$root.user.roles[0] == 'ROLE_ANALYST'">
     <nav class="navbar navbar-default navbar-an">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -67,7 +67,7 @@
     </nav>
 </div>
 <!-- Superuser Navbar -->
-<div ng-hide="$root.user.role.roleID == 'ANALYST' || $root.user.role.roleID == 'DEVELOPER'">
+<div ng-hide="$root.user.roles[0] == 'ROLE_ANALYST' || $root.user.roles[0] == 'ROLE_DEVELOPER'">
     <nav class="navbar navbar-default navbar-sup">
         <div class="container-fluid">
             <div class="navbar-header">

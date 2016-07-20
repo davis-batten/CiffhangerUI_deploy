@@ -42,29 +42,22 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     };
 
     $scope.getQueries = function () {
-        queryService.getAllQueries().then(function (data) {
-            $log.debug('response', data);
-            if (data.status == 'Success') {
-                $log.debug('data obj', data.data);
-                $scope.queryList = eval(data.data);
-            } else {
-                $scope.queryList = [];
+        if ($rootScope.user.roles[0] == 'ROLE_ADMIN') {
+            $scope.getAllQueries = function () {
+                queryService.getAllQueries().then(function (data) {
+                    $log.debug('response', data);
+                    if (data.status == 'Success') {
+                        $log.debug('data obj', data.data);
+                        $scope.queryList = eval(data.data);
+                    } else {
+                        $scope.queryList = [];
+                    }
+                })
             }
-        })
-    }
 
-    queries.filter('getUserQueries', function () {
-        $scope.getQueries()
-        return function (queries, queryList) {
-            for (i in queryList) {
-                if (q.createdBy == $rootScope.user.username)
-                    queryList.splice(i, 1)
-            }
-            return queryList
         }
-
-    })
-
+    }
+    $scope.getAllQueries();
     //opens view modal
     $scope.view = function (q) {
         var modalInstance = $uibModal.open({
