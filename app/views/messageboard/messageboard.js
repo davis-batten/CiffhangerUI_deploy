@@ -1,8 +1,8 @@
 angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/messageboard', {
-        templateUrl: 'views/messageboard/messageboard.html'
-        , controller: 'MessageBoardCtrl'
-        , activetab: 'messageboard'
+        templateUrl: 'views/messageboard/messageboard.html',
+        controller: 'MessageBoardCtrl',
+        activetab: 'messageboard'
     });
 }]);
 var messageboard = angular.module('cliffhanger.messageboard');
@@ -15,40 +15,40 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
     $scope.issues = [
         /*
             {
-                subject: "Can't load table cliffhanger.testHiveTable"
-                , opener: {
-                    username: "dbatt"
-                    , role: {
-                        roleID: "DEVELOPER"
-                    }
-                }
-                , numComments: 5
-                , createDate: new Date()
-                , open: open
+                subject: "Can't load table cliffhanger.testHiveTable",
+                opener: {
+                    username: "dbatt",
+                    roles: [
+                        "ROLE_DEVELOPER"
+                    ]
+                },
+                numComments: 5,
+                createDate: new Date(),
+                open: open
         }
             , {
-                subject: "Can't change username"
-                , opener: {
-                    username: "colton"
-                    , role: {
-                        roleID: "ADMIN"
-                    }
-                }
-                , numComments: 1
-                , createDate: new Date()
-                , open: false
+                subject: "Can't change username",
+                opener: {
+                    username: "colton",
+                    roles: [
+                        "ROLE_ADMIN"
+                    ]
+                },
+                numComments: 1,
+                createDate: new Date(),
+                open: false
         }
             , {
-                subject: "No results for a join query"
-                , opener: {
-                    username: "heather"
-                    , role: {
-                        roleID: "ANALYST"
-                    }
-                }
-                , numComments: 3
-                , createDate: new Date()
-                , open: true
+                subject: "No results for a join query",
+                opener: {
+                    username: "heather",
+                    roles: [
+                        "ROLE_ANALYST"
+                    ]
+                },
+                numComments: 3,
+                createDate: new Date(),
+                open: true
         }
         */
     ];
@@ -63,15 +63,15 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
                 //error
                 else {
                     $scope.alerts.push({
-                        msg: response.data
-                        , type: "danger"
+                        msg: response.data,
+                        type: "danger"
                     });
                 }
             }, //error
             function (error) {
                 $scope.alerts.push({
-                    msg: "Failed to connect to server."
-                    , type: "danger"
+                    msg: "Failed to connect to server.",
+                    type: "danger"
                 });
             })
     }
@@ -88,8 +88,7 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
                 $scope.searchText = {
                     open: filterText
                 };
-            }
-            else $scope.searchText = '';
+            } else $scope.searchText = '';
         }
         //for sort by dropdown
     $scope.toggleSortByDropdown = function ($event) {
@@ -109,9 +108,9 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
         }
     }
     $scope.roleStyle = function (issue) {
-        var role = issue.opener.role.roleID;
-        if (role == "DEVELOPER") return "label label-success";
-        else if (role == "ANALYST") return "label label-primary";
+        var role = issue.opener.roles[0].authority;
+        if (role == "ROLE_DEVELOPER") return "label label-success";
+        else if (role == "ROLE_ANALYST") return "label label-primary";
         else return "label label-default";
     }
     $scope.openStyle = function (issue) {
