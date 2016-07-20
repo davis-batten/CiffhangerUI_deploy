@@ -1,8 +1,8 @@
 angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/issue/:threadId', {
-        templateUrl: 'views/issue/issue.html'
-        , controller: 'IssueCtrl'
-        , activetab: 'messageboard'
+        templateUrl: 'views/issue/issue.html',
+        controller: 'IssueCtrl',
+        activetab: 'messageboard'
     });
 }]).controller('IssueCtrl', function ($rootScope, $log, $scope, $q, issueService, $routeParams) {
     //list of alerts
@@ -92,15 +92,15 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
                 //error
                 else {
                     $scope.alerts.push({
-                        msg: response.data
-                        , type: "danger"
+                        msg: response.data,
+                        type: "danger"
                     });
                 }
             }, //error
             function (error) {
                 $scope.alerts.push({
-                    msg: "Failed to connect to server."
-                    , type: "danger"
+                    msg: "Failed to connect to server.",
+                    type: "danger"
                 });
             });
         //load all comments by threadId
@@ -113,22 +113,23 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
                 //error
                 else {
                     $scope.alerts.push({
-                        msg: response.data
-                        , type: "danger"
+                        msg: response.data,
+                        type: "danger"
                     });
                 }
             }, //error
             function (error) {
                 $scope.alerts.push({
-                    msg: "Failed to connect to server."
-                    , type: "danger"
+                    msg: "Failed to connect to server.",
+                    type: "danger"
                 });
             });
     }
     $scope.loadIssue();
     $scope.roleStyle = function (user) {
-        if (user.role.roleID == "DEVELOPER") return "text-success";
-        else if (user.role.roleID == "ANALYST") return "text-primary";
+        $log.debug('role user', user);
+        if (user.roles[0].authority == "ROLE_DEVELOPER") return "text-success";
+        else if (user.roles[0].authority == "ROLE_ANALYST") return "text-primary";
         else return "text-muted";
     }
     $scope.toggleOpen = function () {
@@ -143,24 +144,24 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
                     //error
                     else {
                         $scope.alerts.push({
-                            msg: response.data
-                            , type: "danger"
+                            msg: response.data,
+                            type: "danger"
                         });
                     }
                 }, //error
                 function (error) {
                     $scope.alerts.push({
-                        msg: "Failed to connect to server."
-                        , type: "danger"
+                        msg: "Failed to connect to server.",
+                        type: "danger"
                     });
                 });
         }
         //post a new comment
     $scope.postComment = function () {
         var newComment = {
-            threadId: $routeParams.threadId
-            , body: $scope.newComment
-            , userId: $rootScope.user.username
+            threadId: $routeParams.threadId,
+            body: $scope.newComment,
+            userId: $rootScope.user.username
         }
         issueService.postComment(newComment).then(
             //success
@@ -171,16 +172,17 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
                 //error
                 else {
                     $scope.alerts.push({
-                        msg: response.data
-                        , type: "danger"
+                        msg: response.data,
+                        type: "danger"
                     });
                 }
             }, //error
             function (error) {
                 $scope.alerts.push({
-                    msg: "Failed to connect to server."
-                    , type: "danger"
+                    msg: "Failed to connect to server.",
+                    type: "danger"
                 });
             });
     }
+
 });
