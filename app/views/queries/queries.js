@@ -53,10 +53,8 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                         $scope.queryList = [];
                     }
                 })
-            } else {
-                $scope.queryList = [];
             }
-        })
+        }
 }
 $scope.getAllQueries();
 //opens view modal

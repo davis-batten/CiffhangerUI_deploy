@@ -26,7 +26,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.queryRanFine = true;
     $scope.connectionFailed = false;
     $scope.noResults = false;
-    $scope.postReportSubmissionMessage;
+    $scope.postReportSubmissionMessage = "";
     $scope.reportSubmitted = false;
     $scope.newProblemInput = {
         subject: '',
@@ -98,7 +98,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         } else if ($scope.step == 4) {
             $scope.buildQuery();
         } else if ($scope.step == 5) {
-            $scope.runQuery();
+            $scope.runNewQuery();
         }
     };
 
@@ -242,7 +242,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         });
     };
 
-    $scope.runQuery = function () {
+    $scope.runNewQuery = function () {
         $scope.loadingPreview = true;
         if ($scope.statement != undefined) {
             var query = $scope.query[0] + $scope.statement.text;
@@ -302,7 +302,6 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     };
 
     $scope.reportProblem = function () {
-        $uibModalInstance.dismiss('cancel');
         issueService.createIssue($scope.newProblemInput).then(function (response) {
             // success
             $scope.postReportSubmissionMessage = "Your problem has been reported to the developers."
