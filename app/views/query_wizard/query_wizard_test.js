@@ -107,6 +107,8 @@ describe('cliffhanger.query_wizard module', function () {
                     }
                 ];
             serviceError = false;
+            issueServiceError = false;
+            emptyResult = false;
             //mock queryService methods
             spyOn(mockQueryService, "runQuery").and.callFake(function () {
                 var bad_result = {
@@ -133,8 +135,17 @@ describe('cliffhanger.query_wizard module', function () {
                         ]
                     ]
                 }
+                var emptyTableResult = {
+                    colCount: 2,
+                    colNames: [
+                        "test.col1"
+                        , "test.col2"
+                    ],
+                    rows: []
+                }
                 var deferred = $q.defer();
                 if (serviceError) deferred.reject(bad_result);
+                else if (emptyResult) deferred.resolve(emptyTableResult)
                 else deferred.resolve(testTableResult); //TODO add tableResult to here
                 return deferred.promise;
             })
@@ -148,6 +159,18 @@ describe('cliffhanger.query_wizard module', function () {
                 }
                 var deferred = $q.defer();
                 if (serviceError) deferred.resolve(bad_result);
+                else deferred.resolve(good_result);
+                return deferred.promise;
+            })
+            spyOn(mockIssueService, "createIssue").and.callFake(function () {
+                var bad_result = {
+                    status: 'Error'
+                }
+                var good_result = {
+                    status: 'Success'
+                }
+                var deffered = $q.defer();
+                if (issueServiceError) deferred.resolve(bad_result);
                 else deferred.resolve(good_result);
                 return deferred.promise;
             })
@@ -355,6 +378,52 @@ describe('cliffhanger.query_wizard module', function () {
             for (var i = 0; i < mockDatasets.length; i++) {
                 expect(mockDatasets[i].selected).toBeFalsy();
             }
+        });
+        it('should show proper warning modal content when results are empty and give ability to open new discussion board', function () {
+            emptyResult = true;
+            scope.step = scope.maxSteps - 1;
+            scope.next();
+            expect(scope.noResults).toBeTruthy();
+            expect(scope.queryRanFine).toBeFalsy();
+            scope.showNotifyDevsForm();
+            scope.expect(scope.shouldShowNotifyDevsForm).toBeTruthy();
+            expect(scope.newProblemInput.body).not.toBeNull();
+            scope.reportProblem();
+            expect(scope.postReportSubmissionMessage).toEqual("Your problem has been reported to the developers.");
+            expect(scope.reportSubmitted).toBeTruthy();
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        });
+        it('should show proper warning modal content when connection fails and give ability to open new discussion board', function () {
+            serviceError = true;
+            scope.step = scope.maxSteps - 1;
+            scope.next();
+            expect(scope.connectionFailed).toBeTruthy();
+            expect(scope.queryRanFine).toBeFalsy();
+            scope.showNotifyDevsForm();
+            scope.expect(scope.shouldShowNotifyDevsForm).toBeTruthy();
+            expect(scope.newProblemInput.body).not.toBeNull();
+            scope.reportProblem();
+            expect(scope.postReportSubmissionMessage).toEqual("Your problem has been reported to the developers.");
+            expect(scope.reportSubmitted).toBeTruthy();
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        });
+        it('should show error message when new discussion board creation fails', function () {
+            serviceError = true;
+            scope.step = scope.maxSteps - 1;
+            scope.next();
+            expect(scope.connectionFailed).toBeTruthy();
+            expect(scope.queryRanFine).toBeFalsy();
+            scope.showNotifyDevsForm();
+            scope.expect(scope.shouldShowNotifyDevsForm).toBeTruthy();
+            expect(scope.newProblemInput.body).not.toBeNull();
+            issueServiceError = true;
+            scope.reportProblem();
+            expect(scope.postReportSubmissionMessage).toEqual("There was a problem reporting your problem.");
+            expect(scope.reportSubmitted).toBeTruthy();
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         });
         it('should be able to select all tags in dataset', function () {
             scope.selected[mockDatasets[0].name] = true;

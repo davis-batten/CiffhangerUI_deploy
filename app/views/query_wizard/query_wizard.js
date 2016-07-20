@@ -27,10 +27,10 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.connectionFailed = false;
     $scope.noResults = false;
     $scope.postReportSubmissionMessage;
+    $scope.reportSubmitted = false;
     $scope.newProblemInput = {
         subject: '',
-        body: '',
-        opener: $rootScope.user.username
+        body: ''    
     }
     $scope.shouldShowNotifyDevsForm = false;
 
@@ -256,7 +256,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
                     $scope.progressType = 'danger';
                     $scope.queryRanFine = false;
                     $scope.noResults = true;
-                    $scope.newProblemInput.message = "Cliffhanger Report: Running the join query succeeded but the result table was empty. \nQuery used: " + query;
+                    $scope.newProblemInput.body = "Cliffhanger Report: Running the join query succeeded but the result table was empty. \nQuery used: " + query;
                 } else {
                     $scope.tableResult = response;
                     $scope.progressType = 'success';
@@ -268,7 +268,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
                 $scope.progressType = 'danger';
                 $scope.queryRanFine = false;
                 $scope.connectionFailed = true;
-                $scope.newProblemInput.message = "Cliffhanger Report: HTTP call during method runQuery() in QueryService.js was not status 200. There is likely a problem with the REST service or Hive. \nQuery used: " + query;
+                $scope.newProblemInput.body = "Cliffhanger Report: HTTP call during method runQuery() in QueryService.js was not status 200. There is likely a problem with the REST service or Hive. \nQuery used: " + query;
 
                 $log.error('Failed to connect to server');
             });
@@ -306,9 +306,11 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         issueService.createIssue($scope.newProblemInput).then(function (response) {
             // success
             $scope.postReportSubmissionMessage = "Your problem has been reported to the developers."
+            $scope.reportSubmitted = true;
         }, function (data) {
             // fail
             $scope.postReportSubmissionMessage = "There was a problem reporting your problem."
+            $scope.reportSubmitted = true;
         });
     };
 

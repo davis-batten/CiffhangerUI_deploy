@@ -16,10 +16,9 @@
     <div class="modal-header" ng-show="shouldShowNotifyDevsForm">
         <div class="row">
             <div class="col-xs-11">
-                <h3 class="modal-title inline">Report a Problem</h3>
-                <div class="col-xs-1">
-                    <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
-                </div>
+                <h3 class="modal-title inline">Report a Problem</h3> </div>
+            <div class="col-xs-1">
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
             </div>
         </div>
     </div>
@@ -145,7 +144,7 @@
     <div class="modal-body" ng-show="!queryRanFine">
         <h4>No Results </h4>
         <p ng-show="connectionFailed"> Failed to connect </p>
-<!--
+        <!--
         <p ng-show="noResults">
             The join query ran, but the resulting dataset was empty. <br><br>
             This means no matching data was found between the dataset's in their join columns. <br><br>
@@ -154,13 +153,11 @@
             If there is a problem with how your data is formatted, report this to a developer and ask them to tranform the mismatched data to a common format.
         </p>
 -->
-        <p ng-show="noResults">
-            The join query ran, but the resulting dataset was empty.
+        <p ng-show="noResults"> The join query ran, but the resulting dataset was empty.
             <br>
             <br> This means no matching data was found between the dataset's in their join columns.
             <br>
-            <br>
-        </p>
+            <br> </p>
     </div>
     <!-- modal footer -->
     <div class="modal-footer">
@@ -183,7 +180,6 @@
                         <button class="btn btn-info" type="button" ng-disabled="name.$invalid" ng-click="save()">Save</button>
                         <button class="btn btn-danger" type="button" ng-show="showExit" ng-click="cancel()" uib-tooltip="Close the wizard and return to Compare">Exit Wizard</button>
                         <button class="btn btn-danger pull-left" type="button" ng-hide="showExit" ng-click="isCollapsed=! isCollapsed">Cancel Save</button>
-
                     </div>
                 </form>
             </div>
@@ -204,7 +200,6 @@
         </div>
     </div>
 </div>
-
 <!-- Report problem to dev form -->
 <div class="modal-body" ng-show="shouldShowNotifyDevsForm">
     <div ng-show="!reportSubmitted">
@@ -216,7 +211,7 @@
             </div>
             <div class="form-group">
                 <label for="msg">Message </label>
-                <textarea class="form-control" rows="15" name="msg" id="problemMessage" ng-model="newProblemInput.message"> </textarea>
+                <textarea class="form-control" rows="15" name="msg" id="problemMessage" ng-model="newProblemInput.body"> </textarea>
             </div>
         </form>
     </div>
