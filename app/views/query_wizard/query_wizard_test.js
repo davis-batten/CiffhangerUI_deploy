@@ -422,7 +422,7 @@ describe('cliffhanger.query_wizard module', function () {
 //            scope.step = scope.maxSteps - 1;
 //            scope.queryRanFine = false;
 //            scope.shouldShowNotifyDevsForm = true;
-            
+
 //            scope.next();
 //            scope.showNotifyDevsForm();
 //            scope.reportProblem();

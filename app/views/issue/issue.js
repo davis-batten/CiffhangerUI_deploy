@@ -168,6 +168,7 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
             function (response) {
                 if (response.status == 'Success') {
                     $scope.comments.push(response.data);
+                    $scope.newComment = "";
                 }
                 //error
                 else {
