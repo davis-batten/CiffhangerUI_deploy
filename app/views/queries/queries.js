@@ -53,59 +53,57 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                         $scope.queryList = [];
                     }
                 })
-            } else {
-                $scope.queryList = [];
-            }
-        })
-}
-$scope.getAllQueries();
-//opens view modal
-$scope.view = function (q) {
-    var modalInstance = $uibModal.open({
-        templateUrl: 'viewQueryModalContent.html',
-        controller: 'ViewQueryModalInstanceCtrl',
-        size: 'lg',
-        resolve: {
-            query: function () {
-                return q;
             }
         }
-    });
-};
-//opens deleteQuery modal for query q
-$scope.deleteQuery = function (q) {
-    var modalInstance = $uibModal.open({
-        templateUrl: 'queryDelete.html',
-        controller: 'QueryDeleteModalCtrl',
-        size: 'md',
-        resolve: {
-            query: function () {
-                return q;
-            }
-        }
-    });
-    //on modal completion
-    modalInstance.result.then(function (q) {
-        $log.warn('Deleted', q);
-        queryService.deleteQuery(q).then(function (response) {
-            for (i in $scope.queryList) {
-                if (q.name == $scope.queryList[i].name) {
-                    $scope.queryList.splice(i, 1)
-                    $scope.alerts.push({
-                        msg: "Query deleted",
-                        type: 'success'
-                    })
+    }
+    $scope.getAllQueries();
+    //opens view modal
+    $scope.view = function (q) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'viewQueryModalContent.html',
+            controller: 'ViewQueryModalInstanceCtrl',
+            size: 'lg',
+            resolve: {
+                query: function () {
+                    return q;
                 }
             }
-        }, function (response) {
-            $scope.alerts.push({
-                msg: 'Problem communicating',
-                type: 'danger'
-            })
-            $log.log($scope.data)
         });
-    });
-};
+    };
+    //opens deleteQuery modal for query q
+    $scope.deleteQuery = function (q) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'queryDelete.html',
+            controller: 'QueryDeleteModalCtrl',
+            size: 'md',
+            resolve: {
+                query: function () {
+                    return q;
+                }
+            }
+        });
+        //on modal completion
+        modalInstance.result.then(function (q) {
+            $log.warn('Deleted', q);
+            queryService.deleteQuery(q).then(function (response) {
+                for (i in $scope.queryList) {
+                    if (q.name == $scope.queryList[i].name) {
+                        $scope.queryList.splice(i, 1)
+                        $scope.alerts.push({
+                            msg: "Query deleted",
+                            type: 'success'
+                        })
+                    }
+                }
+            }, function (response) {
+                $scope.alerts.push({
+                    msg: 'Problem communicating',
+                    type: 'danger'
+                })
+                $log.log($scope.data)
+            });
+        });
+    };
 });
 //controller for an instance of ViewQueryModal
 queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInstance, $log, query, queryService) {
