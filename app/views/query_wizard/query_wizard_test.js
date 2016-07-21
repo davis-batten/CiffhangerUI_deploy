@@ -23,7 +23,7 @@ describe('cliffhanger.query_wizard module', function () {
                 role: {
                     roleID: 'ADMIN'
                 }
-            }
+            };
             $rootScope.user = mockUser;
             mockDatasets = [
                 {
@@ -170,7 +170,7 @@ describe('cliffhanger.query_wizard module', function () {
                     status: 'Success'
                 }
                 var deffered = $q.defer();
-                if (issueServiceError) deferred.resolve(bad_result);
+                if (issueServiceError == true) deferred.reject(bad_result);
                 else deferred.resolve(good_result);
                 return deferred.promise;
             })
@@ -179,7 +179,8 @@ describe('cliffhanger.query_wizard module', function () {
                 $uibModalInstance: modalInstance,
                 datasets: mockDatasets,
                 root: $rootScope,
-                queryService: mockQueryService
+                queryService: mockQueryService,
+                issueService: mockIssueService
             })
         }));
         // -----------Modal operations----------------------
@@ -383,48 +384,53 @@ describe('cliffhanger.query_wizard module', function () {
             emptyResult = true;
             scope.step = scope.maxSteps - 1;
             scope.next();
+            scope.$apply();
             expect(scope.noResults).toBeTruthy();
             expect(scope.queryRanFine).toBeFalsy();
             scope.showNotifyDevsForm();
-            scope.expect(scope.shouldShowNotifyDevsForm).toBeTruthy();
+            expect(scope.shouldShowNotifyDevsForm).toBeTruthy();
             expect(scope.newProblemInput.body).not.toBeNull();
-            scope.reportProblem();
-            expect(scope.postReportSubmissionMessage).toEqual("Your problem has been reported to the developers.");
-            expect(scope.reportSubmitted).toBeTruthy();
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         });
         it('should show proper warning modal content when connection fails and give ability to open new discussion board', function () {
             serviceError = true;
             scope.step = scope.maxSteps - 1;
             scope.next();
+            scope.$apply();
             expect(scope.connectionFailed).toBeTruthy();
             expect(scope.queryRanFine).toBeFalsy();
             scope.showNotifyDevsForm();
-            scope.expect(scope.shouldShowNotifyDevsForm).toBeTruthy();
+            expect(scope.shouldShowNotifyDevsForm).toBeTruthy();
             expect(scope.newProblemInput.body).not.toBeNull();
-            scope.reportProblem();
-            expect(scope.postReportSubmissionMessage).toEqual("Your problem has been reported to the developers.");
-            expect(scope.reportSubmitted).toBeTruthy();
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         });
         it('should show error message when new discussion board creation fails', function () {
             serviceError = true;
             scope.step = scope.maxSteps - 1;
             scope.next();
+            scope.$apply();
             expect(scope.connectionFailed).toBeTruthy();
             expect(scope.queryRanFine).toBeFalsy();
             scope.showNotifyDevsForm();
-            scope.expect(scope.shouldShowNotifyDevsForm).toBeTruthy();
+            expect(scope.shouldShowNotifyDevsForm).toBeTruthy();
             expect(scope.newProblemInput.body).not.toBeNull();
             issueServiceError = true;
-            scope.reportProblem();
-            expect(scope.postReportSubmissionMessage).toEqual("There was a problem reporting your problem.");
-            expect(scope.reportSubmitted).toBeTruthy();
-            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         });
+//        it('should show a confirmation message when message to dev is submitted',function() {
+//            serviceError = true;
+//            scope.step = scope.maxSteps - 1;
+//            scope.queryRanFine = false;
+//            scope.shouldShowNotifyDevsForm = true;
+
+//            scope.next();
+//            scope.showNotifyDevsForm();
+//            scope.reportProblem();
+//            scope.$apply();
+//            expect(scope.postReportSubmissionMessage).toEqual("Your problem has been reported to the developers.");
+//            expect(scope.reportSubmitted).toBeTruthy();
+//
+//        });
         it('should be able to select all tags in dataset', function () {
             scope.selected[mockDatasets[0].name] = true;
             scope.selectAllFromDataset(mockDatasets[0]);

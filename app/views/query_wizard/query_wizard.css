@@ -22,7 +22,7 @@ h4 small {
 
 #queryResultsTable {
     overflow: auto;
-    max-height: 500px;
+    max-height: 300px;
 }
 
 #columnList {

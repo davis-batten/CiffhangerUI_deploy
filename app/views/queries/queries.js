@@ -53,10 +53,26 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                         $scope.queryList = [];
                     }
                 })
+
             }
+            $scope.getAllQueries();
+        } else {
+            $scope.getUserQueries = function () {
+                queryService.getUserQueries().then(function (data) {
+                    $log.debug('response', data);
+                    if (data.status == 'Success') {
+                        $log.debug('data obj', data.data);
+                        $scope.queryList = eval(data.data);
+                    } else {
+                        $scope.queryList = [];
+                    }
+                })
+            }
+            $scope.getUserQueries();
         }
     }
-    $scope.getAllQueries();
+
+    $scope.getQueries();
     //opens view modal
     $scope.view = function (q) {
         var modalInstance = $uibModal.open({

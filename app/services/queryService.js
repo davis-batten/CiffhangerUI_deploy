@@ -75,4 +75,17 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
             };
         });
     }
+
+    this.getUserQueries = function () {
+        return $http.get($rootScope.baseUrl + '/query/userQueries/' + $rootScope.user.username).then(function (response) {
+            $log.info(response); //list all data from response
+            if (response.data.status == 'Success') {
+                $log.info('Successfully retrieved queries');
+                return response.data;
+            } else {
+                $log.warn('Failed to retrieve queries');
+                return $q.reject(response.data);
+            };
+        });
+    }
 });
