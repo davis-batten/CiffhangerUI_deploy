@@ -53,6 +53,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                         $scope.queryList = [];
                     }
                 })
+
             }
             $scope.getAllQueries();
         }
@@ -72,6 +73,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
             $scope.getUserQueries();
         }
     }
+
     $scope.getQueries();
     //opens view modal
     $scope.view = function (q) {
