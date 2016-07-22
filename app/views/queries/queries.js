@@ -133,6 +133,7 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
 
     $scope.query = query;
     $scope.maxSteps = 2;
+    $scope.isCollapsed = true;
     $scope.tableResult = {};
     $scope.alerts = [];
     $scope.step = 1; //what step is the modal on
@@ -175,6 +176,34 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
                     type: 'danger'
                 });
             })
+    };
+
+    //save the edit query as a new query
+    $scope.saveAs = function () {
+
+        if ($scope.newQuery.description == null || $scope.newQuery.description == undefined) {
+            $scope.newQuery.description = "";
+        }
+
+        $scope.newQuery.sqlString = $scope.query.sqlString;
+
+        queryService.saveQuery($scope.newQuery).then(function (data) {
+            if (data.status == 'Success') {
+                $scope.alerts.push({
+                    msg: "Query Successfully Saved!",
+                    type: 'success'
+                });
+                $log.debug(data);
+                $uibModalInstance.close(data.data);
+            } else {
+                $scope.alerts.push({
+                    msg: "Save Failed",
+                    type: 'danger'
+                });
+                $log.debug(data);
+            }
+            $log.debug($scope.statement);
+        });
     };
 
 

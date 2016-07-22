@@ -1,9 +1,6 @@
 <div ng-include="'/views/navbar.html'"></div>
 <!-- Page Content -->
 <div class="container-fluid">
-    <br>
-    <textarea class="codeEdit" rows="10" wrap="off"></textarea>
-    <pre>SELECT * from cliffhanger.testHiveTable</pre>
     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
     <div class="row">
         <div class="col-sm-2">
@@ -92,7 +89,24 @@
             <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
             <button class="btn btn-info" type="button" ng-click="download = !download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table" tooltip-append-to-body="true">Download</button>
             <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Update the existing query" tooltip-append-to-body="true" ng-click="updateQuery()">Save</button>
-            <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Save as a new query" tooltip-append-to-body="true">Save As</button>
+            <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Save as a new query" tooltip-append-to-body="true" ng-click="isCollapsed = !isCollapsed">Save As</button>
+            <div uib-collapse="isCollapsed">
+                <hr>
+                <div class="well well-sm">
+                    <form name="saveQueryAs">
+                        <div class="form-group">
+                            <label for="queryName" class="pull-left">Name</label>
+                            <input type="text " class="form-control" name="name" id="queryName" ng-model="newQuery.name" required> </div>
+                        <div class="form-group">
+                            <label for="queryDesc" class="pull-left">Description</label>
+                            <input type="text" class="form-control" id="description" ng-model="newQuery.description"> </div>
+                        <div class="form-group">
+                            <button class="btn btn-info" type="button" ng-disabled="name.$invalid" ng-click="saveAs()">Save</button>
+                            <button class="btn btn-danger pull-left" type="button" ng-hide="showExit" ng-click="isCollapsed =! isCollapsed">Cancel Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div uib-collapse="!download">
                 <hr>
                 <div class="well well-sm">

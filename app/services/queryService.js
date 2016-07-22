@@ -34,6 +34,7 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
         }
         //this service method saves a query on the backend
     this.saveQuery = function (newQuery) {
+        $log.debug('new query', newQuery);
         return $http.post($rootScope.baseUrl + '/query/save/' + $rootScope.user.username, newQuery).then(
             //success callback
             function (response) {
