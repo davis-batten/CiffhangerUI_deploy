@@ -169,8 +169,8 @@ describe('cliffhanger.query_wizard module', function () {
                 var good_result = {
                     status: 'Success'
                 }
-                var deffered = $q.defer();
-                if (issueServiceError == true) deferred.reject(bad_result);
+                var deferred = $q.defer();
+                if (issueServiceError) deferred.reject(bad_result);
                 else deferred.resolve(good_result);
                 return deferred.promise;
             })
@@ -414,24 +414,22 @@ describe('cliffhanger.query_wizard module', function () {
             expect(scope.newProblemInput.body).not.toBeNull();
             issueServiceError = true;
         });
-        //        it('should show a confirmation message when message to dev is submitted',function() {
-        //            serviceError = true;
-        //            scope.step = scope.maxSteps - 1;
-        //            scope.queryRanFine = false;
-        //            scope.shouldShowNotifyDevsForm = true;
-        //            scope.next();
-        //            scope.showNotifyDevsForm();
-        //            scope.reportProblem();
-        //            scope.$apply();
-        //            expect(scope.postReportSubmissionMessage).toEqual("Your problem has been reported to the developers.");
-        //            expect(scope.reportSubmitted).toBeTruthy();
-        //
-        //        });
+        it('should show a confirmation message when message to dev is submitted', function () {
+            serviceError = true;
+            scope.step = scope.maxSteps - 1;
+            scope.queryRanFine = false;
+            scope.shouldShowNotifyDevsForm = true;
+            scope.next();
+            scope.reportProblem();
+            scope.$apply();
+            expect(scope.postReportSubmissionMessage).toEqual("Your problem has been reported to the developers.");
+            expect(scope.reportSubmitted).toBeTruthy();
+        });
         it('should be able to select all tags in dataset', function () {
             scope.selected[mockDatasets[0].name] = true;
             scope.selectAllFromDataset(mockDatasets[0]);
             scope.$apply();
             expect(scope.selectedColumns.length).toBe(2);
-        })
+        });
     });
 });

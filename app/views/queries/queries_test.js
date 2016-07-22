@@ -110,7 +110,7 @@ describe('cliffhanger.queries module', function () {
                     status: 'Success'
                 }
                 var deferred = $q.defer();
-                if (issueServiceError == true) deferred.reject(bad_result);
+                if (issueServiceError) deferred.reject(bad_result);
                 else deferred.resolve(good_result);
                 return deferred.promise;
             })
@@ -136,8 +136,11 @@ describe('cliffhanger.queries module', function () {
         });
     });
     describe('ViewQueryModalInstanceCtrl', function () {
-        beforeEach(inject(function ($controller, $rootScope, $log) {
+        beforeEach(inject(function ($controller, $rootScope, $log, $q) {
             scope = $rootScope.$new();
+            serviceError = false;
+            issueServiceError = false;
+            emptyResult = false;
             modalInstance = {
                 close: jasmine.createSpy('uibModalInstance.close')
                 , dismiss: jasmine.createSpy('uibModalInstance.dismiss')
@@ -145,6 +148,57 @@ describe('cliffhanger.queries module', function () {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
+            spyOn(mockQueryService, "runQuery").and.callFake(function () {
+                var bad_result = {
+                    status: 'Error'
+                }
+                var testTableResult = {
+                    colCount: 2
+                    , colNames: [
+                        "test.col1"
+                        , "test.col2"
+                    ]
+                    , rows: [
+                        [
+                            1
+                            , "abc"
+                        ]
+                        , [
+                            2
+                            , "def"
+                        ]
+                        , [
+                            3
+                            , "ghi"
+                        ]
+                    ]
+                }
+                var emptyTableResult = {
+                    colCount: 2
+                    , colNames: [
+                        "test.col1"
+                        , "test.col2"
+                    ]
+                    , rows: []
+                }
+                var deferred = $q.defer();
+                if (serviceError) deferred.reject(bad_result);
+                else if (emptyResult) deferred.resolve(emptyTableResult);
+                else deferred.resolve(testTableResult);
+                return deferred.promise;
+            })
+            spyOn(mockIssueService, "createIssue").and.callFake(function () {
+                var bad_result = {
+                    status: 'Error'
+                }
+                var good_result = {
+                    status: 'Success'
+                }
+                var deferred = $q.defer();
+                if (issueServiceError) deferred.reject(bad_result);
+                else deferred.resolve(good_result);
+                return deferred.promise;
+            })
             viewQueryModalCtrl = $controller('ViewQueryModalInstanceCtrl', {
                 $scope: scope
                 , $uibModalInstance: modalInstance
@@ -176,8 +230,6 @@ describe('cliffhanger.queries module', function () {
             expect(scope.query.name).toEqual('test');
             expect(scope.query.dateCreated).toEqual(testDate);
         });
-        //Unresolved problem: don't know why this fails
-        /*
         it('should run the query and return a table result object', function () {
             scope.step = scope.maxSteps - 1;
             scope.next();
@@ -205,16 +257,16 @@ describe('cliffhanger.queries module', function () {
                         ]
                     ]
             });
-            //expect(scope.tableResult.colCount).toEqual(2);
-            //expect(scope.tableResult.colNames[1]).toBe("test.col2");
-            //expect(scope.tableResult.rows[0][1]).toBe("abc");
+            expect(scope.tableResult.colCount).toEqual(2);
+            expect(scope.tableResult.colNames[1]).toBe("test.col2");
+            expect(scope.tableResult.rows[0][1]).toBe("abc");
         });
-        */
         it('should show proper warning modal content when results are empty and give ability to open new issue', function () {
             emptyResult = true;
-            scope.step = scope.maxSteps - 1;
+            scope.step = 1;
             scope.next();
             scope.$apply();
+            expect(mockQueryService.runQuery).toHaveBeenCalled();
             expect(scope.noResults).toBeTruthy();
             expect(scope.queryRanFine).toBeFalsy();
             scope.showNotifyDevsForm();
@@ -242,7 +294,6 @@ describe('cliffhanger.queries module', function () {
             scope.showNotifyDevsForm();
             expect(scope.shouldShowNotifyDevsForm).toBeTruthy();
             expect(scope.newProblemInput.body).not.toBeNull();
-            issueServiceError = true;
         });
     });
     describe('QueryDeleteModalCtrl', function () {
