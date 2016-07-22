@@ -53,7 +53,6 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                         $scope.queryList = [];
                     }
                 })
-
             }
             $scope.getAllQueries();
         }
@@ -73,7 +72,6 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
             $scope.getUserQueries();
         }
     }
-
     $scope.getQueries();
     //opens view modal
     $scope.view = function (q) {
@@ -128,6 +126,7 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     $scope.query = query;
     $scope.maxSteps = 2;
     $scope.tableResult = {};
+    $scope.loadingPreview = false;
     $scope.queryRanFine = true;
     $scope.connectionFailed = false;
     $scope.noResults = false;
