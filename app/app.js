@@ -1,8 +1,6 @@
 //GLOBAL VARIABLES
 window.baseUrl = 'http://localhost:8080/cliffhanger'; //development
 //window.baseUrl = 'http://hangingonbyanicepick.eastus2.cloudapp.azure.com:8080/cliffhanger-0.1'; //production
-
-
 // Declare app level module which depends on views, and components
 app = angular.module('cliffhanger', [
     'ui.bootstrap'
@@ -33,7 +31,6 @@ app = angular.module('cliffhanger', [
     $routeProvider.otherwise({
         redirectTo: '/'
     });
-
     //setup JWT intercept
     jwtInterceptorProvider.tokenGetter = ['jwtHelper', '$http', 'config', function (jwtHelper, $http, config) {
         var accessToken = localStorage.getItem('accessToken');
@@ -45,12 +42,12 @@ app = angular.module('cliffhanger', [
         //if token is expired and in need of refresh
         else if (jwtHelper.isTokenExpired(accessToken)) {
             return $http({
-                url: window.baseUrl + '/ouath/access_token',
-                skipAuthorization: true,
-                method: 'POST',
-                data: {
-                    grant_type: 'refresh_token',
-                    refresh_token: refreshToken
+                url: window.baseUrl + '/ouath/access_token'
+                , skipAuthorization: true
+                , method: 'POST'
+                , data: {
+                    grant_type: 'refresh_token'
+                    , refresh_token: refreshToken
                 }
             }).then(function (response) {
                 var newToken = response.data.access_token;
@@ -64,22 +61,17 @@ app = angular.module('cliffhanger', [
         }
     }];
     $httpProvider.interceptors.push('jwtInterceptor');
-
 }).run(function ($rootScope, $location, userService) {
     $rootScope.theme = {}
     $rootScope.logout = userService.logout;
     //set base Url for the REST API
     $rootScope.baseUrl = window.baseUrl;
-
-
     var path = function () {
         return $location.path();
     };
     $rootScope.$watch(path, function (newVal, oldVal) {
         $rootScope.activetab = newVal;
     });
-
-
 }).directive('prevent-default', function ($rootScope) {
     var linkFn = function (scope, element, attrs) {
         $(element).on("click", function (event) {
@@ -87,7 +79,7 @@ app = angular.module('cliffhanger', [
         });
     };
     return {
-        restrict: 'A',
-        link: linkFn
+        restrict: 'A'
+        , link: linkFn
     }
 });
