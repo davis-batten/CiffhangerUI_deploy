@@ -34,18 +34,39 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
         }
         //this service method saves a query on the backend
     this.saveQuery = function (newQuery) {
-            return $http.post($rootScope.baseUrl + '/query/save/' + $rootScope.user.username, newQuery).then(
-                //success callback
-                function (response) {
-                    $log.debug('Success!');
-                    return response.data;
-                }, //error callback
-                function (response) {
-                    $log.warn('Failure');
-                    $log.warn(response);
-                });
+        return $http.post($rootScope.baseUrl + '/query/save/' + $rootScope.user.username, newQuery).then(
+            //success callback
+            function (response) {
+                $log.debug('Success!');
+                return response.data;
+            }, //error callback
+            function (response) {
+                $log.warn('Failure');
+                $log.warn(response);
+            });
+    }
+
+    //this service method updates a query on the backend
+    this.updateQuery = function (query, sql) {
+        var input = {
+            id: query.id,
+            sqlString: sql
         }
-        //this service method deletes a specified query on the backend
+        return $http.post($rootScope.baseUrl + '/query/update', input).then(
+            //success
+            function (response) {
+                $log.debug('Success!');
+                $log.log(response);
+                return response.data;
+            },
+            //error callback
+            function (response) {
+                $log.warn('Failure');
+                $log.warn(response);
+            });
+    }
+
+    //this service method deletes a specified query on the backend
     this.deleteQuery = function (query) {
             $log.log(query)
             return $http.post($rootScope.baseUrl + '/query/delete', query).then(function (response) { //success callback

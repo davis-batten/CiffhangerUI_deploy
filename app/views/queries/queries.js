@@ -73,6 +73,8 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     }
 
     $scope.getQueries();
+
+
     //opens view modal
     $scope.view = function (q) {
         var modalInstance = $uibModal.open({
@@ -85,7 +87,12 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
                 }
             }
         });
+        //refresh queries
+        modalInstance.result.then(function (q) {
+            $scope.getQueries();
+        })
     };
+
     //opens deleteQuery modal for query q
     $scope.deleteQuery = function (q) {
         var modalInstance = $uibModal.open({
@@ -123,9 +130,11 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
 });
 //controller for an instance of ViewQueryModal
 queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInstance, $log, query, queryService) {
+
     $scope.query = query;
     $scope.maxSteps = 2;
     $scope.tableResult = {};
+    $scope.alerts = [];
     $scope.step = 1; //what step is the modal on
     //advance the modal to the next step
     $scope.next = function () {
@@ -146,6 +155,29 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
+
+    $scope.updateQuery = function () {
+        queryService.updateQuery($scope.query, $scope.query.sqlString).then(function (response) {
+                if (response.status == 'Success') {
+                    $log.log('Successfullly updated query');
+                    $uibModalInstance.close($scope.query);
+                } else {
+                    $scope.alerts.push({
+                        msg: 'Failed to update query',
+                        type: 'danger'
+                    });
+                }
+            },
+            function (response) {
+                $log.error(response);
+                $scope.alerts.push({
+                    msg: 'Failed to update query',
+                    type: 'danger'
+                });
+            })
+    };
+
+
     //run the query
     $scope.runQuery = function () {
         $scope.loadingPreview = true;
