@@ -45,41 +45,37 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
             userService.login($scope.username, $scope.password).then(
                 //success
                 function (response) {
-                    if (response.statusText == 'OK') {
-                        //analyst
-                        if ($rootScope.user.roles[0] == 'ROLE_ANALYST') {
-                            $rootScope.isAnalyst = true;
-                            $rootScope.isDeveloper = false;
-                            $rootScope.isSuper = false;
-                            $rootScope.theme.color = 'blue';
-                            $location.path('analyst/compare');
-                        }
-                        //developer
-                        else if ($rootScope.user.roles[0] == 'ROLE_DEVELOPER') {
-                            $rootScope.isDeveloper = true;
-                            $rootScope.isAnalyst = false;
-                            $rootScope.isSuper = false;
-                            $rootScope.theme.color = 'green';
-                            $location.path('developer/datasets');
-                        }
-                        //superuser
-                        else {
-                            $rootScope.isSuper = true;
-                            $rootScope.isAnalyst = false;
-                            $rootScope.isDeveloper = false;
-                            $rootScope.theme.color = 'light-gray';
-                            $location.path('superuser/users');
-                        }
+                    //analyst
+                    if ($rootScope.user.roles[0] == 'ROLE_ANALYST') {
+                        $rootScope.isAnalyst = true;
+                        $rootScope.isDeveloper = false;
+                        $rootScope.isSuper = false;
+                        $rootScope.theme.color = 'blue';
+                        $location.path('analyst/compare');
                     }
-                    //failure
+                    //developer
+                    else if ($rootScope.user.roles[0] == 'ROLE_DEVELOPER') {
+                        $rootScope.isDeveloper = true;
+                        $rootScope.isAnalyst = false;
+                        $rootScope.isSuper = false;
+                        $rootScope.theme.color = 'green';
+                        $location.path('developer/datasets');
+                    }
+                    //superuser
                     else {
-                        $log.error(response.data);
-                        $scope.alerts.push(response.data);
+                        $rootScope.isSuper = true;
+                        $rootScope.isAnalyst = false;
+                        $rootScope.isDeveloper = false;
+                        $rootScope.theme.color = 'light-gray';
+                        $location.path('superuser/users'); //temporary until super user landing page created
                     }
                 }, //error
                 function (error) {
-                    $log.error(error);
-                    $scope.alerts.push('Failed to connect to authentication service!');
+                    $log.error('error.status', error.status);
+                    if (error.status == 401) {
+                        $scope.alerts.push('Invalid login! Please try again.');
+                    }
+                    else $scope.alerts.push('Failed to connect to authentication service!');
                     //TODO add unsuccessful login alert
                 });
         }
