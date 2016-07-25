@@ -1,7 +1,7 @@
 angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/', {
-        templateUrl: 'views/login/login.html',
-        controller: 'LoginCtrl'
+        templateUrl: 'views/login/login.html'
+        , controller: 'LoginCtrl'
     });
 }]).controller('LoginCtrl', function ($rootScope, $log, $scope, $q, $location, userService) {
     $scope.newUser = {};
@@ -37,42 +37,48 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
     //log in as an existing user
     $scope.login = function () {
             var input = {
-                username: $scope.username,
-                password: $scope.password
+                username: $scope.username
+                , password: $scope.password
             }
             $log.debug(input);
             //authenticate against REST service
             userService.login($scope.username, $scope.password).then(
                 //success
                 function (response) {
-                    //analyst
-                    if ($rootScope.user.roles[0] == 'ROLE_ANALYST') {
-                        $rootScope.isAnalyst = true;
-                        $rootScope.isDeveloper = false;
-                        $rootScope.isSuper = false;
-                        $rootScope.theme.color = 'blue';
-                        $location.path('analyst/compare');
+                    if (response.status == 'Success') {
+                        //analyst
+                        if ($rootScope.user.roles[0] == 'ROLE_ANALYST') {
+                            $rootScope.isAnalyst = true;
+                            $rootScope.isDeveloper = false;
+                            $rootScope.isSuper = false;
+                            $rootScope.theme.color = 'blue';
+                            $location.path('analyst/compare');
+                        }
+                        //developer
+                        else if ($rootScope.user.roles[0] == 'ROLE_DEVELOPER') {
+                            $rootScope.isDeveloper = true;
+                            $rootScope.isAnalyst = false;
+                            $rootScope.isSuper = false;
+                            $rootScope.theme.color = 'green';
+                            $location.path('developer/datasets');
+                        }
+                        //superuser
+                        else {
+                            $rootScope.isSuper = true;
+                            $rootScope.isAnalyst = false;
+                            $rootScope.isDeveloper = false;
+                            $rootScope.theme.color = 'light-gray';
+                            $location.path('superuser/users'); //temporary until super user landing page created
+                        }
                     }
-                    //developer
-                    else if ($rootScope.user.roles[0] == 'ROLE_DEVELOPER') {
-                        $rootScope.isDeveloper = true;
-                        $rootScope.isAnalyst = false;
-                        $rootScope.isSuper = false;
-                        $rootScope.theme.color = 'green';
-                        $location.path('developer/datasets');
-                    }
-                    //superuser
+                    //failure
                     else {
-                        $rootScope.isSuper = true;
-                        $rootScope.isAnalyst = false;
-                        $rootScope.isDeveloper = false;
-                        $rootScope.theme.color = 'light-gray';
-                        $location.path('superuser/users'); //temporary until super user landing page created
+                        $log.error(response.data);
+                        $scope.alerts.push(response.data);
                     }
-
                 }, //error
                 function (error) {
-                    $log.error('error', error);
+                    $log.error(error);
                     $scope.alerts.push('Failed to connect to authentication service!');
                     //TODO add unsuccessful login alert
                 });
@@ -80,9 +86,9 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
         //create a new user account
     $scope.register = function () {
         var input = {
-            username: $scope.newUser.username,
-            password: $scope.newUser.password,
-            role: {
+            username: $scope.newUser.username
+            , password: $scope.newUser.password
+            , role: {
                 authority: $scope.newUser.role
             }
         }
