@@ -72,8 +72,11 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
 
                 }, //error
                 function (error) {
-                    $log.error(error);
-                    $scope.alerts.push('Failed to connect to authentication service!');
+                    $log.error('error.status', error.status);
+                    if (error.status == 401) {
+                        $scope.alerts.push('Invalid login! Please try again.');
+                    } else $scope.alerts.push('Failed to connect to authentication service!');
+
                     //TODO add unsuccessful login alert
                 });
         }

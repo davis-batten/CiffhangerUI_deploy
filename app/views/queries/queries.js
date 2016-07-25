@@ -147,8 +147,10 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     $scope.step = 1; //what step is the modal on
     //advance the modal to the next step
     $scope.next = function () {
+
         $scope.step++;
         if ($scope.step == 2) {
+            $log.log("runQuery()");
             $scope.runQuery();
         }
     };
@@ -159,6 +161,8 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
             $scope.progressType = null;
             $scope.tableResult = null;
         }
+        $scope.queryRanFine = true;
+        $scope.noResults = false;
     };
     //dismiss the modal
     $scope.cancel = function () {
@@ -231,14 +235,15 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
                     $scope.tableResult = response;
                     $scope.progressType = 'success';
                 }
-            }, //failure to connect
-            function (data) {
+            },
+            function (error) {
                 $scope.loadingPreview = false;
                 $scope.progressType = 'danger';
                 $scope.queryRanFine = false;
                 $scope.connectionFailed = true;
                 $scope.newProblemInput.body = "Cliffhanger Report: HTTP call during method runQuery() in QueryService.js was not status 200. There is likely a problem with the REST service or Hive. \nQuery used: \n" + querySQL;
-                $log.error('Failed to connect to server');
+                $log.error(error);
+                $scope.errorMsg = error.message;
             });
     };
     $scope.showNotifyDevsForm = function () {
