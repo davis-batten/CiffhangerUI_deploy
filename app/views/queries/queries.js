@@ -231,14 +231,15 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
                     $scope.tableResult = response;
                     $scope.progressType = 'success';
                 }
-            }, //failure to connect
-            function (data) {
+            },
+            function (error) {
                 $scope.loadingPreview = false;
                 $scope.progressType = 'danger';
                 $scope.queryRanFine = false;
                 $scope.connectionFailed = true;
                 $scope.newProblemInput.body = "Cliffhanger Report: HTTP call during method runQuery() in QueryService.js was not status 200. There is likely a problem with the REST service or Hive. \nQuery used: \n" + querySQL;
-                $log.error('Failed to connect to server');
+                $log.error(error);
+                $scope.errorMsg = error.message;
             });
     };
     $scope.showNotifyDevsForm = function () {

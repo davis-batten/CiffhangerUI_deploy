@@ -96,8 +96,11 @@
             </div>
         </div>
         <div class="modal-body" ng-show="!queryRanFine">
-            <h4>No Results </h4>
-            <p ng-show="connectionFailed"> Failed to connect </p>
+
+            <div ng-show="connectionFailed" class="text-danger">
+                <h4> Failed to run query</h4>
+                <p>{{errorMsg}}</p>
+            </div>
             <!--
         <p ng-show="noResults">
             The join query ran, but the resulting dataset was empty. <br><br>
@@ -107,19 +110,21 @@
             If there is a problem with how your data is formatted, report this to a developer and ask them to tranform the mismatched data to a common format.
         </p>
 -->
-            <p ng-show="noResults"> The join query ran, but the resulting table was empty.
-                <br>
-                <br> This means no matching data was found between the datasets in their join columns.
-                <br>
-                <br> </p>
+            <div ng-show="noResults" class="text-danger">
+                <h4>No Results </h4>
+                <p> The join query ran, but the resulting table was empty.
+                    <br>
+                    <br> This means no matching data was found between the datasets in their join columns.
+                    <br>
+                    <br> </p>
+            </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
-            <button class="btn btn-info" type="button" ng-click="download = !download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table" tooltip-append-to-body="true">Download</button>
+            <button class="btn btn-info" type="button" ng-click="download = !download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table" ng-show="queryRanFine" tooltip-append-to-body="true">Download</button>
             <button class="btn btn-warning pull-left" type="button" ng-click="previous()" ng-show="queryRanFine">Back</button>
             <button class="btn btn-success" type="button" ng-click="showNotifyDevsForm()" ng-show="!queryRanFine">Contact Developers</button>
-            <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Update the existing query" tooltip-append-to-body="true" ng-click="updateQuery()">Save</button>
-            <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Save as a new query" tooltip-append-to-body="true" ng-click="isCollapsed = !isCollapsed">Save As</button>
+            <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Update the existing query" tooltip-append-to-body="true" ng-click="updateQuery()" ng-show="queryRanFine">Save</button>
+            <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Save as a new query" tooltip-append-to-body="true" ng-click="isCollapsed = !isCollapsed" ng-show="queryRanFine">Save As</button>
             <div uib-collapse="isCollapsed">
                 <hr>
                 <div class="well well-sm">

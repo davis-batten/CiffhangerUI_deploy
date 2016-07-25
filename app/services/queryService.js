@@ -27,9 +27,9 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
                     return response.data;
                 }, //error callback
                 function (response) {
-                    $log.warn('Failure!');
-                    $log.warn(response);
-                    return $q.reject(response.data);
+                    $log.error('Failure!');
+                    $log.error(response);
+                    return $q.reject(response);
                 });
         }
         //this service method saves a query on the backend
