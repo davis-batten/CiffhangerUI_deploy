@@ -147,8 +147,10 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     $scope.step = 1; //what step is the modal on
     //advance the modal to the next step
     $scope.next = function () {
+
         $scope.step++;
         if ($scope.step == 2) {
+            $log.log("runQuery()");
             $scope.runQuery();
         }
     };
@@ -159,6 +161,8 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
             $scope.progressType = null;
             $scope.tableResult = null;
         }
+        $scope.queryRanFine = true;
+        $scope.noResults = false;
     };
     //dismiss the modal
     $scope.cancel = function () {
