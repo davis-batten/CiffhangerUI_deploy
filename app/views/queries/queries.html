@@ -51,7 +51,9 @@
                 </div>
             </div>
         </div>
-        <div class="modal-body"> <pre>{{query.sqlString}}</pre> </div>
+        <div class="modal-body">
+            <textarea class="codeEdit" rows="10" ng-model="query.sqlString"></textarea>
+        </div>
         <div class="modal-footer">
             <button class="btn btn-success" type="button" ng-click="next()">Run</button>
         </div>
@@ -112,9 +114,29 @@
                 <br> </p>
         </div>
         <div class="modal-footer">
+            <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
+            <button class="btn btn-info" type="button" ng-click="download = !download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table" tooltip-append-to-body="true">Download</button>
             <button class="btn btn-warning pull-left" type="button" ng-click="previous()" ng-show="queryRanFine">Back</button>
-            <button class="btn btn-success" type="button" ng-click="download = !download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table" ng-show="queryRanFine">Download</button>
             <button class="btn btn-success" type="button" ng-click="showNotifyDevsForm()" ng-show="!queryRanFine">Contact Developers</button>
+            <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Update the existing query" tooltip-append-to-body="true" ng-click="updateQuery()">Save</button>
+            <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Save as a new query" tooltip-append-to-body="true" ng-click="isCollapsed = !isCollapsed">Save As</button>
+            <div uib-collapse="isCollapsed">
+                <hr>
+                <div class="well well-sm">
+                    <form name="saveQueryAs">
+                        <div class="form-group">
+                            <label for="queryName" class="pull-left">Name</label>
+                            <input type="text " class="form-control" name="name" id="queryName" ng-model="newQuery.name" required> </div>
+                        <div class="form-group">
+                            <label for="queryDesc" class="pull-left">Description</label>
+                            <input type="text" class="form-control" id="description" ng-model="newQuery.description"> </div>
+                        <div class="form-group">
+                            <button class="btn btn-info" type="button" ng-disabled="name.$invalid" ng-click="saveAs()">Save</button>
+                            <button class="btn btn-danger pull-left" type="button" ng-hide="showExit" ng-click="isCollapsed =! isCollapsed">Cancel Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div uib-collapse="!download">
                 <hr>
                 <div class="well well-sm">
@@ -135,7 +157,7 @@
     <div class="modal-header" ng-show="shouldShowNotifyDevsForm">
         <div class="row">
             <div class="col-xs-11">
-                <h3 class="modal-title inline">Report Problem Regarding: {{query.name}}</h3> </div>
+                <h3 class="modal-title inline">Reports Problem Regarding: {{query.name}}</h3> </div>
             <div class="col-xs-1">
                 <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
             </div>

@@ -367,6 +367,11 @@ paths:
         - application/json
       parameters:
         -
+          name: query_name
+          in: path
+          type: string
+          required: true
+        -
           name: input
           in: body
           required: true
@@ -389,7 +394,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/UserProfile'
+            $ref: '#/definitions/User'
       responses:
         200:
           description: Success
@@ -407,10 +412,17 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/UserProfile'
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
       responses:
         200:
           description: Success
+        401:
+          description: Unauthorized (bad login)
 
   /user/update/{username}:
     put:
@@ -426,7 +438,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/UserProfile'
+            $ref: '#/definitions/User'
       responses:
         200:
           description: Success
@@ -461,7 +473,7 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/definitions/UserProfile'
+                  $ref: '#/definitions/User'
 
   /comment/post:
     post:
@@ -522,7 +534,7 @@ paths:
             in: body
             required: true
             schema:
-              $ref: '#/definitions/UserProfile'
+              $ref: '#/definitions/User'
       responses:
         200:
           description: Success
@@ -659,25 +671,24 @@ definitions:
       createdBy:
         type: string
 
-  UserProfile:
+  User:
     properties:
       username:
-        type: string
-      password:
         type: string
       queries:
         type: array
         items:
           $ref: '#/definitions/Query'
-      role:
-        $ref: '#/definitions/Role'
+      roles:
+        type: array
+        items:
+          $ref: '#/definitions/Role'
     required:
       - username
-      - password
 
   Role:
     properties:
-      roleID:
+      authority:
         type: string
 
   Comment:
@@ -685,7 +696,7 @@ definitions:
       thread:
         $ref: '#/definitions/DiscussionThread'
       commentBy:
-        $ref: '#/definitions/UserProfile'
+        $ref: '#/definitions/User'
       body:
         type: string
       createDate:
@@ -699,9 +710,9 @@ definitions:
       subject:
         type: string
       opener:
-        $ref: '#/definitions/UserProfile'
+        $ref: '#/definitions/User'
       closer:
-        $ref: '#/definitions/UserProfile'
+        $ref: '#/definitions/User'
       lastComment:
         $ref: '#/definitions/Comment'
       numComments:
