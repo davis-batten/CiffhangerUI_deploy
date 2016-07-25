@@ -7,7 +7,7 @@ angular.module('cliffhanger.queries', ['ngRoute', 'ngSanitize', 'ngCsv']).config
 }]);
 var queries = angular.module('cliffhanger.queries');
 //main controller for queries page
-queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryService, issueService, $rootScope) {
+queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, $location, queryService, issueService, $rootScope) {
     $scope.selected = [];
     $scope.showNoQueriesMessage = false;
     $scope.download = false;
@@ -20,6 +20,11 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, queryServic
     };
     //set theme color
     $rootScope.theme.color = 'blue';
+    $rootScope.$watch('user', function () {
+        if ($rootScope.user.username == null) {
+            $location.url('/');
+        }
+    });
     //for logout dropdown
     $scope.toggleLogoutDropdown = function ($event) {
         $event.preventDefault();

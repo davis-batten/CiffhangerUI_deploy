@@ -1,13 +1,13 @@
 angular.module('cliffhanger.superuser', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/superuser/users', {
-        templateUrl: 'views/user/user.html',
-        controller: 'UsersCtrl',
-        activetab: 'users'
+        templateUrl: 'views/user/user.html'
+        , controller: 'UsersCtrl'
+        , activetab: 'users'
     });
 }]);
 var users = angular.module('cliffhanger.superuser');
 //main controller for users page
-users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $rootScope) {
+users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, userService, $rootScope) {
     $scope.showNoUsersMessage = false;
     $scope.alerts = []; //list of alerts to show to user
     //closes an alert
@@ -16,6 +16,11 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
     };
     //set theme color
     $rootScope.theme.color = 'light-gray';
+    $rootScope.$watch('user', function () {
+        if ($rootScope.user.username == null) {
+            $location.url('/');
+        }
+    });
     //for logout dropdown
     $scope.toggleLogoutDropdown = function ($event) {
         $event.preventDefault();
@@ -30,8 +35,12 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
     };
     //for filter
     $scope.setFilter = function (userRole) {
-        if (userRole != null){
-            $scope.query = {role:{roleID:userRole}};
+        if (userRole != null) {
+            $scope.query = {
+                role: {
+                    roleID: userRole
+                }
+            };
         }
         else $scope.query = '';
     }
@@ -41,7 +50,8 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
             if (data.status == 'Success') {
                 $log.debug('data obj', data.data);
                 $scope.userList = eval(data.data);
-            } else {
+            }
+            else {
                 $scope.userList = [];
             }
         })
@@ -52,10 +62,10 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
         $log.log(u);
         var nameTemp = u.username;
         var modalInstance = $uibModal.open({
-            templateUrl: 'userUpdate.html',
-            controller: 'UpdateUserModalCtrl',
-            size: 'lg',
-            resolve: {
+            templateUrl: 'userUpdate.html'
+            , controller: 'UpdateUserModalCtrl'
+            , size: 'lg'
+            , resolve: {
                 user: function () {
                     return u;
                 }
@@ -65,10 +75,11 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
         modalInstance.result.then(function (input) {
             if (input.username == "") {
                 $scope.alerts.push({
-                    msg: 'Cannot update username to empty value',
-                    type: 'danger'
+                    msg: 'Cannot update username to empty value'
+                    , type: 'danger'
                 });
-            } else {
+            }
+            else {
                 userService.updateUser(nameTemp, input).then(
                     //success callback
                     function (resp) {
@@ -85,16 +96,16 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
                         else {
                             $log.warn("Failed to update");
                             $scope.alerts.push({
-                                msg: 'Failed to update user on backend',
-                                type: 'danger'
+                                msg: 'Failed to update user on backend'
+                                , type: 'danger'
                             });
                         }
                     }, //error callback
                     function () {
                         $log.error("Failed to connect");
                         $scope.alerts.push({
-                            msg: 'Failed to connect',
-                            type: 'danger'
+                            msg: 'Failed to connect'
+                            , type: 'danger'
                         });
                     });
             }
@@ -103,10 +114,10 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
     $scope.deleteUser = function (u) {
         $log.warn('delete', u);
         var modalInstance = $uibModal.open({
-            templateUrl: 'userDelete.html',
-            controller: 'UserDeleteModalCtrl',
-            size: 'md',
-            resolve: {
+            templateUrl: 'userDelete.html'
+            , controller: 'UserDeleteModalCtrl'
+            , size: 'md'
+            , resolve: {
                 user: function () {
                     return u;
                 }
@@ -114,22 +125,21 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, userService, $r
         });
         //on modal completion
         modalInstance.result.then(function (u) {
-                $log.warn('Deleted', u);
-                userService.deleteUser(u.username).then(function (response) {
-                    for (i in $scope.userList) {
-                        if (u.username == $scope.userList[i].username) {
-                            $scope.userList.splice(i, 1)
-                        }
+            $log.warn('Deleted', u);
+            userService.deleteUser(u.username).then(function (response) {
+                for (i in $scope.userList) {
+                    if (u.username == $scope.userList[i].username) {
+                        $scope.userList.splice(i, 1)
                     }
-                })
-            },
-            function (response) {
-                $scope.alerts.push({
-                    msg: 'Problem communicating',
-                    type: 'danger'
-                })
-                $log.error('Failure')
-            });
+                }
+            })
+        }, function (response) {
+            $scope.alerts.push({
+                msg: 'Problem communicating'
+                , type: 'danger'
+            })
+            $log.error('Failure')
+        });
     };
 });
 //controller for an instance of UpdateUserModal
@@ -137,9 +147,9 @@ users.controller('UpdateUserModalCtrl', function ($scope, $uibModalInstance, $lo
     $scope.user = user;
     //gets input from user
     $scope.input = {
-        username: user.username,
-        password: user.password,
-        role: {
+        username: user.username
+        , password: user.password
+        , role: {
             roleID: $scope.user.role
         }
     };

@@ -4,13 +4,18 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         , controller: 'CompareCtrl'
         , activetab: 'compare'
     });
-}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, tagService, datasetService, $uibModal, $rootScope) {
+}]).controller('CompareCtrl', function ($scope, $log, $q, $filter, $location, tagService, datasetService, $uibModal, $rootScope) {
     $scope.allTagsSelected = false; //are all the tags selected?s
     $scope.allDatasetsSelected = false; //are all the datasets selected?
     $scope.selectedTags = [];
     $scope.selectedDatasets = [];
     //set theme color
     $rootScope.theme.color = 'blue';
+    $rootScope.$watch('user', function () {
+        if ($rootScope.user.username == null) {
+            $location.url('/');
+        }
+    });
     $scope.matrix = {
         columnDefs: [
             {
@@ -149,9 +154,9 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
         }
         //Add empty tag column to table
     $scope.allowUntagged = function () {
-        $scope.showTag(emptyTag);
-        $scope.untagged = true;
-    }
+            $scope.showTag(emptyTag);
+            $scope.untagged = true;
+        }
         //remove empty tag column from table
     $scope.removeUntagged = function () {
         $scope.hideTag(emptyTag);

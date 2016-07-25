@@ -23,7 +23,14 @@
 <!-- Add Tag Modal -->
 <script type="text/ng-template" id="addTagModalContent.html">
     <div class="modal-header">
-        <h3 class="modal-title">Add New Tag</h3> </div>
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title inline">New Tag</h3> </div>
+            <div class="col-xs-1">
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+        </div>
+    </div>
     <div class="modal-body">
         <div class="form-group">
             <label for="newTagName">Name</label>
@@ -33,14 +40,21 @@
             <input type="text" class="form-control" id="newTagDesc" ng-model="input.description"> </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-success" type="button" ng-click="submit()">Submit</button>
-        <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-success" type="button" ng-click="submit()">Create</button>
     </div>
 </script>
 <!-- Update Tag Modal -->
 <script type="text/ng-template" id="tagUpdate.html">
     <div class="modal-header">
-        <h3 class="modal-title">Edit {{tag.name}}</h3> </div>
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title inline">Edit Tag: {{tag.name}}</h3> </div>
+            <div class="col-xs-1">
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+        </div>
+    </div>
     <div class="modal-body">
         <div class="form-group">
             <label for="tagName">Name</label>
@@ -50,19 +64,23 @@
             <input type="text" class="form-control" id="tagDesc" ng-model="input.description"> </div>
     </div>
     <div class="modal-footer">
+        <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
         <button class="btn btn-success" type="button" ng-click="complete()">Save Changes</button>
-        <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>
 <!-- Delete Tag Modal -->
 <script type="text/ng-template" id="tagDelete.html">
     <div class="modal-header">
-        <h3 class="modal-title"> Delete Tag</h3> </div>
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title inline">Delete Tag: {{tag.name}}</h3> </div>
+        </div>
+    </div>
     <div class="modal-body">
         <p>Are you sure you want to delete <em><strong>{{tag.name}}</strong></em>? This action cannot be undone!</p>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
         <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
     </div>
 </script>
