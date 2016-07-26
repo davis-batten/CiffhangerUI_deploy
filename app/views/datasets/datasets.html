@@ -26,7 +26,6 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-info pull-right" type="button" ng-disabled="newDatasetFormStep1.name.$invalid" ng-click="next()">Next</button>
-            <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
         </div>
     </div>
     <!-- Second step of modal -->
@@ -74,7 +73,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
                 <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
                 <button class="btn btn-success pull-right" type="button" ng-click="submit()">Create</button>
             </div>
@@ -141,7 +139,6 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
         <button form="editForm" class="btn btn-success" type="button" ng-disabled="editForm.name.$invalid" ng-click="complete()">Save Changes</button>
     </div>
 </script>

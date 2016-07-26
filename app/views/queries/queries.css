@@ -63,7 +63,7 @@ pre {
 }
 
 .codeEdit {
-    width: 500px;
+    width: 100%;
     overflow: auto;
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
     font-size: 1.1em;
