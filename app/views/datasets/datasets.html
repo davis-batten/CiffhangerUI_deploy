@@ -22,47 +22,98 @@
             <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
         </div>
     </div>
-    <!-- Second step of modal -->
-    <div ng-show="step == 2">
+    <!-- Second step of modal, no hive table found -->
+    <div ng-show="step == 2 && attributeDataFound == false">
         <div class="modal-header">
-            <h3 class="modal-title">Add Attributes</h3> </div>
+            <h3 class="modal-title" ng-show="importingDataset == false">Add Attributes</h3>
+            <h3 class="modal-title" ng-show="importingDataset == true">Importing Column Data...</h3>
+        </div>
         <div class="modal-body">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="newAttributeName">Column Name</label>
-                        <input type="text" class="form-control" id="newAttributeName" ng-model="newAttribute.col_name"> </div>
-                    <div class="form-group">
-                        <label for="newAttributeDescription">Description</label>
-                        <input type="text" class="form-control" id="newAttributeDescription" ng-model="newAttribute.description"> </div> Data Type:
-                    <div class="btn-group" uib-dropdown is-open="status.isopentype">
-                        <button id="data-type-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle> {{newAttribute.data_type}} <span class="caret"></span> </button>
-                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="data-type-dropdown">
-                            <li role="menuitem"><a prevent-default ng-click="selectType('string')">String</a></li>
-                            <li role="menuitem"><a prevent-default ng-click="selectType('int')">Integer</a></li>
-                            <li role="menuitem"><a prevent-default ng-click="selectType('double')">Double</a></li>
-                        </ul>
-                    </div> Tag:
-                    <div class="btn-group" uib-dropdown is-open="status.isopentag">
-                        <button id="tag-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle> {{newAttribute.tag.name}} <span class="caret"></span> </button>
-                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
-                            <li ng-repeat="tag in tags | orderBy:'name'" role="menuitem"><a prevent-default ng-click="selectTag(tag)">{{tag.name}} : {{tag.description}}</a></li>
+                    <div ng-show="importingDataset == true">
+                        <img id="loadingIcon" src="../../resources/rolling_loader.svg">
+                    </div>
+                    <div ng-show="importingDataset == false">
+                        <div class="form-group">
+                            <label for="newAttributeName">Column Name</label>
+                            <input type="text" class="form-control" id="newAttributeName" ng-model="newAttribute.col_name"> </div>
+                        <div class="form-group">
+                            <label for="newAttributeDescription">Description</label>
+                            <input type="text" class="form-control" id="newAttributeDescription" ng-model="newAttribute.description"> </div> Data Type:
+                        <div class="btn-group" uib-dropdown is-open="status.isopentype">
+                            <button id="data-type-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle> {{newAttribute.data_type}} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="data-type-dropdown">
+                                <li role="menuitem"><a prevent-default ng-click="selectType('string')">string</a></li>
+                                <li role="menuitem"><a prevent-default ng-click="selectType('int')">integer</a></li>
+                                <li role="menuitem"><a prevent-default ng-click="selectType('double')">double</a></li>
+                            </ul>
+                        </div> Tag:
+                        <div class="btn-group" uib-dropdown is-open="status.isopentag">
+                            <button id="tag-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle> {{newAttribute.tag.name}} <span class="caret"></span> </button>
+                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
+                                <li ng-repeat="tag in tagsList | orderBy:'name'" role="menuitem"><a prevent-default ng-click="selectTagForNewAttribute(tag)">{{tag.name}} : {{tag.description}}</a></li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-primary" ng-click="addAttr()"><span class="glyphicon glyphicon-plus"></span></button>
+                    </div>
+                    <div class="col-md-6">
+                        <ul ng-repeat="a in input.attributes">
+                            <li>{{a.col_name}} // {{a.tag.name}}
+                                <button class="btn btn-danger btn-xs" type="button" ng-click="removeAttr($index)"> <span class="glyphicon glyphicon-remove"></span> </button>
+                            </li>
                         </ul>
                     </div>
-                    <button class="btn btn-primary" ng-click="addAttr()"><span class="glyphicon glyphicon-plus"></span></button>
                 </div>
-                <div class="col-md-6">
-                    <ul ng-repeat="a in input.attributes">
-                        <li>{{a.col_name}} // {{a.tag.name}}
-                            <button class="btn btn-danger btn-xs" type="button" ng-click="removeAttr($index)"> <span class="glyphicon glyphicon-remove"></span> </button>
-                        </li>
-                    </ul>
-                </div>
+
             </div>
         </div>
         <div class="modal-footer">
             <button class="btn btn-default" type="button" ng-click="previous()">Previous</button>
             <button class="btn btn-success" type="button" ng-click="submit()">Create</button>
+            <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+    <!-- Second step of modal, hive table WAS FOUND -->
+    <div ng-show="step == 2 && attributeDataFound == true">
+        <div class="modal-header">
+            <h3 class="modal-title">Tag Attributes</h3> </div>
+        <div class="modal-body">
+            <h4>
+                    Add tags to describe the the data in each column
+                </h4>
+            <table class="table table-bordered" id="tagAttributesTable">
+                <thead>
+                    <th><b>Column Name</b></th>
+                    <th><b>Description</b></th>
+                    <th><b>Data Type</b></th>
+                    <th><b>Tag</b></th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="attr in input.attributes">
+                        <td> {{attr.col_name}} </td>
+                        <td>
+                            <input type="text" ng-model="attr.description" size="30">
+                        </td>
+                        <td> {{attr.data_type}} </td>
+                        <td>
+                            <div class="col-md-6 pull-right">
+
+                                <div class="btn-group" uib-dropdown is-open="status.isopentag">
+                                    <button id="tag-dropdown" type="button" class="btn btn-primary btn-sm dropdown-toggle" uib-dropdown-toggle> {{attr.tag.name}} <span class="caret"></span> </button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
+                                        <li ng-repeat="tag in tags | orderBy:'name'" role="menuitem"><a prevent-default ng-click="selectTag(tag, $parent.$index)">{{tag.name}} : {{tag.description}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" ng-click="previous()">Back</button>
+            <button class="btn btn-success" type="button" ng-click="submit()">Save Dataset</button>
             <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
         </div>
     </div>
@@ -84,7 +135,8 @@
                 <input type="text" class="form-control" id="newDatasetTableName" ng-model="input.db_table_name"> </div>
             <div class="form-group">
                 <label for="datasetCreatedBy">Dataset Created By</label>
-                <label>{{dataset.createdBy}}</label> </div>
+                <label>{{dataset.createdBy}}</label>
+            </div>
 
             <div>
                 <label for="editAttributeTable">Attributes</label>

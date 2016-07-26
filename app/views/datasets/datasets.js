@@ -182,7 +182,8 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
     };
 });
 //controller for an instance of AddDatasetModal
-datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalInstance, $log, tagService, $rootScope) {
+datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalInstance, $log, tagService, datasetService, $rootScope) {
+    $scope.importingDataset = false;
     $scope.step = 1; //what step is the modal on
     $scope.input = { //what is the input from the user
         name: "",
@@ -200,14 +201,30 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
             description: ""
         }
     };
+    $scope.attributeDataFound = false;
+    
     //advance the modal to the next step
     $scope.next = function () {
+        if($scope.step == 1 && $scope.input.db_table_name.length != 0) {
+                    $scope.importingDataset = true;
+
+            datasetService.getHiveTableSchema($scope.input.db_table_name).then(function (data) {
+                // autofill attribute's col_name and data_type
+                $scope.attributeDataFound = true;
+                $scope.input.attributes = data.data;     
+                $scope.importingDataset = false;
+            }, function (data) {
+                
+            })
+        }
         $scope.step++;
     };
+    
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
     };
+    
     //complete the modal
     $scope.submit = function () {
         if ($scope.input.attributes == null) {
@@ -224,9 +241,13 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
     $scope.selectType = function (selectedType) {
         $scope.newAttribute.data_type = selectedType;
     };
-    $scope.selectTag = function (selectedTag) {
+    $scope.selectTagForNewAttribute = function (selectedTag) {
         $log.log('selected', selectedTag);
         $scope.newAttribute.tag = selectedTag;
+    };
+    $scope.selectTag = function (selectedTag, attrIndex) {
+        $log.log('selected', selectedTag);
+        $scope.input.attributes[attrIndex].tag = selectedTag;
     };
     //add an attribute to the input
     $scope.addAttr = function () {
@@ -253,7 +274,7 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         tagService.getAllTags().then(function (data) {
             if (data.status == 'Success') {
                 $scope.tags = eval(data.data);
-                $log.debug('tags', $scope.tags);
+                $log.debug('tagsList', $scope.tags);
             }
         }, function (data) {
             $log.error('Failed to load!');
