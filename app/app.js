@@ -83,3 +83,7 @@ app = angular.module('cliffhanger', [
         , link: linkFn
     }
 });
+
+function NavBarCtrl($scope) {
+    $scope.isCollapsed = true;
+}

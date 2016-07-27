@@ -123,6 +123,10 @@ footer {
     border-radius: 0px !important;
 }
 
+.navbar-collapse.in {
+    height: 100% !important;
+}
+
 .navbar-an > .active > a {
     background-color: #A9C4EB !important;
 }

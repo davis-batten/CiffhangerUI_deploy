@@ -85,6 +85,7 @@ angular.module('cliffhanger.issue', ['ngRoute']).config(['$routeProvider', funct
             $location.url('/');
         }
     });
+    $scope.isCollapsed = true;
     $scope.loadIssue = function () {
         $log.info('user', $rootScope.user);
         var threadId = $routeParams.threadId;
