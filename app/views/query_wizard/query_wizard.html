@@ -26,7 +26,7 @@
 <!-- First step of modal -->
 <div ng-show="step == 1">
     <div class="modal-body">
-        <h4><strong>Datasets </strong><small><em ng-hide="datasets == 0"> Select one to start</em><em ng-hide="datasets != 0">Must choose at least two datasets from the Compare tab to create a query.</em></small></h4>
+        <h4><strong>Datasets </strong><small><em ng-hide="datasets == 0"> Select one to start building your table</em><em ng-hide="datasets != 0">Must choose at least two datasets to create a table</em></small></h4>
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="d in datasets">
                 <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="(selectedDatasets.length == 1 && !d.selected) || d.db_table_name == null"></checkbox>
@@ -44,7 +44,7 @@
         <form>
             <div class="row">
                 <div class="col-md-6">
-                    <h4><strong>Datasets </strong><small><em> Select one to add to query</em></small></h4>
+                    <h4><strong>Datasets </strong><small><em> Select one to add to your table</em></small></h4>
                     <ul class="list-group">
                         <li class="list-group-item" ng-repeat="d in datasets" ng-if="alreadyUsedDatasets.indexOf(d) == -1">
                             <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="selectedDatasets.length == (numJoins+1) && !d.selected || d.db_table_name == null"></checkbox>

@@ -55,20 +55,20 @@
                 <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
             </div>
         </div>
-        <div class="modal-body">
-            <form name="notifyDevsForm">
-                <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <textarea class="form-control" rows="1" name="subject" id="issueSubject" ng-model="input.subject"> </textarea>
-                </div>
-                <div class="form-group">
-                    <label for="msg">Message</label>
-                    <textarea class="form-control" rows="10" name="msg" id="issueMessage" ng-model="input.body"> </textarea>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-warning pull-left" type="button" ng-click="cancel()">Cancel</button>
-            <button class="btn btn-success" type="button" ng-click="submit()">Post</button>
-        </div>
+    </div>
+    <div class="modal-body">
+        <form name="notifyDevsForm">
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <textarea class="form-control" rows="1" name="subject" id="issueSubject" ng-model="input.subject"> </textarea>
+            </div>
+            <div class="form-group">
+                <label for="msg">Message</label>
+                <textarea class="form-control" rows="10" name="msg" id="issueMessage" ng-model="input.body"> </textarea>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" type="button" ng-click="submit()">Post</button>
+    </div>
 </script>

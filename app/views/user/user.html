@@ -7,7 +7,7 @@
             <div class="btn-group" uib-dropdown is-open="status.filterbyisopen">
                 <button id="filterBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle> Filter <span class="caret"></span></button>
                 <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filterBy-button">
-                   <li role="menuitem"><a prevent-default ng-click="setFilter('ANALYST')">Analysts</a></li>
+                    <li role="menuitem"><a prevent-default ng-click="setFilter('ANALYST')">Analysts</a></li>
                     <li role="menuitem"><a prevent-default ng-click="setFilter('DEVELOPER')">Developers</a></li>
                     <li role="menuitem"><a prevent-default ng-click="setFilter('ADMIN')">Admins</a></li>
                     <li role="separator" class="divider"></li>
@@ -38,10 +38,17 @@
         </li>
     </ul>
 </div>
-<!-- View Query Modal -->
+<!-- Update User Modal -->
 <script type="text/ng-template" id="userUpdate.html">
     <div class="modal-header">
-        <h3 class="modal-title">Edit {{user.username}}</h3> </div>
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title inline">Edit: {{user.username}}</h3> </div>
+            <div class="col-xs-1">
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+        </div>
+    </div>
     <div class="modal-body">
         <div class="form-group">
             <label for="username">Username</label>
@@ -56,18 +63,17 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-success" type="button" ng-click="complete()">Save Changes</button>
-        <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>
-<!-- Delete Query Modal -->
+<!-- Delete User Modal -->
 <script type="text/ng-template" id="userDelete.html">
     <div class="modal-header">
-        <h3 class="modal-title"> Delete User</h3> </div>
+        <h3 class="modal-title"> Delete User: {{user.username}}</h3> </div>
     <div class="modal-body">
         <p>Are you sure you want to delete <em><strong>{{user.username}}</strong></em>? This action cannot be undone!</p>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
         <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
     </div>
 </script>

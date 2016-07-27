@@ -7,10 +7,8 @@ angular.module('cliffhanger.datasets', ['ngRoute']).config(['$routeProvider', fu
 }]);
 var datasets = angular.module('cliffhanger.datasets');
 //main controller for dataset page
-datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetService, $rootScope) {
-
+datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location, datasetService, $rootScope) {
     $log.warn($rootScope);
-
     $scope.selected = [];
     $scope.showNoDatasetsMessage = false;
     $scope.alerts = []; //list of alerts to show to user
@@ -20,6 +18,11 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
     };
     //set theme color
     $rootScope.theme.color = 'green';
+    $rootScope.$watch('user', function () {
+        if ($rootScope.user.username == null) {
+            $location.url('/');
+        }
+    });
     //alphabetically compare two strings, ignoring case
     var ignoreCase = function (a, b) {
             return a.meta_name.toLowerCase().localeCompare(b.meta_name.toLowerCase());
@@ -122,10 +125,6 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, datasetSe
                         //problem on backend
                         else {
                             $log.warn("Failed to update");
-                            $scope.alerts.push({
-                                msg: 'Failed to update dataset on backend',
-                                type: 'danger'
-                            });
                         }
                     }, //error callback
                     function () {

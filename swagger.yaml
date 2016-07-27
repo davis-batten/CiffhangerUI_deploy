@@ -296,6 +296,25 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Query'
+              
+  /query/userQueries/{username}:
+    get:
+      description: Fetch a users `Queries`
+      produces:
+        - application/json
+      parameters:
+        -
+          name: username
+          in: path
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Query'
 
 
   /query/run:
@@ -339,7 +358,7 @@ paths:
                     type: string
                     description: a cell in the row
 
-  /query/delete/{query_name}:
+  /query/delete:
     delete:
       description: Delete a `Query`
       consumes:

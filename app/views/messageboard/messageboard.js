@@ -1,8 +1,8 @@
 angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/messageboard', {
-        templateUrl: 'views/messageboard/messageboard.html',
-        controller: 'MessageBoardCtrl',
-        activetab: 'messageboard'
+        templateUrl: 'views/messageboard/messageboard.html'
+        , controller: 'MessageBoardCtrl'
+        , activetab: 'messageboard'
     });
 }]);
 var messageboard = angular.module('cliffhanger.messageboard');
@@ -52,6 +52,11 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
         }
         */
     ];
+    $rootScope.$watch('user', function () {
+        if ($rootScope.user.username == null) {
+            $location.url('/');
+        }
+    });
     //load the list of all issues
     $scope.loadIssues = function () {
         issueService.getAllIssues().then(
@@ -63,15 +68,15 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
                 //error
                 else {
                     $scope.alerts.push({
-                        msg: response.data,
-                        type: "danger"
+                        msg: response.data
+                        , type: "danger"
                     });
                 }
             }, //error
             function (error) {
                 $scope.alerts.push({
-                    msg: "Failed to connect to server.",
-                    type: "danger"
+                    msg: "Failed to connect to server."
+                    , type: "danger"
                 });
             })
     }
@@ -88,7 +93,8 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
                 $scope.searchText = {
                     open: filterText
                 };
-            } else $scope.searchText = '';
+            }
+            else $scope.searchText = '';
         }
         //for sort by dropdown
     $scope.toggleSortByDropdown = function ($event) {
