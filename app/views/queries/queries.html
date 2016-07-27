@@ -55,6 +55,7 @@
             <textarea class="codeEdit" rows="10" ng-model="query.sqlString"></textarea>
         </div>
         <div class="modal-footer">
+            <button class="btn btn-info" type="button" ng-click="exportZeppelin()">Export Zeppelin</button>
             <button class="btn btn-success" type="button" ng-click="next()">Run</button>
         </div>
     </div>
@@ -99,7 +100,7 @@
 
             <div ng-show="connectionFailed" class="text-danger">
                 <h4> Failed to run query</h4>
-<!--<p>{{errorMsg}}</p>-->
+                <!--<p>{{errorMsg}}</p>-->
             </div>
             <!--
         <p ng-show="noResults">
