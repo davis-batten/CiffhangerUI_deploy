@@ -38,45 +38,46 @@
                     <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
                 </div>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="newAttributeName">Column Name</label>
-                            <input type="text" class="form-control" id="newAttributeName" ng-model="newAttribute.col_name"> </div>
-                        <div class="form-group">
-                            <label for="newAttributeDescription">Description</label>
-                            <input type="text" class="form-control" id="newAttributeDescription" ng-model="newAttribute.description"> </div> Data Type:
-                        <div class="btn-group" uib-dropdown is-open="status.isopentype">
-                            <button id="data-type-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle> {{newAttribute.data_type}} <span class="caret"></span> </button>
-                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="data-type-dropdown">
-                                <li role="menuitem"><a prevent-default ng-click="selectType('string')">String</a></li>
-                                <li role="menuitem"><a prevent-default ng-click="selectType('int')">Integer</a></li>
-                                <li role="menuitem"><a prevent-default ng-click="selectType('double')">Double</a></li>
-                            </ul>
-                        </div> Tag:
-                        <div class="btn-group" uib-dropdown is-open="status.isopentag">
-                            <button id="tag-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle> {{newAttribute.tag.name}} <span class="caret"></span> </button>
-                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
-                                <li ng-repeat="tag in tags | orderBy:'name'" role="menuitem"><a prevent-default ng-click="selectTag(tag)">{{tag.name}} : {{tag.description}}</a></li>
-                            </ul>
-                        </div>
-                        <button class="btn btn-primary" ng-click="addAttr()"><span class="glyphicon glyphicon-plus"></span></button>
-                    </div>
-                    <div class="col-md-6">
-                        <ul ng-repeat="a in input.attributes">
-                            <li>{{a.col_name}} // {{a.tag.name}}
-                                <button class="btn btn-danger btn-xs" type="button" ng-click="removeAttr($index)"> <span class="glyphicon glyphicon-remove"></span> </button>
-                            </li>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="newAttributeName">Column Name</label>
+                        <input type="text" class="form-control" id="newAttributeName" ng-model="newAttribute.col_name"> </div>
+                    <div class="form-group">
+                        <label for="newAttributeDescription">Description</label>
+                        <input type="text" class="form-control" id="newAttributeDescription" ng-model="newAttribute.description"> </div> Data Type:
+                    <div class="btn-group" uib-dropdown is-open="status.isopentype">
+                        <button id="data-type-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle> {{newAttribute.data_type}} <span class="caret"></span> </button>
+                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="data-type-dropdown">
+                            <li role="menuitem"><a prevent-default ng-click="selectType('string')">String</a></li>
+                            <li role="menuitem"><a prevent-default ng-click="selectType('int')">Integer</a></li>
+                            <li role="menuitem"><a prevent-default ng-click="selectType('double')">Double</a></li>
+                        </ul>
+                    </div> Tag:
+                    <div class="btn-group" uib-dropdown is-open="status.isopentag">
+                        <button id="tag-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle> {{newAttribute.tag.name}} <span class="caret"></span> </button>
+                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
+                            <li ng-repeat="tag in tags | orderBy:'name'" role="menuitem"><a prevent-default ng-click="selectTag(tag)">{{tag.name}} : {{tag.description}}</a></li>
                         </ul>
                     </div>
+                    <button class="btn btn-primary" ng-click="addAttr()"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+                <div class="col-md-6">
+                    <ul ng-repeat="a in input.attributes">
+                        <li>{{a.col_name}} // {{a.tag.name}}
+                            <button class="btn btn-danger btn-xs" type="button" ng-click="removeAttr($index)"> <span class="glyphicon glyphicon-remove"></span> </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
-                <button class="btn btn-success pull-right" type="button" ng-click="submit()">Create</button>
-            </div>
         </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
+            <button class="btn btn-success pull-right" type="button" ng-click="submit()">Create</button>
+        </div>
+    </div>
 </script>
 <!-- Update Dataset Modal -->
 <script type="text/ng-template" id="datasetUpdate.html">
