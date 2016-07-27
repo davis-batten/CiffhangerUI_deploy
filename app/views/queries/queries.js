@@ -224,6 +224,24 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     };
 
 
+    //create new zeppelin note
+    $scope.exportZeppelin = function () {
+        var newNote = {
+            name: $scope.query.name,
+            paragraphs: [
+                {
+                    title: $scope.query.description,
+                    text: '%hive\n' + $scope.query.sqlString
+                }
+            ]
+        }
+
+        queryService.newZeppelinQuery(newNote).then(function (response) {
+            window.open(window.zeppelin + '#/notebook/' + response.body);
+        })
+    }
+
+
     //run the query
     $scope.runQuery = function () {
         $scope.loadingPreview = true;

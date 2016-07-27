@@ -1,6 +1,8 @@
 //GLOBAL VARIABLES
-window.baseUrl = 'http://localhost:8080/cliffhanger'; //development
+//window.baseUrl = 'http://localhost:8080/cliffhanger'; //development
 //window.baseUrl = 'http://hangingonbyanicepick.eastus2.cloudapp.azure.com:8080/cliffhanger-0.1'; //production
+window.baseUrl = 'http://40.84.59.10:8080/cliffhanger-0.1'; //production
+window.zeppelin = 'http://hadn2.zirous.com:9995';
 // Declare app level module which depends on views, and components
 app = angular.module('cliffhanger', [
     'ui.bootstrap'
@@ -42,12 +44,12 @@ app = angular.module('cliffhanger', [
         //if token is expired and in need of refresh
         else if (jwtHelper.isTokenExpired(accessToken)) {
             return $http({
-                url: window.baseUrl + '/ouath/access_token'
-                , skipAuthorization: true
-                , method: 'POST'
-                , data: {
-                    grant_type: 'refresh_token'
-                    , refresh_token: refreshToken
+                url: window.baseUrl + '/ouath/access_token',
+                skipAuthorization: true,
+                method: 'POST',
+                data: {
+                    grant_type: 'refresh_token',
+                    refresh_token: refreshToken
                 }
             }).then(function (response) {
                 var newToken = response.data.access_token;
@@ -79,7 +81,7 @@ app = angular.module('cliffhanger', [
         });
     };
     return {
-        restrict: 'A'
-        , link: linkFn
+        restrict: 'A',
+        link: linkFn
     }
 });

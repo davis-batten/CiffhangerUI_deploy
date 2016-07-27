@@ -110,4 +110,12 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
             };
         });
     }
+
+
+    this.newZeppelinQuery = function (newNote) {
+        return $http.post(window.zeppelin + '/api/notebook', newNote).then(function (response) {
+            $log.info(response);
+            return response.data;
+        })
+    }
 });
