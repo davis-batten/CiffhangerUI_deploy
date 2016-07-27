@@ -1,7 +1,7 @@
 <div ng-include="'/views/navbar.html'"></div>
 <!-- Page Content -->
 <div class="container-fluid">
-    <div class="col-md-3 panel panel-default" id="controls">
+    <div class="col-xs-4 col-md-3 panel panel-default" id="controls">
         <div class="panel-body">
             <button class="btn btn-primary" ng-click="add()"><span class="glyphicon glyphicon-plus"></span> Add Tag</button>
             <hr>
@@ -9,7 +9,7 @@
                 <input type="text" size="25" ng-model="query.name" placeholder="Search" uib-typeahead="t.name for t in tags | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
         </div>
     </div>
-    <div class="col-md-9 pull-right" id="tagQueryResults">
+    <div class="col-xs-8 col-md-9 pull-right" id="tagQueryResults">
         <ul>
             <li id="list_item" ng-repeat="t in tags | orderBy:'name' | filter:query" class="list-group-item" ng-if="t.name != '<EMPTY>'">
                 <label>{{t.name}} </label><small> {{t.description}}</small>
