@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col-xs-2">
             <div class="btn-group" uib-dropdown is-open="status.filterbyisopen">
                 <button id="filterBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle> Filter <span class="caret"></span></button>
                 <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filterBy-button">
@@ -15,7 +15,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-sm-4 col-md-4">
+        <div class="col-xs-6 col-sm-4 col-md-4">
             <div id="custom-search-input">
                 <input type="text" size="30" ng-model="query.username" placeholder="Search" uib-typeahead="u.username for u in userList | filter:{username:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
         </div>

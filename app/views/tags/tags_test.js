@@ -7,6 +7,10 @@ describe('cliffhanger.tags module', function () {
     describe('TagCtrl', function () {
 
         beforeEach(inject(function ($controller, $rootScope, $q, _$log_, $uibModal, tagService) {
+            $rootScope.user = {
+                username: "test"
+            }
+
             scope = $rootScope.$new();
             modal = $uibModal;
             root = $rootScope;

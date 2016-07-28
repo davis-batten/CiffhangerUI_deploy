@@ -44,12 +44,12 @@ app = angular.module('cliffhanger', [
         //if token is expired and in need of refresh
         else if (jwtHelper.isTokenExpired(accessToken)) {
             return $http({
-                url: window.baseUrl + '/ouath/access_token',
-                skipAuthorization: true,
-                method: 'POST',
-                data: {
-                    grant_type: 'refresh_token',
-                    refresh_token: refreshToken
+                url: window.baseUrl + '/ouath/access_token'
+                , skipAuthorization: true
+                , method: 'POST'
+                , data: {
+                    grant_type: 'refresh_token'
+                    , refresh_token: refreshToken
                 }
             }).then(function (response) {
                 var newToken = response.data.access_token;
@@ -81,7 +81,7 @@ app = angular.module('cliffhanger', [
         });
     };
     return {
-        restrict: 'A',
-        link: linkFn
+        restrict: 'A'
+        , link: linkFn
     }
 });

@@ -1,8 +1,8 @@
 angular.module('cliffhanger.messageboard', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/messageboard', {
-        templateUrl: 'views/messageboard/messageboard.html'
-        , controller: 'MessageBoardCtrl'
-        , activetab: 'messageboard'
+        templateUrl: 'views/messageboard/messageboard.html',
+        controller: 'MessageBoardCtrl',
+        activetab: 'messageboard'
     });
 }]);
 var messageboard = angular.module('cliffhanger.messageboard');
@@ -57,6 +57,7 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
             $location.url('/');
         }
     });
+    $scope.isCollapsed = true;
     //load the list of all issues
     $scope.loadIssues = function () {
         issueService.getAllIssues().then(
@@ -68,15 +69,15 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
                 //error
                 else {
                     $scope.alerts.push({
-                        msg: response.data
-                        , type: "danger"
+                        msg: response.data,
+                        type: "danger"
                     });
                 }
             }, //error
             function (error) {
                 $scope.alerts.push({
-                    msg: "Failed to connect to server."
-                    , type: "danger"
+                    msg: "Failed to connect to server.",
+                    type: "danger"
                 });
             })
     }
@@ -93,8 +94,7 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
                 $scope.searchText = {
                     open: filterText
                 };
-            }
-            else $scope.searchText = '';
+            } else $scope.searchText = '';
         }
         //for sort by dropdown
     $scope.toggleSortByDropdown = function ($event) {
@@ -107,8 +107,7 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
         $scope.reverse = false;
         if (sort == 'lastComment.createDate') {
             $scope.reverse = true;
-        }
-        else if (sort == 'createDateReverse') {
+        } else if (sort == 'createDateReverse') {
             $scope.sortText = 'createDate';
             $scope.reverse = true;
         }
@@ -136,9 +135,9 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
     $scope.newIssue = function () {
         var input = $scope.input;
         var modalInstance = $uibModal.open({
-            templateUrl: 'newIssueModal.html'
-            , controller: 'NewIssueModalInstanceCtrl'
-            , size: 'lg'
+            templateUrl: 'newIssueModal.html',
+            controller: 'NewIssueModalInstanceCtrl',
+            size: 'lg'
         });
         modalInstance.result.then(function (input) {
             $log.info('Modal dismissed at: ' + new Date());
@@ -157,8 +156,8 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
 //controller for instance of NewIssueModal
 messageboard.controller('NewIssueModalInstanceCtrl', function ($scope, $uibModalInstance, $log, $rootScope) {
     $scope.input = {
-        subject: ''
-        , body: ''
+        subject: '',
+        body: ''
     };
     //complete modal
     $scope.submit = function () {

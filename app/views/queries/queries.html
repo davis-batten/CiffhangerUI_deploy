@@ -55,7 +55,7 @@
             <textarea class="codeEdit" rows="10" ng-model="query.sqlString"></textarea>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-info" type="button" ng-click="exportZeppelin()" uib-tooltip="Create a new Zeppelin Note from this query" tooltip-append-to-body="true">Export Zeppelin</button>
+            <button class="btn btn-warning pull-left" type="button" ng-click="exportZeppelin()" uib-tooltip="Create a new Zeppelin Note from this query" tooltip-append-to-body="true">Export Zeppelin</button>
             <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Update the existing query" tooltip-append-to-body="true" ng-click="updateQuery()" ng-show="queryRanFine">Save</button>
             <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Save as a new query" tooltip-append-to-body="true" ng-click="isCollapsed = !isCollapsed" ng-show="queryRanFine">Save As</button>
             <button class="btn btn-info" type="button" ng-click="next()">Run</button>

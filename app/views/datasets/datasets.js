@@ -1,8 +1,8 @@
 angular.module('cliffhanger.datasets', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/developer/datasets', {
-        templateUrl: 'views/datasets/datasets.html',
-        controller: 'DatasetsCtrl',
-        activetab: 'datasets'
+        templateUrl: 'views/datasets/datasets.html'
+        , controller: 'DatasetsCtrl'
+        , activetab: 'datasets'
     });
 }]);
 var datasets = angular.module('cliffhanger.datasets');
@@ -23,6 +23,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
             $location.url('/');
         }
     });
+    $scope.isCollapsed = true;
     //alphabetically compare two strings, ignoring case
     var ignoreCase = function (a, b) {
             return a.meta_name.toLowerCase().localeCompare(b.meta_name.toLowerCase());
@@ -39,17 +40,18 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
                 if ($scope.datasetList.length == 0) {
                     $scope.showNoDatasetsMessage = true;
                 }
-            } else {
+            }
+            else {
                 $scope.alerts.push({
-                    msg: res,
-                    type: 'danger'
+                    msg: res
+                    , type: 'danger'
                 });
             }
         }, function (res) {
             $scope.showProgressBar = false;
             $scope.alerts.push({
-                msg: "Failed to load datasetss",
-                type: 'danger'
+                msg: "Failed to load datasetss"
+                , type: 'danger'
             });
         });
     };
@@ -61,26 +63,27 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
             $scope.showProgressBar = false;
             if (data.status == 'Success') {
                 $scope.datasetList.push(data.data);
-            } else {
+            }
+            else {
                 $scope.alerts.push({
-                    msg: data,
-                    type: 'danger'
+                    msg: data
+                    , type: 'danger'
                 });
             }
         }, function (data) {
             $scope.showProgressBar = false;
             $scope.alerts.push({
-                msg: 'Failed to create Dataset',
-                type: 'danger'
+                msg: 'Failed to create Dataset'
+                , type: 'danger'
             });
         })
     };
     //opens addDatasetModal
     $scope.open = function () {
         var modalInstance = $uibModal.open({
-            templateUrl: 'addDatasetModalContent.html',
-            controller: 'AddDatasetModalInstanceCtrl',
-            size: 'lg'
+            templateUrl: 'addDatasetModalContent.html'
+            , controller: 'AddDatasetModalInstanceCtrl'
+            , size: 'lg'
         });
         modalInstance.result.then(function (newDataSet) {
             $log.info('Modal dismissed at: ' + new Date());
@@ -95,10 +98,10 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
         $log.log(d);
         var nameTemp = d.name;
         var modalInstance = $uibModal.open({
-            templateUrl: 'datasetUpdate.html',
-            controller: 'DatasetUpdateModalCtrl',
-            size: 'lg',
-            resolve: {
+            templateUrl: 'datasetUpdate.html'
+            , controller: 'DatasetUpdateModalCtrl'
+            , size: 'lg'
+            , resolve: {
                 dataset: function () {
                     return d;
                 }
@@ -108,10 +111,11 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
         modalInstance.result.then(function (d) {
             if (d.name == "") {
                 $scope.alerts.push({
-                    msg: 'Cannot update name to empty value',
-                    type: 'danger'
+                    msg: 'Cannot update name to empty value'
+                    , type: 'danger'
                 });
-            } else {
+            }
+            else {
                 datasetService.updateDataset(nameTemp, d).then(
                     //success callback
                     function (resp) {
@@ -130,8 +134,8 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
                     function () {
                         $log.error("Failed to connect");
                         $scope.alerts.push({
-                            msg: 'Failed to connect',
-                            type: 'danger'
+                            msg: 'Failed to connect'
+                            , type: 'danger'
                         });
                     });
             }
@@ -141,10 +145,10 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
     $scope.deleteDataset = function (d) {
         $log.log(d);
         var modalInstance = $uibModal.open({
-            templateUrl: 'datasetDelete.html',
-            controller: 'DatasetDeleteModalCtrl',
-            size: 'md',
-            resolve: {
+            templateUrl: 'datasetDelete.html'
+            , controller: 'DatasetDeleteModalCtrl'
+            , size: 'md'
+            , resolve: {
                 dataset: function () {
                     return d;
                 }
@@ -161,17 +165,18 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
                         if (res.status == 'Success') {
                             $scope.datasetList.splice(i, 1);
                             if ($scope.datasetList.length == 0) $scope.showNoDatasetsMessage = true;
-                        } else {
+                        }
+                        else {
                             $scope.alerts.push({
-                                msg: res,
-                                type: 'danger'
+                                msg: res
+                                , type: 'danger'
                             });
                         }
                     }, function (res) {
                         $scope.showProgressBar = false;
                         $scope.alerts.push({
-                            msg: "Problem communicating with server!",
-                            type: 'danger'
+                            msg: "Problem communicating with server!"
+                            , type: 'danger'
                         });
                     });
                 }
@@ -185,19 +190,19 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
     $scope.importingDataset = false;
     $scope.step = 1; //what step is the modal on
     $scope.input = { //what is the input from the user
-        name: "",
-        description: "",
-        db_table_name: "",
-        attributes: [],
-        createdBy: $rootScope.user.username
+        name: ""
+        , description: ""
+        , db_table_name: ""
+        , attributes: []
+        , createdBy: $rootScope.user.username
     };
     $scope.newAttribute = {
-        col_name: "",
-        description: "",
-        data_type: "String",
-        tag: {
-            name: "<EMPTY>",
-            description: ""
+        col_name: ""
+        , description: ""
+        , data_type: "String"
+        , tag: {
+            name: "<EMPTY>"
+            , description: ""
         }
     };
     $scope.attributeDataFound = false;
@@ -264,8 +269,8 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
             $scope.newAttribute.col_name = "";
             $scope.newAttribute.description = "";
             $scope.newAttribute.tag = {
-                name: '<EMPTY>',
-                description: ''
+                name: '<EMPTY>'
+                , description: ''
             };
             $scope.newAttribute.data_type = "String";
         }
@@ -292,10 +297,10 @@ datasets.controller('DatasetUpdateModalCtrl', function ($scope, $uibModalInstanc
     $scope.dataset = dataset;
     //gets input from user
     $scope.input = {
-        name: dataset.name,
-        description: dataset.description,
-        db_table_name: dataset.db_table_name,
-        attributes: dataset.attributes
+        name: dataset.name
+        , description: dataset.description
+        , db_table_name: dataset.db_table_name
+        , attributes: dataset.attributes
     };
     //complete modal
     $scope.complete = function () {
@@ -312,8 +317,8 @@ datasets.controller('DatasetUpdateModalCtrl', function ($scope, $uibModalInstanc
     $scope.removeTag = function (attrIndex) {
         $log.log('tag removed', attrIndex);
         $scope.dataset.attributes[attrIndex].tag = {
-            name: '<EMPTY>',
-            description: ''
+            name: '<EMPTY>'
+            , description: ''
         };
     };
     var getTags = function () {

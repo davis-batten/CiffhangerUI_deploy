@@ -21,6 +21,7 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, user
             $location.url('/');
         }
     });
+    $scope.isCollapsed = true;
     //for logout dropdown
     $scope.toggleLogoutDropdown = function ($event) {
         $event.preventDefault();
