@@ -57,6 +57,7 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
             $location.url('/');
         }
     });
+    $scope.isCollapsed = true;
     //load the list of all issues
     $scope.loadIssues = function () {
         issueService.getAllIssues().then(

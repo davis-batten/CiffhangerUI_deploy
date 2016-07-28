@@ -17,6 +17,7 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
             $location.url('/');
         }
     });
+    $scope.isCollapsed = true;
     //closes an alert
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);

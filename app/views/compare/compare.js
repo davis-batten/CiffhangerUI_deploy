@@ -16,6 +16,7 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
             $location.url('/');
         }
     });
+    $scope.isCollapsed = true;
     $scope.matrix = {
         columnDefs: [
             {
