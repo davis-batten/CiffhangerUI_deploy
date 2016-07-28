@@ -55,7 +55,7 @@
                             <li role="menuitem"><a prevent-default ng-click="selectType('int')">Integer</a></li>
                             <li role="menuitem"><a prevent-default ng-click="selectType('double')">Double</a></li>
                         </ul>
-                    </div> Tag:
+                    </div> Hook:
                     <div class="btn-group" uib-dropdown is-open="status.isopentag">
                         <button id="tag-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle> {{newAttribute.tag.name}} <span class="caret"></span> </button>
                         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
@@ -112,7 +112,7 @@
                         <th><b>Column Name</b></th>
                         <th><b>Description</b></th>
                         <th><b>Data Type</b></th>
-                        <th><b>Tag</b></th>
+                        <th><b>Hook</b></th>
                     </thead>
                     <tbody>
                         <tr ng-repeat="attr in dataset.attributes">
@@ -186,7 +186,7 @@
                 <br> {{d.db_table_name}}
                 <br> <strong>Dataset Created By</strong>
                 <br> {{d.createdBy}}
-                <br> <strong>Tags</strong>
+                <br> <strong>Hooks</strong>
                 <ul class="inline-list">
                     <li ng-repeat="t in d.tags | orderBy:'name'" ng-if="t.name != '<EMPTY>'"><span class="label label-info">{{t.name}}</span></li>
                 </ul> <strong>Columns</strong>
