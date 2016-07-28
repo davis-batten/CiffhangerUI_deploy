@@ -201,29 +201,35 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         }
     };
     $scope.attributeDataFound = false;
-    
-    //advance the modal to the next step
+
+    //    advance the modal to the next step
     $scope.next = function () {
-        if($scope.step == 1 && $scope.input.db_table_name.length != 0) {
-                    $scope.importingDataset = true;
+        if ($scope.step == 1 && $scope.input.db_table_name.length != 0) {
+            $scope.importingDataset = true;
 
             datasetService.getHiveTableSchema($scope.input.db_table_name).then(function (data) {
-                // autofill attribute's col_name and data_type
-                $scope.attributeDataFound = true;
-                $scope.input.attributes = data.data;     
-                $scope.importingDataset = false;
+                if (data.status == "Error" && data.data == "Table does not exist") {
+                    $log.warn("Table " + $scope.input.db_table_name + " does does not exist");
+                    $scope.importingDataset = false;
+                } else {
+                    //                    autofill attribute's col_name and data_type
+                    $scope.attributeDataFound = true;
+                    $scope.input.attributes = data.data;
+                    $scope.importingDataset = false;
+                }
             }, function (data) {
-                
+                $log.warn("A Database Table Name was listed as " + $scope.input.db_table_name + "but we failed to retrieve that table's schema");
+                $scope.importingDataset = false;
             })
         }
         $scope.step++;
     };
-    
+
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
     };
-    
+
     //complete the modal
     $scope.submit = function () {
         if ($scope.input.attributes == null) {

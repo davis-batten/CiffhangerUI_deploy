@@ -1,7 +1,7 @@
 //GLOBAL VARIABLES
-//window.baseUrl = 'http://localhost:8080/cliffhanger'; //development
+window.baseUrl = 'http://localhost:8080/cliffhanger'; //development
 //window.baseUrl = 'http://hangingonbyanicepick.eastus2.cloudapp.azure.com:8080/cliffhanger-0.1'; //production
-window.baseUrl = 'http://40.84.59.10:8080/cliffhanger-0.1'; //production
+//window.baseUrl = 'http://40.84.59.10:8080/cliffhanger-0.1'; //production
 window.zeppelin = 'http://hadn2.zirous.com:9995';
 // Declare app level module which depends on views, and components
 app = angular.module('cliffhanger', [
