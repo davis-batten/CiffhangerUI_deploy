@@ -53,14 +53,14 @@
                     </ul>
                 </div>
                 <div class="col-md-6">
-                    <h4><strong>Tags  </strong><small><em>Select a join tag</em></small></h4>
+                    <h4><strong>Hooks  </strong><small><em>Select a join hook</em></small></h4>
                     <ul class="list-group ">
                         <li class="list-group-item " ng-repeat="t in tags | orderBy: 'name' ">
                             <checkbox ng-model="t.selected " ng-change="change(t, selectedTags)" ng-disabled="!t.selected && selectedTags.length == numJoins"></checkbox>
                             <label>{{t.name}}</label>
                         </li>
                     </ul>
-                    <h4 class="text-danger" ng-show="tags.length==0 && selectedDatasets[numJoins] != undefined">No joinable tags for the selected datasets</h4> </div>
+                    <h4 class="text-danger" ng-show="tags.length==0 && selectedDatasets[numJoins] != undefined">No joinable hooks for the selected datasets</h4> </div>
             </div>
         </form>
         <!--

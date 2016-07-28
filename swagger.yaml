@@ -283,31 +283,38 @@ paths:
           schema:
             $ref: "#/definitions/Query"
 
+  /query/update:
+    post:
+      description: Update the SQL string of a `Query`
+      produces:
+        - applicaiton/json
+      consumes:
+        - application/json
+      parameters:
+        -
+          name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: the query id
+              sqlString:
+                type: string
+                description: updated SQL string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/Query"
 
   /query/list:
     get:
       description: Fetch every existing `Query`
       produces:
         - application/json
-      responses:
-        200:
-          description: Success
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Query'
-              
-  /query/userQueries/{username}:
-    get:
-      description: Fetch a users `Queries`
-      produces:
-        - application/json
-      parameters:
-        -
-          name: username
-          in: path
-          required: true
-          type: string
       responses:
         200:
           description: Success
@@ -358,7 +365,7 @@ paths:
                     type: string
                     description: a cell in the row
 
-  /query/delete:
+  /query/delete/{query_name}:
     delete:
       description: Delete a `Query`
       consumes:
