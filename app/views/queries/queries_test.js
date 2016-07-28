@@ -180,8 +180,12 @@ describe('cliffhanger.queries module', function () {
                 var deferred = $q.defer();
                 deferred.resolve(response);
                 return deferred.promise;
-            })
-
+            });
+            spyOn(mockQueryService, "updateQuery").and.callFake(function () {
+                var deferred = $q.defer();
+                deferred.resolve();
+                return deferred.promise;
+            });
             spyOn(mockQueryService, "runQuery").and.callFake(function () {
                 var bad_result = {
                     status: 'Error'
@@ -337,6 +341,11 @@ describe('cliffhanger.queries module', function () {
             scope.exportZeppelin(query);
             scope.$apply();
             expect(mockQueryService.newZeppelinQuery).toHaveBeenCalled();
+        });
+        it('should be able to update the query', function () {
+            scope.query.sqlString = "select * from cliffhanger.testHiveTable";
+            scope.updateQuery();
+            expect(mockQueryService.updateQuery).toHaveBeenCalled();
         })
     });
     describe('QueryDeleteModalCtrl', function () {
