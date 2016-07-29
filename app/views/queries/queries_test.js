@@ -176,7 +176,6 @@ describe('cliffhanger.queries module', function () {
                 var response = {
                     body: '123'
                 }
-
                 var deferred = $q.defer();
                 deferred.resolve(response);
                 return deferred.promise;
@@ -268,6 +267,14 @@ describe('cliffhanger.queries module', function () {
             expect(scope.query.name).toEqual('test');
             expect(scope.query.dateCreated).toEqual(testDate);
         });
+        it('should open the request form with the correct query', function () {
+            scope.step = 1;
+            scope.showRequestForm();
+            expect(scope.shouldShowRequestForm).toBeTruthy();
+            expect(scope.newRequestInput.body).toEqual('SELECT * FROM table;');
+            expect(scope.newRequestInput.subject).toContain('Request');
+            expect(scope.newRequestInput.subject).toContain('test');
+        });
         it('should run the query and return a table result object', function () {
             scope.step = scope.maxSteps - 1;
             scope.next();
@@ -335,8 +342,8 @@ describe('cliffhanger.queries module', function () {
         });
         it('should be able to export the query to Zeppelin', function () {
             var query = {
-                sqlString: "SELECT * FROM cliffhanger.testHiveTable",
-                name: "testHiveTable"
+                sqlString: "SELECT * FROM cliffhanger.testHiveTable"
+                , name: "testHiveTable"
             }
             scope.exportZeppelin(query);
             scope.$apply();
