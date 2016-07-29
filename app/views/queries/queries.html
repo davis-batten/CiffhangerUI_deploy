@@ -41,7 +41,7 @@
 <!-- View Query Modal -->
 <script type="text/ng-template" id="viewQueryModalContent.html">
     <!-- First step of modal -->
-    <div ng-show="step == 1">
+    <div ng-show="step == 1 && !shouldShowRequestForm">
         <div class="modal-header">
             <div class="row">
                 <div class="col-xs-11">
@@ -55,11 +55,12 @@
             <textarea class="codeEdit" rows="10" ng-model="query.sqlString"></textarea>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-info" type="button" ng-click="exportZeppelin()" uib-tooltip="Create a new Zeppelin Note from this query" tooltip-append-to-body="true">Export Zeppelin</button>
+            <button class="btn btn-info pull-left" type="button" ng-click="exportZeppelin()" uib-tooltip="Create a new Zeppelin Note from this query" tooltip-append-to-body="true">Export to Zeppelin</button>
+            <button class="btn btn-primary pull-left" type="button" ng-click="showRequestForm()" uib-tooltip="Request a Developer to create a table or view from this query">Request Table/View</button>
             <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Update the existing query" tooltip-append-to-body="true" ng-click="updateQuery()" ng-show="queryRanFine">Save</button>
-            <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Save as a new query" tooltip-append-to-body="true" ng-click="isCollapsed = !isCollapsed" ng-show="queryRanFine">Save As</button>
+            <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Save as a new query" tooltip-append-to-body="true" ng-click="isSaveCollapsed = !isSaveCollapsed" ng-show="queryRanFine">Save As</button>
             <button class="btn btn-info" type="button" ng-click="next()">Run</button>
-            <div uib-collapse="isCollapsed">
+            <div uib-collapse="isSaveCollapsed">
                 <hr>
                 <div class="well well-sm">
                     <form name="saveQueryAs">
@@ -71,7 +72,7 @@
                             <input type="text" class="form-control" id="description" ng-model="newQuery.description"> </div>
                         <div class="form-group">
                             <button class="btn btn-info" type="button" ng-disabled="name.$invalid" ng-click="saveAs()">Save</button>
-                            <button class="btn btn-danger pull-left" type="button" ng-hide="showExit" ng-click="isCollapsed =! isCollapsed">Cancel Save</button>
+                            <button class="btn btn-danger pull-left" type="button" ng-hide="showExit" ng-click="isSaveCollapsed =! isSaveCollapsed">Cancel Save</button>
                         </div>
                     </form>
                 </div>
@@ -120,15 +121,6 @@
                 <h4> Failed to run query</h4>
                 <!--<p>{{errorMsg}}</p>-->
             </div>
-            <!--
-        <p ng-show="noResults">
-            The join query ran, but the resulting dataset was empty. <br><br>
-            This means no matching data was found between the dataset's in their join columns. <br><br>
-            Make sure that for each join operation, the sample data values have the same format(eg. when joining two datasets on phone numbers, if one dataset’s phone numbers are in the form (XXX)XXX-XXXX, the other must have them in exactly the same format and not something like XXXXXXXXXX). <br><br>
-                TODO: ADD TABLE W/ SAMPLE DATA VALUES LIKE MOCKUP
-            If there is a problem with how your data is formatted, report this to a developer and ask them to tranform the mismatched data to a common format.
-        </p>
--->
             <div ng-show="noResults" class="text-danger">
                 <h4>No Results </h4>
                 <p> The join query ran, but the resulting table was empty.
@@ -143,8 +135,8 @@
             <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
             <button class="btn btn-success" type="button" ng-click="showNotifyDevsForm()" ng-show="!queryRanFine">Contact Developers</button>
             <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Update the existing query" tooltip-append-to-body="true" ng-click="updateQuery()" ng-show="queryRanFine">Save</button>
-            <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Save as a new query" tooltip-append-to-body="true" ng-click="isCollapsed = !isCollapsed" ng-show="queryRanFine">Save As</button>
-            <div uib-collapse="isCollapsed">
+            <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Save as a new query" tooltip-append-to-body="true" ng-click="isSaveCollapsed = !isSaveCollapsed" ng-show="queryRanFine">Save As</button>
+            <div uib-collapse="isSaveCollapsed">
                 <hr>
                 <div class="well well-sm">
                     <form name="saveQueryAs">
@@ -156,7 +148,7 @@
                             <input type="text" class="form-control" id="description" ng-model="newQuery.description"> </div>
                         <div class="form-group">
                             <button class="btn btn-info" type="button" ng-disabled="name.$invalid" ng-click="saveAs()">Save</button>
-                            <button class="btn btn-danger pull-left" type="button" ng-hide="showExit" ng-click="isCollapsed =! isCollapsed">Cancel Save</button>
+                            <button class="btn btn-danger pull-left" type="button" ng-hide="showExit" ng-click="isSaveCollapsed =! isSaveCollapsed">Cancel Save</button>
                         </div>
                     </form>
                 </div>
@@ -181,7 +173,7 @@
     <div class="modal-header" ng-show="shouldShowNotifyDevsForm">
         <div class="row">
             <div class="col-xs-11">
-                <h3 class="modal-title inline">Reports Problem Regarding: {{query.name}}</h3> </div>
+                <h3 class="modal-title inline">Report Problem Regarding: {{query.name}}</h3> </div>
             <div class="col-xs-1">
                 <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
             </div>
@@ -190,14 +182,15 @@
     <div class="modal-body" ng-show="shouldShowNotifyDevsForm">
         <div ng-show="!reportSubmitted">
             <p>Here you can notify your developers that you are having a problem using Cliffhanger or joining datasets. This opens a discussion board where you and a developer can comment back and forth about the problem. This discussion board will remain open until the problem is resolved. </p>
+            <hr>
             <form name="notifyDevsForm">
                 <div class="form-group">
-                    <label for="subject">Subject </label>
+                    <label for="subject">Subject <small><em>  This will appear as the title of the thread</em></small></label>
                     <textarea class="form-control" rows="1" name="subject" id="problemSubject" ng-model="newProblemInput.subject"> </textarea>
                 </div>
                 <div class="form-group">
-                    <label for="msg">Message </label>
-                    <textarea class="form-control" rows="15" name="msg" id="problemMessage" ng-model="newProblemInput.body"></textarea>
+                    <label for="msg">Message <small><em>  Add any information that will help the developer understand your problem</em></small></label>
+                    <textarea class="form-control" rows="10" name="msg" id="problemMessage" ng-model="newProblemInput.body"></textarea>
                 </div>
             </form>
         </div>
@@ -206,6 +199,38 @@
     <div class="modal-footer" ng-show="shouldShowNotifyDevsForm">
         <button class="btn btn-warning pull-left" ng-show="!reportSubmitted" type="button" ng-click="hideNotifyDevsForm()">Cancel</button>
         <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="reportProblem()">Send to Developers</button>
+        <button class="btn btn-success pull-right" type="button" ng-click="cancel()" ng-show="reportSubmitted">Ok</button>
+    </div>
+    <!-- Send request to dev form -->
+    <div class="modal-header" ng-show="shouldShowRequestForm">
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title inline">Table/View Create Request for: {{query.name}}</h3> </div>
+            <div class="col-xs-1">
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" ng-show="shouldShowRequestForm">
+        <div ng-show="!reportSubmitted">
+            <p>Here you can ask your developers to create a table or view in Hive from the query you have selected. They will see this request on the Message Board and may comment if they have any questions or to notify you when they are done. When the request is completed you or the developer can close the thread. </p>
+            <hr>
+            <form name="requestForm">
+                <div class="form-group">
+                    <label for="subject">Subject <small><em>  Make sure to specify Table or View</em></small></label>
+                    <textarea class="form-control" rows="1" name="subject" id="requestSubject" ng-model="newRequestInput.subject"> </textarea>
+                </div>
+                <div class="form-group">
+                    <label for="msg">Message <small><em>  Feel free to include any additional specifications</em></small></label>
+                    <textarea class="form-control" rows="15" name="msg" id="requestMessage" ng-model="newRequestInput.body"></textarea>
+                </div>
+            </form>
+        </div>
+        <p ng-show="reportSubmitted">{{postReportSubmissionMessage}}</p>
+    </div>
+    <div class="modal-footer" ng-show="shouldShowRequestForm">
+        <button class="btn btn-warning pull-left" ng-show="!reportSubmitted" type="button" ng-click="hideRequestForm()">Cancel</button>
+        <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="sendRequest()">Send to Developers</button>
         <button class="btn btn-success pull-right" type="button" ng-click="cancel()" ng-show="reportSubmitted">Ok</button>
     </div>
 </script>

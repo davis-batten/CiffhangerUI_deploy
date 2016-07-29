@@ -135,7 +135,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, $location, 
 queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInstance, $log, query, queryService, issueService) {
     $scope.query = query;
     $scope.maxSteps = 2;
-    $scope.isCollapsed = true;
+    $scope.isSaveCollapsed = true;
     $scope.tableResult = {};
     $scope.alerts = [];
     $scope.loadingPreview = false;
@@ -148,7 +148,12 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
         subject: ''
         , body: ''
     }
+    $scope.newRequestInput = {
+        subject: ''
+        , body: ''
+    }
     $scope.shouldShowNotifyDevsForm = false;
+    $scope.shouldShowRequestForm = false;
     $scope.step = 1; //what step is the modal on
     //advance the modal to the next step
     $scope.next = function () {
@@ -219,20 +224,20 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     };
     //create new zeppelin note
     $scope.exportZeppelin = function () {
-            var newNote = {
-                name: $scope.query.name
-                , paragraphs: [
-                    {
-                        title: $scope.query.description
-                        , text: '%hive\n' + $scope.query.sqlString
+        var newNote = {
+            name: $scope.query.name
+            , paragraphs: [
+                {
+                    title: $scope.query.description
+                    , text: '%hive\n' + $scope.query.sqlString
                 }
             ]
-            }
-            queryService.newZeppelinQuery(newNote).then(function (response) {
-                window.open(window.zeppelin + '#/notebook/' + response.body);
-            })
         }
-        //run the query
+        queryService.newZeppelinQuery(newNote).then(function (response) {
+            window.open(window.zeppelin + '#/notebook/' + response.body);
+        })
+    };
+    //run the query
     $scope.runQuery = function () {
         $scope.loadingPreview = true;
         var querySQL = $scope.query.sqlString;
@@ -268,12 +273,31 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     $scope.reportProblem = function () {
         issueService.createIssue($scope.newProblemInput).then(function (response) {
             // success
-            $scope.postReportSubmissionMessage = "Your problem has been reported to the developers."
+            $scope.postReportSubmissionMessage = "Your problem has been reported to the developers.";
             $scope.reportSubmitted = true;
         }, function (data) {
             // fail
-            $scope.postReportSubmissionMessage = "There was a problem reporting your problem."
+            $scope.postReportSubmissionMessage = "There was a problem reporting your problem.";
+            $scope.reportSubmitted = false;
+        });
+    };
+    $scope.showRequestForm = function () {
+        $scope.shouldShowRequestForm = true;
+        $scope.newRequestInput.subject = '{type View or Table here} Request for: ' + $scope.query.name + ' Query';
+        $scope.newRequestInput.body = $scope.query.sqlString;
+    };
+    $scope.hideRequestForm = function () {
+        $scope.shouldShowRequestForm = false;
+    };
+    $scope.sendRequest = function () {
+        issueService.createIssue($scope.newRequestInput).then(function (response) {
+            //success
+            $scope.postReportSubmissionMessage = "Your request has been sent to the developers.";
             $scope.reportSubmitted = true;
+        }, function (data) {
+            //fail
+            $scope.postReportSubmissionMessage = "There was a problem sending your request.";
+            $scope.reportSubmitted = false;
         });
     };
 });

@@ -80,29 +80,36 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
                     , type: "danger"
                 });
             })
-    }
+    };
     $scope.loadIssues();
     //for filter dropdown
     $scope.toggleFilterDropdown = function ($event) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            $scope.status.filterbyisopen = !$scope.status.filterbyisopen;
-        }
-        //for filter
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.status.filterbyisopen = !$scope.status.filterbyisopen;
+    };
+    //for filter
     $scope.setFilter = function (filterText) {
-            if (filterText != null) {
+        if (filterText != null) {
+            if (filterText == 'Request') {
+                $scope.searchText = {
+                    subject: filterText
+                }
+            }
+            else {
                 $scope.searchText = {
                     open: filterText
-                };
+                }
             }
-            else $scope.searchText = '';
         }
-        //for sort by dropdown
+        else $scope.searchText = '';
+    };
+    //for sort by dropdown
     $scope.toggleSortByDropdown = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.status.sortbyisopen = !$scope.status.sortbyisopen;
-    }
+    };
     $scope.setSort = function (sort) {
         $scope.sortText = sort;
         $scope.reverse = false;
@@ -113,27 +120,27 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
             $scope.sortText = 'createDate';
             $scope.reverse = true;
         }
-    }
+    };
     $scope.roleStyle = function (issue) {
         var role = issue.opener.roles[0].authority;
         if (role == "ROLE_DEVELOPER") return "label label-success";
         else if (role == "ROLE_ANALYST") return "label label-primary";
         else return "label label-default";
-    }
+    };
     $scope.openStyle = function (issue) {
         if (issue.open) return "glyphicon glyphicon-ok-circle text-success";
         else return "glyphicon glyphicon-remove-circle text-danger";
-    }
+    };
     $scope.openTooltip = function (issue) {
         if (issue.open) return "Open";
         else return "Closed";
-    }
+    };
     $scope.openThread = function (issue) {
-            $log.log(issue);
-            $rootScope.issueId = issue.threadId;
-            $location.path("/issue/" + issue.threadId);
-        }
-        //opens new issue modal
+        $log.log(issue);
+        $rootScope.issueId = issue.threadId;
+        $location.path("/issue/" + issue.threadId);
+    };
+    //opens new issue modal
     $scope.newIssue = function () {
         var input = $scope.input;
         var modalInstance = $uibModal.open({
@@ -153,7 +160,7 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
                 $scope.postReportSubmissionMessage = "There was a problem reporting your problem."
             });
         });
-    }
+    };
 });
 //controller for instance of NewIssueModal
 messageboard.controller('NewIssueModalInstanceCtrl', function ($scope, $uibModalInstance, $log, $rootScope) {

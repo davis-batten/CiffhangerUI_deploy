@@ -19,56 +19,56 @@ describe('cliffhanger.queries module', function () {
             mockQueryService = queryService;
             mockIssueService = issueService;
             mockUser = {
-                username: "mockUser",
-                password: "nnnnnnn",
-                roles: [
+                username: "mockUser"
+                , password: "nnnnnnn"
+                , roles: [
                     "ROLE_ADMIN"
                 ]
             };
             $rootScope.user = mockUser;
             test_query_data = [
                 {
-                    id: "id1",
-                    name: "test1",
-                    description: "test1 desc",
-                    dateCreated: testDate,
-                    sqlString: "SELECT * FROM table;",
-                    createdBy: "hdfs"
+                    id: "id1"
+                    , name: "test1"
+                    , description: "test1 desc"
+                    , dateCreated: testDate
+                    , sqlString: "SELECT * FROM table;"
+                    , createdBy: "hdfs"
                 }
                 , {
-                    id: "id2",
-                    name: "test2",
-                    description: "test2 desc",
-                    dateCreated: testDate,
-                    sqlString: "SELECT * FROM table;",
-                    createdBy: "hdfs"
+                    id: "id2"
+                    , name: "test2"
+                    , description: "test2 desc"
+                    , dateCreated: testDate
+                    , sqlString: "SELECT * FROM table;"
+                    , createdBy: "hdfs"
                 }
             ];
             test_user_queries = [
                 {
-                    id: "id1",
-                    name: "test1",
-                    description: "test1 desc",
-                    dateCreated: testDate,
-                    sqlString: "SELECT * FROM table;",
-                    createdBy: "hdfs1"
+                    id: "id1"
+                    , name: "test1"
+                    , description: "test1 desc"
+                    , dateCreated: testDate
+                    , sqlString: "SELECT * FROM table;"
+                    , createdBy: "hdfs1"
                 }
                 , {
-                    id: "id2",
-                    name: "test2",
-                    description: "test2 desc",
-                    dateCreated: testDate,
-                    sqlString: "SELECT * FROM table;",
-                    createdBy: "hdfs1"
+                    id: "id2"
+                    , name: "test2"
+                    , description: "test2 desc"
+                    , dateCreated: testDate
+                    , sqlString: "SELECT * FROM table;"
+                    , createdBy: "hdfs1"
                 }
             ];
             mockQuery = {
-                id: "id3",
-                name: "test",
-                description: "desc",
-                dateCreated: testDate,
-                sqlString: "SELECT * FROM table;",
-                createdBy: "hdfs"
+                id: "id3"
+                , name: "test"
+                , description: "desc"
+                , dateCreated: testDate
+                , sqlString: "SELECT * FROM table;"
+                , createdBy: "hdfs"
             };
             deferred = $q.defer();
             resp = {};
@@ -92,12 +92,12 @@ describe('cliffhanger.queries module', function () {
                     status: 'Error'
                 }
                 var testTableResult = {
-                    colCount: 2,
-                    colNames: [
+                    colCount: 2
+                    , colNames: [
                         "test.col1"
                         , "test.col2"
-                    ],
-                    rows: [
+                    ]
+                    , rows: [
                         [
                             1
                             , "abc"
@@ -113,12 +113,12 @@ describe('cliffhanger.queries module', function () {
                     ]
                 }
                 var emptyTableResult = {
-                    colCount: 2,
-                    colNames: [
+                    colCount: 2
+                    , colNames: [
                         "test.col1"
                         , "test.col2"
-                    ],
-                    rows: []
+                    ]
+                    , rows: []
                 }
                 var deferred = $q.defer();
                 if (serviceError) deferred.reject(bad_result);
@@ -139,12 +139,12 @@ describe('cliffhanger.queries module', function () {
                 return deferred.promise;
             })
             queriesCtrl = $controller('QueriesCtrl', {
-                $scope: scope,
-                $uibModal: modal,
-                $log: $log,
-                $rootScope: root,
-                queryService: mockQueryService,
-                issueService: mockIssueService
+                $scope: scope
+                , $uibModal: modal
+                , $log: $log
+                , $rootScope: root
+                , queryService: mockQueryService
+                , issueService: mockIssueService
             })
         }));
         it('should have a QueriesCtrl controller', function () {
@@ -166,9 +166,9 @@ describe('cliffhanger.queries module', function () {
             issueServiceError = false;
             emptyResult = false;
             modalInstance = {
-                close: jasmine.createSpy('uibModalInstance.close'),
-                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
-                result: {
+                close: jasmine.createSpy('uibModalInstance.close')
+                , dismiss: jasmine.createSpy('uibModalInstance.dismiss')
+                , result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
@@ -177,12 +177,12 @@ describe('cliffhanger.queries module', function () {
                     status: 'Error'
                 }
                 var testTableResult = {
-                    colCount: 2,
-                    colNames: [
+                    colCount: 2
+                    , colNames: [
                         "test.col1"
                         , "test.col2"
-                    ],
-                    rows: [
+                    ]
+                    , rows: [
                         [
                             1
                             , "abc"
@@ -198,12 +198,12 @@ describe('cliffhanger.queries module', function () {
                     ]
                 }
                 var emptyTableResult = {
-                    colCount: 2,
-                    colNames: [
+                    colCount: 2
+                    , colNames: [
                         "test.col1"
                         , "test.col2"
-                    ],
-                    rows: []
+                    ]
+                    , rows: []
                 }
                 var deferred = $q.defer();
                 if (serviceError) deferred.reject(bad_result);
@@ -224,12 +224,12 @@ describe('cliffhanger.queries module', function () {
                 return deferred.promise;
             })
             viewQueryModalCtrl = $controller('ViewQueryModalInstanceCtrl', {
-                $scope: scope,
-                $uibModalInstance: modalInstance,
-                $log: $log,
-                query: mockQuery,
-                queryService: mockQueryService,
-                issueService: mockIssueService
+                $scope: scope
+                , $uibModalInstance: modalInstance
+                , $log: $log
+                , query: mockQuery
+                , queryService: mockQueryService
+                , issueService: mockIssueService
             });
         }));
         it('should instantiate the viewQueryModalInstanceCtrl controller', function () {
@@ -261,12 +261,12 @@ describe('cliffhanger.queries module', function () {
             expect(scope.query.sqlString).toEqual('SELECT * FROM table;');
             expect(scope.tableResult).not.toBeNull();
             expect(scope.tableResult).toEqual({
-                colCount: 2,
-                colNames: [
+                colCount: 2
+                , colNames: [
                         "test.col1"
                         , "test.col2"
-                    ],
-                rows: [
+                    ]
+                , rows: [
                         [
                             1
                             , "abc"
@@ -297,7 +297,7 @@ describe('cliffhanger.queries module', function () {
             expect(scope.shouldShowNotifyDevsForm).toBeTruthy();
             expect(scope.newProblemInput.body).not.toBeNull();
         });
-        it('should show proper warning modal content when connection fails and give ability to open new discussion board', function () {
+        it('should show proper warning modal content when connection fails and give ability to open new thread', function () {
             serviceError = true;
             scope.step = scope.maxSteps - 1;
             scope.next();
@@ -308,7 +308,7 @@ describe('cliffhanger.queries module', function () {
             expect(scope.shouldShowNotifyDevsForm).toBeTruthy();
             expect(scope.newProblemInput.body).not.toBeNull();
         });
-        it('should show error message when new discussion board creation fails', function () {
+        it('should show error message when new thread creation fails', function () {
             serviceError = true;
             scope.step = scope.maxSteps - 1;
             scope.next();
@@ -324,17 +324,17 @@ describe('cliffhanger.queries module', function () {
         beforeEach(inject(function ($controller, $rootScope, $log) {
             scope = $rootScope.$new();
             modalInstance = {
-                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
-                close: jasmine.createSpy('uibModalInstance.close'),
-                result: {
+                dismiss: jasmine.createSpy('uibModalInstance.dismiss')
+                , close: jasmine.createSpy('uibModalInstance.close')
+                , result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
             queryDeleteCtrl = $controller('QueryDeleteModalCtrl', {
-                $scope: scope,
-                $uibModalInstance: modalInstance,
-                $log: $log,
-                query: mockQuery
+                $scope: scope
+                , $uibModalInstance: modalInstance
+                , $log: $log
+                , query: mockQuery
             });
         }));
         it('should be able accept and close the modal', function () {
