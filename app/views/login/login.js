@@ -7,6 +7,7 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
     $scope.newUser = {};
     $rootScope.theme = {};
     $rootScope.theme.color = 'white';
+    $scope.troll = false;
     //alerts for errors
     $scope.alerts = [];
     $scope.closeAlert = function (index) {
