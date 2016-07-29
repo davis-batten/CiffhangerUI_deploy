@@ -6,6 +6,10 @@ describe('cliffhanger.messageboard module', function () {
     var scope, root, location, issues;
     describe('messageboard controller', function () {
         beforeEach(inject(function ($controller, $rootScope, $log, $q, $location, $uibModal, issueService) {
+            $rootScope.user = {
+    username: "test"
+}
+
             scope = $rootScope.$new();
             root = $rootScope;
             location = $location;
@@ -14,43 +18,43 @@ describe('cliffhanger.messageboard module', function () {
             //test data
             issues = [
                 {
-                    threadId: 1
-                    , subject: "Can't load table cliffhanger.testHiveTable"
-                    , opener: {
-                        username: "dbatt"
-                        , role: {
+                    threadId: 1,
+                    subject: "Can't load table cliffhanger.testHiveTable",
+                    opener: {
+                        username: "dbatt",
+                        role: {
                             roleID: "DEVELOPER"
                         }
-                    }
-                    , numComments: 5
-                    , createDate: new Date()
-                    , open: true
+                    },
+                    numComments: 5,
+                    createDate: new Date(),
+                    open: true
                 }
                     , {
-                    threadId: 2
-                    , subject: "Can't change username"
-                    , opener: {
-                        username: "colton"
-                        , role: {
+                    threadId: 2,
+                    subject: "Can't change username",
+                    opener: {
+                        username: "colton",
+                        role: {
                             roleID: "ADMIN"
                         }
-                    }
-                    , numComments: 1
-                    , createDate: new Date()
-                    , open: false
+                    },
+                    numComments: 1,
+                    createDate: new Date(),
+                    open: false
                 }
                     , {
-                    threadId: 3
-                    , subject: "No results for a join query"
-                    , opener: {
-                        username: "heather"
-                        , role: {
+                    threadId: 3,
+                    subject: "No results for a join query",
+                    opener: {
+                        username: "heather",
+                        role: {
                             roleID: "ANALYST"
                         }
-                    }
-                    , numComments: 3
-                    , createDate: new Date()
-                    , open: true
+                    },
+                    numComments: 3,
+                    createDate: new Date(),
+                    open: true
                 }
             ];
             //mock issueService
@@ -58,28 +62,27 @@ describe('cliffhanger.messageboard module', function () {
                 var deferred = $q.defer();
                 if (!serviceError) {
                     var goodResponse = {
-                        status: 'Success'
-                        , data: issues
+                        status: 'Success',
+                        data: issues
                     }
                     deferred.resolve(goodResponse);
-                }
-                else {
+                } else {
                     var badResponse = {
-                        status: 'Error'
-                        , data: "Could not load issues"
+                        status: 'Error',
+                        data: "Could not load issues"
                     }
                     deferred.resolve(badResponse);
                 }
                 return deferred.promise;
             })
             msgCtrl = $controller('MessageBoardCtrl', {
-                $scope: scope
-                , $log: $log
-                , $q: $q
-                , $rootScope: root
-                , $location: location
-                , $uibModal: modal
-                , issueService: issueService
+                $scope: scope,
+                $log: $log,
+                $q: $q,
+                $rootScope: root,
+                $location: location,
+                $uibModal: modal,
+                issueService: issueService
             });
         }));
         it('should be able to load all issue discussion threads', function () {
@@ -101,15 +104,15 @@ describe('cliffhanger.messageboard module', function () {
         beforeEach(inject(function ($controller, $rootScope, $log) {
             scope = $rootScope.$new();
             modalInstance = {
-                close: jasmine.createSpy('uibModalInstance.close')
-                , dismiss: jasmine.createSpy('uibModalInstance.dismiss')
-                , result: {
+                close: jasmine.createSpy('uibModalInstance.close'),
+                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
+                result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
             newIssueModalCtrl = $controller('NewIssueModalInstanceCtrl', {
-                $scope: scope
-                , $uibModalInstance: modalInstance
+                $scope: scope,
+                $uibModalInstance: modalInstance
             });
         }));
         it('should instantiate the newIssueModalInstanceCtrl controller', function () {

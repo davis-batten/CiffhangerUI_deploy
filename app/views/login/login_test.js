@@ -17,24 +17,23 @@ describe('cliffhanger.users module', function () {
                 var deferred = $q.defer();
                 if (!serviceError) {
                     var user = {
-                        username: 'testUsername'
-                        , password: 'testPassword'
-                        , roles: [
+                        username: 'testUsername',
+                        password: 'testPassword',
+                        roles: [
                         'ROLE_DEVELOPER'
                     ]
                     }
                     var response = {
-                        data: user
-                        , status: 'Success'
+                        data: user,
+                        status: 'Success'
                     }
                     deferred.resolve(response);
                     root.user = user;
                     root.$apply();
-                }
-                else {
+                } else {
                     var badResponse = {
-                        data: 'Unsuccessful login!'
-                        , status: 'Error'
+                        data: 'Unsuccessful login!',
+                        status: 'Error'
                     }
                     deferred.resolve(badResponse);
                 }
@@ -45,32 +44,31 @@ describe('cliffhanger.users module', function () {
                 var deferred = $q.defer();
                 if (!serviceError) {
                     var user = {
-                        username: 'testUsername'
-                        , password: 'testPassword'
-                        , roles: [
+                        username: 'testUsername',
+                        password: 'testPassword',
+                        roles: [
                         'ROLE_DEVELOPER'
                     ]
                     }
                     var response = {
-                        data: user
-                        , status: 'Success'
+                        data: user,
+                        status: 'Success'
                     }
                     deferred.resolve(response);
-                }
-                else {
+                } else {
                     var badResponse = {
-                        data: 'Unsuccessful register!'
-                        , status: 'Error'
+                        data: 'Unsuccessful register!',
+                        status: 'Error'
                     }
                     deferred.resolve(badResponse);
                 }
                 return deferred.promise;
             });
             loginCtrl = $controller('LoginCtrl', {
-                $scope: scope
-                , $rootScope: root
-                , userService: mockUserService
-                , $location: location
+                $scope: scope,
+                $rootScope: root,
+                userService: mockUserService,
+                $location: location
             });
         }));
         it('should be defined', function () {
@@ -101,6 +99,7 @@ describe('cliffhanger.users module', function () {
             expect(scope.login).toHaveBeenCalled();
         })
         it('should display alert if failed to register a new user', function () {
+            scope.alerts = [];
             spyOn(scope, 'login');
             serviceError = true;
             scope.register();
