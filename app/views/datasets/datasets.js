@@ -91,6 +91,20 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
             createDataset(newDataSet);
         });
     };
+
+    $scope.previewDataset = function (d) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'datasetPreview.html',
+            controller: 'DatasetPreviewModalCtrl',
+            size: 'md',
+            resolve: {
+                dataset: function () {
+                    return d;
+                }
+            }
+        })
+    }
+
     //opens updateDataset modal for dataset d
     $scope.updateDataset = function (d) {
         $log.log(d);
@@ -332,6 +346,30 @@ datasets.controller('DatasetUpdateModalCtrl', function ($scope, $uibModalInstanc
         });
     };
     getTags();
+});
+//controller for instance of DatasetPreviewModal
+datasets.controller('DatasetPreviewModalCtrl', function ($scope, $uibModalInstance, $log, dataset, datasetService) {
+    $scope.dataset = dataset;
+    $scope.tableResult = {};
+    $scope.alerts = [];
+    $scope.loadingPreview = false;
+    $scope.queryRanFine = true;
+    $scope.connectionFailed = false;
+    $scope.noResults = false;
+
+    datasetService.previewDataset($scope.dataset).then(
+        function (response) {
+            $scope.tableResult = response;
+        },
+        function (error) {
+            $scope.queryRanFine = false;
+        }
+    );
+
+    //dismiss modal
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 });
 //controller for instance of DatasetDeleteModal
 datasets.controller('DatasetDeleteModalCtrl', function ($scope, $uibModalInstance, $log, dataset) {

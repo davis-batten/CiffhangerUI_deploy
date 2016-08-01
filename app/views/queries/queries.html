@@ -101,7 +101,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="row in tableResult.rows | limitTo:100">
-                            <td ng-repeat="cell in row">{{cell}}</td>
+                            <td ng-repeat="cell in row track by $index">{{cell}}</td>
                     </tbody>
                 </table>
             </div>
