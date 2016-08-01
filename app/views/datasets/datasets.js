@@ -220,6 +220,8 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         }
     };
     $scope.attributeDataFound = false;
+    $scope.noHiveTableSelected = true;
+    $scope.hdfsDatabases = [];
 
     //    advance the modal to the next step
     $scope.next = function () {
@@ -273,6 +275,18 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         $log.log('selected', selectedTag);
         $scope.input.attributes[attrIndex].tag = selectedTag;
     };
+    $scope.showTables = function (database) {
+        database.expanded = !database.expanded;
+    };
+    $scope.selectTable = function (databaseIndex, table) {
+        if (databaseIndex != null) {
+            $scope.noHiveTableSelected = false;
+            $scope.input.db_table_name = $scope.hdfsDatabases[databaseIndex].db_name + "." + table;
+        } else {
+            $scope.input.db_table_name = "";
+            $scope.noHiveTableSelected = true;
+        }
+    };
     //add an attribute to the input
     $scope.addAttr = function () {
         $log.debug('new attr', $scope.newAttribute);
@@ -305,6 +319,19 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         });
     };
     getTags();
+
+    //    get a list of all tables in hive
+    var getTables = function () {
+        datasetService.getAllTables().then(function (data) {
+            if (data.status == 'Success') {
+                $scope.hdfsDatabases = eval(data.data);
+                $log.debug('hiveTables', $scope.hiveTables);
+            }
+        }, function (data) {
+            $log.error('Failed retrieve hive tables!');
+        });
+    }
+    getTables();
 });
 //controller for instance of DatasetUpdateModal
 datasets.controller('DatasetUpdateModalCtrl', function ($scope, $uibModalInstance, $log, dataset, tagService) {

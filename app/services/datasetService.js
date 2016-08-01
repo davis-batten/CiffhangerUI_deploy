@@ -78,8 +78,22 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
                 //            function called after error
                 $log.info("table " + dbTableName + " not found in Hive. Error message: " + response.data.data);
                 return $q.reject(response.data);
-            }
-        );
+            });
+    }
+
+    // this service method gets a list of DB_Name.Table_Names 
+    this.getAllTables = function () {
+        return $http.get($rootScope.baseUrl + '/dataset/listHiveTables/').then(
+            function (response) {
+                //            function called after success
+                $log.info("Hive tables retrieved");
+                return response.data;
+            },
+            function (response) {
+                //            function called after error
+                $log.info("failed to retrieve hive tables");
+                return $q.reject(response.data);
+            });
     }
 
 
