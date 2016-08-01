@@ -89,6 +89,8 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, user
                                 if (nameTemp == $scope.userList[i].username) {
                                     $scope.userList[i].username = input.username;
                                     $scope.userList[i].password = input.password;
+                                    $scope.userList[i].hiveUser = input.hiveUser;
+                                    $scope.userList[i].hivePassword = input.hivePassword;
                                     $scope.userList[i].role = input.role;
                                 }
                             }
@@ -150,6 +152,8 @@ users.controller('UpdateUserModalCtrl', function ($scope, $uibModalInstance, $lo
     $scope.input = {
         username: user.username
         , password: user.password
+        , hiveUser: user.hiveUser
+        , hivePassword: user.hivePassword
         , role: {
             roleID: $scope.user.role
         }
