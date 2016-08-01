@@ -96,7 +96,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
         var modalInstance = $uibModal.open({
             templateUrl: 'datasetPreview.html',
             controller: 'DatasetPreviewModalCtrl',
-            size: 'md',
+            size: 'lg',
             resolve: {
                 dataset: function () {
                     return d;
@@ -352,7 +352,7 @@ datasets.controller('DatasetPreviewModalCtrl', function ($scope, $uibModalInstan
     $scope.dataset = dataset;
     $scope.tableResult = {};
     $scope.alerts = [];
-    $scope.loadingPreview = false;
+    $scope.loadingPreview = true;
     $scope.queryRanFine = true;
     $scope.connectionFailed = false;
     $scope.noResults = false;
@@ -360,9 +360,11 @@ datasets.controller('DatasetPreviewModalCtrl', function ($scope, $uibModalInstan
     datasetService.previewDataset($scope.dataset).then(
         function (response) {
             $scope.tableResult = response;
+            $scope.loadingPreview = false;
         },
         function (error) {
             $scope.queryRanFine = false;
+            $scope.loadingPreview = false;
         }
     );
 
