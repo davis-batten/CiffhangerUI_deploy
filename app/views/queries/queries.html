@@ -216,6 +216,12 @@
             <p>Here you can ask your developers to create a table or view in Hive from the query you have selected. They will see this request on the Message Board and may comment if they have any questions or to notify you when they are done. When the request is completed you or the developer can close the thread. </p>
             <hr>
             <form name="requestForm">
+                <div class="btn-group">
+                    <label class="btn btn-primary" ng-model="newRequestInput.type" uib-btn-radio="'VIEW'">View</label>
+                    <label class="btn btn-primary" ng-model="newRequestInput.type" uib-btn-radio="'TABLE'">Table</label>
+                </div>
+                <br>
+                <br>
                 <div class="form-group">
                     <label for="subject">Subject <small><em>  Make sure to specify Table or View</em></small></label>
                     <textarea class="form-control" rows="1" name="subject" id="requestSubject" ng-model="newRequestInput.subject"> </textarea>
