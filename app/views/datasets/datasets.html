@@ -20,8 +20,25 @@
                     <label for="newDatasetDesc">Description</label>
                     <input type="text" class="form-control" id="newDatasetDesc" ng-model="input.description"> </div>
                 <div class="form-group">
-                    <label for="newDatasetTableName">Database Table Name</label>
-                    <input type="text" class="form-control" id="newDatasetTableName" ng-model="input.db_table_name"> </div>
+                    <label for="table-selector">HDFS Table</label>
+                    <br>
+                    <!-- <input type="text" class="form-control" id="newDatasetTableName" ng-model="input.db_table_name"> -->
+                    <div id="table-selector">
+                        <ul>
+                            <li>
+                                <span ng-click="selectTable(null, null)" ng-class="{'selected-db-table-name':noHiveTableSelected == true}">NO TABLE</span>
+                            </li>
+                            <li ng-repeat="database in hdfsDatabases">
+                                <span ng-click="showTables(database)">{{database.db_name}} <span class="caret"></span> </span>
+                                <ul>
+                                    <li ng-repeat="table in database.tables" ng-show="database.expanded">
+                                        <span ng-click="selectTable($parent.$index, table)" ng-class="{'selected-db-table-name':input.db_table_name == database.db_name + '.' + table}">    {{table}}</span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -113,7 +130,7 @@
                     <tr ng-repeat="attr in input.attributes">
                         <td> {{attr.col_name}} </td>
                         <td>
-                            <input type="text" ng-model="attr.description" size="30">
+                            <input type="text" class="form-control" ng-model="attr.description">
                         </td>
                         <td> {{attr.data_type}} </td>
                         <td>
