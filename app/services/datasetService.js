@@ -95,4 +95,27 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
                 return $q.reject(response.data);
             });
     }
+
+
+    this.previewDataset = function (dataset) {
+        $log.debug('dataset', dataset)
+        var allColumnNames = ""
+        for (var i = 0; i < dataset.attributes.length; i++) {
+            if (i != 0) allColumnNames += ", ";
+            allColumnNames += dataset.attributes[i].col_name;
+        }
+        var query = "SELECT " + allColumnNames + " FROM " + dataset.db_table_name + " LIMIT 5";
+        var req = {
+            query: query
+        }
+        return $http.post($rootScope.baseUrl + '/query/run', req).then(
+            function (response) {
+                $log.debug('preview', response)
+                return response.data;
+            },
+            function (error) {
+                return $q.reject(error);
+            }
+        );
+    }
 });

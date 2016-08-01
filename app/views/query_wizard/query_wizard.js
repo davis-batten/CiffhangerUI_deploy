@@ -15,7 +15,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.selectedTags = []; //selected join tags
     $scope.selectedColumns = []; //select columns for query
     //for save query dropdown
-    $scope.isCollapsed = true;
+    $scope.isSaveCollapsed = true;
     $scope.showExit = false;
     $scope.download = false;
     $scope.loadingPreview = false;

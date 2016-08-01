@@ -232,6 +232,46 @@
         <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
     </div>
 </script>
+<!-- View Dataset Preview -->
+<script type="text/ng-template" id="datasetPreview.html">
+    <div class="modal-header" ng-show="queryRanFine">
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title inline">{{dataset.name}}</small></h3> </div>
+            <div class="col-xs-1">
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" ng-show="queryRanFine">
+        <p><em>Note: Preview will only show the first 5 results.</em></p> <img id="loadingIcon" src="../../resources/rolling_loader.svg" ng-show="loadingPreview">
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+        <div class="" id="queryResultsTable">
+            <table class="table table-bordered">
+                <thead>
+                    <th ng-repeat="column in tableResult.colNames"> {{column}} </th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in tableResult.rows">
+                        <td ng-repeat="cell in row track by $index">{{cell}}</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- modal body when error -->
+    <div class="modal-header" ng-show="!queryRanFine">
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title inline">Encountered Problem Previewing: {{dataset.name}}</h3> </div>
+            <div class="col-xs-1">
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" ng-show="!queryRanFine">
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+    </div>
+</script>
 <!-- Page Content -->
 <div ng-include="'/views/navbar.html'"></div>
 <div class="container-fluid">
@@ -253,6 +293,7 @@
             <label>{{d.name}} <span class="glyphicon glyphicon-exclamation-sign no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset!"></span><small> Click to toggle info</small></label>
             <button class="btn btn-danger" type="button" ng-click="deleteDataset(d)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
             <button class="btn btn-info" type="button" ng-click="updateDataset(d)" uib-tooltip="Edit"> <span class="glyphicon glyphicon-edit"></span></button>
+            <button class="btn btn-default" type="button" ng-click="previewDataset(d)" uib-tooltip="Preview"> <span class="glyphicon glyphicon-th-list"></span></button>
             <div class="more_info" ng-show="moreInfo[$index]"> <strong>Description</strong>
                 <br> {{d.description}}
                 <br> <strong>Database Table Name</strong>

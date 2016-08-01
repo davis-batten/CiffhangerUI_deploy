@@ -163,10 +163,10 @@
     <!-- modal footer -->
     <div class="modal-footer">
         <button class="btn btn-warning pull-left" type="button" ng-click="previous()" ng-disabled="loadingPreview">Back</button>
-        <button class="btn btn-info pull-left" type="button" ng-click="isCollapsed=!isCollapsed" ng-disabled="loadingPreview">Save Query</button>
+        <button class="btn btn-info pull-left" type="button" ng-click="isSaveCollapsed=!isSaveCollapsed" ng-disabled="loadingPreview">Save Query</button>
         <button class="btn btn-success" type="button" ng-click="download=!download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table" ng-show="queryRanFine">Download</button>
         <button class="btn btn-success" type="button" ng-click="showNotifyDevsForm()" ng-show="!queryRanFine">Contact Developers</button>
-        <div uib-collapse="isCollapsed">
+        <div uib-collapse="isSaveCollapsed">
             <hr>
             <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
             <div class="well well-sm">
@@ -180,7 +180,7 @@
                     <div class="form-group">
                         <button class="btn btn-info" type="button" ng-disabled="name.$invalid" ng-click="save()">Save</button>
                         <button class="btn btn-danger" type="button" ng-show="showExit" ng-click="cancel()" uib-tooltip="Close the wizard and return to Compare">Exit Wizard</button>
-                        <button class="btn btn-danger pull-left" type="button" ng-hide="showExit" ng-click="isCollapsed=! isCollapsed">Cancel Save</button>
+                        <button class="btn btn-danger pull-left" type="button" ng-hide="showExit" ng-click="isSaveCollapsed=! isSaveCollapsed">Cancel Save</button>
                     </div>
                 </form>
             </div>
@@ -205,13 +205,14 @@
 <div class="modal-body" ng-show="shouldShowNotifyDevsForm">
     <div ng-show="!reportSubmitted">
         <p>Here you can notify your developers that you are having a problem using Cliffhanger or joining datasets. This opens a discussion board where you and a developer can comment back and forth about the problem. This discussion board will remain open until the problem is resolved. </p>
+        <hr>
         <form name="notifyDevsForm">
             <div class="form-group">
-                <label for="subject">Subject </label>
+                <label for="subject">Subject <small><em>  This will appear as the title of the thread</em></small></label>
                 <textarea class="form-control" rows="1" name="subject" id="problemSubject" ng-model="newProblemInput.subject"> </textarea>
             </div>
             <div class="form-group">
-                <label for="msg">Message </label>
+                <label for="msg">Message <small><em>  Add any information that will help the developer understand your problem</em></small></label>
                 <textarea class="form-control" rows="15" name="msg" id="problemMessage" ng-model="newProblemInput.body"></textarea>
             </div>
         </form>

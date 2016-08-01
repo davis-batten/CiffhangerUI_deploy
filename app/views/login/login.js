@@ -7,6 +7,7 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
     $scope.newUser = {};
     $rootScope.theme = {};
     $rootScope.theme.color = 'white';
+    $scope.troll = false;
     //alerts for errors
     $scope.alerts = [];
     $scope.closeAlert = function (index) {
@@ -67,7 +68,7 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
                         $rootScope.isAnalyst = false;
                         $rootScope.isDeveloper = false;
                         $rootScope.theme.color = 'light-gray';
-                        $location.path('superuser/users'); //temporary until super user landing page created
+                        $location.path('superuser/users');
                     }
                 }, //error
                 function (error) {
