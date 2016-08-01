@@ -3,12 +3,13 @@
     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</uib-alert>
     <div class="row">
         <div class="col-xs-6">
-            <input type="text" ng-model="searchText.subject" uib-typeahead="issue.subject for issue in issues | filter:$viewValue | limitTo:8" class="form-control" placeholder="Search Issues"> </div>
+            <input type="text" ng-model="searchText.subject" uib-typeahead="issue.subject for issue in issues | filter:$viewValue | limitTo:8" class="form-control" placeholder="Search Threads"> </div>
         <div class="btn-group" uib-dropdown is-open="status.filterbyisopen">
             <button id="filterBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle> Filter <span class="caret"></span></button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filterBy-button">
-                <li role="menuitem"><a prevent-default ng-click="setFilter(true)">Open Issues</a></li>
-                <li role="menuitem"><a prevent-default ng-click="setFilter(false)">Closed Issues</a></li>
+                <li role="menuitem"><a prevent-default ng-click="setFilter(true)">Open</a></li>
+                <li role="menuitem"><a prevent-default ng-click="setFilter(false)">Closed</a></li>
+                <li role="menuitem"><a prevent-default ng-click="setFilter('Request')">Requests</a></li>
                 <li role="separator" class="divider"></li>
                 <li role="menuitem"><a prevent-default ng-click="setFilter(null)">All</a></li>
             </ul>
@@ -23,7 +24,7 @@
             </ul>
         </div>
         <button id="addIssueBtn" class="btn btn-primary pull-right" ng-click="newIssue()"><span class="glyphicon glyphicon-plus"></span>
-            <wbr>Open New Issue</button>
+            <wbr>Start New Thread</button>
         <button id="addIssueBtn" class="btn btn-default pull-right" ng-click="loadIssues()"><span class="glyphicon glyphicon-refresh"></span>
             <wbr>Refresh</button>
     </div>
@@ -50,7 +51,7 @@
     <div class="modal-header">
         <div class="row">
             <div class="col-xs-11">
-                <h3 class="modal-title">Start New Issue</h3> </div>
+                <h3 class="modal-title">Start New Thread</h3> </div>
             <div class="col-xs-1">
                 <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
             </div>

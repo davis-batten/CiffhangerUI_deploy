@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="app-title" id="title">
-        <a href="#/"> <img src="resources/cliffhangerlogo.png" id="logo">
+        <a prevent-default ng-click="troll = !troll"> <img ng-show="!troll" src="resources/cliffhangerlogo.png" id="logo"> <img ng-show="troll" src="resources/cliffhanger-troll.png" id="logo">
             <h1>CLIFFHANGER</h1> </a>
     </div>
     <hr>

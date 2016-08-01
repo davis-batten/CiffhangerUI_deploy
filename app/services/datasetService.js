@@ -62,4 +62,21 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
             return $q.reject(response);
         });
     }
+    
+    // this service method gets a list of column data from a hive table including column names and data types
+    this.getHiveTableSchema = function(dbTableName) {
+        var dbTableInfo = {
+            'db_table_name': dbTableName
+        };
+        return $http.post($rootScope.baseUrl + '/dataset/hiveLookup/', dbTableInfo).then(
+            function (response) { 
+//            function called after success
+            $log.info("found table " + dbTableName+ " in hive. Column data: " + response);
+            return response.data;
+        }, function (response) { 
+//            function called after error
+            $log.info("table " + dbTableName + " not found in Hive. Error message: " + response.data.data);
+            return $q.reject(response.data);
+        });
+    }
 });
