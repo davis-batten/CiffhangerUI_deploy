@@ -276,7 +276,7 @@
             <label>{{d.name}} <span class="glyphicon glyphicon-exclamation-sign no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset!"></span><small> Click to toggle info</small></label>
             <button class="btn btn-danger" type="button" ng-click="deleteDataset(d)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
             <button class="btn btn-info" type="button" ng-click="updateDataset(d)" uib-tooltip="Edit"> <span class="glyphicon glyphicon-edit"></span></button>
-            <button class="btn btn-default" type="button" ng-click="previewDataset(d)" uib-tooltip="Preview"> <span class="glyphicon glyphicon-th-list"></span></button>
+            <button class="btn btn-default" type="button" ng-click="previewDataset(d)" uib-tooltip="Preview" ng-hide="d.db_table_name == null"> <span class="glyphicon glyphicon-th-list"></span></button>
             <div class="more_info" ng-show="moreInfo[$index]"> <strong>Description</strong>
                 <br> {{d.description}}
                 <br> <strong>Database Table Name</strong>
