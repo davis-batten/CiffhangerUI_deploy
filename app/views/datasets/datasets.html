@@ -23,16 +23,21 @@
                     <label for="table-selector">HDFS Table</label>
                     <br>
                     <!-- <input type="text" class="form-control" id="newDatasetTableName" ng-model="input.db_table_name"> -->
-                    <div id="table-selector">
+                    <div id="table-selector" class="well">
                         <ul>
                             <li>
-                                <span ng-click="selectTable(null, null)" ng-class="{'selected-db-table-name':noHiveTableSelected == true}">NO TABLE</span>
+                                <span ng-click="selectTable(null, null)" ng-class="{'selected-db-table-name':noHiveTableSelected == true}" class="listitem">NO TABLE</span>
                             </li>
                             <li ng-repeat="database in hdfsDatabases">
-                                <span ng-click="showTables(database)">{{database.db_name}} <span class="caret"></span> </span>
+                                <div ng-click="showTables(database)">
+                                    <span class="fa fa-database listitem">
+                                    </span>&nbsp;{{database.db_name}} <span class="caret"></span>
+                                </div>
                                 <ul>
-                                    <li ng-repeat="table in database.tables" ng-show="database.expanded">
-                                        <span ng-click="selectTable($parent.$index, table)" ng-class="{'selected-db-table-name':input.db_table_name == database.db_name + '.' + table}">    {{table}}</span>
+                                    <li ng-repeat="table in database.tables" ng-show="database.expanded" ng-click="selectTable($parent.$index, table)">
+                                        <div ng-class="{'selected-db-table-name':input.db_table_name == database.db_name + '.' + table}">
+                                            <span class="fa fa-table listitem"></span>&nbsp;{{table}}
+                                        </div>
                                     </li>
                                 </ul>
                             </li>
@@ -59,12 +64,12 @@
             </div>
         </div>
         <div class="modal-body">
-            <div class="row">
+            <div ng-show="importingDataset == true">
+                <img id="loadingIcon" src="../../resources/rolling_loader.svg">
+            </div>
+            <div class="row" ng-show="importingDataset == false">
                 <div class="col-md-6">
-                    <div ng-show="importingDataset == true">
-                        <img id="loadingIcon" src="../../resources/rolling_loader.svg">
-                    </div>
-                    <div ng-show="importingDataset == false">
+                    <div>
                         <div class="form-group">
                             <label for="newAttributeName">Column Name</label>
                             <input type="text" class="form-control" id="newAttributeName" ng-model="newAttribute.col_name"> </div>
