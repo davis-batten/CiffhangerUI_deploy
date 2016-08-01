@@ -62,21 +62,60 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
             return $q.reject(response);
         });
     }
-    
+
     // this service method gets a list of column data from a hive table including column names and data types
-    this.getHiveTableSchema = function(dbTableName) {
+    this.getHiveTableSchema = function (dbTableName) {
         var dbTableInfo = {
             'db_table_name': dbTableName
         };
         return $http.post($rootScope.baseUrl + '/dataset/hiveLookup/', dbTableInfo).then(
-            function (response) { 
-//            function called after success
-            $log.info("found table " + dbTableName+ " in hive. Column data: " + response);
-            return response.data;
-        }, function (response) { 
-//            function called after error
-            $log.info("table " + dbTableName + " not found in Hive. Error message: " + response.data.data);
-            return $q.reject(response.data);
-        });
+            function (response) {
+                //            function called after success
+                $log.info("found table " + dbTableName + " in hive. Column data: " + response);
+                return response.data;
+            },
+            function (response) {
+                //            function called after error
+                $log.info("table " + dbTableName + " not found in Hive. Error message: " + response.data.data);
+                return $q.reject(response.data);
+            });
+    }
+
+    // this service method gets a list of DB_Name.Table_Names 
+    this.getAllTables = function () {
+        return $http.get($rootScope.baseUrl + '/dataset/listHiveTables/').then(
+            function (response) {
+                //            function called after success
+                $log.info("Hive tables retrieved");
+                return response.data;
+            },
+            function (response) {
+                //            function called after error
+                $log.info("failed to retrieve hive tables");
+                return $q.reject(response.data);
+            });
+    }
+
+
+    this.previewDataset = function (dataset) {
+        $log.debug('dataset', dataset)
+        var allColumnNames = ""
+        for (var i = 0; i < dataset.attributes.length; i++) {
+            if (i != 0) allColumnNames += ", ";
+            allColumnNames += dataset.attributes[i].col_name;
+        }
+        var query = "SELECT " + allColumnNames + " FROM " + dataset.db_table_name + " LIMIT 5";
+        var req = {
+            query: query
+        }
+        return $http.post($rootScope.baseUrl + '/query/run', req).then(
+            function (response) {
+                $log.debug('preview', response)
+                return response.data;
+            },
+            function (error) {
+                return $q.reject(error);
+            }
+        );
     }
 });

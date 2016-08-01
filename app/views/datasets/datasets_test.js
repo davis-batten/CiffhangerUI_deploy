@@ -236,6 +236,60 @@ describe('cliffhanger.datasets module', function () {
             expect(mockDataset.attributes[1].tag.description).toBe('');
         });
     });
+    describe('DatasetPreviewModalCtrl', function () {
+        var mockDatasetService;
+        var modalInstance;
+        beforeEach(inject(function ($controller, $rootScope, $log, $q, datasetService) {
+            scope = $rootScope.$new();
+            modalInstance = {
+                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
+                close: jasmine.createSpy('uibModalInstance.close'),
+                result: {
+                    then: jasmine.createSpy('uibModalInstance.result.then')
+                }
+            }
+            mockDataset = {
+                name: 'test',
+                description: 'desc',
+                db_table_name: 'testTable',
+                attributes: [
+                    {
+                        col_name: 'col1',
+                        data_type: 'int',
+                    }
+                ]
+            }
+            mockDatasetService = datasetService;
+            spyOn(mockDatasetService, "previewDataset").and.callFake(function () {
+                var deferred = $q.defer();
+                deferred.resolve();
+                return deferred.promise;
+            })
+            datasetPreviewCtrl = $controller('DatasetPreviewModalCtrl', {
+                $scope: scope,
+                $uibModalInstance: modalInstance,
+                $log: $log,
+                dataset: mockDataset,
+                datasetService: mockDatasetService
+            });
+
+        }));
+
+        it('should have a DatasetPreviewCtrl controller', function () {
+            expect(datasetPreviewCtrl).toBeDefined();
+        });
+
+        it('should dismiss the modal with cancel', function () {
+            scope.cancel();
+            expect(modalInstance.dismiss).toHaveBeenCalledWith('cancel');
+        });
+
+        it('should load the preview of the dataset', function () {
+            scope.$apply();
+            expect(mockDatasetService.previewDataset).toHaveBeenCalled
+        });
+    })
+
     describe('DatasetDeleteModalCtrl', function () {
         beforeEach(inject(function ($controller, $rootScope, $log) {
             scope = $rootScope.$new();
@@ -250,7 +304,7 @@ describe('cliffhanger.datasets module', function () {
                 name: 'test',
                 description: 'desc',
                 attributes: []
-            }
+            };
             datasetDeleteCtrl = $controller('DatasetDeleteModalCtrl', {
                 $scope: scope,
                 $uibModalInstance: modalInstance,
