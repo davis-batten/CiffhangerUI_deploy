@@ -83,7 +83,7 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
 
     // this service method gets a list of DB_Name.Table_Names 
     this.getAllTables = function () {
-        return $http.get($rootScope.baseUrl + '/dataset/listHiveTables/').then(
+        return $http.get($rootScope.baseUrl + '/dataset/listHiveTables/' + $rootScope.user.username).then(
             function (response) {
                 //            function called after success
                 $log.info("Hive tables retrieved");
