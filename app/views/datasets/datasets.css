@@ -56,10 +56,11 @@
 .inline-list {
     list-style-type: none;
     padding: 0;
+    overflow: hidden;
 }
 
 .inline-list li {
-    display: inline;
+    float: left;
     margin: 0.25em;
 }
 
