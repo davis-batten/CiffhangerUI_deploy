@@ -106,7 +106,8 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
         }
         var query = "SELECT " + allColumnNames + " FROM " + dataset.db_table_name + " LIMIT 5";
         var req = {
-            query: query
+            query: query,
+            username: $rootScope.user.username
         }
         return $http.post($rootScope.baseUrl + '/query/run', req).then(
             function (response) {
