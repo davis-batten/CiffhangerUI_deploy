@@ -18,9 +18,11 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
         //this service method formats a new query on the backend
     this.runQuery = function (sql) {
             var input = {
-                query: sql
+                query: sql,
+                username: $rootScope.user.username
             }
-            return $http.post($rootScope.baseUrl + '/query/run', input).then(
+            $log.log("username",$rootScope.user.username)
+            return $http.post($rootScope.baseUrl + '/query/run/', input).then(
                 //success callback
                 function (response) {
                     $log.debug('Success!');

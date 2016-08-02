@@ -83,7 +83,7 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
 
     // this service method gets a list of DB_Name.Table_Names 
     this.getAllTables = function () {
-        return $http.get($rootScope.baseUrl + '/dataset/listHiveTables/').then(
+        return $http.get($rootScope.baseUrl + '/dataset/listHiveTables/' + $rootScope.user.username).then(
             function (response) {
                 //            function called after success
                 $log.info("Hive tables retrieved");
@@ -106,7 +106,8 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
         }
         var query = "SELECT " + allColumnNames + " FROM " + dataset.db_table_name + " LIMIT 5";
         var req = {
-            query: query
+            query: query,
+            username: $rootScope.user.username
         }
         return $http.post($rootScope.baseUrl + '/query/run', req).then(
             function (response) {

@@ -1,8 +1,8 @@
 angular.module('cliffhanger.queries', ['ngRoute', 'ngSanitize', 'ngCsv']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/analyst/queries', {
-        templateUrl: 'views/queries/queries.html'
-        , controller: 'QueriesCtrl'
-        , activetab: 'queries'
+        templateUrl: 'views/queries/queries.html',
+        controller: 'QueriesCtrl',
+        activetab: 'queries'
     });
 }]);
 var queries = angular.module('cliffhanger.queries');
@@ -54,23 +54,20 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, $location, 
                     if (data.status == 'Success') {
                         $log.debug('data obj', data.data);
                         $scope.queryList = eval(data.data);
-                    }
-                    else {
+                    } else {
                         $scope.queryList = [];
                     }
                 })
             }
             $scope.getAllQueries();
-        }
-        else {
+        } else {
             $scope.getUserQueries = function () {
                 queryService.getUserQueries().then(function (data) {
                     $log.debug('response', data);
                     if (data.status == 'Success') {
                         $log.debug('data obj', data.data);
                         $scope.queryList = eval(data.data);
-                    }
-                    else {
+                    } else {
                         $scope.queryList = [];
                     }
                 })
@@ -82,10 +79,10 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, $location, 
     //opens view modal
     $scope.view = function (q) {
         var modalInstance = $uibModal.open({
-            templateUrl: 'viewQueryModalContent.html'
-            , controller: 'ViewQueryModalInstanceCtrl'
-            , size: 'lg'
-            , resolve: {
+            templateUrl: 'viewQueryModalContent.html',
+            controller: 'ViewQueryModalInstanceCtrl',
+            size: 'lg',
+            resolve: {
                 query: function () {
                     return q;
                 }
@@ -99,10 +96,10 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, $location, 
     //opens deleteQuery modal for query q
     $scope.deleteQuery = function (q) {
         var modalInstance = $uibModal.open({
-            templateUrl: 'queryDelete.html'
-            , controller: 'QueryDeleteModalCtrl'
-            , size: 'md'
-            , resolve: {
+            templateUrl: 'queryDelete.html',
+            controller: 'QueryDeleteModalCtrl',
+            size: 'md',
+            resolve: {
                 query: function () {
                     return q;
                 }
@@ -116,15 +113,15 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, $location, 
                     if (q.name == $scope.queryList[i].name) {
                         $scope.queryList.splice(i, 1)
                         $scope.alerts.push({
-                            msg: "Query deleted"
-                            , type: 'success'
+                            msg: "Query deleted",
+                            type: 'success'
                         })
                     }
                 }
             }, function (response) {
                 $scope.alerts.push({
-                    msg: 'Problem communicating'
-                    , type: 'danger'
+                    msg: 'Problem communicating',
+                    type: 'danger'
                 })
                 $log.log($scope.data)
             });
@@ -145,12 +142,13 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     $scope.postReportSubmissionMessage = "";
     $scope.reportSubmitted = false;
     $scope.newProblemInput = {
-        subject: ''
-        , body: ''
+        subject: '',
+        body: ''
     }
     $scope.newRequestInput = {
-        subject: ''
-        , body: ''
+        subject: '',
+        body: '',
+        type: 'VIEW'
     }
     $scope.shouldShowNotifyDevsForm = false;
     $scope.shouldShowRequestForm = false;
@@ -182,18 +180,17 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
             if (response.status == 'Success') {
                 $log.log('Successfullly updated query');
                 $uibModalInstance.close($scope.query);
-            }
-            else {
+            } else {
                 $scope.alerts.push({
-                    msg: 'Failed to update query'
-                    , type: 'danger'
+                    msg: 'Failed to update query',
+                    type: 'danger'
                 });
             }
         }, function (response) {
             $log.error(response);
             $scope.alerts.push({
-                msg: 'Failed to update query'
-                , type: 'danger'
+                msg: 'Failed to update query',
+                type: 'danger'
             });
         })
     };
@@ -206,16 +203,15 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
         queryService.saveQuery($scope.newQuery).then(function (data) {
             if (data.status == 'Success') {
                 $scope.alerts.push({
-                    msg: "Query Successfully Saved!"
-                    , type: 'success'
+                    msg: "Query Successfully Saved!",
+                    type: 'success'
                 });
                 $log.debug(data);
                 $uibModalInstance.close(data.data);
-            }
-            else {
+            } else {
                 $scope.alerts.push({
-                    msg: "Save Failed"
-                    , type: 'danger'
+                    msg: "Save Failed",
+                    type: 'danger'
                 });
                 $log.debug(data);
             }
@@ -225,11 +221,11 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     //create new zeppelin note
     $scope.exportZeppelin = function () {
         var newNote = {
-            name: $scope.query.name
-            , paragraphs: [
+            name: $scope.query.name,
+            paragraphs: [
                 {
-                    title: $scope.query.description
-                    , text: '%hive\n' + $scope.query.sqlString
+                    title: $scope.query.description,
+                    text: '%hive\n' + $scope.query.sqlString
                 }
             ]
         }
@@ -249,8 +245,7 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
                 $scope.queryRanFine = false;
                 $scope.noResults = true;
                 $scope.newProblemInput.body = "Cliffhanger Report: Running the join query succeeded but the result table was empty. \nQuery used: \n" + querySQL;
-            }
-            else {
+            } else {
                 $scope.tableResult = response;
                 $scope.progressType = 'success';
             }
@@ -283,13 +278,14 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     };
     $scope.showRequestForm = function () {
         $scope.shouldShowRequestForm = true;
-        $scope.newRequestInput.subject = '{type View or Table here} Request for: ' + $scope.query.name + ' Query';
+        $scope.newRequestInput.subject = 'Request for: ' + $scope.query.name + ' Query';
         $scope.newRequestInput.body = $scope.query.sqlString;
     };
     $scope.hideRequestForm = function () {
         $scope.shouldShowRequestForm = false;
     };
     $scope.sendRequest = function () {
+        $scope.newRequestInput.subject = $scope.newRequestInput.type + " " + $scope.newRequestInput.subject;
         issueService.createIssue($scope.newRequestInput).then(function (response) {
             //success
             $scope.postReportSubmissionMessage = "Your request has been sent to the developers.";
