@@ -97,7 +97,7 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
             });
     }
 
-
+    // this service method gets the first 5 rows of a dataset
     this.previewDataset = function (dataset) {
         $log.debug('dataset', dataset)
         var allColumnNames = ""
