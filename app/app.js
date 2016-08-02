@@ -85,3 +85,9 @@ app = angular.module('cliffhanger', [
         link: linkFn
     }
 });
+
+
+var easter_egg = new Konami(function () {
+    alert('konami!');
+    document.body.style.backgroundImage = "url('resources/mountain.jpg')";
+});
