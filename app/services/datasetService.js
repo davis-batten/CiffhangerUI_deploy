@@ -66,7 +66,8 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
     // this service method gets a list of column data from a hive table including column names and data types
     this.getHiveTableSchema = function (dbTableName) {
         var dbTableInfo = {
-            'db_table_name': dbTableName
+            db_table_name: dbTableName,
+            username: $rootScope.user.username
         };
         return $http.post($rootScope.baseUrl + '/dataset/hiveLookup/', dbTableInfo).then(
             function (response) {
