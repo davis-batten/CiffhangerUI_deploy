@@ -289,12 +289,23 @@
             <div id="custom-search-input">
                 <input type="text" size="30" ng-model="query.name" placeholder="Search" uib-typeahead="d.name for d in datasetList | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
         </div>
+        <div class="col-sm-2">
+            <div class="btn-group" uib-dropdown is-open="status.sortbyisopen">
+                <button id="sortBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle> Sort By <span class="caret"></span></button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="sortBy-button">
+                    <li role="menuitem"><a prevent-default ng-click="setSort('dateCreated')">Date Created (oldest first)</a></li>
+                    <li role="menuitem"><a prevent-default ng-click="setSort('dateCreatedReverse')">Date Created (newest first)</a></li>
+                    <!--<li role="menuitem"><a>Date Last Run</a></li>-->
+                    <li role="menuitem"><a prevent-default ng-click="setSort('name')">Name A-Z</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
     <hr>
     <div class="status-message" ng-show="showNoDatasetsMessage"> NO DATASETS </div>
     <uib-progressbar value="100" class="progress-striped active" ng-show="showProgressBar">Loading...</uib-progressbar>
     <ul class="list-group" id="dataset_list">
-        <li class="list-group-item" id="dataset_item" ng-repeat="d in datasetList | orderBy:'name' | filter:query" ng-click="moreInfo[$index]=!moreInfo[$index]">
+        <li class="list-group-item" id="dataset_item" ng-repeat="d in datasetList | orderBy:propertyName:reverse | filter:query" ng-click="moreInfo[$index]=!moreInfo[$index]">
             <label>{{d.name}} <span class="fa fa-exclamation-triangle no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset!"></span><small> Click to toggle info</small></label>
             <button class="btn btn-danger" type="button" ng-click="deleteDataset(d)" uib-tooltip="Delete"> <span class="fa fa-trash"></span></button>
             <button class="btn btn-info" type="button" ng-click="updateDataset(d)" uib-tooltip="Edit"> <span class="fa fa-pencil-square-o"></span></button>
@@ -304,7 +315,7 @@
                 <br> <strong>Database Table Name</strong>
                 <br> {{d.db_table_name}}
                 <br> <strong>Dataset Created By</strong>
-                <br> {{d.createdBy}}
+                <br> {{d.createdBy}} at {{d.createDate | date: 'medium'}}
                 <br> <strong>Hooks</strong>
                 <ul class="inline-list">
                     <li ng-repeat="t in d.tags | orderBy:'name'" ng-if="t.name != '<EMPTY>'"><span class="label label-info">{{t.name}}</span></li>

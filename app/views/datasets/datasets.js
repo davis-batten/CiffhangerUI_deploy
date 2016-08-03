@@ -24,6 +24,23 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
         }
     });
     $scope.isCollapsed = true;
+
+    //for sort by dropdown
+    $scope.propertyName = 'name';
+    $scope.toggleSortByDropdown = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.status.sortbyisopen = !$scope.status.sortbyisopen;
+    };
+    $scope.setSort = function (sort) {
+        $scope.propertyName = sort;
+        $scope.reverse = false;
+        if (sort == 'dateCreatedReverse') {
+            $scope.propertyName = 'dateCreated';
+            $scope.reverse = true;
+        }
+    };
+
     //alphabetically compare two strings, ignoring case
     var ignoreCase = function (a, b) {
             return a.meta_name.toLowerCase().localeCompare(b.meta_name.toLowerCase());

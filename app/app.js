@@ -88,6 +88,6 @@ app = angular.module('cliffhanger', [
 
 
 var easter_egg = new Konami(function () {
-    alert('konami!');
+    alert('Konami!');
     document.body.style.backgroundImage = "url('resources/mountain.jpg')";
 });
