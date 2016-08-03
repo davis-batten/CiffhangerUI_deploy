@@ -222,26 +222,33 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
     $scope.attributeDataFound = false;
     $scope.loadingHiveTables = false;
     $scope.hdfsDatabases = [];
+    var tableSwitched = false;
+
 
     //    advance the modal to the next step
     $scope.next = function () {
         if ($scope.step == 1 && $scope.input.db_table_name.length != 0) {
-            $scope.importingDataset = true;
+            if (tableSwitched == true) {
+                $scope.importingDataset = true;
+                $scope.attributeDataFound = false;
 
-            datasetService.getHiveTableSchema($scope.input.db_table_name).then(function (data) {
-                if (data.status == "Error" && data.data == "Table does not exist") {
-                    $log.warn("Table " + $scope.input.db_table_name + " does does not exist");
+                datasetService.getHiveTableSchema($scope.input.db_table_name).then(function (data) {
+                    if (data.status == "Error" && data.data == "Table does not exist") {
+                        $log.warn("Table " + $scope.input.db_table_name + " does does not exist");
+                    } else {
+                        //                    autofill attribute's col_name and data_type
+                        $scope.attributeDataFound = true;
+                        $scope.input.attributes = data.data;
+                    }
                     $scope.importingDataset = false;
-                } else {
-                    //                    autofill attribute's col_name and data_type
-                    $scope.attributeDataFound = true;
-                    $scope.input.attributes = data.data;
+                    tableSwitched = false;
+                }, function (data) {
+                    $log.warn("failed to import table schema");
                     $scope.importingDataset = false;
-                }
-            }, function (data) {
-                $log.warn("A Database Table Name was listed as " + $scope.input.db_table_name + "but we failed to retrieve that table's schema");
-                $scope.importingDataset = false;
-            })
+                    tableSwitched = false;
+                })
+            }
+
         }
         $scope.step++;
     };
@@ -264,8 +271,8 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
-    $scope.selectType = function (selectedType) {
-        $scope.newAttribute.data_type = selectedType;
+    $scope.selectType = function (attrIndex, selectedType) {
+        $scope.input.attributes[attrIndex].data_type = selectedType;
     };
     $scope.selectTagForNewAttribute = function (selectedTag) {
         $log.log('selected', selectedTag);
@@ -280,11 +287,24 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
     };
     $scope.selectTable = function (databaseIndex, table) {
         $scope.input.db_table_name = $scope.hdfsDatabases[databaseIndex].db_name + "." + table;
+        tableSwitched = true;
     };
     $scope.deselectTable = function (database) {
         $scope.input.db_table_name = "";
     };
-    //add an attribute to the input
+    $scope.addEmptyAttribute = function () {
+            var emptyAttribute = {
+                col_name: '',
+                description: '',
+                data_type: '',
+                tag: {
+                    name: '<EMPTY>',
+                    description: ''
+                }
+            }
+            $scope.input.attributes.push(emptyAttribute)
+        }
+        //add an attribute to the input
     $scope.addAttr = function () {
         $log.debug('new attr', $scope.newAttribute);
         if ($scope.newAttribute.col_name != "" && $scope.newAttribute.data_type != "") {
