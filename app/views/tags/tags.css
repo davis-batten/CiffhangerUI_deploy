@@ -7,6 +7,10 @@
     border: none !important;
 }
 
+#custom-search-input {
+    color: black !important;
+}
+
 #metaQueryResults {
     margin-right: .5em;
     padding-top: .5em;
