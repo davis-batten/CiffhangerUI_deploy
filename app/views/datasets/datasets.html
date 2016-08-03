@@ -1,17 +1,17 @@
 <!-- Add Dataset Modal Template -->
 <script type="text/ng-template" id="addDatasetModalContent.html">
-    <!-- First step of modal -->
+    <!-- First step of add dataset modal -->
     <div ng-show="step == 1">
-        <div class="modal-header">
+        <div class="modal-header dev">
             <div class="row">
                 <div class="col-xs-11">
                     <h3 class="modal-title inline">New Dataset</h3> </div>
                 <div class="col-xs-1">
-                    <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+                    <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
                 </div>
             </div>
         </div>
-        <div class="modal-body">
+        <div class="modal-body dev">
             <form name="newDatasetFormStep1">
                 <div class="form-group">
                     <label for="newDatasetName">Name</label>
@@ -22,9 +22,10 @@
                 <div class="form-group">
                     <label for="table-selector">HDFS Table</label>
                     <br>
-                    <span ng-show="input.db_table_name.length != 0">{{input.db_table_name}} <button ng-click="deselectTable()">x</button></span>
+                    <span ng-show="input.db_table_name.length != 0">{{input.db_table_name}} <button class="deselect-table-button" ng-click="deselectTable()"><span class="fa fa-trash"></span></button>
+                    </span>
                     <span ng-show="input.db_table_name.length == 0">No table selected</span>
-
+                    <br>
                     <br>
                     <!-- <input type="text" class="form-control" id="newDatasetTableName" ng-model="input.db_table_name"> -->
                     <div id="table-selector" ng-show="loadingHiveTables == false" class="well">
@@ -50,110 +51,113 @@
                 </div>
             </form>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer dev">
             <button class="btn btn-info pull-right" type="button" ng-disabled="newDatasetFormStep1.name.$invalid" ng-click="next()">Next</button>
         </div>
     </div>
 
     <!-- Second step of add dataset modal -->
     <div ng-show="step == 2">
-        <div class="modal-header">
+        <div class="modal-header dev">
             <div class="row">
                 <div class="col-xs-11">
-                    <h3 class="modal-title inline" ng-show="importingDataset == false">{{input.name}}</h3>
+                    <h3 class="modal-title inline" ng-show="importingDataset == false">New Dataset</h3>
                     <h3 class="modal-title inline" ng-show="importingDataset == true">Importing Column Data...</h3>
                 </div>
                 <div class="col-xs-1">
-                    <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+                    <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
                 </div>
             </div>
         </div>
-        <div class="modal-body">
+        <div class="modal-body dev">
             <div ng-show="importingDataset == true">
                 <img id="loadingIcon" src="../../resources/rolling_loader.svg">
             </div>
-            <div class="row" ng-show="importingDataset == false">
-                <div class="col-md-6">
-                    <h4>
-                    Define the dataset's attributes
+            <div ng-show="importingDataset == false">
+                <h4 ng-show="attributeDataFound == false">
+                    Define attributes of {{input.name}}
+                </h4>
+                <h4 ng-show="attributeDataFound == true">
+                    Hook attributes of {{input.name}}
                 </h4>
 
-                    <table class="table table-bordered" id="tagAttributesTable">
-                        <thead>
-                            <th><b>Column Name</b></th>
-                            <th><b>Description</b></th>
-                            <th><b>Data Type</b></th>
-                            <th><b>Hook</b></th>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="attr in input.attributes">
-                                <td>
-                                    <!-- Column name is editable if it wasn't imported from hive -->
-                                    <span ng-show="attributeDataFound">{{attr.col_name}}</span>
-                                    <input ng-show="!attributeDataFound" type="text" class="form-control" ng-model="attr.col_name">
-                                </td>
-                                <td>
-                                    <!-- Description is always editable -->
-                                    <input type="text" class="form-control" ng-model="attr.description">
-                                </td>
-                                <td>
-                                    <!-- Data type is editable if it wasn't imported from hive -->
-                                    <span ng-show="attributeDataFound">{{attr.data_type}}</span>
-                                    <div ng-show="!attributeDataFound" class="btn-group" uib-dropdown is-open="attr.isDataTypeOpen">
-                                        <button id="data-type-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle> {{attr.data_type}} <span class="caret"></span> </button>
-                                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="data-type-dropdown">
-                                            <li role="menuitem"><a prevent-default ng-click="selectType($index,'string')">STRING</a></li>
-                                            <li role="menuitem"><a prevent-default ng-click="selectType($index,'int')">INT</a></li>
-                                            <li role="menuitem"><a prevent-default ng-click="selectType($index,'double')">DOUBLE</a></li>
-                                            <li role="menuitem"><a prevent-default ng-click="selectType($index,'boolean')">BOOLEAN</a></li>
-                                            <li role="menuitem"><a prevent-default ng-click="selectType($index,'char')">CHAR</a></li>
-                                            <li role="menuitem"><a prevent-default ng-click="selectType($index,'tinyint')">TINYINT</a></li>
-                                            <li role="menuitem"><a prevent-default ng-click="selectType($index,'bigint')">BIGINT</a></li>
-                                            <li role="menuitem"><a prevent-default ng-click="selectType($index,'float')">FLOAT</a></li>
-                                            <li role="menuitem"><a prevent-default ng-click="selectType($index,'decimal')">DECIMAL</a></li>
-                                            <li role="menuitem"><a prevent-default ng-click="selectType($index,'varchar')">VARCHAR</a></li>
-                                            <li role="menuitem"><a prevent-default ng-click="selectType($index,'binary')">BINARY</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td>
-                                    <!-- Hook is always editable -->
-                                    <div class="btn-group" uib-dropdown is-open="attr.isopentag">
-                                        <button id="tag-dropdown" type="button" class="btn btn-primary btn-sm dropdown-toggle" uib-dropdown-toggle> {{attr.tag.name}} <span class="caret"></span> </button>
-                                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
-                                            <li ng-repeat="tag in tags | orderBy:'name'" role="menuitem"><a prevent-default ng-click="selectTag(tag, $parent.$index)">{{tag.name}} : {{tag.description}}</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td>
-                                    <!-- Remove attribute button -->
-                                    <button ng-click="removeAttribute(attr)" class="btn btn-danger bt-sm">x</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button ng-show="attributeDataFound == false" ng-click="addEmptyAttribute()"> + Add Attribute</button>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
-                    <button class="btn btn-success pull-right" type="button" ng-click="submit()">Save Dataset</button>
-                </div>
+                <table class="table table-bordered attributes">
+                    <thead>
+                        <th><b>Column Name</b></th>
+                        <th><b>Description</b></th>
+                        <th><b>Data Type</b></th>
+                        <th><b>Hook</b></th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="attr in input.attributes">
+                            <td>
+                                <!-- Column name is editable if it wasn't imported from hive -->
+                                <span ng-show="attributeDataFound">{{attr.col_name}}</span>
+                                <input ng-show="!attributeDataFound" type="text" class="form-control" ng-model="attr.col_name">
+                            </td>
+                            <td>
+                                <!-- Description is always editable -->
+                                <input type="text" class="form-control" ng-model="attr.description">
+                            </td>
+                            <td>
+                                <!-- Data type is editable if it wasn't imported from hive -->
+                                <span ng-show="attributeDataFound">{{attr.data_type}}</span>
+                                <div ng-show="!attributeDataFound" class="btn-group" uib-dropdown is-open="attr.isDataTypeOpen">
+                                    <button id="data-type-dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle> {{attr.data_type}} <span class="caret"></span> </button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="data-type-dropdown">
+                                        <li role="menuitem"><a prevent-default ng-click="selectType($index,'string')">STRING</a></li>
+                                        <li role="menuitem"><a prevent-default ng-click="selectType($index,'int')">INT</a></li>
+                                        <li role="menuitem"><a prevent-default ng-click="selectType($index,'double')">DOUBLE</a></li>
+                                        <li role="menuitem"><a prevent-default ng-click="selectType($index,'boolean')">BOOLEAN</a></li>
+                                        <li role="menuitem"><a prevent-default ng-click="selectType($index,'char')">CHAR</a></li>
+                                        <li role="menuitem"><a prevent-default ng-click="selectType($index,'tinyint')">TINYINT</a></li>
+                                        <li role="menuitem"><a prevent-default ng-click="selectType($index,'bigint')">BIGINT</a></li>
+                                        <li role="menuitem"><a prevent-default ng-click="selectType($index,'float')">FLOAT</a></li>
+                                        <li role="menuitem"><a prevent-default ng-click="selectType($index,'decimal')">DECIMAL</a></li>
+                                        <li role="menuitem"><a prevent-default ng-click="selectType($index,'varchar')">VARCHAR</a></li>
+                                        <li role="menuitem"><a prevent-default ng-click="selectType($index,'binary')">BINARY</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                                <!-- Hook is always editable -->
+                                <div class="btn-group" uib-dropdown is-open="attr.isopentag">
+                                    <button id="tag-dropdown" type="button" class="btn btn-primary btn-sm dropdown-toggle" uib-dropdown-toggle> {{attr.tag.name}} <span class="caret"></span> </button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
+                                        <li ng-repeat="tag in tags | orderBy:'name'" role="menuitem"><a prevent-default ng-click="selectTag(tag, $parent.$index)">{{tag.name}} : {{tag.description}}</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                                <!-- Remove attribute button -->
+                                <button ng-click="removeAttr($index)" class="btn btn-danger bt-sm"><span class="fa fa-trash"></span></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <button class="btn btn-primary btn-sm pull-center" ng-show="attributeDataFound == false" ng-click="addEmptyAttribute()"> + Add Attribute</button>
             </div>
         </div>
+        <div class="modal-footer dev">
+            <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
+            <button class="btn btn-success pull-right" type="button" ng-click="submit()">Save Dataset</button>
+        </div>
+    </div>
     </div>
 </script>
 <!-- Update Dataset Modal -->
 <script type="text/ng-template" id="datasetUpdate.html">
-    <div class="modal-header">
+    <div class="modal-header dev">
         <div class="row">
             <div class="col-xs-11">
-                <h3 class="modal-title inline">Edit: {{dataset.name}}</h3> </div>
+                <h3 class="modal-title inline">Edit Dataset</h3> </div>
             <div class="col-xs-1">
-                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
             </div>
         </div>
     </div>
-    <div class="modal-body">
+    <div class="modal-body dev">
         <form name="editForm">
             <div class="form-group">
                 <label for="datasetName">Name</label>
@@ -165,12 +169,12 @@
                 <label for="newDatasetTableName">Database Table Name</label>
                 <input type="text" class="form-control" id="newDatasetTableName" ng-model="input.db_table_name"> </div>
             <div class="form-group">
-                <label for="datasetCreatedBy">Dataset Created By</label>
-                <label>{{dataset.createdBy}}</label>
+                <label for="datasetCreatedBy">Created By</label>
+                <br> {{dataset.createdBy}}
             </div>
             <div>
                 <label for="editAttributeTable">Attributes</label>
-                <table id="editAttributeTable" class="table table-bordered">
+                <table id="editAttributeTable" class="table table-bordered attributes">
                     <thead>
                         <th><b>Column Name</b></th>
                         <th><b>Description</b></th>
@@ -188,12 +192,12 @@
                             <td> {{attr.tag.name}}
                                 <div class="col-md-6 pull-right">
                                     <div class="btn-group" uib-dropdown is-open="attr.isopen" ng-show="attr.tag.name=='<EMPTY>'">
-                                        <button id="tag-dropdown" type="button" class="btn btn-primary btn-sm dropdown-toggle" uib-dropdown-toggle><span class="glyphicon glyphicon-plus"></span></button>
+                                        <button id="tag-dropdown" type="button" class="btn btn-primary btn-sm dropdown-toggle" uib-dropdown-toggle><span class="fa fa-plus"></span></button>
                                         <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
                                             <li ng-repeat="tag in tags" role="menuitem"><a prevent-default ng-click="replaceTag($parent.$index, tag)">{{tag.name}} : {{tag.description}}</a></li>
                                         </ul>
                                     </div>
-                                    <button class="btn btn-danger btn-sm" ng-show="attr.tag.name!='<EMPTY>'" ng-click="removeTag($index)"><span class="glyphicon glyphicon-remove"></span></button>
+                                    <button class="btn btn-danger btn-sm" ng-show="attr.tag.name!='<EMPTY>'" ng-click="removeTag($index)"><span class="fa fa-times"></span></button>
                                 </div>
                             </td>
                         </tr>
@@ -202,42 +206,42 @@
             </div>
         </form>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer dev">
         <button form="editForm" class="btn btn-success" type="button" ng-disabled="editForm.name.$invalid" ng-click="complete()">Save Changes</button>
     </div>
 </script>
 <!-- Delete Dataset Modal -->
 <script type="text/ng-template" id="datasetDelete.html">
-    <div class="modal-header">
+    <div class="modal-header dev">
         <div class="row">
             <div class="col-xs-11">
                 <h3 class="modal-title"> Delete Dataset: {{dataset.name}}</h3> </div>
         </div>
     </div>
-    <div class="modal-body">
+    <div class="modal-body dev">
         <p>Are you sure you want to delete <em><strong>{{dataset.name}}</strong></em>? This action cannot be undone!</p>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer dev">
         <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
         <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
     </div>
 </script>
 <!-- View Dataset Preview -->
 <script type="text/ng-template" id="datasetPreview.html">
-    <div class="modal-header" ng-show="queryRanFine">
+    <div class="modal-header dev" ng-show="queryRanFine">
         <div class="row">
             <div class="col-xs-11">
                 <h3 class="modal-title inline">{{dataset.name}}</small></h3> </div>
             <div class="col-xs-1">
-                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
             </div>
         </div>
     </div>
-    <div class="modal-body" ng-show="queryRanFine">
+    <div class="modal-body dev" ng-show="queryRanFine">
         <p><em>Note: Preview will only show the first 5 results.</em></p> <img id="loadingIcon" src="../../resources/rolling_loader.svg" ng-show="loadingPreview">
         <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
         <div class="" id="queryResultsTable">
-            <table class="table table-bordered">
+            <table class="table table-bordered attributes">
                 <thead>
                     <th ng-repeat="column in tableResult.colNames"> {{column}} </th>
                 </thead>
@@ -249,16 +253,16 @@
         </div>
     </div>
     <!-- modal body when error -->
-    <div class="modal-header" ng-show="!queryRanFine">
+    <div class="modal-header dev" ng-show="!queryRanFine">
         <div class="row">
             <div class="col-xs-11">
                 <h3 class="modal-title inline">Encountered Problem Previewing: {{dataset.name}}</h3> </div>
             <div class="col-xs-1">
-                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
             </div>
         </div>
     </div>
-    <div class="modal-body" ng-show="!queryRanFine">
+    <div class="modal-body dev" ng-show="!queryRanFine">
         <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
     </div>
 </script>
@@ -268,28 +272,40 @@
     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
     <div class="row">
         <div class="col-sm-2">
-            <button class="btn btn-primary" type="button" ng-click="open()"> <span class="glyphicon glyphicon-plus"></span> Add Dataset </button>
+            <button class="btn btn-primary" type="button" ng-click="open()"> <span class="fa fa-plus"></span> Add Dataset </button>
         </div>
         <div class="col-sm-4">
             <div id="custom-search-input">
                 <input type="text" size="30" ng-model="query.name" placeholder="Search" uib-typeahead="d.name for d in datasetList | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="btn-group" uib-dropdown is-open="status.sortbyisopen">
+                <button id="sortBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle> Sort By <span class="caret"></span></button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="sortBy-button">
+                    <li role="menuitem"><a prevent-default ng-click="setSort('dateCreated')">Date Created (oldest first)</a></li>
+                    <li role="menuitem"><a prevent-default ng-click="setSort('dateCreatedReverse')">Date Created (newest first)</a></li>
+                    <!--<li role="menuitem"><a>Date Last Run</a></li>-->
+                    <li role="menuitem"><a prevent-default ng-click="setSort('name')">Name A-Z</a></li>
+                </ul>
+            </div>
         </div>
     </div>
     <hr>
     <div class="status-message" ng-show="showNoDatasetsMessage"> NO DATASETS </div>
     <uib-progressbar value="100" class="progress-striped active" ng-show="showProgressBar">Loading...</uib-progressbar>
     <ul class="list-group" id="dataset_list">
-        <li class="list-group-item" id="dataset_item" ng-repeat="d in datasetList | orderBy:'name' | filter:query" ng-click="moreInfo[$index]=!moreInfo[$index]">
-            <label>{{d.name}} <span class="glyphicon glyphicon-exclamation-sign no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset!"></span><small> Click to toggle info</small></label>
-            <button class="btn btn-danger" type="button" ng-click="deleteDataset(d)" uib-tooltip="Delete"> <span class="glyphicon glyphicon-trash"></span></button>
-            <button class="btn btn-info" type="button" ng-click="updateDataset(d)" uib-tooltip="Edit"> <span class="glyphicon glyphicon-edit"></span></button>
-            <button class="btn btn-default" type="button" ng-click="previewDataset(d)" uib-tooltip="Preview" ng-hide="d.db_table_name == null"> <span class="glyphicon glyphicon-th-list"></span></button>
-            <div class="more_info" ng-show="moreInfo[$index]"> <strong>Description</strong>
+        <li class="list-group-item" id="dataset_item" ng-repeat="d in datasetList | orderBy:propertyName:reverse | filter:query" ng-click="moreInfo[$index]=!moreInfo[$index]">
+            <label>{{d.name}} <span class="fa fa-exclamation-triangle no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset!"></span><small> Click to toggle info</small></label>
+            <button class="btn btn-danger" type="button" ng-click="deleteDataset(d)" uib-tooltip="Delete"> <span class="fa fa-trash"></span></button>
+            <button class="btn btn-info" type="button" ng-click="updateDataset(d)" uib-tooltip="Edit"> <span class="fa fa-pencil-square-o"></span></button>
+            <button class="btn btn-default" type="button" ng-click="previewDataset(d)" uib-tooltip="Preview" ng-hide="d.db_table_name == null"> <span class="fa fa-table"></span></button>
+            <div class="more_info" ng-show="moreInfo[$index]">
+                <strong>Description</strong>
                 <br> {{d.description}}
                 <br> <strong>Database Table Name</strong>
                 <br> {{d.db_table_name}}
                 <br> <strong>Dataset Created By</strong>
-                <br> {{d.createdBy}}
+                <br> {{d.createdBy}} at {{d.createDate | date: 'medium'}}
                 <br> <strong>Hooks</strong>
                 <ul class="inline-list">
                     <li ng-repeat="t in d.tags | orderBy:'name'" ng-if="t.name != '<EMPTY>'"><span class="label label-info">{{t.name}}</span></li>

@@ -6,29 +6,23 @@
     margin-bottom: 2em;
     padding: 0 0 0.5em;
 }
-
 .menu:before {
     content: "[";
 }
-
 .menu:after {
     content: "]";
 }
-
 .menu > li {
     display: inline;
 }
-
 .menu > li:before {
     content: "|";
     padding-right: 0.3em;
 }
-
 .menu > li:nth-child(1):before {
     content: "";
     padding: 0;
 }
-
 
 /* Required for Angular-UI */
 
@@ -39,14 +33,12 @@
     cursor: pointer;
 }
 
-
 /* My styling */
 
 #logo {
     height: 3.25em;
     width: 3em;
 }
-
 #title {
     /*
     display: inline-block;
@@ -56,28 +48,23 @@
     */
     clear: both;
 }
-
 footer {
     position: fixed;
     bottom: 0;
     left: 0;
 }
-
 .app-title {
     font-size: 2em;
     padding: .25em 0 0 .5em;
 }
-
 .app-title a h1 {
     display: inline-block;
 }
-
 .user_type {
     float: right;
     padding-right: 0.25em;
     position: relative;
 }
-
 .app-title a:link,
 .app-title a:hover,
 .app-title a:visited,
@@ -86,19 +73,16 @@ footer {
     text-decoration: none;
     clear: both;
 }
-
 .btn-group-center {
     text-align: center;
     margin: auto;
 }
-
 .more_info {
     background: white;
     color: black;
     padding: 0 0.5em 0.5em 0.5em;
     margin-top: 0.5em;
 }
-
 
 /* ------------------ Custom theme options ---------------------- */
 
@@ -108,63 +92,51 @@ footer {
     color: white !important;
     border-radius: 0px !important;
 }
-
 .navbar-dev {
     border: none !important;
     background-color: #88C95C !important;
     color: white !important;
     border-radius: 0px !important;
 }
-
 .navbar-sup {
     border: none !important;
     background-color: #696969 !important;
     color: white !important;
     border-radius: 0px !important;
 }
-
 .navbar-collapse.in {
     height: 100% !important;
 }
-
 .navbar-an > .active > a {
     background-color: #A9C4EB !important;
 }
-
 .navbar-dev > .active > a {
     background-color: #B9E0A5 !important;
 }
-
 .navbar-sup > .active > a {
     background-color: #8A8A8A !important;
 }
-
 .navbar-nav > li > a {
     color: white !important;
 }
-
 .navbar-brand {
     display: flex;
     align-items: center;
     padding-left: 2px !important;
     color: white !important;
 }
-
 .navbar-brand>img {
     padding: 7px 12px;
 }
-
 .navbar-spacing {
     margin-top: 0.6em;
     margin-bottom: 0em;
     margin-right: 0em;
     margin-left: 0.25em;
 }
-
 .navbar-dropdown {
     height: 40px;
 }
-
 .verticalLine {
     background: rgba(255, 255, 255, .6);
     border-radius: 1px;
@@ -177,15 +149,30 @@ footer {
     margin-top: 5px!important;
     margin-bottom: 2px !important;
 }
-
 .blue {
-    background: #d9edf7 !important;
+    background: #d9edf7;
 }
-
 .green {
-    background: #dff0d8 !important;
+    background: #dff0d8;
 }
-
 .light-gray {
-    background: #C7C7C7 !important;
+    background: #C7C7C7;
+}
+.modal-header.dev {
+    color: #696969;
+    background-color: #B9E0A5 !important;
+    border: none !important;
+}
+.modal-body.dev {
+    color: #696969;
+    border: none !important;
+    background-color: #dff0d8 !important;
+}
+.modal-body.dev h4 {
+    color: #696969;
+}
+.modal-footer.dev {
+    border: none !important;
+    background-color: #dff0d8 !important;
+    background-color: #dff0d8 !important;
 }

@@ -2,7 +2,6 @@
 angular.module('cliffhanger.datasets').service('datasetService', function ($log, $http, $rootScope, $q) {
     //this service method creates a new Dataset on the backend
     this.addDataset = function (newDataset) {
-            newDataset.createdBy += $rootScope.username;
             $log.log("calling addDataset with: " + JSON.stringify(newDataset));
             //$log.log("newDataSet createdBy: " + JSON.stringify(newDataset.createdBy));
             return $http.post($rootScope.baseUrl + '/dataset/create', newDataset).then(
@@ -97,7 +96,7 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
             });
     }
 
-
+    // this service method gets the first 5 rows of a dataset
     this.previewDataset = function (dataset) {
         $log.debug('dataset', dataset)
         var allColumnNames = ""

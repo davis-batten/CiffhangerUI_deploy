@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <div class="col-xs-4 col-md-3 panel panel-default" id="controls">
         <div class="panel-body">
-            <button class="btn btn-primary" ng-click="add()"><span class="glyphicon glyphicon-plus"></span> Add Hook</button>
+            <button class="btn btn-primary" ng-click="add()"><span class="fa fa-plus"></span> Add Hook</button>
             <hr>
             <div id="custom-search-input">
                 <input type="text" size="25" ng-model="query.name" placeholder="Search" uib-typeahead="t.name for t in tags | filter:{name:$viewValue} | limitTo:5" typeahead-no-results="noResults"> </div>
@@ -13,11 +13,11 @@
         <ul>
             <li id="list_item" ng-repeat="t in tags | orderBy:'name' | filter:query" class="list-group-item" ng-if="t.name != '<EMPTY>'">
                 <label>{{t.name}} </label><small> {{t.description}}</small>
-                <button class="btn btn-danger" type="button" uib-tooltip="Delete" ng-click="delete(t)"> <span class="glyphicon glyphicon-trash"></span></button>
-                <button class="btn btn-info" type="button" uib-tooltip="Edit" ng-click="update(t)"> <span class="glyphicon glyphicon-edit"></span></button>
+                <button class="btn btn-danger" type="button" uib-tooltip="Delete" ng-click="delete(t)"> <span class="fa fa-trash"></span></button>
+                <button class="btn btn-info" type="button" uib-tooltip="Edit" ng-click="update(t)"> <span class="fa fa-pencil-square-o"></span></button>
             </li>
         </ul>
-        <div ng-show="noResults" id="noResults" class="text-danger"> <i class="glyphicon glyphicon-remove"></i> No Results Found </div>
+        <div ng-show="noResults" id="noResults" class="text-danger"> <i class="fa fa-times"></i> No Results Found </div>
     </div>
 </div>
 <!-- Add Tag Modal -->
@@ -27,7 +27,7 @@
             <div class="col-xs-11">
                 <h3 class="modal-title inline">New Hook</h3> </div>
             <div class="col-xs-1">
-                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
             <div class="col-xs-11">
                 <h3 class="modal-title inline">Edit Hook: {{tag.name}}</h3> </div>
             <div class="col-xs-1">
-                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-remove"></span></button>
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
             </div>
         </div>
     </div>
