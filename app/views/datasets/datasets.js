@@ -39,6 +39,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
             $scope.propertyName = 'dateCreated';
             $scope.reverse = true;
         }
+
     };
 
     //alphabetically compare two strings, ignoring case
