@@ -1,4 +1,6 @@
 <div ng-include="'/views/navbar.html'"></div>
+
+
 <!-- Page Content -->
 <div class="container-fluid">
     <div class="col-xs-4 col-md-3 panel panel-default" id="controls">
@@ -20,9 +22,11 @@
         <div ng-show="noResults" id="noResults" class="text-danger"> <i class="fa fa-times"></i> No Results Found </div>
     </div>
 </div>
+
+
 <!-- Add Tag Modal -->
 <script type="text/ng-template" id="addTagModalContent.html">
-    <div class="modal-header">
+    <div class="modal-header dev">
         <div class="row">
             <div class="col-xs-11">
                 <h3 class="modal-title inline">New Hook</h3> </div>
@@ -31,7 +35,7 @@
             </div>
         </div>
     </div>
-    <div class="modal-body">
+    <div class="modal-body dev">
         <div class="form-group">
             <label for="newTagName">Name</label>
             <input type="text" class="form-control" id="newTagName" ng-model="input.name"> </div>
@@ -39,13 +43,15 @@
             <label for="newTagDesc">Description</label>
             <input type="text" class="form-control" id="newTagDesc" ng-model="input.description"> </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer dev">
         <button class="btn btn-success" type="button" ng-click="submit()">Create</button>
     </div>
 </script>
+
+
 <!-- Update Hook Modal -->
 <script type="text/ng-template" id="tagUpdate.html">
-    <div class="modal-header">
+    <div class="modal-header dev">
         <div class="row">
             <div class="col-xs-11">
                 <h3 class="modal-title inline">Edit Hook: {{tag.name}}</h3> </div>
@@ -54,7 +60,7 @@
             </div>
         </div>
     </div>
-    <div class="modal-body">
+    <div class="modal-body dev">
         <div class="form-group">
             <label for="tagName">Name</label>
             <input type="text" class="form-control" id="tagName" ng-model="input.name"> </div>
@@ -62,22 +68,24 @@
             <label for="tagDesc">Description</label>
             <input type="text" class="form-control" id="tagDesc" ng-model="input.description"> </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer dev">
         <button class="btn btn-success" type="button" ng-click="complete()">Save Changes</button>
     </div>
 </script>
+
+
 <!-- Delete Tag Modal -->
 <script type="text/ng-template" id="tagDelete.html">
-    <div class="modal-header">
+    <div class="modal-header dev">
         <div class="row">
             <div class="col-xs-11">
                 <h3 class="modal-title inline">Delete Hook: {{tag.name}}</h3> </div>
         </div>
     </div>
-    <div class="modal-body">
+    <div class="modal-body dev">
         <p>Are you sure you want to delete <em><strong>{{tag.name}}</strong></em>? This action cannot be undone!</p>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer dev">
         <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
         <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
     </div>

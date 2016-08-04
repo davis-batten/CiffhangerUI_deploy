@@ -278,7 +278,7 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     };
     $scope.showRequestForm = function () {
         $scope.shouldShowRequestForm = true;
-        $scope.newRequestInput.subject = 'Request for: ' + $scope.query.name + ' Query';
+        $scope.newRequestInput.subject = 'Requesting new Table/View using the query ' + $scope.query.name;
         $scope.newRequestInput.body = $scope.query.sqlString;
     };
     $scope.hideRequestForm = function () {
