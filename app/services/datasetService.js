@@ -35,7 +35,11 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
         }
         //this service method updates a specified dataset on the backend
     this.updateDataset = function (prevName, dataset) {
-            return $http.put($rootScope.baseUrl + '/dataset/update/' + prevName, dataset).then(
+            var input = {
+                username: $rootScope.user.username,
+                dataset: dataset
+            }
+            return $http.put($rootScope.baseUrl + '/dataset/update/' + prevName, input).then(
                 //success callback
                 function (response) {
                     return response.data;
