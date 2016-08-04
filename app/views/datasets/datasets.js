@@ -267,6 +267,10 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
                 })
             }
 
+        } else if ($scope.input.db_table_name.length == 0) {
+            $scope.attributeDataFound = false;
+            if (tableSwitched == true) $scope.input.attributes.splice(0, $scope.input.attributes.length);
+            tableSwitched = false;
         }
         $scope.step++;
     };
@@ -309,12 +313,13 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
     };
     $scope.deselectTable = function (database) {
         $scope.input.db_table_name = "";
+        tableSwitched = true;
     };
     $scope.addEmptyAttribute = function () {
             var emptyAttribute = {
                 col_name: '',
                 description: '',
-                data_type: '',
+                data_type: 'string',
                 tag: {
                     name: '<EMPTY>',
                     description: ''
