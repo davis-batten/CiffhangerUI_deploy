@@ -238,28 +238,39 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         }
     };
     $scope.attributeDataFound = false;
-    $scope.noHiveTableSelected = true;
+    $scope.loadingHiveTables = false;
     $scope.hdfsDatabases = [];
+    var tableSwitched = false;
+
 
     //    advance the modal to the next step
     $scope.next = function () {
         if ($scope.step == 1 && $scope.input.db_table_name.length != 0) {
-            $scope.importingDataset = true;
+            if (tableSwitched == true) {
+                $scope.importingDataset = true;
+                $scope.attributeDataFound = false;
 
-            datasetService.getHiveTableSchema($scope.input.db_table_name).then(function (data) {
-                if (data.status == "Error" && data.data == "Table does not exist") {
-                    $log.warn("Table " + $scope.input.db_table_name + " does does not exist");
+                datasetService.getHiveTableSchema($scope.input.db_table_name).then(function (data) {
+                    if (data.status == "Error" && data.data == "Table does not exist") {
+                        $log.warn("Table " + $scope.input.db_table_name + " does does not exist");
+                    } else {
+                        //                    autofill attribute's col_name and data_type
+                        $scope.attributeDataFound = true;
+                        $scope.input.attributes = data.data;
+                    }
                     $scope.importingDataset = false;
-                } else {
-                    //                    autofill attribute's col_name and data_type
-                    $scope.attributeDataFound = true;
-                    $scope.input.attributes = data.data;
+                    tableSwitched = false;
+                }, function (data) {
+                    $log.warn("failed to import table schema");
                     $scope.importingDataset = false;
-                }
-            }, function (data) {
-                $log.warn("A Database Table Name was listed as " + $scope.input.db_table_name + "but we failed to retrieve that table's schema");
-                $scope.importingDataset = false;
-            })
+                    tableSwitched = false;
+                })
+            }
+
+        } else if ($scope.input.db_table_name.length == 0) {
+            $scope.attributeDataFound = false;
+            if (tableSwitched == true) $scope.input.attributes.splice(0, $scope.input.attributes.length);
+            tableSwitched = false;
         }
         $scope.step++;
     };
@@ -282,8 +293,8 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
-    $scope.selectType = function (selectedType) {
-        $scope.newAttribute.data_type = selectedType;
+    $scope.selectType = function (attrIndex, selectedType) {
+        $scope.input.attributes[attrIndex].data_type = selectedType;
     };
     $scope.selectTagForNewAttribute = function (selectedTag) {
         $log.log('selected', selectedTag);
@@ -297,15 +308,26 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         database.expanded = !database.expanded;
     };
     $scope.selectTable = function (databaseIndex, table) {
-        if (databaseIndex != null) {
-            $scope.noHiveTableSelected = false;
-            $scope.input.db_table_name = $scope.hdfsDatabases[databaseIndex].db_name + "." + table;
-        } else {
-            $scope.input.db_table_name = "";
-            $scope.noHiveTableSelected = true;
-        }
+        $scope.input.db_table_name = $scope.hdfsDatabases[databaseIndex].db_name + "." + table;
+        tableSwitched = true;
     };
-    //add an attribute to the input
+    $scope.deselectTable = function (database) {
+        $scope.input.db_table_name = "";
+        tableSwitched = true;
+    };
+    $scope.addEmptyAttribute = function () {
+            var emptyAttribute = {
+                col_name: '',
+                description: '',
+                data_type: 'string',
+                tag: {
+                    name: '<EMPTY>',
+                    description: ''
+                }
+            }
+            $scope.input.attributes.push(emptyAttribute)
+        }
+        //add an attribute to the input
     $scope.addAttr = function () {
         $log.debug('new attr', $scope.newAttribute);
         if ($scope.newAttribute.col_name != "" && $scope.newAttribute.data_type != "") {
@@ -322,9 +344,9 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         }
     };
     //remove attribute from input
-    $scope.removeAttr = function (selectedAttr) {
-        $log.log(selectedAttr);
-        $scope.input.attributes.splice(selectedAttr, 1);
+    $scope.removeAttr = function (attrIndex) {
+        $log.log(attrIndex);
+        $scope.input.attributes.splice(attrIndex, 1);
     };
     var getTags = function () {
         tagService.getAllTags().then(function (data) {
@@ -340,12 +362,15 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
 
     //    get a list of all tables in hive
     var getTables = function () {
+        $scope.loadingHiveTables = true;
         datasetService.getAllTables().then(function (data) {
+            $scope.loadingHiveTables = false;
             if (data.status == 'Success') {
                 $scope.hdfsDatabases = eval(data.data);
                 $log.debug('hiveTables', $scope.hiveTables);
             }
         }, function (data) {
+            $scope.loadingHiveTables = false;
             $log.error('Failed retrieve hive tables!');
         });
     }

@@ -38,11 +38,13 @@
         </li>
     </ul>
 </div>
+
+
 <!-- View Query Modal -->
 <script type="text/ng-template" id="viewQueryModalContent.html">
     <!-- First step of modal -->
     <div ng-show="step == 1 && !shouldShowRequestForm">
-        <div class="modal-header">
+        <div class="modal-header an">
             <div class="row">
                 <div class="col-xs-11">
                     <h3 class="modal-title inline">{{query.name}}<small>{{query.description}}</small></h3> </div>
@@ -51,10 +53,10 @@
                 </div>
             </div>
         </div>
-        <div class="modal-body">
+        <div class="modal-body an">
             <textarea class="codeEdit" rows="10" ng-model="query.sqlString"></textarea>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer an">
             <button class="btn btn-warning pull-left" type="button" ng-click="exportZeppelin()" uib-tooltip="Create a new Zeppelin Note from this query" tooltip-append-to-body="true">Export Zeppelin</button>
             <button class="btn btn-primary pull-left" type="button" ng-click="showRequestForm()" uib-tooltip="Ask Developers to create a view or table from this query">Request View/Table</button>
             <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Update the existing query" tooltip-append-to-body="true" ng-click="updateQuery()" ng-show="queryRanFine">Save</button>
@@ -81,7 +83,7 @@
     </div>
     <!-- Second step of modal -->
     <div ng-show="step == 2 && !shouldShowNotifyDevsForm">
-        <div class="modal-header" ng-show="queryRanFine">
+        <div class="modal-header an" ng-show="queryRanFine">
             <div class="row">
                 <div class="col-xs-11">
                     <h3 class="modal-title inline">{{query.name}}<small>{{query.description}}</small></h3> </div>
@@ -90,12 +92,12 @@
                 </div>
             </div>
         </div>
-        <div class="modal-body" ng-show="queryRanFine">
+        <div class="modal-body an" ng-show="queryRanFine">
             <h4>Preview of Results <small>after running {{query.name}}</small></h4>
             <p><em>Note: Preview will only show up to 100 results.</em></p> <img id="loadingIcon" src="../../resources/rolling_loader.svg" ng-show="loadingPreview">
             <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
             <div class="" id="queryResultsTable">
-                <table class="table table-bordered">
+                <table class="table table-bordered sql-result">
                     <thead>
                         <th ng-repeat="column in tableResult.colNames"> {{column}} </th>
                     </thead>
@@ -107,7 +109,7 @@
             </div>
         </div>
         <!-- modal body when error -->
-        <div class="modal-header" ng-show="!queryRanFine">
+        <div class="modal-header an" ng-show="!queryRanFine">
             <div class="row">
                 <div class="col-xs-11">
                     <h3 class="modal-title inline">Encountered Problem with: {{query.name}}</h3> </div>
@@ -116,7 +118,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal-body" ng-show="!queryRanFine">
+        <div class="modal-body an" ng-show="!queryRanFine">
             <div ng-show="connectionFailed" class="text-danger">
                 <h4> Failed to run query</h4>
                 <!--<p>{{errorMsg}}</p>-->
@@ -130,7 +132,7 @@
                     <br> </p>
             </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer an">
             <button class="btn btn-info" type="button" ng-click="download = !download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table" ng-show="queryRanFine" tooltip-append-to-body="true">Download</button>
             <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
             <button class="btn btn-success" type="button" ng-click="showNotifyDevsForm()" ng-show="!queryRanFine">Contact Developers</button>
@@ -170,7 +172,7 @@
         </div>
     </div>
     <!-- Report problem to dev form -->
-    <div class="modal-header" ng-show="shouldShowNotifyDevsForm">
+    <div class="modal-header an" ng-show="shouldShowNotifyDevsForm">
         <div class="row">
             <div class="col-xs-11">
                 <h3 class="modal-title inline">Report Problem Regarding: {{query.name}}</h3> </div>
@@ -179,7 +181,7 @@
             </div>
         </div>
     </div>
-    <div class="modal-body" ng-show="shouldShowNotifyDevsForm">
+    <div class="modal-body an" ng-show="shouldShowNotifyDevsForm">
         <div ng-show="!reportSubmitted">
             <p>Here you can notify your developers that you are having a problem using Cliffhanger or joining datasets. This opens a discussion board where you and a developer can comment back and forth about the problem. This discussion board will remain open until the problem is resolved. </p>
             <hr>
@@ -196,22 +198,22 @@
         </div>
         <p ng-show="reportSubmitted">{{postReportSubmissionMessage}}</p>
     </div>
-    <div class="modal-footer" ng-show="shouldShowNotifyDevsForm">
+    <div class="modal-footer an" ng-show="shouldShowNotifyDevsForm">
         <button class="btn btn-warning pull-left" ng-show="!reportSubmitted" type="button" ng-click="hideNotifyDevsForm()">Cancel</button>
         <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="reportProblem()">Send to Developers</button>
         <button class="btn btn-success pull-right" type="button" ng-click="cancel()" ng-show="reportSubmitted">Ok</button>
     </div>
     <!-- Send request to dev form -->
-    <div class="modal-header" ng-show="shouldShowRequestForm">
+    <div class="modal-header an" ng-show="shouldShowRequestForm">
         <div class="row">
             <div class="col-xs-11">
-                <h3 class="modal-title inline">Table/View Create Request for: {{query.name}}</h3> </div>
+                <h3 class="modal-title inline">Request New Table/View</h3> </div>
             <div class="col-xs-1">
                 <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
             </div>
         </div>
     </div>
-    <div class="modal-body" ng-show="shouldShowRequestForm">
+    <div class="modal-body an" ng-show="shouldShowRequestForm">
         <div ng-show="!reportSubmitted">
             <p>Here you can ask your developers to create a table or view in Hive from the query you have selected. They will see this request on the Message Board and may comment if they have any questions or to notify you when they are done. When the request is completed you or the developer can close the thread. </p>
             <hr>
@@ -234,7 +236,7 @@
         </div>
         <p ng-show="reportSubmitted">{{postReportSubmissionMessage}}</p>
     </div>
-    <div class="modal-footer" ng-show="shouldShowRequestForm">
+    <div class="modal-footer an" ng-show="shouldShowRequestForm">
         <button class="btn btn-warning pull-left" ng-show="!reportSubmitted" type="button" ng-click="hideRequestForm()">Cancel</button>
         <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="sendRequest()">Send to Developers</button>
         <button class="btn btn-success pull-right" type="button" ng-click="cancel()" ng-show="reportSubmitted">Ok</button>
@@ -243,11 +245,11 @@
 <!-- Delete Query Modal -->
 <script type="text/ng-template" id="queryDelete.html">
     <div class="modal-header">
-        <h3 class="modal-title"> Delete Query: {{query.name}}</h3> </div>
-    <div class="modal-body">
+        <h3 class="modal-title an"> Delete Query</h3> </div>
+    <div class="modal-body an">
         <p>Are you sure you want to delete <em><strong>{{query.name}}</strong></em>? This action cannot be undone!</p>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer an">
         <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
         <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
     </div>
