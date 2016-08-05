@@ -136,12 +136,16 @@
 }
 
 .table.table-bordered.attributes td {
-    border: none !important;
     background: mintcream;
 }
 
 .deselect-table-button {
     border: none;
-    background-color: transparent;
+    background-color: transparent !important;
     color: red;
+}
+
+#removeAttribute {
+    border: none;
+    background: transparent !important;
 }
