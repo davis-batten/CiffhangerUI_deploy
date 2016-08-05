@@ -30,6 +30,7 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, user
     };
     //for filter dropdown
     $scope.toggleFilterDropdown = function ($event) {
+        $log.log("roles: ", $scope.query.roles)
         $event.preventDefault();
         $event.stopPropagation();
         $scope.status.filterbyisopen = !$scope.status.filterbyisopen;
@@ -38,8 +39,8 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, user
     $scope.setFilter = function (userRole) {
         if (userRole != null) {
             $scope.query = {
-                role: {
-                    roleID: userRole
+                roles: {
+                    authority : userRole
                 }
             };
         } else $scope.query = '';
