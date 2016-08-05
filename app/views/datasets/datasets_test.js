@@ -33,13 +33,13 @@ describe('cliffhanger.datasets module', function () {
             spyOn(service, 'getAllDatasets').and.callFake(function () {
                 resp.data = old_dataset_data;
                 resp.status = "Success";
-                deferred.resolve(resp);
+                deferred.resolve(resp.data);
                 return deferred.promise;
             });
             spyOn(service, 'updateDataset').and.callFake(function () {
                 resp.data = updated_dataset_data;
                 resp.status = "Success";
-                deferred.resolve(resp);
+                deferred.resolve(resp.data);
                 return deferred.promise;
             });
             datasetsCtrl = $controller('DatasetsCtrl', {

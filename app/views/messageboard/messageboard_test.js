@@ -7,8 +7,8 @@ describe('cliffhanger.messageboard module', function () {
     describe('messageboard controller', function () {
         beforeEach(inject(function ($controller, $rootScope, $log, $q, $location, $uibModal, issueService) {
             $rootScope.user = {
-    username: "test"
-}
+                username: "test"
+            }
 
             scope = $rootScope.$new();
             root = $rootScope;
@@ -61,15 +61,10 @@ describe('cliffhanger.messageboard module', function () {
             spyOn(issueService, "getAllIssues").and.callFake(function () {
                 var deferred = $q.defer();
                 if (!serviceError) {
-                    var goodResponse = {
-                        status: 'Success',
-                        data: issues
-                    }
-                    deferred.resolve(goodResponse);
+                    deferred.resolve(issues);
                 } else {
                     var badResponse = {
-                        status: 'Error',
-                        data: "Could not load issues"
+                        message: "Could not load issues"
                     }
                     deferred.resolve(badResponse);
                 }

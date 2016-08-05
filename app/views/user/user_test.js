@@ -12,24 +12,24 @@ describe('cliffhanger.superuser module', function () {
             $log = _$log_;
             test_user_data = [
                 {
-                    username: 'Juan'
-                    , password: 'JuanDirection'
-                    , roles: [
+                    username: 'Juan',
+                    password: 'JuanDirection',
+                    roles: [
                         'ROLE_DEVELOPER'
                     ]
                 }
                 , {
-                    username: 'Ben'
-                    , password: 'Jammin'
-                    , roles: [
+                    username: 'Ben',
+                    password: 'Jammin',
+                    roles: [
                         'ROLE_ANALYST'
                     ]
                 }
             ]
             test_create_user = {
-                name: 'Heather'
-                , password: 'MasterCommander'
-                , roles: [
+                name: 'Heather',
+                password: 'MasterCommander',
+                roles: [
                         'ROLE_ANALYST'
                     ]
             }
@@ -38,15 +38,15 @@ describe('cliffhanger.superuser module', function () {
             spyOn(userService, 'getAllUsers').and.callFake(function () {
                 resp.data = test_user_data;
                 resp.status = "Success";
-                deferred.resolve(resp);
+                deferred.resolve(resp.data);
                 return deferred.promise;
             });
             userCtrl = $controller('UsersCtrl', {
-                $scope: scope
-                , $uibModal: modal
-                , $log: $log
-                , $rootScope: root
-                , userService: userService
+                $scope: scope,
+                $uibModal: modal,
+                $log: $log,
+                $rootScope: root,
+                userService: userService
             });
         }));
         it('should have a UsersCtrl controller', function () {
@@ -65,16 +65,16 @@ describe('cliffhanger.superuser module', function () {
         beforeEach(inject(function ($controller, $rootScope, $log) {
             scope2 = $rootScope.$new();
             modalInstance = {
-                close: jasmine.createSpy('uibModalInstance.close')
-                , dismiss: jasmine.createSpy('uibModalInstance.dismiss')
-                , result: {
+                close: jasmine.createSpy('uibModalInstance.close'),
+                dismiss: jasmine.createSpy('uibModalInstance.dismiss'),
+                result: {
                     then: jasmine.createSpy('uibModalInstance.result.then')
                 }
             };
             updateUserModalCtrl = $controller('UpdateUserModalCtrl', {
-                $scope: scope2
-                , $uibModalInstance: modalInstance
-                , user: test_create_user
+                $scope: scope2,
+                $uibModalInstance: modalInstance,
+                user: test_create_user
             });
         }));
         it('should instantiate the UpdateUserModalCtrl controller', function () {
