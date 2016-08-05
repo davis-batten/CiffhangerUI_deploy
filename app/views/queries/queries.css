@@ -4,20 +4,25 @@
     border-radius: 4px;
     background-color: #fff;
 }
+
 #custom-search-input input {
     border: 0;
     box-shadow: none;
 }
+
 h3 small {
     padding-left: .5em;
 }
+
 label small {
     font-weight: normal !important;
     padding-left: .5em;
 }
+
 .dropdown-menu li {
     cursor: pointer;
 }
+
 #query_item {
     /*
     clear: both;
@@ -28,12 +33,14 @@ label small {
     color: #696969;
     background-color: #A9C4EB !important;
 }
+
 #query_item label {
     line-height: 2em;
     vertical-align: middle;
     margin-left: 0.75em;
     margin-bottom: 0px;
 }
+
 #query_item p {
     line-height: 2em;
     vertical-align: middle;
@@ -41,20 +48,25 @@ label small {
     height: 6em;
     margin-bottom: 0px;
 }
+
 #query_item_content {}
+
 #query_item button {
     display: inline-block;
     float: right;
     margin-left: .5em;
 }
+
 #query_item .button-footer {
     position: absolute;
     right: 10px;
     bottom: 10px;
 }
+
 pre {
     font-size: 1.1em !important;
 }
+
 .codeEdit {
     width: 100%;
     overflow: auto;
@@ -70,10 +82,13 @@ pre {
     word-wrap: break-word;
     border-radius: 4px;
 }
+
 .table.table-bordered.sql-result th {
     background-color: #A9C4EB !important;
     border: none !important;
 }
+
 .table.table-bordered.sql-result td {
     border: 1px solid #696969 !imprtant;
+    background: azure;
 }

@@ -1,8 +1,8 @@
 var tags = angular.module('cliffhanger.tags', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/developer/tags', {
-        templateUrl: 'views/tags/tags.html'
-        , controller: 'TagCtrl'
-        , activetab: 'tags'
+        templateUrl: 'views/tags/tags.html',
+        controller: 'TagCtrl',
+        activetab: 'tags'
     });
 }]);
 //main controller for /#/developer/tags
@@ -37,34 +37,46 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
 
     //gets all tags
     $scope.getAllTags = function () {
-        tagService.getAllTags().then(function (data) {
-            $log.debug('response', data);
-            if (data.status == 'Success') {
-                $log.debug('data obj', data.data);
-                $scope.tags = data.data.sort(ignoreCase);
-            }
-            else {
+        tagService.getAllTags().then(
+            //success
+            function (response) {
+                $scope.tags = response.sort(ignoreCase);
+            },
+            //error
+            function (error) {
                 $scope.tags = [];
-            }
-        })
-    };
+                $scope.alerts.push({
+                    msg: error.message,
+                    type: 'danger'
+                });
+            });
+    }
     $scope.getAllTags();
 
     //opens addTagModal
     $scope.add = function () {
         var modalInstance = $uibModal.open({
-            templateUrl: 'addTagModalContent.html'
-            , controller: 'AddTagModalInstanceCtrl'
-            , size: 'lg'
+            templateUrl: 'addTagModalContent.html',
+            controller: 'AddTagModalInstanceCtrl',
+            size: 'lg'
         });
         modalInstance.result.then(function (input) {
             $log.info('Modal dismissed at: ' + new Date());
             $log.info(input);
-            tagService.addTag(input.name, input.description).then(function (response) {
-                $scope.getAllTags();
-            }, function (response) {
-                $log.error('Failure!');
-            });
+            tagService.addTag(input.name, input.description).then(
+                //success
+                function (response) {
+                    //                    $scope.getAllTags();
+                    $scope.tags.push(response);
+                },
+                //error
+                function (error) {
+                    $log.error('Failure!');
+                    $scope.alerts.push({
+                        msg: error.message,
+                        type: 'danger'
+                    })
+                });
             $scope.tags.sort(ignoreCase);
         });
     };
@@ -73,10 +85,10 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
     $scope.delete = function (t) {
         $log.warn('delete', t);
         var modalInstance = $uibModal.open({
-            templateUrl: 'tagDelete.html'
-            , controller: 'TagDeleteModalCtrl'
-            , size: 'md'
-            , resolve: {
+            templateUrl: 'tagDelete.html',
+            controller: 'TagDeleteModalCtrl',
+            size: 'md',
+            resolve: {
                 tag: function () {
                     return t;
                 }
@@ -85,29 +97,27 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
         //on modal completion
         modalInstance.result.then(function (t) {
             $log.warn('Deleted', t);
-            tagService.deleteTag(t.name).then(function (response) {
-                for (i in $scope.tags) {
-                    if (t.name == $scope.tags[i].name) {
-                        $scope.tags.splice(i, 1)
-                        $scope.alerts.push({
-                            msg: "Tag deleted"
-                            , type: 'success'
-                        })
+            tagService.deleteTag(t.name).then(
+                //success
+                function (response) {
+                    for (i in $scope.tags) {
+                        if (t.name == $scope.tags[i].name) {
+                            $scope.tags.splice(i, 1)
+                            $scope.alerts.push({
+                                msg: "Tag deleted",
+                                type: 'success'
+                            })
+                        }
                     }
-                    else {
-                        $scope.alerts.push({
-                            msg: response
-                            , type: 'danger'
-                        })
-                    }
-                }
-            }, function (response) {
-                $scope.alerts.push({
-                    msg: 'Problem communicating'
-                    , type: 'danger'
-                })
-                $log.error('Failure')
-            });
+                },
+                //error
+                function (response) {
+                    $scope.alerts.push({
+                        msg: 'Problem communicating',
+                        type: 'danger'
+                    })
+                    $log.error('Failure')
+                });
         });
     };
 
@@ -116,10 +126,10 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
         $log.log(t);
         var nameTemp = t.name;
         var modalInstance = $uibModal.open({
-            templateUrl: 'tagUpdate.html'
-            , controller: 'TagUpdateModalCtrl'
-            , size: 'lg'
-            , resolve: {
+            templateUrl: 'tagUpdate.html',
+            controller: 'TagUpdateModalCtrl',
+            size: 'lg',
+            resolve: {
                 tag: function () {
                     return t;
                 }
@@ -131,23 +141,20 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
             tagService.updateTag(nameTemp, input).then(
                 //success callback
                 function (resp) {
-                    if (resp.status == 'Success') {
-                        //update correct tag entry
-                        for (i in $scope.tags) {
-                            if (nameTemp == $scope.tags[i].name) {
-                                $scope.tags[i].name = input.name;
-                                $scope.tags[i].description = input.description;
-                            }
+                    //update correct tag entry
+                    for (i in $scope.tags) {
+                        if (nameTemp == $scope.tags[i].name) {
+                            $scope.tags[i].name = input.name;
+                            $scope.tags[i].description = input.description;
                         }
-                    }
-                    //problem on backend
-                    else {
-                        $log.warn("Failed to update");
                     }
                 },
                 //error callback
-                function () {
-                    $log.error("Failed to connect");
+                function (error) {
+                    $scope.alerts.push({
+                        msg: error.message,
+                        type: 'danger'
+                    })
                 });
         });
     };
@@ -172,8 +179,8 @@ tags.controller('TagUpdateModalCtrl', function ($scope, $uibModalInstance, $log,
     $scope.tag = tag;
     //gets input from user
     $scope.input = {
-        name: tag.name
-        , description: tag.description
+        name: tag.name,
+        description: tag.description
     };
     //complete modal
     $scope.complete = function () {

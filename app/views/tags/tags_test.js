@@ -40,7 +40,7 @@ describe('cliffhanger.tags module', function () {
             spyOn(tagService, 'getAllTags').and.callFake(function () {
                 resp.data = test_tag_data;
                 resp.status = "Success";
-                deferred.resolve(resp);
+                deferred.resolve(resp.data);
                 return deferred.promise;
             });
 

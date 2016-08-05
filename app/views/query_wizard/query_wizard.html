@@ -212,6 +212,6 @@
 </div>
 <div class="modal-footer" ng-show="shouldShowNotifyDevsForm">
     <button class="btn btn-warning pull-left" ng-show="!reportSubmitted" type="button" ng-click="hideNotifyDevsForm()">Cancel</button>
-    <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="reportProblem()">Send to Developers</button>
+    <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="reportProblem()" ng-disabled="newProblemInput.subject.length == 0">Send to Developers</button>
     <button class="btn btn-success pull-right" type="button" ng-click="cancel()" ng-show="reportSubmitted">Ok</button>
 </div>

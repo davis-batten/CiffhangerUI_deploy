@@ -19,19 +19,19 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
         }
         //this service method gets all existing Datasets from the backend
     this.getAllDatasets = function () {
-            return $http.get($rootScope.baseUrl + '/dataset/list').then(function (response) { //success callback
-                $log.info(response); //list all data from response
-                if (response.data.status == 'Success') {
+            return $http.get($rootScope.baseUrl + '/dataset/list').then(
+                //success
+                function (response) {
+                    $log.info(response); //list all data from response
                     $log.info('Successfully retrieved datasets');
                     return response.data;
-                } else {
-                    $log.warn('Failed to retrieve datasets');
+
+                },
+                //error
+                function (response) {
+                    $log.warn(response);
                     return $q.reject(response.data);
-                }
-            }, function (response) { //error callback
-                $log.warn(response);
-                return $q.reject(response.data);
-            });
+                });
         }
         //this service method updates a specified dataset on the backend
     this.updateDataset = function (prevName, dataset) {
@@ -51,19 +51,17 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
         //this service method deletes a specified dataset from the backend
     this.deleteDataset = function (dataset) {
         var datasetName = dataset.name;
-        return $http.delete($rootScope.baseUrl + '/dataset/delete/' + datasetName).then(function (response) { //success callback
-            $log.info(response); //list all data from response
-            if (response.data.status == 'Success') {
+        return $http.delete($rootScope.baseUrl + '/dataset/delete/' + datasetName).then(
+            //success
+            function (response) {
                 $log.info('Successfully deleted dataset ' + datasetName);
                 return response.data;
-            } else {
-                $log.warn('Failed to delete ' + datasetName);
-                return $q.reject(response.data);
-            }
-        }, function (response) { //error callback
-            $log.warn(response);
-            return $q.reject(response);
-        });
+            },
+            //error
+            function (response) {
+                $log.error(response);
+                return $q.reject(response);
+            });
     }
 
     // this service method gets a list of column data from a hive table including column names and data types
@@ -75,12 +73,12 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
         return $http.post($rootScope.baseUrl + '/dataset/hiveLookup/', dbTableInfo).then(
             function (response) {
                 //            function called after success
-                $log.info("found table " + dbTableName + " in hive. Column data: " + response);
+                $log.info("found table " + dbTableName + " in hive. Column data: ", response.data);
                 return response.data;
             },
             function (response) {
                 //            function called after error
-                $log.info("table " + dbTableName + " not found in Hive. Error message: " + response.data.data);
+                $log.info("table " + dbTableName + " not found in Hive. Error message: " + response.data.message);
                 return $q.reject(response.data);
             });
     }
@@ -96,6 +94,7 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
             function (response) {
                 //            function called after error
                 $log.info("failed to retrieve hive tables");
+                $log.error(response);
                 return $q.reject(response.data);
             });
     }

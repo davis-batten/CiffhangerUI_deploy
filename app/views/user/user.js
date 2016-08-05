@@ -57,15 +57,19 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, user
 
     //gets all users
     $scope.getAllUsers = function () {
-        userService.getAllUsers().then(function (data) {
-            $log.debug('response', data);
-            if (data.status == 'Success') {
-                $log.debug('data obj', data.data);
-                $scope.userList = eval(data.data);
-            } else {
+        userService.getAllUsers().then(
+            //success
+            function (response) {
+                $scope.userList = eval(response);
+            },
+            //error
+            function (error) {
                 $scope.userList = [];
-            }
-        })
+                $scope.alerts.push({
+                    msg: error.message,
+                    type: 'danger'
+                });
+            });
     };
     $scope.getAllUsers();
 
@@ -108,19 +112,11 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, user
                                 }
                             }
                         }
-                        //problem on backend
-                        else {
-                            $log.warn("Failed to update");
-                            $scope.alerts.push({
-                                msg: 'Failed to update user on backend',
-                                type: 'danger'
-                            });
-                        }
+
                     }, //error callback
-                    function () {
-                        $log.error("Failed to connect");
+                    function (error) {
                         $scope.alerts.push({
-                            msg: 'Failed to connect',
+                            msg: error.message,
                             type: 'danger'
                         });
                     });
@@ -144,21 +140,23 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, user
         //on modal completion
         modalInstance.result.then(function (u) {
             $log.warn('Deleted', u);
-            userService.deleteUser(u.username).then(function (response) {
-                for (i in $scope.userList) {
-                    if (u.username == $scope.userList[i].username) {
-                        $scope.userList.splice(i, 1)
+            userService.deleteUser(u.username).then(
+                function (response) {
+                    for (i in $scope.userList) {
+                        if (u.username == $scope.userList[i].username) {
+                            $scope.userList.splice(i, 1)
+                        }
                     }
-                }
-            })
-        }, function (response) {
-            $scope.alerts.push({
-                msg: 'Problem communicating',
-                type: 'danger'
-            })
-            $log.error('Failure')
+                },
+                //error
+                function (error) {
+                    $scope.alerts.push({
+                        msg: error.msg,
+                        type: 'danger'
+                    })
+                });
         });
-    };
+    }
 });
 
 //controller for an instance of UpdateUserModal

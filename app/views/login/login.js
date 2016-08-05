@@ -1,7 +1,7 @@
 angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/', {
-        templateUrl: 'views/login/login.html'
-        , controller: 'LoginCtrl'
+        templateUrl: 'views/login/login.html',
+        controller: 'LoginCtrl'
     });
 }]).controller('LoginCtrl', function ($rootScope, $log, $scope, $q, $location, userService) {
     $scope.newUser = {};
@@ -11,22 +11,8 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
     //alerts for errors
     $scope.alerts = [];
     $scope.closeAlert = function (index) {
-            $scope.alerts.splice(index, 1);
-        }
-        //    $scope.pickDeveloper = function () {
-        //        $rootScope.isDeveloper = true;
-        //        $rootScope.isAnalyst = false;
-        //        $rootScope.theme.color = 'green';
-        //        $location.path('developer/datasets');
-        //    }
-        //
-        //    $scope.pickAnalyst = function () {
-        //        $rootScope.isAnalyst = true;
-        //        $rootScope.isDeveloper = false;
-        //        $rootScope.theme.color = 'blue';
-        //        $location.url('analyst/compare');
-        //    }
-        //validate the newUser object on changes
+        $scope.alerts.splice(index, 1);
+    }
     $scope.$watch('newUser', function () {
         //check that passwords match
         if ($scope.newUser.password != $scope.newUser.passwordConfirm) $scope.passwordMismatch = true;
@@ -38,8 +24,8 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
     //log in as an existing user
     $scope.login = function () {
             var input = {
-                username: $scope.username
-                , password: $scope.password
+                username: $scope.username,
+                password: $scope.password
             }
             $log.debug(input);
             //authenticate against REST service
@@ -75,17 +61,16 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
                     $log.error('error.status', error.status);
                     if (error.status == 401) {
                         $scope.alerts.push('Invalid login! Please try again.');
-                    }
-                    else $scope.alerts.push('Failed to connect to authentication service!');
+                    } else $scope.alerts.push('Failed to connect to authentication service!');
                     //TODO add unsuccessful login alert
                 });
         }
         //create a new user account
     $scope.register = function () {
         var input = {
-            username: $scope.newUser.username
-            , password: $scope.newUser.password
-            , role: {
+            username: $scope.newUser.username,
+            password: $scope.newUser.password,
+            role: {
                 authority: $scope.newUser.role
             }
         }
@@ -94,22 +79,16 @@ angular.module('cliffhanger.users', ['ngRoute']).config(['$routeProvider', funct
         userService.register(input).then(
             //successful account creation
             function (response) {
-                if (response.status == 'Success') {
-                    //use login() to authenticate
-                    $scope.username = $scope.newUser.username;
-                    $scope.password = $scope.newUser.password;
-                    $scope.login();
-                }
-                //error
-                else {
-                    $log.error(response.data);
-                    $scope.alerts.push(response.data);
-                }
+                //use login() to authenticate
+                $scope.username = $scope.newUser.username;
+                $scope.password = $scope.newUser.password;
+                $scope.login();
+
             }, //error
             function (error) {
                 $log.error(error);
                 //add unsuccessful account creation alert
-                $scope.alerts.push('Failed to connect to authentication service!');
+                $scope.alerts.push(error.message);
             });
     }
 });

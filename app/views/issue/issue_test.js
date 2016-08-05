@@ -10,8 +10,8 @@ describe('cliffhanger.issue module', function () {
             mockIssueService = issueService;
             //mock user
             root.user = {
-                    username: 'hdfs'
-                    , role: {
+                    username: 'hdfs',
+                    role: {
                         roleId: 'DEVELOPER'
                     }
                 }
@@ -21,19 +21,19 @@ describe('cliffhanger.issue module', function () {
             }
             scope.alerts = [];
             issue = {
-                    status: 'Success'
-                    , data: {
-                        threadId: 1
-                        , opener: {
-                            username: 'hdfs'
-                            , role: {
+                    status: 'Success',
+                    data: {
+                        threadId: 1,
+                        opener: {
+                            username: 'hdfs',
+                            role: {
                                 roleId: 'DEVELOPER'
                             }
-                        }
-                        , open: open
-                        , createDate: new Date()
-                        , closer: null
-                        , closeDate: null
+                        },
+                        open: open,
+                        createDate: new Date(),
+                        closer: null,
+                        closeDate: null
                     }
                 }
                 //create issueService spies
@@ -42,17 +42,15 @@ describe('cliffhanger.issue module', function () {
             spyOn(mockIssueService, 'postComment').and.callFake(function () {
                 var deferred = $q.defer();
                 if (!serviceError) deferred.resolve({
-                    status: 'Success'
-                    , data: {
-                        body: "new comment"
-                        , commentBy: {
-                            username: 'hdfs'
-                            , role: {
-                                roleId: 'DEVELOPER'
-                            }
+                    body: "new comment",
+                    commentBy: {
+                        username: 'hdfs',
+                        role: {
+                            roleId: 'DEVELOPER'
                         }
-                        , createDate: new Date()
-                    }
+                    },
+                    createDate: new Date()
+
                 });
                 else deferred.resolve({
                     status: 'Error'
@@ -61,41 +59,35 @@ describe('cliffhanger.issue module', function () {
             })
             spyOn(mockIssueService, 'getComments').and.callFake(function () {
                 var deferred = $q.defer();
-                if (!serviceError) deferred.resolve({
-                    status: 'Success'
-                    , data: [
+                if (!serviceError) deferred.resolve(
+                    [
                         {
                             body: "first comment"
                         }
                     ]
-                });
+                )
                 else deferred.resolve({
-                    status: 'Error'
-                    , data: 'Could not get comments'
+                    message: 'failed'
                 });
                 return deferred.promise;
             })
             spyOn(mockIssueService, 'getIssue').and.callFake(function () {
                 var deferred = $q.defer();
                 if (!serviceError) deferred.resolve({
-                    status: 'Success'
-                    , data: {
-                        threadId: 1
-                        , opener: {
-                            username: 'hdfs'
-                            , role: {
-                                roleId: 'DEVELOPER'
-                            }
+                    threadId: 1,
+                    opener: {
+                        username: 'hdfs',
+                        role: {
+                            roleId: 'DEVELOPER'
                         }
-                        , open: open
-                        , createDate: new Date()
-                        , closer: null
-                        , closeDate: null
-                    }
+                    },
+                    open: open,
+                    createDate: new Date(),
+                    closer: null,
+                    closeDate: null
                 })
                 else deferred.resolve({
-                    status: 'Error'
-                    , data: 'Could not get issue'
+                    message: 'Could not get issue'
                 });
                 return deferred.promise;
             })
@@ -103,24 +95,19 @@ describe('cliffhanger.issue module', function () {
                 var deferred = $q.defer();
                 if (!serviceError) {
                     scope.issue.open = !scope.issue.open
-                    deferred.resolve({
-                        status: "Error"
-                        , data: {}
-                    });
-                }
-                else deferred.resolve({
-                    status: 'Error'
-                    , data: 'Could not get issue'
+                    deferred.resolve({});
+                } else deferred.resolve({
+                    message: 'Could not get issue'
                 });
                 return deferred.promise;
             })
             issueCtrl = $controller('IssueCtrl', {
-                $scope: scope
-                , $rootScope: root
-                , $q: $q
-                , $log: $log
-                , issueService: issueService
-                , $routeParams: mockRouteParams
+                $scope: scope,
+                $rootScope: root,
+                $q: $q,
+                $log: $log,
+                issueService: issueService,
+                $routeParams: mockRouteParams
             });
         }));
         //able to load an issue (w/comments)

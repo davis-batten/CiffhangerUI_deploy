@@ -23,19 +23,15 @@ describe('cliffhanger.users module', function () {
                         'ROLE_DEVELOPER'
                     ]
                     }
-                    var response = {
-                        data: user,
-                        status: 'Success'
-                    }
-                    deferred.resolve(response);
+
+                    deferred.resolve(user);
                     root.user = user;
                     root.$apply();
                 } else {
                     var badResponse = {
-                        data: 'Unsuccessful login!',
-                        status: 'Error'
+                        status: 401
                     }
-                    deferred.resolve(badResponse);
+                    deferred.reject(badResponse);
                 }
                 return deferred.promise;
             });
@@ -50,17 +46,12 @@ describe('cliffhanger.users module', function () {
                         'ROLE_DEVELOPER'
                     ]
                     }
-                    var response = {
-                        data: user,
-                        status: 'Success'
-                    }
-                    deferred.resolve(response);
+                    deferred.resolve(user);
                 } else {
                     var badResponse = {
-                        data: 'Unsuccessful register!',
-                        status: 'Error'
+                        message: 'Unsuccessful register!',
                     }
-                    deferred.resolve(badResponse);
+                    deferred.reject(badResponse);
                 }
                 return deferred.promise;
             });
@@ -87,7 +78,7 @@ describe('cliffhanger.users module', function () {
             scope.login();
             scope.$apply();
             expect(mockUserService.login).toHaveBeenCalled();
-            expect(scope.alerts[0]).toEqual('Unsuccessful login!');
+            expect(scope.alerts[0]).toEqual('Invalid login! Please try again.');
             expect(root.theme.color).not.toBe('green');
             expect(location.path()).not.toBe('/developer/datasets');
         })
