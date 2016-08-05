@@ -143,8 +143,8 @@
     </div>
     <!-- modal body when error -->
     <div class="modal-body" ng-show="!queryRanFine">
-        <h4>No Results </h4>
-        <p ng-show="connectionFailed"> Failed to connect </p>
+        <h4 class="text-danger">Error</h4>
+        <p ng-show="connectionFailed" class="text-danger">{{error}}</p>
         <!--
         <p ng-show="noResults">
             The join query ran, but the resulting dataset was empty. <br><br>
@@ -154,7 +154,7 @@
             If there is a problem with how your data is formatted, report this to a developer and ask them to tranform the mismatched data to a common format.
         </p>
 -->
-        <p ng-show="noResults"> The join query ran, but the resulting dataset was empty.
+        <p ng-show="noResults" class="text-danger"> The join query ran, but the resulting dataset was empty.
             <br>
             <br> This means no matching data was found between the dataset's in their join columns.
             <br>
@@ -221,6 +221,6 @@
 </div>
 <div class="modal-footer" ng-show="shouldShowNotifyDevsForm">
     <button class="btn btn-warning pull-left" ng-show="!reportSubmitted" type="button" ng-click="hideNotifyDevsForm()">Cancel</button>
-    <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="reportProblem()">Send to Developers</button>
+    <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="reportProblem()" ng-disabled="newProblemInput.subject.length == 0">Send to Developers</button>
     <button class="btn btn-success pull-right" type="button" ng-click="cancel()" ng-show="reportSubmitted">Ok</button>
 </div>

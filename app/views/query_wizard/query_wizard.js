@@ -28,8 +28,8 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.postReportSubmissionMessage = "";
     $scope.reportSubmitted = false;
     $scope.newProblemInput = {
-        subject: ''
-        , body: ''
+        subject: '',
+        body: ''
     }
     $scope.shouldShowNotifyDevsForm = false;
     //method responsible for handling changes due to checkboxes
@@ -39,8 +39,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         if (d.selected) {
             if (selections.indexOf(d) > -1) selections.push(angular.copy(d));
             else selections.push(d);
-        }
-        else {
+        } else {
             for (var i = 0; i < selections.length; i++) {
                 $log.debug('remove?', selections[i]);
                 if (selections[i].name == d.name) {
@@ -57,8 +56,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         if (column.selected) {
             column.db_table_name = dataset.db_table_name;
             selections.push(column);
-        }
-        else {
+        } else {
             for (var i = 0; i < selections.length; i++) {
                 $log.debug(selections[i]);
                 if (selections[i].name == column.name) {
@@ -85,8 +83,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
                 }
             }
             $log.debug($scope.tags);
-        }
-        else $scope.tags = [];
+        } else $scope.tags = [];
     };
     //advance the modal to the next step
     $scope.next = function () {
@@ -94,14 +91,11 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         if ($scope.step == 2) {
             $scope.numJoins++;
             $log.debug($scope.numJoins);
-        }
-        else if ($scope.step == 3) {
+        } else if ($scope.step == 3) {
             $scope.archiveTags();
-        }
-        else if ($scope.step == 4) {
+        } else if ($scope.step == 4) {
             $scope.buildQuery();
-        }
-        else if ($scope.step == 5) {
+        } else if ($scope.step == 5) {
             $scope.runNewQuery();
         }
     };
@@ -187,70 +181,72 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.buildQuery = function () {
         //query input packaged
         var queryInput = {
-            datasets: $scope.selectedDatasets
-            , joinTag: $scope.alreadyUsedTags
-            , addJoinColumn: true
-            , columns: $scope.selectedColumns
+            datasets: $scope.selectedDatasets,
+            joinTag: $scope.alreadyUsedTags,
+            addJoinColumn: true,
+            columns: $scope.selectedColumns
         }
-        queryService.buildQuery(queryInput).then(function (response) {
+        queryService.buildQuery(queryInput).then(
             //success callback
-            if (response.status == 'Success') {
-                $scope.query = response.data;
+            function (response) {
+                $scope.query = response;
                 $scope.progressType = 'success';
                 $log.debug('response', response);
                 if ($scope.query[1] == true) {
                     $scope.dataTypeCheck.push({
-                        msg: "Join Attributes data type mismatch."
-                        , type: 'warning'
+                        msg: "Join Attributes data type mismatch.",
+                        type: 'warning'
                     });
                 }
-            }
-            else { //failure callback
-                $scope.progressType = 'danger';
-                $scope.buildQueryError = true;
-                $log.error(response.data);
-            }
-        });
+            },
+            //error callback
+            function (error) {
+                $scope.alerts.push({
+                    msg: error.message,
+                    type: 'danger'
+                })
+            });
     };
     //complete the modal
     $scope.save = function () {
         if ($scope.statement != undefined) {
             $scope.newQuery.sqlString = $scope.query[0] + $scope.statement.text;
-        }
-        else {
+        } else {
             $scope.newQuery.sqlString = $scope.query[0];
         }
         if ($scope.newQuery.description == null || $scope.newQuery.description == undefined) {
             $scope.newQuery.description = "";
         }
-        queryService.saveQuery($scope.newQuery).then(function (data) {
-            if (data.status == 'Success') {
+        queryService.saveQuery($scope.newQuery).then(
+            //success
+            function (data) {
                 $scope.alerts.push({
-                    msg: "Query Successfully Saved!"
-                    , type: 'success'
+                    msg: "Query Successfully Saved!",
+                    type: 'success'
                 });
                 $scope.showExit = true;
                 $log.debug(data);
-            }
-            else {
+            },
+            //error
+            function (error) {
                 $scope.alerts.push({
-                    msg: "Save Failed"
-                    , type: 'danger'
+                    msg: "Save Failed",
+                    type: 'danger'
                 });
                 $log.debug(data);
-            }
-            $log.debug($scope.statement);
-        });
+
+            });
     };
     $scope.runNewQuery = function () {
         $scope.loadingPreview = true;
         if ($scope.statement != undefined) {
             var query = $scope.query[0] + $scope.statement.text;
-        }
-        else {
+        } else {
             var query = $scope.query[0];
         }
-        queryService.runQuery(query).then(function (response) { //success callback
+        queryService.runQuery(query).then(
+            //success
+            function (response) { //success callback
                 $scope.loadingPreview = false;
                 if (response.rows == undefined || response.rows.length == 0) {
                     // no results
@@ -258,18 +254,19 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
                     $scope.queryRanFine = false;
                     $scope.noResults = true;
                     $scope.newProblemInput.body = "Cliffhanger Report: Running the join query succeeded but the result table was empty. \nQuery used: \n" + query;
-                }
-                else {
+                } else {
                     $scope.tableResult = response;
                     $scope.progressType = 'success';
                 }
-            }, //failure to connect
-            function (data) {
+            },
+            //error
+            function (error) {
                 $scope.loadingPreview = false;
                 $scope.progressType = 'danger';
                 $scope.queryRanFine = false;
                 $scope.connectionFailed = true;
-                $scope.newProblemInput.body = "Cliffhanger Report: HTTP call during method runQuery() in QueryService.js was not status 200. There is likely a problem with the REST service or Hive. \nQuery used: \n" + query;
+                $scope.newProblemInput.body = "ERROR : \n" + error.message + "\n\nQUERY: \n" + query;
+                $scope.error = error.message;
                 $log.error('Failed to connect to server');
             });
     };
@@ -298,14 +295,17 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         $scope.shouldShowNotifyDevsForm = false;
     };
     $scope.reportProblem = function () {
-        issueService.createIssue($scope.newProblemInput).then(function (response) {
-            // success
-            $scope.postReportSubmissionMessage = "Your problem has been reported to the developers."
-            $scope.reportSubmitted = true;
-        }, function (data) {
-            // fail
-            $scope.postReportSubmissionMessage = "There was a problem reporting your problem."
-            $scope.reportSubmitted = true;
-        });
+        issueService.createIssue($scope.newProblemInput).then(
+
+            function (response) {
+                // success
+                $scope.postReportSubmissionMessage = "Your problem has been reported to the developers."
+                $scope.reportSubmitted = true;
+            },
+            function (data) {
+                // fail
+                $scope.postReportSubmissionMessage = "There was a problem reporting your problem."
+                $scope.reportSubmitted = true;
+            });
     };
 });
