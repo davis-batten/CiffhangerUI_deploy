@@ -1,4 +1,6 @@
 <div ng-include="'views/navbar.html'"></div>
+
+<!-- Page Content -->
 <div class="container-fluid">
     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</uib-alert>
     <div class="row">
@@ -46,32 +48,3 @@
         </ul>
     </div>
 </div>
-
-
-<!-- New Issue Modal -->
-<script type="text/ng-template" id="newIssueModal.html">
-    <div class="modal-header sup">
-        <div class="row">
-            <div class="col-xs-11">
-                <h3 class="modal-title">Start New Thread</h3> </div>
-            <div class="col-xs-1">
-                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
-            </div>
-        </div>
-    </div>
-    <div class="modal-body sup">
-        <form name="notifyDevsForm">
-            <div class="form-group">
-                <label for="subject">Subject</label>
-                <textarea class="form-control" rows="1" name="subject" id="issueSubject" ng-model="input.subject"> </textarea>
-            </div>
-            <div class="form-group">
-                <label for="msg">Message</label>
-                <textarea class="form-control" rows="10" name="msg" id="issueMessage" ng-model="input.body"> </textarea>
-            </div>
-        </form>
-    </div>
-    <div class="modal-footer sup">
-        <button class="btn btn-success" type="button" ng-click="submit()">Post</button>
-    </div>
-</script>

@@ -1,0 +1,21 @@
+<!-- Add Tag Modal -->
+<div class="modal-header dev">
+    <div class="row">
+        <div class="col-xs-11">
+            <h3 class="modal-title inline">New Hook</h3> </div>
+        <div class="col-xs-1">
+            <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
+        </div>
+    </div>
+</div>
+<div class="modal-body dev">
+    <div class="form-group">
+        <label for="newTagName">Name</label>
+        <input type="text" class="form-control" id="newTagName" ng-model="input.name"> </div>
+    <div class="form-group">
+        <label for="newTagDesc">Description</label>
+        <input type="text" class="form-control" id="newTagDesc" ng-model="input.description"> </div>
+</div>
+<div class="modal-footer dev">
+    <button class="btn btn-success" type="button" ng-click="submit()">Create</button>
+</div>

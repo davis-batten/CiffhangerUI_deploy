@@ -8,60 +8,78 @@ angular.module('cliffhanger.superuser', ['ngRoute']).config(['$routeProvider', f
 var users = angular.module('cliffhanger.superuser');
 //main controller for users page
 users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, userService, $rootScope) {
+    //list of alerts to show to user
+    $scope.alerts = [];
+    //set theme color
+    $rootScope.theme.color = 'light-gray';
+    //
+    $scope.isCollapsed = true;
+    //
     $scope.showNoUsersMessage = false;
-    $scope.alerts = []; //list of alerts to show to user
     //closes an alert
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);
     };
-    //set theme color
-    $rootScope.theme.color = 'light-gray';
+
+
+    //reroutes to login if an unknown user
     $rootScope.$watch('user', function () {
         if ($rootScope.user.username == null) {
             $location.url('/');
         }
     });
-    $scope.isCollapsed = true;
+
     //for logout dropdown
     $scope.toggleLogoutDropdown = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.status.logoutisopen = !$scope.status.logoutisopen;
     };
+
     //for filter dropdown
     $scope.toggleFilterDropdown = function ($event) {
+        $log.log("roles: ", $scope.query.roles)
         $event.preventDefault();
         $event.stopPropagation();
         $scope.status.filterbyisopen = !$scope.status.filterbyisopen;
     };
+
     //for filter
     $scope.setFilter = function (userRole) {
         if (userRole != null) {
             $scope.query = {
-                role: {
-                    roleID: userRole
+                roles: {
+                    authority: userRole
                 }
             };
         } else $scope.query = '';
     }
+
+    //gets all users
     $scope.getAllUsers = function () {
-        userService.getAllUsers().then(function (data) {
-            $log.debug('response', data);
-            if (data.status == 'Success') {
-                $log.debug('data obj', data.data);
-                $scope.userList = eval(data.data);
-            } else {
+        userService.getAllUsers().then(
+            //success
+            function (response) {
+                $scope.userList = eval(response);
+            },
+            //error
+            function (error) {
                 $scope.userList = [];
-            }
-        })
+                $scope.alerts.push({
+                    msg: error.message,
+                    type: 'danger'
+                });
+            });
     };
     $scope.getAllUsers();
+
+
     //opens update user modal for user u
     $scope.updateUser = function (u) {
         $log.log(u);
         var nameTemp = u.username;
         var modalInstance = $uibModal.open({
-            templateUrl: 'userUpdate.html',
+            templateUrl: 'views/user/modals/userUpdate.html',
             controller: 'UpdateUserModalCtrl',
             size: 'lg',
             resolve: {
@@ -87,36 +105,30 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, user
                             for (i in $scope.userList) {
                                 if (nameTemp == $scope.userList[i].username) {
                                     $scope.userList[i].username = updatedUser.username;
-                                    //                                    $scope.userList[i].password = updatedUser.password;
+                                    //$scope.userList[i].password = updatedUser.password;
                                     $scope.userList[i].hiveUser = updatedUser.hiveUser;
                                     $scope.userList[i].hivePassword = updatedUser.hivePassword;
-                                    //                                    $scope.userList[i].role = updatedUser.roles[0].authority;
+                                    //$scope.userList[i].role = updatedUser.roles[0].authority;
                                 }
                             }
                         }
-                        //problem on backend
-                        else {
-                            $log.warn("Failed to update");
-                            $scope.alerts.push({
-                                msg: 'Failed to update user on backend',
-                                type: 'danger'
-                            });
-                        }
+
                     }, //error callback
-                    function () {
-                        $log.error("Failed to connect");
+                    function (error) {
                         $scope.alerts.push({
-                            msg: 'Failed to connect',
+                            msg: error.message,
                             type: 'danger'
                         });
                     });
             }
         });
     };
+
+    //deletes a user
     $scope.deleteUser = function (u) {
         $log.warn('delete', u);
         var modalInstance = $uibModal.open({
-            templateUrl: 'userDelete.html',
+            templateUrl: 'views/user/modals/userDelete.html',
             controller: 'UserDeleteModalCtrl',
             size: 'md',
             resolve: {
@@ -128,22 +140,25 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, user
         //on modal completion
         modalInstance.result.then(function (u) {
             $log.warn('Deleted', u);
-            userService.deleteUser(u.username).then(function (response) {
-                for (i in $scope.userList) {
-                    if (u.username == $scope.userList[i].username) {
-                        $scope.userList.splice(i, 1)
+            userService.deleteUser(u.username).then(
+                function (response) {
+                    for (i in $scope.userList) {
+                        if (u.username == $scope.userList[i].username) {
+                            $scope.userList.splice(i, 1)
+                        }
                     }
-                }
-            })
-        }, function (response) {
-            $scope.alerts.push({
-                msg: 'Problem communicating',
-                type: 'danger'
-            })
-            $log.error('Failure')
+                },
+                //error
+                function (error) {
+                    $scope.alerts.push({
+                        msg: error.msg,
+                        type: 'danger'
+                    })
+                });
         });
-    };
+    }
 });
+
 //controller for an instance of UpdateUserModal
 users.controller('UpdateUserModalCtrl', function ($scope, $uibModalInstance, $log, user) {
     $scope.user = user;
@@ -153,9 +168,6 @@ users.controller('UpdateUserModalCtrl', function ($scope, $uibModalInstance, $lo
         password: user.password,
         hiveUser: user.hiveUser,
         hivePassword: user.hivePassword
-            //        , role: {
-            //            roleID: $scope.user.role
-            //                        }
     };
     //complete modal
     $scope.complete = function () {
@@ -166,6 +178,7 @@ users.controller('UpdateUserModalCtrl', function ($scope, $uibModalInstance, $lo
         $uibModalInstance.dismiss('cancel');
     };
 });
+
 //controller for instance of UserDeleteModal
 users.controller('UserDeleteModalCtrl', function ($scope, $uibModalInstance, $log, user) {
     $scope.user = user;

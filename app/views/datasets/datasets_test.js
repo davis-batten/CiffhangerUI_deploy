@@ -33,13 +33,13 @@ describe('cliffhanger.datasets module', function () {
             spyOn(service, 'getAllDatasets').and.callFake(function () {
                 resp.data = old_dataset_data;
                 resp.status = "Success";
-                deferred.resolve(resp);
+                deferred.resolve(resp.data);
                 return deferred.promise;
             });
             spyOn(service, 'updateDataset').and.callFake(function () {
                 resp.data = updated_dataset_data;
                 resp.status = "Success";
-                deferred.resolve(resp);
+                deferred.resolve(resp.data);
                 return deferred.promise;
             });
             datasetsCtrl = $controller('DatasetsCtrl', {
@@ -139,24 +139,17 @@ describe('cliffhanger.datasets module', function () {
             //expect one more attribute in list
             expect(scope.input.attributes.length - before).toBe(1);
         });
-        it('should be able to remove an attribute', function () {
-            //add new attribute
-            scope.newAttribute = {
-                col_name: 'test',
-                description: 'test desc',
-                data_type: 'String',
-                meta_type: {
-                    meta_name: 'ZIP',
-                    description: 'zip code'
-                }
-            }
-            scope.addAttr();
-            var before = scope.input.attributes.length;
-            //remove and test
-            scope.removeAttr(0);
-            //expect one less attribute in list
-            expect(scope.input.attributes.length - before).toBe(-1);
-        })
+        it('show show/hide tables in a database when database is clicked', function () {
+            expect(scope.input.db_table_name).toEqual("");
+            // TODO
+        });
+        it('should be able to select and show a table from database explorer and be able to remove it', function () {
+            expect(scope.input.db_table_name).toEqual("");
+            // TODO
+        });
+        it('should show loading animation when importing column data from hive and should display imported columns correctly', function () {
+            // TODO
+        });
     });
     describe('DatasetUpdateModalCtrl', function () {
         beforeEach(inject(function ($controller, $rootScope, $log, $q) {

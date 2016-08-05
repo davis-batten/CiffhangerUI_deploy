@@ -12,46 +12,7 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);
     };
-    $scope.issues = [
-        /*
-            {
-                subject: "Can't load table cliffhanger.testHiveTable",
-                opener: {
-                    username: "dbatt",
-                    roles: [
-                        "ROLE_DEVELOPER"
-                    ]
-                },
-                numComments: 5,
-                createDate: new Date(),
-                open: open
-        }
-            , {
-                subject: "Can't change username",
-                opener: {
-                    username: "colton",
-                    roles: [
-                        "ROLE_ADMIN"
-                    ]
-                },
-                numComments: 1,
-                createDate: new Date(),
-                open: false
-        }
-            , {
-                subject: "No results for a join query",
-                opener: {
-                    username: "heather",
-                    roles: [
-                        "ROLE_ANALYST"
-                    ]
-                },
-                numComments: 3,
-                createDate: new Date(),
-                open: true
-        }
-        */
-    ];
+
     $rootScope.$watch('user', function () {
         if ($rootScope.user.username == null) {
             $location.url('/');
@@ -63,25 +24,18 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
         issueService.getAllIssues().then(
             //success
             function (response) {
-                if (response.status == 'Success') {
-                    $scope.issues = response.data;
-                }
-                //error
-                else {
-                    $scope.alerts.push({
-                        msg: response.data,
-                        type: "danger"
-                    });
-                }
+                $scope.issues = response;
             }, //error
             function (error) {
                 $scope.alerts.push({
-                    msg: "Failed to connect to server.",
+                    msg: error.message,
                     type: "danger"
                 });
-            })
+            });
     };
     $scope.loadIssues();
+
+
     //for filter dropdown
     $scope.toggleFilterDropdown = function ($event) {
         $event.preventDefault();
@@ -141,21 +95,27 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
     $scope.newIssue = function () {
         var input = $scope.input;
         var modalInstance = $uibModal.open({
-            templateUrl: 'newIssueModal.html',
+            templateUrl: 'views/messageboard/modals/newIssueModal.html',
             controller: 'NewIssueModalInstanceCtrl',
             size: 'lg'
         });
         modalInstance.result.then(function (input) {
             $log.info('Modal dismissed at: ' + new Date());
             $log.info(input);
-            issueService.createIssue(input).then(function (response) {
+            issueService.createIssue(input).then(
                 // success
-                $scope.issues.push(response.data);
-                $scope.postReportSubmissionMessage = "Your problem has been reported to the developers."
-            }, function (data) {
+                function (response) {
+                    $scope.issues.push(response);
+                    $scope.postReportSubmissionMessage = "Your problem has been reported to the developers."
+                },
                 // fail
-                $scope.postReportSubmissionMessage = "There was a problem reporting your problem."
-            });
+                function (error) {
+                    $scope.postReportSubmissionMessage = "There was a problem reporting your problem."
+                    $scope.alerts.push({
+                        msg: error.message,
+                        type: "danger"
+                    })
+                });
         });
     };
 });

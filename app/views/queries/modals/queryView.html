@@ -1,0 +1,201 @@
+<!-- View Query Modal -->
+<!-- First step of modal -->
+<div ng-show="step == 1 && !shouldShowRequestForm">
+    <div class="modal-header an">
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title inline">{{query.name}}<small>{{query.description}}</small></h3> </div>
+            <div class="col-xs-1">
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body an">
+        <textarea class="codeEdit" rows="10" ng-model="query.sqlString"></textarea>
+    </div>
+    <div class="modal-footer an">
+        <button class="btn btn-warning pull-left" type="button" ng-click="exportZeppelin()" uib-tooltip="Create a new Zeppelin Note from this query" tooltip-append-to-body="true">Export Zeppelin</button>
+        <button class="btn btn-primary pull-left" type="button" ng-click="showRequestForm()" uib-tooltip="Ask Developers to create a view or table from this query">Request View/Table</button>
+        <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Update the existing query" tooltip-append-to-body="true" ng-click="updateQuery()" ng-show="queryRanFine">Save</button>
+        <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Save as a new query" tooltip-append-to-body="true" ng-click="isSaveCollapsed = !isSaveCollapsed" ng-show="queryRanFine">Save As</button>
+        <button class="btn btn-info" type="button" ng-click="next()">Run</button>
+        <div uib-collapse="isSaveCollapsed">
+            <hr>
+            <div class="well well-sm">
+                <form name="saveQueryAs">
+                    <div class="form-group">
+                        <label for="queryName" class="pull-left">Name</label>
+                        <input type="text " class="form-control" name="name" id="queryName" ng-model="newQuery.name" required> </div>
+                    <div class="form-group">
+                        <label for="queryDesc" class="pull-left">Description</label>
+                        <input type="text" class="form-control" id="description" ng-model="newQuery.description"> </div>
+                    <div class="form-group">
+                        <button class="btn btn-info" type="button" ng-disabled="name.$invalid" ng-click="saveAs()">Save</button>
+                        <button class="btn btn-danger pull-left" type="button" ng-hide="showExit" ng-click="isSaveCollapsed =! isSaveCollapsed">Cancel Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Second step of modal -->
+<div ng-show="step == 2 && !shouldShowNotifyDevsForm">
+    <div class="modal-header an" ng-show="queryRanFine">
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title inline">{{query.name}}<small>{{query.description}}</small></h3> </div>
+            <div class="col-xs-1">
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body an" ng-show="queryRanFine">
+        <h4>Preview of Results <small>after running {{query.name}}</small></h4>
+        <p><em>Note: Preview will only show up to 100 results.</em></p> <img id="loadingIcon" src="../../resources/rolling_loader.svg" ng-show="loadingPreview">
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+        <div class="" id="queryResultsTable">
+            <table class="table table-bordered sql-result">
+                <thead>
+                    <th ng-repeat="column in tableResult.colNames"> {{column}} </th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in tableResult.rows | limitTo:100">
+                        <td ng-repeat="cell in row track by $index">{{cell}}</td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- modal body when error -->
+    <div class="modal-header an" ng-show="!queryRanFine">
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title inline">Encountered Problem with: {{query.name}}</h3> </div>
+            <div class="col-xs-1">
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body an" ng-show="!queryRanFine">
+        <div ng-show="connectionFailed" class="text-danger">
+            <h4> Failed to run query</h4>
+            <p>{{errorMsg}}</p>
+        </div>
+        <div ng-show="noResults" class="text-danger">
+            <h4>No Results </h4>
+            <p> The join query ran, but the resulting table was empty.
+                <br>
+                <br> This means no matching data was found between the datasets in their join columns.
+                <br>
+                <br> </p>
+        </div>
+    </div>
+    <div class="modal-footer an">
+        <button class="btn btn-info" type="button" ng-click="download = !download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table" ng-show="queryRanFine" tooltip-append-to-body="true">Download</button>
+        <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
+        <button class="btn btn-success" type="button" ng-click="showNotifyDevsForm()" ng-show="!queryRanFine">Contact Developers</button>
+        <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Update the existing query" tooltip-append-to-body="true" ng-click="updateQuery()" ng-show="queryRanFine">Save</button>
+        <button class="btn btn-success" type="button" ng-disabled="loadingPreview" uib-tooltip="Save as a new query" tooltip-append-to-body="true" ng-click="isSaveCollapsed = !isSaveCollapsed" ng-show="queryRanFine">Save As</button>
+        <div uib-collapse="isSaveCollapsed">
+            <hr>
+            <!-- save as extention -->
+            <div class="well well-sm">
+                <form name="saveQueryAs">
+                    <div class="form-group">
+                        <label for="queryName" class="pull-left">Name</label>
+                        <input type="text " class="form-control" name="name" id="queryName" ng-model="newQuery.name" required> </div>
+                    <div class="form-group">
+                        <label for="queryDesc" class="pull-left">Description</label>
+                        <input type="text" class="form-control" id="description" ng-model="newQuery.description"> </div>
+                    <div class="form-group">
+                        <button class="btn btn-info" type="button" ng-disabled="name.$invalid" ng-click="saveAs()">Save</button>
+                        <button class="btn btn-danger pull-left" type="button" ng-hide="showExit" ng-click="isSaveCollapsed =! isSaveCollapsed">Cancel Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div uib-collapse="!download">
+            <hr>
+            <div class="well well-sm">
+                <form name="downloadQueryAs">
+                    <div class="form-group">
+                        <label for="filename" class="pull-left">Filename</label>
+                        <input type="text" class="form-control" name="name" id="filename" ng-model="filename" required>.csv </div>
+                    <div class="form-group">
+                        <button class="btn btn-info" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="{{filename}}.csv">Download As CSV</button>
+                        <button class="btn btn-danger pull-left" type="button" ng-click="download = !download">Cancel Download</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Report problem to dev form -->
+<div class="modal-header an" ng-show="shouldShowNotifyDevsForm">
+    <div class="row">
+        <div class="col-xs-11">
+            <h3 class="modal-title inline">Report Problem Regarding: {{query.name}}</h3> </div>
+        <div class="col-xs-1">
+            <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
+        </div>
+    </div>
+</div>
+<div class="modal-body an" ng-show="shouldShowNotifyDevsForm">
+    <div ng-show="!reportSubmitted">
+        <p>Here you can notify your developers that you are having a problem using Cliffhanger or joining datasets. This opens a discussion board where you and a developer can comment back and forth about the problem. This discussion board will remain open until the problem is resolved. </p>
+        <hr>
+        <form name="notifyDevsForm">
+            <div class="form-group">
+                <label for="subject">Subject <small><em>  This will appear as the title of the thread</em></small></label>
+                <textarea class="form-control" rows="1" name="subject" id="problemSubject" ng-model="newProblemInput.subject"> </textarea>
+            </div>
+            <div class="form-group">
+                <label for="msg">Message <small><em>  Add any information that will help the developer understand your problem</em></small></label>
+                <textarea class="form-control" rows="10" name="msg" id="problemMessage" ng-model="newProblemInput.body"></textarea>
+            </div>
+        </form>
+    </div>
+    <p ng-show="reportSubmitted">{{postReportSubmissionMessage}}</p>
+</div>
+<div class="modal-footer an" ng-show="shouldShowNotifyDevsForm">
+    <button class="btn btn-warning pull-left" ng-show="!reportSubmitted" type="button" ng-click="hideNotifyDevsForm()">Cancel</button>
+    <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="reportProblem()" ng-disabled="newProblemInput.subject.length == 0">Send to Developers</button>
+    <button class="btn btn-success pull-right" type="button" ng-click="cancel()" ng-show="reportSubmitted">Ok</button>
+</div>
+<!-- Send request to dev form -->
+<div class="modal-header an" ng-show="shouldShowRequestForm">
+    <div class="row">
+        <div class="col-xs-11">
+            <h3 class="modal-title inline">Request New Table/View</h3> </div>
+        <div class="col-xs-1">
+            <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
+        </div>
+    </div>
+</div>
+<div class="modal-body an" ng-show="shouldShowRequestForm">
+    <div ng-show="!reportSubmitted">
+        <p>Here you can ask your developers to create a table or view in Hive from the query you have selected. They will see this request on the Message Board and may comment if they have any questions or to notify you when they are done. When the request is completed you or the developer can close the thread. </p>
+        <hr>
+        <form name="requestForm">
+            <div class="btn-group">
+                <label class="btn btn-primary" ng-model="newRequestInput.type" uib-btn-radio="'VIEW'">View</label>
+                <label class="btn btn-primary" ng-model="newRequestInput.type" uib-btn-radio="'TABLE'">Table</label>
+            </div>
+            <br>
+            <br>
+            <div class="form-group">
+                <label for="subject">Subject <small><em>  Make sure to specify Table or View</em></small></label>
+                <textarea class="form-control" rows="1" name="subject" id="requestSubject" ng-model="newRequestInput.subject"> </textarea>
+            </div>
+            <div class="form-group">
+                <label for="msg">Message <small><em>  Feel free to include any additional specifications</em></small></label>
+                <textarea class="form-control" rows="15" name="msg" id="requestMessage" ng-model="newRequestInput.body"></textarea>
+            </div>
+        </form>
+    </div>
+    <p ng-show="reportSubmitted">{{postReportSubmissionMessage}}</p>
+</div>
+<div class="modal-footer an" ng-show="shouldShowRequestForm">
+    <button class="btn btn-warning pull-left" ng-show="!reportSubmitted" type="button" ng-click="hideRequestForm()">Cancel</button>
+    <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="sendRequest()">Send to Developers</button>
+    <button class="btn btn-success pull-right" type="button" ng-click="cancel()" ng-show="reportSubmitted">Ok</button>
+</div>

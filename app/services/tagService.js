@@ -57,15 +57,10 @@ angular.module('cliffhanger.tags')
                 .then(
                     //success callback
                     function (response) {
-                        if (response.data.status == 'Success') {
-                            $log.info('Success!');
-                            $log.info('response', response);
-                            //list all data from response
-                            return response.data;
-                        } else {
-                            $log.warn('Failed to retrieve tags');
-                            return $q.reject(response.data);
-                        }
+                        $log.info('Success!');
+                        $log.info('response', response);
+                        //list all data from response
+                        return response.data;
                     },
                     //error callback
                     function (response) {

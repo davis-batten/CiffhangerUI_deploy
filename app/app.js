@@ -38,7 +38,7 @@ app = angular.module('cliffhanger', [
     jwtInterceptorProvider.tokenGetter = ['jwtHelper', '$http', 'config', function (jwtHelper, $http, config) {
         var accessToken = localStorage.getItem('accessToken');
         var refreshToken = localStorage.getItem('refreshToken');
-        //skip authentication for HTML requests
+        //skip authentication for pure HTML requests, allows unauthenticated users to see login page 
         if (config.url.substr(config.url.length - 5) == '.html') {
             return null;
         }
@@ -88,7 +88,7 @@ app = angular.module('cliffhanger', [
 });
 
 
-var easter_egg = new Konami(function () {
-    alert('Konami!');
-    document.body.style.backgroundImage = "url('resources/mountain.jpg')";
-});
+//var easter_egg = new Konami(function () {
+//    alert('Konami!');
+//    document.body.style.backgroundImage = "url('resources/mountain.jpg')";
+//});

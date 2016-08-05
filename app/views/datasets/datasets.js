@@ -9,15 +9,24 @@ var datasets = angular.module('cliffhanger.datasets');
 //main controller for dataset page
 datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location, datasetService, $rootScope) {
     $log.warn($rootScope);
+
+    // List of selected attribtues
     $scope.selected = [];
+
+    // Flag for when the "No datasets" message should be displayed
     $scope.showNoDatasetsMessage = false;
-    $scope.alerts = []; //list of alerts to show to user
+
+    // List of alerts to show to user
+    $scope.alerts = [];
+
     //closes an alert
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);
     };
+
     //set theme color
     $rootScope.theme.color = 'green';
+
     $rootScope.$watch('user', function () {
         if ($rootScope.user.username == null) {
             $location.url('/');
@@ -49,55 +58,52 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
         // getTags();
     var getDatasets = function () {
         $scope.showProgressBar = true;
-        datasetService.getAllDatasets().then(function (data) {
-            $scope.showProgressBar = false;
-            if (data.status == 'Success') {
+        datasetService.getAllDatasets().then(
+            //success
+            function (response) {
+                $scope.showProgressBar = false;
                 $scope.showNoDatasetsMessage = false;
-                $scope.datasetList = eval(data.data);
+                $scope.datasetList = eval(response);
                 $log.debug($scope.datasetList);
                 if ($scope.datasetList.length == 0) {
                     $scope.showNoDatasetsMessage = true;
                 }
-            } else {
+
+            },
+            //error
+            function (error) {
+                $scope.showProgressBar = false;
                 $scope.alerts.push({
-                    msg: res,
+                    msg: error.message,
                     type: 'danger'
                 });
-            }
-        }, function (res) {
-            $scope.showProgressBar = false;
-            $scope.alerts.push({
-                msg: "Failed to load datasetss",
-                type: 'danger'
             });
-        });
     };
     getDatasets();
+
     var createDataset = function (newDataSet) {
         $scope.showNoDatasetsMessage = false;
         $scope.showProgressBar = true;
-        datasetService.addDataset(newDataSet).then(function (data) {
-            $scope.showProgressBar = false;
-            if (data.status == 'Success') {
-                $scope.datasetList.push(data.data);
-            } else {
+        datasetService.addDataset(newDataSet).then(
+            //success
+            function (response) {
+                $scope.showProgressBar = false;
+                $scope.datasetList.push(response);
+            },
+            //error
+            function (error) {
+                $scope.showProgressBar = false;
                 $scope.alerts.push({
-                    msg: data,
+                    msg: error.message,
                     type: 'danger'
                 });
-            }
-        }, function (data) {
-            $scope.showProgressBar = false;
-            $scope.alerts.push({
-                msg: 'Failed to create Dataset',
-                type: 'danger'
             });
-        })
     };
+
     //opens addDatasetModal
     $scope.open = function () {
         var modalInstance = $uibModal.open({
-            templateUrl: 'addDatasetModalContent.html',
+            templateUrl: 'views/datasets/modals/datasetAdd.html',
             controller: 'AddDatasetModalInstanceCtrl',
             size: 'lg'
         });
@@ -112,7 +118,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
 
     $scope.previewDataset = function (d) {
         var modalInstance = $uibModal.open({
-            templateUrl: 'datasetPreview.html',
+            templateUrl: 'views/datasets/modals/datasetPreview.html',
             controller: 'DatasetPreviewModalCtrl',
             size: 'lg',
             resolve: {
@@ -128,7 +134,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
         $log.log(d);
         var nameTemp = d.name;
         var modalInstance = $uibModal.open({
-            templateUrl: 'datasetUpdate.html',
+            templateUrl: 'views/datasets/modals/datasetUpdate.html',
             controller: 'DatasetUpdateModalCtrl',
             size: 'lg',
             resolve: {
@@ -147,34 +153,30 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
             } else {
                 datasetService.updateDataset(nameTemp, d).then(
                     //success callback
-                    function (resp) {
-                        if (resp.status == 'Success') {
-                            for (i in $scope.datasetList) {
-                                if (nameTemp == $scope.datasetList[i].name) {
-                                    $scope.datasetList[i] = resp.data;
-                                }
+                    function (response) {
+                        for (i in $scope.datasetList) {
+                            if (nameTemp == $scope.datasetList[i].name) {
+                                $scope.datasetList[i] = response;
                             }
                         }
-                        //problem on backend
-                        else {
-                            $log.warn("Failed to update");
-                        }
-                    }, //error callback
-                    function () {
-                        $log.error("Failed to connect");
+                    },
+                    //error callback
+                    function (error) {
                         $scope.alerts.push({
-                            msg: 'Failed to connect',
+                            msg: error.message,
                             type: 'danger'
                         });
                     });
             }
         });
     };
+
+
     //opens deleteDataset modal for dataset d
     $scope.deleteDataset = function (d) {
         $log.log(d);
         var modalInstance = $uibModal.open({
-            templateUrl: 'datasetDelete.html',
+            templateUrl: 'views/datasets/modals/datasetDelete.html',
             controller: 'DatasetDeleteModalCtrl',
             size: 'md',
             resolve: {
@@ -192,25 +194,22 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
                     $log.debug('dataset being deleted', $scope.datasetList[i]);
                     $log.debug('i', i);
                     var index = i;
-                    datasetService.deleteDataset(d).then(function (res) {
-                        $scope.showProgressBar = false;
-                        if (res.status == 'Success') {
+                    datasetService.deleteDataset(d).then(
+                        //success
+                        function (response) {
+                            $scope.showProgressBar = false;
                             $log.debug('i2', index);
                             $scope.datasetList.splice(index, 1);
                             if ($scope.datasetList.length == 0) $scope.showNoDatasetsMessage = true;
-                        } else {
+                        },
+                        //error
+                        function (error) {
+                            $scope.showProgressBar = false;
                             $scope.alerts.push({
-                                msg: res,
+                                msg: error.message,
                                 type: 'danger'
                             });
-                        }
-                    }, function (res) {
-                        $scope.showProgressBar = false;
-                        $scope.alerts.push({
-                            msg: "Problem communicating with server!",
-                            type: 'danger'
                         });
-                    });
                 }
             }
             $log.log($scope.data);
@@ -250,21 +249,20 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
                 $scope.importingDataset = true;
                 $scope.attributeDataFound = false;
 
-                datasetService.getHiveTableSchema($scope.input.db_table_name).then(function (data) {
-                    if (data.status == "Error" && data.data == "Table does not exist") {
-                        $log.warn("Table " + $scope.input.db_table_name + " does does not exist");
-                    } else {
-                        //                    autofill attribute's col_name and data_type
+                datasetService.getHiveTableSchema($scope.input.db_table_name).then(
+                    //success
+                    function (response) {
+                        //autofill attribute's col_name and data_type
                         $scope.attributeDataFound = true;
-                        $scope.input.attributes = data.data;
-                    }
-                    $scope.importingDataset = false;
-                    tableSwitched = false;
-                }, function (data) {
-                    $log.warn("failed to import table schema");
-                    $scope.importingDataset = false;
-                    tableSwitched = false;
-                })
+                        $scope.input.attributes = response;
+                        $scope.importingDataset = false;
+                        tableSwitched = false;
+                    },
+                    function (error) {
+                        $log.warn("failed to import table schema");
+                        $scope.importingDataset = false;
+                        tableSwitched = false;
+                    })
             }
 
         } else if ($scope.input.db_table_name.length == 0) {
@@ -349,30 +347,36 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
         $scope.input.attributes.splice(attrIndex, 1);
     };
     var getTags = function () {
-        tagService.getAllTags().then(function (data) {
-            if (data.status == 'Success') {
-                $scope.tags = eval(data.data);
+        tagService.getAllTags().then(
+            //success
+            function (response) {
+                $scope.tags = eval(response);
                 $log.debug('tagsList', $scope.tags);
-            }
-        }, function (data) {
-            $log.error('Failed to load!');
-        });
+
+            },
+            //error
+            function (data) {
+                $log.error('Failed to load!');
+            });
     };
     getTags();
 
     //    get a list of all tables in hive
     var getTables = function () {
         $scope.loadingHiveTables = true;
-        datasetService.getAllTables().then(function (data) {
-            $scope.loadingHiveTables = false;
-            if (data.status == 'Success') {
-                $scope.hdfsDatabases = eval(data.data);
+        datasetService.getAllTables().then(
+            //success
+            function (response) {
+                $scope.loadingHiveTables = false;
+                $scope.hdfsDatabases = eval(response);
                 $log.debug('hiveTables', $scope.hiveTables);
-            }
-        }, function (data) {
-            $scope.loadingHiveTables = false;
-            $log.error('Failed retrieve hive tables!');
-        });
+
+            },
+            //error
+            function (data) {
+                $scope.loadingHiveTables = false;
+                $log.error('Failed retrieve hive tables!');
+            });
     }
     getTables();
 });
@@ -406,14 +410,17 @@ datasets.controller('DatasetUpdateModalCtrl', function ($scope, $uibModalInstanc
         };
     };
     var getTags = function () {
-        tagService.getAllTags().then(function (data) {
-            if (data.status == 'Success') {
-                $scope.tags = eval(data.data);
+        tagService.getAllTags().then(
+            //success
+            function (response) {
+                $scope.tags = eval(response);
                 $log.debug('tags', $scope.tags);
-            }
-        }, function (data) {
-            $log.error('Failed to load!');
-        });
+
+            },
+            //error
+            function (error) {
+                $log.error('Failed to load!');
+            });
     };
     getTags();
 });

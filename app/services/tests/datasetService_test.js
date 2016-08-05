@@ -1,5 +1,5 @@
 describe("dataset service", function () {
-    var datasetService, httpBackend, baseUrl, $q;
+    var datasetService, httpBackend, baseUrl, $q, root;
 
     test_get_data = [
         {
@@ -25,6 +25,7 @@ describe("dataset service", function () {
             httpBackend = $injector.get('$httpBackend');
             $q = $injector.get('$q');
             baseUrl = ($injector.get('$rootScope')).baseUrl;
+            root = $injector.get('$rootScope');
         });
     });
 
@@ -42,7 +43,7 @@ describe("dataset service", function () {
         datasetService.addDataset(test_create_data);
         //httpBackend.flush();
     });
-    
+
 
     it("should be able to delete a dataset", function () {
         var datasetName = test_create_data.name;
@@ -53,8 +54,11 @@ describe("dataset service", function () {
 
     it("should be able to update a dataset", function () {
         var datasetName = test_create_data.name;
+        root.user = {
+            username: "admin"
+        }
         httpBackend.expectPUT(baseUrl + '/dataset/update/' + datasetName).respond(200, "success");
-        datasetService.updateDataset(test_create_data);
+        datasetService.updateDataset(datasetName, test_create_data);
         //httpBackend.flush();
     })
 
