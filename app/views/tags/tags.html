@@ -16,7 +16,7 @@
             <li id="list_item" ng-repeat="t in tags | orderBy:'name' | filter:query" class="list-group-item" ng-if="t.name != '<EMPTY>'">
                 <label>{{t.name}} </label><small> {{t.description}}</small>
                 <button class="btn btn-danger" type="button" uib-tooltip="Delete" ng-click="delete(t)"> <span class="fa fa-trash"></span></button>
-                <button class="btn btn-info" type="button" uib-tooltip="Edit" ng-click="update(t)"> <span class="fa fa-pencil-square-o"></span></button>
+<!--<button class="btn btn-info" type="button" uib-tooltip="Edit" ng-click="update(t)"> <span class="fa fa-pencil-square-o"></span></button>-->
             </li>
         </ul>
         <div ng-show="noResults" id="noResults" class="text-danger"> <i class="fa fa-times"></i> No Results Found </div>

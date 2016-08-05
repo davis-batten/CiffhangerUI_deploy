@@ -11,94 +11,114 @@
     background-color: #B9E0A5 !important;
     border: none !important;
 }
+
 #dataset_item:hover {
     border-color: #A4C793 !important;
     background-color: #A4C793 !important;
 }
+
 #dataset_item label {
     line-height: 2em;
     vertical-align: middle;
     margin-left: 0.75em;
     cursor: pointer;
 }
+
 #dataset_item label small {
     font-weight: 400;
     padding-left: .5em;
     color: #B9E0A5 !important;
     cursor: pointer;
 }
+
 #dataset_item:hover > label > small {
     color: white !important;
 }
+
 #dataset_item button {
     display: inline-block;
     float: right;
     margin-left: .5em;
 }
+
 .no_data_warning {
     color: #d9534f;
     font-size: 1.35em;
     top: 4px!important;
 }
+
 #dataset_checkbox {
     float: left !important;
     display: inline-block;
     margin: 0.25em;
 }
+
 .inline-list {
     list-style-type: none;
     padding: 0;
     overflow: hidden;
 }
+
 .inline-list li {
     float: left;
     margin: 0.25em;
 }
+
 .status-message {
     width: max-width;
     text-align: center;
     font-size: 1.5em;
     color: darkgray
 }
+
 .error-message {
     width: max-width;
     text-align: center;
     font-size: 1.5em;
     color: darkred
 }
+
 #custom-search-input {
     padding: 3px;
     border: solid 1px #E4E4E4;
     border-radius: 4px;
     background-color: #fff;
 }
+
 #custom-search-input input {
     border: 0;
     box-shadow: none;
 }
+
 #editAttributeTable .form-group {
     margin-bottom: 0px;
 }
+
 .selected-db-table-name {
     background-color: #B9E0A5;
 }
+
 #table-selector {
     max-height: 300px;
     overflow: auto;
     background: whitesmoke;
 }
+
 #table-selector ul {
     margin: 0;
     margin-top: 0.25em;
     padding-left: 20px;
 }
+
 #table-selector li {
     list-style: none;
     cursor: pointer;
 }
+
 #table-selector .listitem {
     padding: 0.25em;
 }
+
 .table.table-bordered.attributes {
     border-collapse: collapse;
     width: 100%;
@@ -106,6 +126,7 @@
     border: none !important;
     padding: 8px;
 }
+
 .table.table-bordered.attributes th {
     padding-top: 12px;
     padding-bottom: 12px;
@@ -113,9 +134,12 @@
     background-color: #B9E0A5 !important;
     border: none !important;
 }
+
 .table.table-bordered.attributes td {
     border: none !important;
+    background: mintcream;
 }
+
 .deselect-table-button {
     border: none;
     background-color: transparent;

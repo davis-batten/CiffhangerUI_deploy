@@ -121,7 +121,7 @@
         <div class="modal-body an" ng-show="!queryRanFine">
             <div ng-show="connectionFailed" class="text-danger">
                 <h4> Failed to run query</h4>
-                <!--<p>{{errorMsg}}</p>-->
+                <p>{{errorMsg}}</p>
             </div>
             <div ng-show="noResults" class="text-danger">
                 <h4>No Results </h4>
@@ -200,7 +200,7 @@
     </div>
     <div class="modal-footer an" ng-show="shouldShowNotifyDevsForm">
         <button class="btn btn-warning pull-left" ng-show="!reportSubmitted" type="button" ng-click="hideNotifyDevsForm()">Cancel</button>
-        <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="reportProblem()">Send to Developers</button>
+        <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="reportProblem()" ng-disabled="newProblemInput.subject.length == 0">Send to Developers</button>
         <button class="btn btn-success pull-right" type="button" ng-click="cancel()" ng-show="reportSubmitted">Ok</button>
     </div>
     <!-- Send request to dev form -->

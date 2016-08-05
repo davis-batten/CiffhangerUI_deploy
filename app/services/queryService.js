@@ -21,7 +21,7 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
                 query: sql,
                 username: $rootScope.user.username
             }
-            $log.log("username",$rootScope.user.username)
+            $log.log("username", $rootScope.user.username)
             return $http.post($rootScope.baseUrl + '/query/run/', input).then(
                 //success callback
                 function (response) {
@@ -29,9 +29,7 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
                     return response.data;
                 }, //error callback
                 function (response) {
-                    $log.error('Failure!');
-                    $log.error(response);
-                    return $q.reject(response);
+                    return $q.reject(response.data);
                 });
         }
         //this service method saves a query on the backend
@@ -88,29 +86,33 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
         }
         //this service method gets all existing Queries from the backend
     this.getAllQueries = function () {
-        return $http.get($rootScope.baseUrl + '/query/list').then(function (response) { //success callback
-            $log.info(response); //list all data from response
-            if (response.data.status == 'Success') {
+        return $http.get($rootScope.baseUrl + '/query/list').then(
+            //success
+            function (response) {
+                $log.info(response); //list all data from response
                 $log.info('Successfully retrieved queries');
                 return response.data;
-            } else {
+            },
+            //error
+            function (response) {
                 $log.warn('Failed to retrieve queries');
                 return $q.reject(response.data);
-            };
-        });
+            });
     }
 
     this.getUserQueries = function () {
-        return $http.get($rootScope.baseUrl + '/query/userQueries/' + $rootScope.user.username).then(function (response) {
-            $log.info(response); //list all data from response
-            if (response.data.status == 'Success') {
+        return $http.get($rootScope.baseUrl + '/query/userQueries/' + $rootScope.user.username).then(
+            //success
+            function (response) {
+                $log.info(response); //list all data from response
                 $log.info('Successfully retrieved queries');
                 return response.data;
-            } else {
+            },
+            //error
+            function (response) {
                 $log.warn('Failed to retrieve queries');
                 return $q.reject(response.data);
-            };
-        });
+            });
     }
 
 

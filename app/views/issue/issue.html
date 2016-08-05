@@ -1,6 +1,6 @@
 <div ng-include="'/views/navbar.html'"></div>
 <div class="container-fluid">
-    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</uib-alert> <a class="btn btn-default" href="#/messageboard">Return</a>
+    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert> <a class="btn btn-default" href="#/messageboard">Return</a>
     <h2>{{issue.subject}}</h2>
     <button class="btn btn-danger .openLabel" ng-hide="issue.open" ng-click="toggleOpen()" uib-tooltip="Open issue"><span class="fa fa-times-circle"></span>&nbsp;Closed </button>
     <button class="btn btn-success .openLabel" ng-show="issue.open" ng-click="toggleOpen()" uib-tooltip="Close issue"><span class="fa fa-check-circle"></span>&nbsp;Open </button>
