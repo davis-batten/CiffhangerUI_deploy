@@ -79,7 +79,7 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, user
         $log.log(u);
         var nameTemp = u.username;
         var modalInstance = $uibModal.open({
-            templateUrl: 'userUpdate.html',
+            templateUrl: 'views/user/modals/userUpdate.html',
             controller: 'UpdateUserModalCtrl',
             size: 'lg',
             resolve: {
@@ -128,7 +128,7 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, user
     $scope.deleteUser = function (u) {
         $log.warn('delete', u);
         var modalInstance = $uibModal.open({
-            templateUrl: 'userDelete.html',
+            templateUrl: 'views/user/modals/userDelete.html',
             controller: 'UserDeleteModalCtrl',
             size: 'md',
             resolve: {

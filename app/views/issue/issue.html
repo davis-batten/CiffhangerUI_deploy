@@ -1,4 +1,6 @@
 <div ng-include="'/views/navbar.html'"></div>
+
+<!-- Page Content -->
 <div class="container-fluid">
     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert> <a class="btn btn-default" href="#/messageboard">Return</a>
     <h2>{{issue.subject}}</h2>

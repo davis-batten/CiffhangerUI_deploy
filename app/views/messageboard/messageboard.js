@@ -95,7 +95,7 @@ messageboard.controller('MessageBoardCtrl', function ($rootScope, $log, $scope, 
     $scope.newIssue = function () {
         var input = $scope.input;
         var modalInstance = $uibModal.open({
-            templateUrl: 'newIssueModal.html',
+            templateUrl: 'views/messageboard/modals/newIssueModal.html',
             controller: 'NewIssueModalInstanceCtrl',
             size: 'lg'
         });

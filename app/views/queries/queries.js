@@ -103,7 +103,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, $location, 
     //opens view modal
     $scope.view = function (q) {
         var modalInstance = $uibModal.open({
-            templateUrl: 'viewQueryModalContent.html',
+            templateUrl: 'views/queries/modals/queryView.html',
             controller: 'ViewQueryModalInstanceCtrl',
             size: 'lg',
             resolve: {
@@ -121,7 +121,7 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, $location, 
     //opens deleteQuery modal for query q
     $scope.deleteQuery = function (q) {
         var modalInstance = $uibModal.open({
-            templateUrl: 'queryDelete.html',
+            templateUrl: 'views/queries/modals/queryDelete.html',
             controller: 'QueryDeleteModalCtrl',
             size: 'md',
             resolve: {
