@@ -17,7 +17,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.selectedDatasets = [];
     //selected join tags
     $scope.selectedTags = [];
-     //select columns for query
+    //select columns for query
     $scope.selectedColumns = [];
     //
     $scope.alreadyUsedDatasets = [];
@@ -31,7 +31,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.numJoins = 0;
     //
     $scope.datasets = datasets;
-     //
+    //
     $scope.postReportSubmissionMessage = "";
     //whether to include joined column in select
     $scope.addJoinColumn = false;
@@ -53,7 +53,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.reportSubmitted = false;
     //
     $scope.shouldShowNotifyDevsForm = false;
-     //
+    //
     $scope.newProblemInput = {
         subject: '',
         body: ''
@@ -242,6 +242,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
             },
             //error callback
             function (error) {
+                $scope.progressType = 'danger';
                 $scope.alerts.push({
                     msg: error.message,
                     type: 'danger'
