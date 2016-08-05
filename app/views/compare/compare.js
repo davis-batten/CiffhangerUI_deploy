@@ -44,37 +44,31 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
     };
     //helper method to initialize all the necessary scope variables using asynchrounous calls
     function initalize() {
-        datasetService.getAllDatasets().then(function (data) {
-            if (data.status == 'Success') {
-                $scope.datasets = data.data.sort(ignoreCase);
-            } else {
+        datasetService.getAllDatasets().then(
+            //success
+            function (data) {
+                $scope.datasets = data.sort(ignoreCase);
+            },
+            //error
+            function (error) {
                 $scope.alerts.push({
-                    msg: data,
+                    msg: error.message,
                     type: 'danger'
                 });
-            }
-        }, function (res) {
-            $scope.alerts.push({
-                msg: "Failed to load datasets",
-                type: 'danger'
             });
-        });
-        tagService.getAllTags().then(function (data) {
-            if (data.status == 'Success') {
-                $scope.tags = data.data.sort(ignoreCase);
+        tagService.getAllTags().then(
+            //success
+            function (data) {
+                $scope.tags = data.sort(ignoreCase);
                 $scope.tags.splice(0, 1); //remove empty tag from beginning of tag list
-            } else {
+            },
+            //error
+            function (error) {
                 $scope.alerts.push({
-                    msg: data.data,
+                    msg: error.message,
                     type: 'danger'
                 });
-            }
-        }, function (res) {
-            $scope.alerts.push({
-                msg: "Failed to load datasets",
-                type: 'danger'
             });
-        });
     }
     initalize();
     //filter the tags available to the typeahead

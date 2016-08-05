@@ -156,11 +156,6 @@ queries.controller('QueriesCtrl', function ($scope, $uibModal, $log, $location, 
         });
     };
 });
-
-<<<<<<< HEAD
-
-=======
->>>>>>> gitblit/master
 //controller for an instance of ViewQueryModal
 queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInstance, $log, query, queryService, issueService) {
     //
@@ -173,7 +168,7 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     $scope.tableResult = {};
     //list of alerts
     $scope.alerts = [];
-     //
+    //
     $scope.postReportSubmissionMessage = "";
     //
     $scope.isSaveCollapsed = true;
@@ -193,10 +188,10 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
     $scope.shouldShowRequestForm = false;
     //initialize new problem
     $scope.newProblemInput = {
-        subject: '',
-        body: ''
-    }
-    //initialize a new request
+            subject: '',
+            body: ''
+        }
+        //initialize a new request
     $scope.newRequestInput = {
         subject: '',
         body: '',
