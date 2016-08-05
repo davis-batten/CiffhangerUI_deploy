@@ -32,7 +32,6 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
                 pinnedLeft: true, // Pins this column to the left so dataset names are still displayed if you scroll horizontally
                 width: 200,
                 enableColumnMenu: false, // Disables dropdown menu holding sort options
-
                 headerCellClass: 'matrix-header',
                 cellClass: 'matrix-row-header'
             }
