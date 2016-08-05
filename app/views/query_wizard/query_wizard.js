@@ -1,37 +1,65 @@
 'use strict';
 var query_wizard = angular.module('cliffhanger.query_wizard', ['ngRoute', 'ngSanitize', 'ngCsv']);
 query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibModalInstance, $log, datasets, queryService, issueService) {
-    $scope.query = {}; //container for query
+    //container for query
+    $scope.query = {};
+    //list of alerts
     $scope.alerts = [];
+    //
     $scope.dataTypeCheck = [];
+    //container for list results
     $scope.tableResult = {};
+    //array of selected items from each page of the modal
     $scope.selected = {};
-    $scope.step = 1; //which step in the modal is on
-    $scope.maxSteps = 5; //number of steps in modal
+    //TODO load based upon datasets
+    $scope.tags = [];
+    //datasets selected to be joined
+    $scope.selectedDatasets = [];
+    //selected join tags
+    $scope.selectedTags = [];
+     //select columns for query
+    $scope.selectedColumns = [];
+    //
+    $scope.alreadyUsedDatasets = [];
+    //
+    $scope.alreadyUsedTags = [];
+    //which step in the modal is on
+    $scope.step = 1;
+    //number of steps in modal
+    $scope.maxSteps = 5;
+    //initialize number of joins for each query
+    $scope.numJoins = 0;
+    //
     $scope.datasets = datasets;
-    $scope.tags = []; //TODO load based upon datasets
-    $scope.addJoinColumn = false; //whether to include joined column in select
-    $scope.selectedDatasets = []; //datasets selected to be joined
-    $scope.selectedTags = []; //selected join tags
-    $scope.selectedColumns = []; //select columns for query
+     //
+    $scope.postReportSubmissionMessage = "";
+    //whether to include joined column in select
+    $scope.addJoinColumn = false;
     //for save query dropdown
     $scope.isSaveCollapsed = true;
+    //
     $scope.showExit = false;
+    //
     $scope.download = false;
+    //
     $scope.loadingPreview = false;
-    $scope.alreadyUsedDatasets = [];
-    $scope.alreadyUsedTags = [];
-    $scope.numJoins = 0;
+    //
     $scope.queryRanFine = true;
+    //
     $scope.connectionFailed = false;
+    //
     $scope.noResults = false;
-    $scope.postReportSubmissionMessage = "";
+    //
     $scope.reportSubmitted = false;
+    //
+    $scope.shouldShowNotifyDevsForm = false;
+     //
     $scope.newProblemInput = {
         subject: ''
         , body: ''
     }
-    $scope.shouldShowNotifyDevsForm = false;
+
+
     //method responsible for handling changes due to checkboxes
     //d -> item selected/deselected
     //selections -> array to add/remove item
@@ -50,6 +78,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         }
         $log.debug('selected', selections);
     };
+
     //method responsible for handling changes due to checkboxes
     //d -> item selected/deselected
     //selections -> array to add/remove item
@@ -68,6 +97,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         }
         $log.debug(selections);
     };
+
     //load the joinable tags only in the selected datasets
     $scope.loadTags = function () {
         if ($scope.selectedDatasets[$scope.numJoins] != undefined) {
@@ -88,6 +118,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         }
         else $scope.tags = [];
     };
+
     //advance the modal to the next step
     $scope.next = function () {
         $scope.step++;
@@ -105,6 +136,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
             $scope.runNewQuery();
         }
     };
+
     //go back a step in the modal
     $scope.previous = function () {
         $scope.step--;
@@ -125,6 +157,8 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
             $scope.tableResult = null;
         }
     };
+
+    //saves selected datasets and already used datasets for next page
     $scope.archiveDatasets = function () {
         for (var i = 0; i < $scope.selectedDatasets.length; i++) {
             if ($scope.alreadyUsedDatasets.indexOf($scope.selectedDatasets[i]) == -1) {
@@ -132,12 +166,16 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
             }
         }
     };
+
+    //saves selected tags and already used tags for next page
     $scope.archiveTags = function () {
         for (var i = 0; i < $scope.selectedTags.length; i++) {
             $scope.alreadyUsedTags.push($scope.selectedTags[i]);
         }
         $log.debug('archivedTags', $scope.alreadyUsedTags);
     };
+
+    //select all info from a dataset
     $scope.selectAllFromDataset = function (dataset) {
         for (var i = 0; i < dataset.attributes.length; i++) {
             var a = dataset.attributes[i];
@@ -160,10 +198,12 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
             }
         }
     };
+
     //dismiss the modal
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
+
     //add where and limit clause to SQL query string
     $scope.addToQuery = function () {
         if (($scope.statement.where == undefined && $scope.statement.limit == undefined) || ($scope.statement.where == "" && $scope.statement.limit == "") || ($scope.statement.where == undefined && $scope.statement.limit == "") || ($scope.statement.where == "" && $scope.statement.limit == undefined)) {
@@ -183,6 +223,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         }
         $log.debug($scope.statement);
     };
+
     //build a new query given the user's choices
     $scope.buildQuery = function () {
         //query input packaged
@@ -212,6 +253,7 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
             }
         });
     };
+
     //complete the modal
     $scope.save = function () {
         if ($scope.statement != undefined) {
@@ -242,6 +284,8 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
             $log.debug($scope.statement);
         });
     };
+
+    //sends new query to hive
     $scope.runNewQuery = function () {
         $scope.loadingPreview = true;
         if ($scope.statement != undefined) {
@@ -273,12 +317,16 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
                 $log.error('Failed to connect to server');
             });
     };
+
+    //loads the tags when on page 2
     $scope.$watch('selectedDatasets', function () {
         if ($scope.step == 2) {
             $log.debug("load tags");
             $scope.loadTags();
         }
     }, true);
+
+    //starts another join page on modal instead of next step
     $scope.addAnotherJoin = function () {
         $log.debug('add another join');
         $scope.archiveDatasets();
@@ -291,12 +339,18 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         $scope.numJoins++;
         $log.debug('dataset', $scope.selectedDatasets);
     };
+
+    //
     $scope.showNotifyDevsForm = function () {
         $scope.shouldShowNotifyDevsForm = true;
     };
+
+    //
     $scope.hideNotifyDevsForm = function () {
         $scope.shouldShowNotifyDevsForm = false;
     };
+
+    //creates a discussion thread
     $scope.reportProblem = function () {
         issueService.createIssue($scope.newProblemInput).then(function (response) {
             // success

@@ -7,25 +7,35 @@ var tags = angular.module('cliffhanger.tags', ['ngRoute']).config(['$routeProvid
 }]);
 //main controller for /#/developer/tags
 tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagService, $rootScope) {
-    $scope.selected = undefined;
-    $scope.noResults = false;
-    $scope.alerts = []; //list of alerts to show to user
+    //list of alerts to show to user
+    $scope.alerts = [];
     //set theme color
     $rootScope.theme.color = 'green';
+    //
+    $scope.selected = undefined;
+    //
+    $scope.isCollapsed = true;
+    //
+    $scope.noResults = false;
+    //alphabetically compare two strings, ignoring case
+    var ignoreCase = function (a, b) {
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+    }
+
+
+     //redirect to login if unknown user
     $rootScope.$watch('user', function () {
         if ($rootScope.user.username == null) {
             $location.url('/');
         }
     });
-    $scope.isCollapsed = true;
+
     //closes an alert
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);
     };
-    //alphabetically compare two strings, ignoring case
-    var ignoreCase = function (a, b) {
-        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-    }
+
+    //gets all tags
     $scope.getAllTags = function () {
         tagService.getAllTags().then(function (data) {
             $log.debug('response', data);
@@ -39,6 +49,7 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
         })
     };
     $scope.getAllTags();
+
     //opens addTagModal
     $scope.add = function () {
         var modalInstance = $uibModal.open({
@@ -57,6 +68,7 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
             $scope.tags.sort(ignoreCase);
         });
     };
+
     //opnes delete modal for tag d
     $scope.delete = function (t) {
         $log.warn('delete', t);
@@ -98,6 +110,7 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
             });
         });
     };
+
     //opens update modal for tag t
     $scope.update = function (t) {
         $log.log(t);
@@ -131,13 +144,16 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
                     else {
                         $log.warn("Failed to update");
                     }
-                }, //error callback
+                },
+                //error callback
                 function () {
                     $log.error("Failed to connect");
                 });
         });
     };
 });
+
+
 //controller for an instance of addTagModal
 tags.controller('AddTagModalInstanceCtrl', function ($scope, $uibModalInstance, $log) {
     $scope.input = {};
@@ -150,6 +166,7 @@ tags.controller('AddTagModalInstanceCtrl', function ($scope, $uibModalInstance, 
         $uibModalInstance.dismiss('cancel');
     };
 });
+
 //controller for instance of TagUpdateModal
 tags.controller('TagUpdateModalCtrl', function ($scope, $uibModalInstance, $log, tag) {
     $scope.tag = tag;
@@ -167,6 +184,7 @@ tags.controller('TagUpdateModalCtrl', function ($scope, $uibModalInstance, $log,
         $uibModalInstance.dismiss('cancel');
     };
 });
+
 //controller for instance of TagDeleteModal
 tags.controller('TagDeleteModalCtrl', function ($scope, $uibModalInstance, $log, tag) {
     $scope.tag = tag;
