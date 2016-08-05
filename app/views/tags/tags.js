@@ -23,7 +23,7 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
     }
 
 
-     //redirect to login if unknown user
+    //redirect to login if unknown user
     $rootScope.$watch('user', function () {
         if ($rootScope.user.username == null) {
             $location.url('/');
@@ -56,7 +56,7 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
     //opens addTagModal
     $scope.add = function () {
         var modalInstance = $uibModal.open({
-            templateUrl: 'addTagModalContent.html',
+            templateUrl: 'views/tags/modals/tagAdd.html',
             controller: 'AddTagModalInstanceCtrl',
             size: 'lg'
         });
@@ -85,7 +85,7 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
     $scope.delete = function (t) {
         $log.warn('delete', t);
         var modalInstance = $uibModal.open({
-            templateUrl: 'tagDelete.html',
+            templateUrl: 'views/tags/modals/tagDelete.html',
             controller: 'TagDeleteModalCtrl',
             size: 'md',
             resolve: {
@@ -126,7 +126,7 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
         $log.log(t);
         var nameTemp = t.name;
         var modalInstance = $uibModal.open({
-            templateUrl: 'tagUpdate.html',
+            templateUrl: 'views/tags/modals/tagUpdate.html',
             controller: 'TagUpdateModalCtrl',
             size: 'lg',
             resolve: {

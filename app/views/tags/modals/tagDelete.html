@@ -1,0 +1,14 @@
+<!-- Delete Tag Modal -->
+<div class="modal-header dev">
+    <div class="row">
+        <div class="col-xs-11">
+            <h3 class="modal-title inline">Delete Hook: {{tag.name}}</h3> </div>
+    </div>
+</div>
+<div class="modal-body dev">
+    <p>Are you sure you want to delete <em><strong>{{tag.name}}</strong></em>? This action cannot be undone!</p>
+</div>
+<div class="modal-footer dev">
+    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
+</div>
