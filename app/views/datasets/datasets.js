@@ -94,7 +94,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
     //opens addDatasetModal
     $scope.open = function () {
         var modalInstance = $uibModal.open({
-            templateUrl: 'addDatasetModalContent.html',
+            templateUrl: 'views/datasets/modals/datasetAdd.html',
             controller: 'AddDatasetModalInstanceCtrl',
             size: 'lg'
         });
@@ -109,7 +109,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
 
     $scope.previewDataset = function (d) {
         var modalInstance = $uibModal.open({
-            templateUrl: 'datasetPreview.html',
+            templateUrl: 'views/datasets/modals/datasetPreview.html',
             controller: 'DatasetPreviewModalCtrl',
             size: 'lg',
             resolve: {
@@ -125,7 +125,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
         $log.log(d);
         var nameTemp = d.name;
         var modalInstance = $uibModal.open({
-            templateUrl: 'datasetUpdate.html',
+            templateUrl: 'views/datasets/modals/datasetUpdate.html',
             controller: 'DatasetUpdateModalCtrl',
             size: 'lg',
             resolve: {
@@ -167,7 +167,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
     $scope.deleteDataset = function (d) {
         $log.log(d);
         var modalInstance = $uibModal.open({
-            templateUrl: 'datasetDelete.html',
+            templateUrl: 'views/datasets/modals/datasetDelete.html',
             controller: 'DatasetDeleteModalCtrl',
             size: 'md',
             resolve: {

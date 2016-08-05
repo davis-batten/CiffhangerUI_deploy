@@ -1,0 +1,39 @@
+<!-- View Dataset Preview -->
+
+<div class="modal-header dev" ng-show="queryRanFine">
+    <div class="row">
+        <div class="col-xs-11">
+            <h3 class="modal-title inline">{{dataset.name}}</small></h3> </div>
+        <div class="col-xs-1">
+            <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
+        </div>
+    </div>
+</div>
+<div class="modal-body dev" ng-show="queryRanFine">
+    <p><em>Note: Preview will only show the first 5 results.</em></p> <img id="loadingIcon" src="../../resources/rolling_loader.svg" ng-show="loadingPreview">
+    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+    <div class="" id="queryResultsTable">
+        <table class="table table-bordered attributes">
+            <thead>
+                <th ng-repeat="column in tableResult.colNames"> {{column}} </th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in tableResult.rows">
+                    <td ng-repeat="cell in row track by $index">{{cell}}</td>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- modal body when error -->
+<div class="modal-header dev" ng-show="!queryRanFine">
+    <div class="row">
+        <div class="col-xs-11">
+            <h3 class="modal-title inline">Encountered Problem Previewing {{dataset.name}}</h3> </div>
+        <div class="col-xs-1">
+            <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
+        </div>
+    </div>
+</div>
+<div class="modal-body dev" ng-show="!queryRanFine">
+    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+</div>

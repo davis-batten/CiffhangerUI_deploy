@@ -1,0 +1,63 @@
+<!-- Update Dataset Modal -->
+
+<div class="modal-header dev">
+    <div class="row">
+        <div class="col-xs-11">
+            <h3 class="modal-title inline">Edit Dataset</h3> </div>
+        <div class="col-xs-1">
+            <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
+        </div>
+    </div>
+</div>
+<div class="modal-body dev">
+    <form name="editForm">
+        <div class="form-group">
+            <label for="datasetName">Name</label>
+            <input type="text" class="form-control" name="name" id="datasetName" ng-model="input.name" required> </div>
+        <div class="form-group">
+            <label for="datasetDesc">Description</label>
+            <input type="text" class="form-control" id="datasetDesc" ng-model="input.description"> </div>
+        <div class="form-group">
+            <label for="newDatasetTableName">Database Table Name</label>
+            <input type="text" class="form-control" id="newDatasetTableName" ng-model="input.db_table_name"> </div>
+        <div class="form-group">
+            <label for="datasetCreatedBy">Created By</label>
+            <br> {{dataset.createdBy}}
+        </div>
+        <div>
+            <label for="editAttributeTable">Attributes</label>
+            <table id="editAttributeTable" class="table table-bordered attributes">
+                <thead>
+                    <th><b>Column Name</b></th>
+                    <th><b>Description</b></th>
+                    <th><b>Data Type</b></th>
+                    <th><b>Hook</b></th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="attr in dataset.attributes">
+                        <td>{{attr.col_name}}</td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" ng-model="attr.description"> </div>
+                        </td>
+                        <td>{{attr.data_type}}</td>
+                        <td> {{attr.tag.name}}
+                            <div class="col-md-6 pull-right">
+                                <div class="btn-group" uib-dropdown is-open="attr.isopen" ng-show="attr.tag.name=='<EMPTY>'">
+                                    <button id="tag-dropdown" type="button" class="btn btn-primary btn-sm dropdown-toggle" uib-dropdown-toggle><span class="fa fa-plus"></span></button>
+                                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="tag-dropdown">
+                                        <li ng-repeat="tag in tags" role="menuitem"><a prevent-default ng-click="replaceTag($parent.$index, tag)">{{tag.name}} : {{tag.description}}</a></li>
+                                    </ul>
+                                </div>
+                                <button class="btn btn-danger btn-sm" ng-show="attr.tag.name!='<EMPTY>'" ng-click="removeTag($index)"><span class="fa fa-times"></span></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+<div class="modal-footer dev">
+    <button form="editForm" class="btn btn-success" type="button" ng-disabled="editForm.name.$invalid" ng-click="complete()">Save Changes</button>
+</div>
