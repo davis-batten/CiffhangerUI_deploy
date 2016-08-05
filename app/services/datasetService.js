@@ -94,6 +94,7 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
             function (response) {
                 //            function called after error
                 $log.info("failed to retrieve hive tables");
+                $log.error(response);
                 return $q.reject(response.data);
             });
     }
