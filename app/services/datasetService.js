@@ -54,7 +54,7 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
         return $http.delete($rootScope.baseUrl + '/dataset/delete/' + datasetName).then(
             //success
             function (response) {
-                $log.info('Successfully deleted dataset ' + datasetName);
+                $log.info('Successfully deleted dataset ', datasetName);
                 return response.data;
             },
             //error
