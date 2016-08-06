@@ -6,49 +6,44 @@ angular.module('cliffhanger.datasets', ['ngRoute']).config(['$routeProvider', fu
     });
 }]);
 var datasets = angular.module('cliffhanger.datasets');
-//main controller for dataset page
+
+// Main controller for dataset page
 datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location, datasetService, $rootScope) {
-    $log.warn($rootScope);
 
     // List of selected attribtues
     $scope.selected = [];
 
-    // Flag for when the "No datasets" message should be displayed
-    $scope.showNoDatasetsMessage = false;
-
     // List of alerts to show to user
     $scope.alerts = [];
 
-    //closes an alert
-    $scope.closeAlert = function (index) {
-        $scope.alerts.splice(index, 1);
-    };
+    $scope.showNoDatasetsMessage = false;
 
-    //set theme color
+    // Default dataset property to sort by
+    $scope.propertyToSortyBy = 'name';
+
     $rootScope.theme.color = 'green';
 
+    // Bring user to log in screen if not authenticated
     $rootScope.$watch('user', function () {
         if ($rootScope.user.username == null) {
             $location.url('/');
         }
     });
-    $scope.isCollapsed = true;
 
-    //for sort by dropdown
-    $scope.propertyName = 'name';
-    $scope.toggleSortByDropdown = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.status.sortbyisopen = !$scope.status.sortbyisopen;
-    };
-    $scope.setSort = function (sort) {
-        $scope.propertyName = sort;
-        $scope.reverse = false;
-        if (sort == 'dateCreatedReverse') {
-            $scope.propertyName = 'dateCreated';
-            $scope.reverse = true;
+
+    $scope.setPropertyToSortBy = function (newSortProperty) {
+        $scope.propertyToSortyBy = newSortProperty;
+        $scope.shouldSortInReverse = false;
+        if (newSortProperty == 'dateCreatedReverse') {
+            $scope.propertyToSortyBy = 'dateCreated';
+            $scope.shouldSortInReverse = true;
         }
 
+    };
+
+    //closes an alert
+    $scope.closeAlert = function (index) {
+        $scope.alerts.splice(index, 1);
     };
 
     //alphabetically compare two strings, ignoring case
