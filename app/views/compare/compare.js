@@ -278,37 +278,23 @@ angular.module('cliffhanger.compare', ['ngRoute']).config(['$routeProvider', fun
 
     // Asynchrounously retrieve the datasets and tags, to be used on page load
     var initialize = function () {
-        datasetService.getAllDatasets().then(function (data) {
-            if (data.status == 'Success') {
-                // sort the retireved datasets alphabetically by name and save them
-                $scope.datasets = data.data.sort(compareAplphaIgnoreCase);
-            } else {
-                $scope.alerts.push({
-                    msg: data,
-                    type: 'danger'
-                });
-            }
-        }, function (res) {
+        datasetService.getAllDatasets().then(function (response) {
+            // sort the retireved datasets alphabetically by name and save them
+            $scope.datasets = response.sort(compareAplphaIgnoreCase);
+        }, function (error) {
             $scope.alerts.push({
-                msg: "Failed to load datasets",
+                msg: error.message,
                 type: 'danger'
             });
         });
-        tagService.getAllTags().then(function (data) {
-            if (data.status == 'Success') {
-                // sort the retireved tags alphabetically by name and save them
-                $scope.tags = data.data.sort(compareAplphaIgnoreCase);
-                // remove empty tag from beginning of tag list
-                $scope.tags.splice(0, 1);
-            } else {
-                $scope.alerts.push({
-                    msg: data.data,
-                    type: 'danger'
-                });
-            }
-        }, function (res) {
+        tagService.getAllTags().then(function (response) {
+            // sort the retireved tags alphabetically by name and save them
+            $scope.tags = response.sort(compareAplphaIgnoreCase);
+            // remove empty tag from beginning of tag list
+            $scope.tags.splice(0, 1);
+        }, function (error) {
             $scope.alerts.push({
-                msg: "Failed to load datasets",
+                msg: error.message,
                 type: 'danger'
             });
         });

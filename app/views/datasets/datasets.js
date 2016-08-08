@@ -30,7 +30,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
         }
     });
 
-
+    // On click: item in SORT BY dropdown
     $scope.setPropertyToSortBy = function (newSortProperty) {
         $scope.propertyToSortyBy = newSortProperty;
         $scope.shouldSortInReverse = false;
@@ -41,28 +41,23 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
 
     };
 
-    //closes an alert
+    // On click: X in <uib-alert> element
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);
     };
 
-    //alphabetically compare two strings, ignoring case
-    var ignoreCase = function (a, b) {
-            return a.meta_name.toLowerCase().localeCompare(b.meta_name.toLowerCase());
-        }
-        // getTags();
+
     var getDatasets = function () {
         $scope.showProgressBar = true;
         datasetService.getAllDatasets().then(
             //success
             function (response) {
                 $scope.showProgressBar = false;
-                $scope.showNoDatasetsMessage = false;
                 $scope.datasetList = eval(response);
                 $log.debug($scope.datasetList);
                 if ($scope.datasetList.length == 0) {
                     $scope.showNoDatasetsMessage = true;
-                }
+                } else $scope.showNoDatasetsMessage = false;
 
             },
             //error
@@ -77,7 +72,6 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
     getDatasets();
 
     var createDataset = function (newDataSet) {
-        $scope.showNoDatasetsMessage = false;
         $scope.showProgressBar = true;
         datasetService.addDataset(newDataSet).then(
             //success
@@ -95,13 +89,14 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
             });
     };
 
-    //opens addDatasetModal
-    $scope.open = function () {
+    // On click: ADD DATASET
+    $scope.openAddDatasetModal = function () {
         var modalInstance = $uibModal.open({
             templateUrl: 'views/datasets/modals/datasetAdd.html',
             controller: 'AddDatasetModalInstanceCtrl',
             size: 'lg'
         });
+        // save dataset when modal is closed
         modalInstance.result.then(function (newDataSet) {
             $log.info('Modal dismissed at: ' + new Date());
             $log.info('Name : ' + newDataSet.name);
@@ -165,7 +160,6 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
             }
         });
     };
-
 
     //opens deleteDataset modal for dataset d
     $scope.deleteDataset = function (d) {
@@ -275,11 +269,6 @@ datasets.controller('AddDatasetModalInstanceCtrl', function ($scope, $uibModalIn
 
     //complete the modal
     $scope.submit = function () {
-        if ($scope.input.attributes == null) {
-            var temp = {};
-            Object.assign(temp, $scope.newAttribute);
-            $scope.input.attributes.push(temp);
-        }
         $uibModalInstance.close($scope.input);
     };
     //dismiss the modal
