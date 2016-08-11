@@ -70,19 +70,17 @@ angular.module('cliffhanger.queries').service('queryService', function ($log, $h
     //this service method deletes a specified query on the backend
     this.deleteQuery = function (query) {
             $log.log(query)
-            return $http.post($rootScope.baseUrl + '/query/delete', query).then(function (response) { //success callback
-                $log.info(response); //list all data from response
-                if (response.data.status == 'Success') {
-                    $log.info('Successfully deleted query ', query);
+            return $http.post($rootScope.baseUrl + '/query/delete', query).then( //success
+                function (response) {
+                    $log.debug('Success!');
+                    $log.log(response);
                     return response.data;
-                } else {
-                    $log.warn('Failed to delete ', query);
-                    return $q.reject(response.data);
-                }
-            }, function (response) { //error callback
-                $log.warn(response);
-                return $q.reject(response);
-            });
+                },
+                //error callback
+                function (response) {
+                    $log.warn('Failure');
+                    $log.warn(response);
+                });
         }
         //this service method gets all existing Queries from the backend
     this.getAllQueries = function () {
