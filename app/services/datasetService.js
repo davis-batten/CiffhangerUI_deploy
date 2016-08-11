@@ -1,54 +1,53 @@
 //service for dealing with datasets on the Grails backend using REST API
 angular.module('cliffhanger.datasets').service('datasetService', function ($log, $http, $rootScope, $q) {
-    //this service method creates a new Dataset on the backend
-    this.addDataset = function (newDataset) {
-            $log.log("calling addDataset with: " + JSON.stringify(newDataset));
-            //$log.log("newDataSet createdBy: " + JSON.stringify(newDataset.createdBy));
-            return $http.post($rootScope.baseUrl + '/dataset/create', newDataset).then(
-                //success callback
-                function (response) {
-                    $log.info('Success!');
-                    $log.info(response);
-                    return response.data;
-                }, //error callback
-                function (response) {
-                    $log.warn('Failure!');
-                    $log.warn(response);
-                    return $q.reject(response.data);
-                });
-        }
-        //this service method gets all existing Datasets from the backend
-    this.getAllDatasets = function () {
-            return $http.get($rootScope.baseUrl + '/dataset/list').then(
-                //success
-                function (response) {
-                    $log.info(response); //list all data from response
-                    $log.info('Successfully retrieved datasets');
-                    return response.data;
 
-                },
-                //error
-                function (response) {
-                    $log.warn(response);
-                    return $q.reject(response.data);
-                });
-        }
-        //this service method updates a specified dataset on the backend
+    this.addDataset = function (newDataset) {
+        $log.log("calling addDataset with: " + JSON.stringify(newDataset));
+        return $http.post($rootScope.baseUrl + '/dataset/create', newDataset).then(
+            //success callback
+            function (response) {
+                $log.info('Success!');
+                $log.info(response);
+                return response.data;
+            }, //error callback
+            function (response) {
+                $log.warn('Failure!');
+                $log.warn(response);
+                return $q.reject(response.data);
+            });
+    }
+
+    this.getAllDatasets = function () {
+        return $http.get($rootScope.baseUrl + '/dataset/list').then(
+            //success
+            function (response) {
+                $log.info(response); //list all data from response
+                $log.info('Successfully retrieved datasets');
+                return response.data;
+
+            },
+            //error
+            function (response) {
+                $log.warn(response);
+                return $q.reject(response.data);
+            });
+    }
+
     this.updateDataset = function (prevName, dataset) {
-            var input = {
-                username: $rootScope.user.username,
-                dataset: dataset
-            }
-            return $http.put($rootScope.baseUrl + '/dataset/update/' + prevName, input).then(
-                //success callback
-                function (response) {
-                    return response.data;
-                }, //error callback
-                function (response) {
-                    return $q.reject(response.data);
-                });
+        var input = {
+            username: $rootScope.user.username,
+            dataset: dataset
         }
-        //this service method deletes a specified dataset from the backend
+        return $http.put($rootScope.baseUrl + '/dataset/update/' + prevName, input).then(
+            //success callback
+            function (response) {
+                return response.data;
+            }, //error callback
+            function (response) {
+                return $q.reject(response.data);
+            });
+    }
+
     this.deleteDataset = function (dataset) {
         var datasetName = dataset.name;
         return $http.delete($rootScope.baseUrl + '/dataset/delete/' + datasetName).then(
@@ -64,7 +63,7 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
             });
     }
 
-    // this service method gets a list of column data from a hive table including column names and data types
+    // Import a list of Attribute objects for a dataset which already have the col_names and data_types filled in using a string containing databaseName.tableName
     this.getHiveTableSchema = function (dbTableName) {
         var dbTableInfo = {
             db_table_name: dbTableName,
@@ -83,7 +82,7 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
             });
     }
 
-    // this service method gets a list of DB_Name.Table_Names 
+    // Get a list of DB_Name.Table_Names 
     this.getAllTables = function () {
         return $http.get($rootScope.baseUrl + '/dataset/listHiveTables/' + $rootScope.user.username).then(
             function (response) {
@@ -99,7 +98,7 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
             });
     }
 
-    // this service method gets the first 5 rows of a dataset
+    // Get first 5 rows of a data for the specified dataset
     this.previewDataset = function (dataset) {
         $log.debug('dataset', dataset)
         var allColumnNames = ""

@@ -9,6 +9,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal-body dev">
     <form name="editForm">
         <div class="form-group">
@@ -22,7 +23,7 @@
             <input type="text" class="form-control" id="newDatasetTableName" ng-model="input.db_table_name"> </div>
         <div class="form-group">
             <label for="datasetCreatedBy">Created By</label>
-            <br> {{dataset.createdBy}}
+            <br> {{input.createdBy}}
         </div>
         <div>
             <label for="editAttributeTable">Attributes</label>
@@ -34,7 +35,7 @@
                     <th><b>Hook</b></th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="attr in dataset.attributes">
+                    <tr ng-repeat="attr in input.attributes">
                         <td>{{attr.col_name}}</td>
                         <td>
                             <div class="form-group">
@@ -49,7 +50,7 @@
                                         <li ng-repeat="tag in tags" role="menuitem"><a prevent-default ng-click="replaceTag($parent.$index, tag)">{{tag.name}} : {{tag.description}}</a></li>
                                     </ul>
                                 </div>
-                                <button class="btn btn-danger btn-sm" ng-show="attr.tag.name!='<EMPTY>'" ng-click="removeTag($index)"><span class="fa fa-times"></span></button>
+                                <button class="btn btn-danger btn-sm" ng-show="attr.tag.name!='<EMPTY>'" ng-click="removeTag($index)"><span class="fa fa-trash"></span></button>
                             </div>
                         </td>
                     </tr>
@@ -58,6 +59,7 @@
         </div>
     </form>
 </div>
+
 <div class="modal-footer dev">
-    <button form="editForm" class="btn btn-success" type="button" ng-disabled="editForm.name.$invalid" ng-click="complete()">Save Changes</button>
+    <button form="editForm" class="btn btn-success" type="button" ng-disabled="editForm.name.$invalid" ng-click="completeModal()">Save Changes</button>
 </div>

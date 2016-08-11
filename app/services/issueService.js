@@ -47,7 +47,7 @@ angular.module('cliffhanger.issue').service('issueService', function ($log, $htt
                 closer: closerUsername
             }
             $log.info('closer', closer);
-            return $http.put(baseUrl + '/discussionThread/open/' + threadId, closer).then(
+            return $http.put(baseUrl + '/discussionThread/toggleOpenStatus/' + threadId, closer).then(
                 //success callback
                 function (response) {
                     $log.debug(response);

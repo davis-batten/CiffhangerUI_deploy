@@ -1,32 +1,33 @@
 #addIssueBtn {
     margin-right: 1em;
 }
-
-.issue li:hover {
-    background-color: whitesmoke;
+#refreshIssuesBtn {
+    margin-right: 1em;
 }
-
+.issue li {
+    background-color: whitesmoke;
+    margin: 0.2em
+}
+.issue li:hover {
+    background-color: white;
+}
 .openIcon {
     font-size: 1.5em;
     margin: 1em;
 }
-
 .commentCount {
     margin: 1em;
     font-size: 1.25em;
 }
-
 .commentCount:hover {
     color: royalblue;
     cursor: pointer;
 }
-
 .issueHeading a {
     background: transparent;
     color: #333;
     text-decoration: none;
 }
-
 .issueHeading a:hover {
     color: royalblue;
     text-decoration: none;

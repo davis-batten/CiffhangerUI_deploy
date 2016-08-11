@@ -2,12 +2,21 @@
 
 <!-- Page Content -->
 <div class="container-fluid">
-    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</uib-alert>
+
+    <!-- Alerts area -->
+    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" dismiss-on-timeout="5000">
+        {{alert.msg}}
+    </uib-alert>
     <div class="row">
+        <!-- Search bar -->
         <div class="col-xs-6">
-            <input type="text" ng-model="searchText.subject" uib-typeahead="issue.subject for issue in issues | filter:$viewValue | limitTo:8" class="form-control" placeholder="Search Threads"> </div>
+            <input type="text" ng-model="searchText.subject" uib-typeahead="issue.subject for issue in issues | filter:$viewValue | limitTo:8" class="form-control" placeholder="Search Threads">
+        </div>
+        <!-- Select filter drop down -->
         <div class="btn-group" uib-dropdown is-open="status.filterbyisopen">
-            <button id="filterBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle> Filter <span class="caret"></span></button>
+            <button id="filterBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle>
+                Filter <span class="caret"></span>
+            </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="filterBy-button">
                 <li role="menuitem"><a prevent-default ng-click="setFilter(true)">Open</a></li>
                 <li role="menuitem"><a prevent-default ng-click="setFilter(false)">Closed</a></li>
@@ -16,8 +25,11 @@
                 <li role="menuitem"><a prevent-default ng-click="setFilter(null)">All</a></li>
             </ul>
         </div>
+        <!-- Select sort by drop down -->
         <div class="btn-group" uib-dropdown is-open="status.sortbyisopen">
-            <button id="sortBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle> Sort By <span class="caret"></span></button>
+            <button id="sortBy-button" class="btn btn-primary dropdown-toggle" type="button" uib-dropdown-toggle>
+                Sort By <span class="caret"></span>
+            </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="sortBy-button">
                 <li role="menuitem"><a prevent-default ng-click="setSort('createDate')">Date Created (oldest first)</a></li>
                 <li role="menuitem"><a prevent-default ng-click="setSort('createDateReverse')">Date Created (newest first)</a></li>
@@ -25,24 +37,41 @@
                 <li role="menuitem"><a prevent-default ng-click="setSort('subject')">Subject A-Z</a></li>
             </ul>
         </div>
-        <button id="addIssueBtn" class="btn btn-primary pull-right" ng-click="newIssue()"><span class="fa fa-plus"></span>
-            <wbr>Start New Thread</button>
-        <button id="addIssueBtn" class="btn btn-default pull-right" ng-click="loadIssues()"><span class="fa fa-refresh"></span>
-            <wbr>Refresh</button>
+        <!-- Create new issue thread button -->
+        <button id="addIssueBtn" class="btn btn-success pull-right" ng-click="newIssue()">
+            <span class="fa fa-plus"></span>
+            <wbr>Open New Thread
+        </button>
+        <!-- Refresh issue thread list button -->
+        <button id="refreshIssuesBtn" class="btn btn-primary pull-right" ng-click="loadIssues()">
+            <span class="fa fa-refresh"></span>
+            <wbr>Refresh
+        </button>
     </div>
     <br>
+
+    <!-- Issue thread list -->
     <div class="container-fluid">
-        <!--<checkbox ng-model="filter" ng-true-value="open" ng-false-value="">Open Only</checkbox>-->
         <ul class="list-group issue">
             <li class="list-group-item" ng-click="openThread(issue)" ng-repeat="issue in issues | filter: searchText | orderBy:sortText:reverse">
+                <!-- Issue thread list item -->
                 <div class="row">
-                    <div align="center" class="openIcon pull-left"> <span ng-class="openStyle(issue)" uib-tooltip="{{openTooltip(issue)}}"></span> </div>
-                    <div class="issueText pull-left">
-                        <h4 class="issueHeading"><a>{{issue.subject}}</a></h4>
-                        <p><small>Opened on {{issue.createDate | date : 'short'}} by </small><span ng-class="roleStyle(issue)">{{issue.opener.username}}</span></p>
+                    <div align="center" class="openIcon pull-left">
+                        <span ng-class="getIssueStatusIcon(issue)" uib-tooltip="{{openTooltip(issue)}}"></span>
                     </div>
-                    <div class="pull-right commentCount"> <span class="fa fa-comment"></span>
-                        <wbr>{{issue.numComments}} </div>
+                    <div class="issueText pull-left">
+                        <h4 class="issueHeading">
+                            <a>{{issue.subject}}</a>
+                        </h4>
+                        <p>
+                            <small>Opened on {{issue.createDate | date : 'short'}} by </small>
+                            <span ng-class="roleStyle(issue)">{{issue.opener.username}}</span>
+                        </p>
+                    </div>
+                    <div class="pull-right commentCount">
+                        <span class="fa fa-comment"></span>
+                        <wbr>{{issue.numComments}}
+                    </div>
                 </div>
             </li>
         </ul>

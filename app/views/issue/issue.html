@@ -2,25 +2,62 @@
 
 <!-- Page Content -->
 <div class="container-fluid">
-    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert> <a class="btn btn-default" href="#/messageboard">Return</a>
-    <h2>{{issue.subject}}</h2>
-    <button class="btn btn-danger .openLabel" ng-hide="issue.open" ng-click="toggleOpen()" uib-tooltip="Open issue"><span class="fa fa-times-circle"></span>&nbsp;Closed </button>
-    <button class="btn btn-success .openLabel" ng-show="issue.open" ng-click="toggleOpen()" uib-tooltip="Close issue"><span class="fa fa-check-circle"></span>&nbsp;Open </button>
-    <p id="issueDetails">&nbsp;<strong>{{issue.opener.username}}</strong> opened this issue &#8226; {{issue.createDate | date : 'shortDate'}} &#8226; {{comments.length}} comment(s)</p>
-    <hr>
-    <div class="panel panel-default comment" ng-repeat="comment in comments">
-        <div class="panel-heading">
-            <h3 class="panel-title"><b ng-class="roleStyle(comment.commentBy)">{{comment.commentBy.username}}</b> &#8226; {{comment.createDate | date : 'short'}}</h3> </div>
-        <div class="panel-body"> {{comment.body}} </div>
+
+    <!-- Alerts area -->
+    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" ng-show="alerts.length != 0">
+        {{alert.msg}}
+    </uib-alert>
+
+    <!-- Issue subject -->
+    <h2>
+        {{issue.subject}}
+    </h2>
+
+    <!-- Issue open status -->
+    <div class="text-danger" ng-show="issue.open == false">
+        <span id="open-status-icon" class="fa fa-times-circle"> </span> Issue is currently closed
+        <button class="btn btn-success pull-right .toggleOpenButton" ng-click="toggleOpen()">
+            Re-open Issue
+        </button>
     </div>
-    <p ng-show="!issue.open" class="text-danger closeText"><b>{{issue.closer.username}}</b> closed this issue</p>
-    <hr>
-    <div class="panel panel-default" id="commentForm" ng-show="issue.open">
-        <div class="panel-heading"> New Comment </div>
-        <div class="panel-body">
-            <textarea ng-model="newComment" class="form-control" rows="5" cols="40" placeholder="Leave a comment"></textarea>
-            <br>
-            <button class="btn btn-success pull-right" ng-click="postComment()" ng-disabled="(newComment.length == 0 || newComment == null || $root.user.username == null)">Comment</button>
+    <div class="text-success" ng-show="issue.open == true">
+        <span id="open-status-icon" class="fa fa-check-circle"> </span> Issue is currently open
+        <button class="btn btn-danger pull-right .toggleOpenButton" ng-click="toggleOpen()">
+            Close Issue
+        </button>
+    </div>
+
+    <!-- Issue info -->
+    <p id="issueDetails">
+        &nbsp;<strong>{{issue.opener.username}}</strong> opened this issue on {{issue.createDate | date : 'shortDate'}} &#8226; {{comments.length}} comment(s)
+    </p>
+
+
+    <!-- Comment list -->
+    <div class="panel panel-default comment" ng-repeat="comment in comments">
+        <div class="panel-heading comment-header">
+            <span class="pull-left">
+                <b ng-class="getRoleStyle(comment.commentBy)"> {{comment.commentBy.username}} </b>
+            </span>
+            <span class="pull-right comment-header-timestamp">
+                {{comment.createDate | date : 'short'}}
+            </span>
         </div>
+        <div class="panel-body">
+            {{comment.body}}
+        </div>
+    </div>
+    <br>
+    <!-- Closed issue message -->
+    <p ng-show="issue.open == false" class="text-danger closeText">
+        <b>{{issue.closer.username}}</b> closed this issue
+    </p>
+
+    <!-- Comment area -->
+    <div class="form-group" id="commentForm" ng-show="issue.open">
+        <textarea ng-model="newComment" class="form-control" rows="5" cols="40" placeholder="Leave a comment"></textarea>
+        <button class="btn btn-success pull-right" id="submitCommentButton" ng-click="postComment()" ng-disabled="(newComment.length == 0 || newComment == null || $root.user.username == null)">
+            Comment
+        </button>
     </div>
 </div>
