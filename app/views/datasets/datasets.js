@@ -63,6 +63,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
 
     // On click: PREVIEW on dataset list item
     $scope.openPreviewDatasetModal = function (dset) {
+        event.stopPropagation();
         var modalInstance = $uibModal.open({
             templateUrl: 'views/datasets/modals/datasetPreview.html',
             controller: 'DatasetPreviewModalCtrl',
@@ -77,6 +78,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
 
     // On click: UPDATE on dataset list item
     $scope.openUpdateDatasetModal = function (dset) {
+        event.stopPropagation();
         $log.log("Opening update modal on " + dset.name);
         // save the dataset's name before it is updated
         var dsetNameBeforeUpdate = dset.name;
@@ -117,6 +119,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
 
     // On click: DELETE on dataset list item
     $scope.openDeleteDatasetModal = function (dset) {
+        event.stopPropagation();
         $log.log(dset);
         var modalInstance = $uibModal.open({
             templateUrl: 'views/datasets/modals/datasetDelete.html',
@@ -411,9 +414,6 @@ datasets.controller('DatasetPreviewModalCtrl', function ($scope, $uibModalInstan
     $scope.tableResult = {};
     $scope.alerts = [];
     $scope.loadingPreview = true;
-    $scope.queryRanFine = true;
-    $scope.connectionFailed = false;
-    $scope.noResults = false;
 
     datasetService.previewDataset($scope.dataset).then(
         function (response) {
@@ -421,10 +421,19 @@ datasets.controller('DatasetPreviewModalCtrl', function ($scope, $uibModalInstan
             $scope.loadingPreview = false;
         },
         function (error) {
-            $scope.queryRanFine = false;
+            $log.debug(error);
             $scope.loadingPreview = false;
+            $scope.alerts.push({
+                msg: error.message,
+                type: 'danger'
+            });
         }
     );
+
+    // On click: X in <uib-alert> element
+    $scope.closeAlert = function (index) {
+        $scope.alerts.splice(index, 1);
+    };
 
     //dismiss modal
     $scope.cancel = function () {
