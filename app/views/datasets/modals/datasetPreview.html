@@ -27,13 +27,8 @@
 <!-- modal body when error -->
 <div class="modal-header dev" ng-show="!queryRanFine">
     <div class="row">
-        <div class="col-xs-11">
-            <h3 class="modal-title inline">Encountered Problem Previewing {{dataset.name}}</h3> </div>
-        <div class="col-xs-1">
-            <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
-        </div>
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
     </div>
 </div>
-<div class="modal-body dev" ng-show="!queryRanFine">
-    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+
 </div>

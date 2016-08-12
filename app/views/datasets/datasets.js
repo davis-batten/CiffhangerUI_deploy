@@ -63,6 +63,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
 
     // On click: PREVIEW on dataset list item
     $scope.openPreviewDatasetModal = function (dset) {
+        event.stopPropagation();
         var modalInstance = $uibModal.open({
             templateUrl: 'views/datasets/modals/datasetPreview.html',
             controller: 'DatasetPreviewModalCtrl',
@@ -77,6 +78,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
 
     // On click: UPDATE on dataset list item
     $scope.openUpdateDatasetModal = function (dset) {
+        event.stopPropagation();
         $log.log("Opening update modal on " + dset.name);
         // save the dataset's name before it is updated
         var dsetNameBeforeUpdate = dset.name;
@@ -117,6 +119,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
 
     // On click: DELETE on dataset list item
     $scope.openDeleteDatasetModal = function (dset) {
+        event.stopPropagation();
         $log.log(dset);
         var modalInstance = $uibModal.open({
             templateUrl: 'views/datasets/modals/datasetDelete.html',
