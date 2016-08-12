@@ -19,9 +19,9 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.selectedTags = [];
     //select columns for query
     $scope.selectedColumns = [];
-    //
+
     $scope.alreadyUsedDatasets = [];
-    //
+
     $scope.alreadyUsedTags = [];
     //which step in the modal is on
     $scope.step = 1;
@@ -29,16 +29,15 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.maxSteps = 5;
     //initialize number of joins for each query
     $scope.numJoins = 0;
-    //
+
     $scope.datasets = datasets;
-    //
+
     $scope.postReportSubmissionMessage = "";
     //whether to include joined column in select
     $scope.addJoinColumn = false;
-    //
+
     $scope.contentToShow = 'QUERY_WIZARD_DEFAULT';
 
-    //
     $scope.shouldShowNotifyDevsForm = false;
 
     // Stores the where condition for the query being built
@@ -47,7 +46,6 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     // Stores the max number of results for the query being built
     $scope.queryResultsLimit = "";
 
-    //
     $scope.newProblemInput = {
         subject: '',
         body: ''

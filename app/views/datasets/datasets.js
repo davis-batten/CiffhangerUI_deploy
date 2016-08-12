@@ -118,7 +118,7 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
     };
 
     // On click: DELETE on dataset list item
-    $scope.openDeleteDatasetModal = function (dset) {
+    $scope.openDeleteDatasetModal = function (dset, dsetIndex) {
         event.stopPropagation();
         $log.log(dset);
         var modalInstance = $uibModal.open({
@@ -135,24 +135,20 @@ datasets.controller('DatasetsCtrl', function ($scope, $uibModal, $log, $location
         modalInstance.result.then(function (datasetToDelete) {
             $log.debug('Deleting dataset: ', datasetToDelete);
             $scope.showProgressBar = true;
-            for (i in $scope.datasetList) {
-                if (datasetToDelete.name == $scope.datasetList[i].name) {
-                    datasetService.deleteDataset(datasetToDelete).then(
-                        //success
-                        function (response) {
-                            $scope.showProgressBar = false;
-                            $scope.datasetList.splice(i, 1);;
-                        },
-                        //error
-                        function (error) {
-                            $scope.showProgressBar = false;
-                            $scope.alerts.push({
-                                msg: error.message,
-                                type: 'danger'
-                            });
-                        });
-                }
-            }
+            datasetService.deleteDataset(datasetToDelete).then(
+                //success
+                function (response) {
+                    $scope.showProgressBar = false;
+                    $scope.datasetList.splice(dsetIndex, 1);;
+                },
+                //error
+                function (error) {
+                    $scope.showProgressBar = false;
+                    $scope.alerts.push({
+                        msg: error.message,
+                        type: 'danger'
+                    });
+                });
         });
     };
 
@@ -445,7 +441,7 @@ datasets.controller('DatasetDeleteModalCtrl', function ($scope, $uibModalInstanc
     $scope.dataset = datasetToDelete;
     //complete modal
     $scope.delete = function () {
-        $uibModalInstance.close($scope.dataset);
+        $uibModalInstance.close(datasetToDelete);
     };
     //dismiss modal
     $scope.cancel = function () {

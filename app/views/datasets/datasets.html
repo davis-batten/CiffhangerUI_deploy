@@ -52,7 +52,7 @@
                 <span class="fa fa-exclamation-triangle no_data_warning" ng-if="dset.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset!"></span>
                 <small> Click to toggle info</small>
             </label>
-            <button class="btn btn-danger" type="button" ng-click="openDeleteDatasetModal(dset)" uib-tooltip="Delete"> <span class="fa fa-trash"></span></button>
+            <button class="btn btn-danger" type="button" ng-click="openDeleteDatasetModal(dset, $index)" uib-tooltip="Delete"> <span class="fa fa-trash"></span></button>
             <button class="btn btn-info" type="button" ng-click="openUpdateDatasetModal(dset)" uib-tooltip="Edit"> <span class="fa fa-pencil-square-o"></span></button>
             <button class="btn btn-default" type="button" ng-click="openPreviewDatasetModal(dset)" uib-tooltip="Preview" ng-hide="dset.db_table_name == null"> <span class="fa fa-table"></span></button>
             <div class="more_info" ng-show="moreInfo[$index]">
