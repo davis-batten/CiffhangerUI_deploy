@@ -117,7 +117,8 @@ angular.module('cliffhanger.datasets').service('datasetService', function ($log,
                 return response.data;
             },
             function (error) {
-                return $q.reject(error);
+                $log.debug(error);
+                return $q.reject(error.data);
             }
         );
     }

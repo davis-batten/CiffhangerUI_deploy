@@ -1,6 +1,6 @@
 <!-- View Dataset Preview -->
 
-<div class="modal-header dev" ng-show="queryRanFine">
+<div class="modal-header dev">
     <div class="row">
         <div class="col-xs-11">
             <h3 class="modal-title inline">{{dataset.name}}</small></h3> </div>
@@ -9,10 +9,10 @@
         </div>
     </div>
 </div>
-<div class="modal-body dev" ng-show="queryRanFine">
-    <p><em>Note: Preview will only show the first 5 results.</em></p> <img id="loadingIcon" src="../../resources/rolling_loader.svg" ng-show="loadingPreview">
+<div class="modal-body dev">
+    <p><em>Preview will show the first 5 rows of data.</em></p> <img id="loadingIcon" src="../../resources/rolling_loader.svg" ng-show="loadingPreview">
     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
-    <div class="" id="queryResultsTable">
+    <div id="queryResultsTable">
         <table class="table table-bordered attributes">
             <thead>
                 <th ng-repeat="column in tableResult.colNames"> {{column}} </th>
@@ -23,12 +23,4 @@
             </tbody>
         </table>
     </div>
-</div>
-<!-- modal body when error -->
-<div class="modal-header dev" ng-show="!queryRanFine">
-    <div class="row">
-        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
-    </div>
-</div>
-
 </div>

@@ -414,9 +414,6 @@ datasets.controller('DatasetPreviewModalCtrl', function ($scope, $uibModalInstan
     $scope.tableResult = {};
     $scope.alerts = [];
     $scope.loadingPreview = true;
-    $scope.queryRanFine = true;
-    $scope.connectionFailed = false;
-    $scope.noResults = false;
 
     datasetService.previewDataset($scope.dataset).then(
         function (response) {
@@ -424,10 +421,19 @@ datasets.controller('DatasetPreviewModalCtrl', function ($scope, $uibModalInstan
             $scope.loadingPreview = false;
         },
         function (error) {
-            $scope.queryRanFine = false;
+            $log.debug(error);
             $scope.loadingPreview = false;
+            $scope.alerts.push({
+                msg: error.message,
+                type: 'danger'
+            });
         }
     );
+
+    // On click: X in <uib-alert> element
+    $scope.closeAlert = function (index) {
+        $scope.alerts.splice(index, 1);
+    };
 
     //dismiss modal
     $scope.cancel = function () {
