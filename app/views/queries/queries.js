@@ -351,7 +351,7 @@ queries.controller('ViewQueryModalInstanceCtrl', function ($scope, $uibModalInst
 
     //creates and sends a new Discussion Thread - request statement
     $scope.sendRequest = function () {
-        $scope.newRequestInput.subject = $scope.newRequestInput.type + " " + $scope.newRequestInput.subject;
+        $scope.newRequestInput.subject = $scope.newRequestInput.subject;
         issueService.createIssue($scope.newRequestInput).then(
             //success
             function (response) {

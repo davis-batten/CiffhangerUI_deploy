@@ -35,24 +35,18 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     $scope.postReportSubmissionMessage = "";
     //whether to include joined column in select
     $scope.addJoinColumn = false;
-    //for save query dropdown
-    $scope.isSaveCollapsed = true;
     //
-    $scope.showExit = false;
-    //
-    $scope.download = false;
-    //
-    $scope.loadingPreview = false;
-    //
-    $scope.queryRanFine = true;
-    //
-    $scope.connectionFailed = false;
-    //
-    $scope.noResults = false;
-    //
-    $scope.reportSubmitted = false;
+    $scope.contentToShow = 'QUERY_WIZARD_DEFAULT';
+
     //
     $scope.shouldShowNotifyDevsForm = false;
+
+    // Stores the where condition for the query being built
+    $scope.queryWhereCondition = "";
+
+    // Stores the max number of results for the query being built
+    $scope.queryResultsLimit = "";
+
     //
     $scope.newProblemInput = {
         subject: '',
@@ -116,6 +110,11 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         } else $scope.tags = [];
     };
 
+    // On click: X in <uib-alert> element
+    $scope.closeAlert = function (index) {
+        $scope.alerts.splice(index, 1);
+    };
+
     //advance the modal to the next step
     $scope.next = function () {
         $scope.step++;
@@ -127,6 +126,11 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         } else if ($scope.step == 4) {
             $scope.buildQuery();
         } else if ($scope.step == 5) {
+            $scope.contentToShow = 'QUERY_WIZARD_DEFAULT';
+            $scope.loadingPreview = false;
+            $scope.queryRanFine = true;
+            $scope.connectionFailed = false;
+            $scope.noResults = false;
             $scope.runNewQuery();
         }
     };
@@ -169,6 +173,20 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         $log.debug('archivedTags', $scope.alreadyUsedTags);
     };
 
+    //starts another join page on modal instead of next step
+    $scope.addAnotherJoin = function () {
+        $log.debug('add another join');
+        $scope.archiveDatasets();
+        $scope.archiveTags();
+        for (var i = 0; i < $scope.datasets.length; i++) {
+            $scope.datasets[i].selected = false;
+        }
+        $scope.selectedTags = [];
+        $scope.tags = [];
+        $scope.numJoins++;
+        $log.debug('dataset', $scope.selectedDatasets);
+    };
+
     //select all info from a dataset
     $scope.selectAllFromDataset = function (dataset) {
         for (var i = 0; i < dataset.attributes.length; i++) {
@@ -196,26 +214,6 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
     //dismiss the modal
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
-    };
-
-    //add where and limit clause to SQL query string
-    $scope.addToQuery = function () {
-        if (($scope.statement.where == undefined && $scope.statement.limit == undefined) || ($scope.statement.where == "" && $scope.statement.limit == "") || ($scope.statement.where == undefined && $scope.statement.limit == "") || ($scope.statement.where == "" && $scope.statement.limit == undefined)) {
-            $scope.statement.text = "";
-        }
-        //adding both WHERE and LIMIT statement
-        else if (($scope.statement.where != undefined && $scope.statement.limit != undefined && $scope.statement.where != "" && $scope.statement.limit != "")) {
-            $scope.statement.text = "\nWHERE " + $scope.statement.where + "\n" + "LIMIT " + $scope.statement.limit;
-        }
-        //adding WHERE and not LIMIT
-        else if (($scope.statement.where != undefined && $scope.statement.limit == undefined) || ($scope.statement.where != undefined && $scope.statement.limit == "")) {
-            $scope.statement.text = "\nWHERE " + $scope.statement.where;
-        }
-        //adding LIMIT and not WHERE
-        else if (($scope.statement.where == undefined && $scope.statement.limit != undefined) || ($scope.statement.where == "" && $scope.statement.limit != null)) {
-            $scope.statement.text = "\nLIMIT " + $scope.statement.limit;
-        }
-        $log.debug($scope.statement);
     };
 
     //build a new query given the user's choices
@@ -252,11 +250,14 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
 
     //complete the modal
     $scope.save = function () {
-        if ($scope.statement != undefined) {
-            $scope.newQuery.sqlString = $scope.query[0] + $scope.statement.text;
-        } else {
-            $scope.newQuery.sqlString = $scope.query[0];
+        $scope.newQuery.sqlString = $scope.query[0];
+        if ($scope.queryWhereCondition.length > 0) {
+            $scope.newQuery.sqlString += "\n" + "WHERE " + $scope.queryWhereCondition;
         }
+        if ($scope.queryResultsLimit.length > 0) {
+            $scope.newQuery.sqlString += "\n" + "LIMIT " + $scope.queryResultsLimit;
+        }
+
         if ($scope.newQuery.description == null || $scope.newQuery.description == undefined) {
             $scope.newQuery.description = "";
         }
@@ -267,7 +268,6 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
                     msg: "Query Successfully Saved!",
                     type: 'success'
                 });
-                $scope.showExit = true;
                 $log.debug(data);
             },
             //error
@@ -279,15 +279,18 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
                 $log.debug(data);
 
             });
+        $scope.contentToShow = 'QUERY_WIZARD_DEFAULT';
     };
 
     //sends new query to hive
     $scope.runNewQuery = function () {
         $scope.loadingPreview = true;
-        if ($scope.statement != undefined) {
-            var query = $scope.query[0] + $scope.statement.text;
-        } else {
-            var query = $scope.query[0];
+        var query = $scope.query[0];
+        if ($scope.queryWhereCondition.length > 0) {
+            query += "\n" + "WHERE " + $scope.queryWhereCondition;
+        }
+        if ($scope.queryResultsLimit.length > 0) {
+            query += "\n" + "LIMIT " + $scope.queryResultsLimit;
         }
         queryService.runQuery(query).then(
             //success
@@ -324,20 +327,6 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         }
     }, true);
 
-    //starts another join page on modal instead of next step
-    $scope.addAnotherJoin = function () {
-        $log.debug('add another join');
-        $scope.archiveDatasets();
-        $scope.archiveTags();
-        for (var i = 0; i < $scope.datasets.length; i++) {
-            $scope.datasets[i].selected = false;
-        }
-        $scope.selectedTags = [];
-        $scope.tags = [];
-        $scope.numJoins++;
-        $log.debug('dataset', $scope.selectedDatasets);
-    };
-
     //
     $scope.showNotifyDevsForm = function () {
         $scope.shouldShowNotifyDevsForm = true;
@@ -354,13 +343,21 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
 
             function (response) {
                 // success
-                $scope.postReportSubmissionMessage = "Your problem has been reported to the developers."
-                $scope.reportSubmitted = true;
+                $scope.alerts.push({
+                    msg: "Your problem has been reported to the developers.",
+                    type: 'success'
+                })
+                $scope.contentToShow = 'QUERY_WIZARD_DEFAULT'
+
             },
             function (data) {
                 // fail
-                $scope.postReportSubmissionMessage = "There was a problem reporting your problem."
-                $scope.reportSubmitted = true;
+                $scope.alerts.push({
+                    msg: "There was a problem reporting your problem... sorry.",
+                    type: 'danger'
+                })
+                $scope.contentToShow = 'QUERY_WIZARD_DEFAULT'
+
             });
     };
 });

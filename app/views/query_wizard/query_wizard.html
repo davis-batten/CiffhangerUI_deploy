@@ -1,7 +1,7 @@
 <!-- Query Wizard Modal Template -->
 <div class="query-wizard-header">
     <!-- Regular modal header -->
-    <div class="modal-header" ng-show="!shouldShowNotifyDevsForm">
+    <div class="modal-header an" ng-show="contentToShow == 'QUERY_WIZARD_DEFAULT'">
         <div class="row">
             <div class="col-xs-11">
                 <h3 class="modal-title inline">Query Wizard</h3>
@@ -13,7 +13,7 @@
         <uib-progressbar max="maxSteps" value="step" type="{{progressType}}">{{step}} / {{maxSteps}}</uib-progressbar>
     </div>
     <!-- Submit problem to devs modal header -->
-    <div class="modal-header" ng-show="shouldShowNotifyDevsForm">
+    <div class="modal-header an" ng-show="contentToShow == 'DEV_REPORT'">
         <div class="row">
             <div class="col-xs-11">
                 <h3 class="modal-title inline">Report a Problem</h3> </div>
@@ -22,10 +22,31 @@
             </div>
         </div>
     </div>
+    <!-- Save query modal header -->
+    <div class="modal-header an" ng-show="contentToShow == 'SAVE_QUERY'">
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title inline">Save Query</h3> </div>
+            <div class="col-xs-1">
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
+            </div>
+        </div>
+    </div>
+    <!-- Download results modal header -->
+    <div class="modal-header an" ng-show="contentToShow == 'DOWNLOAD_RESULTS'">
+        <div class="row">
+            <div class="col-xs-11">
+                <h3 class="modal-title inline">Download Results</h3> </div>
+            <div class="col-xs-1">
+                <button class="btn btn-danger btn-sm pull-right" type="button" ng-click="cancel()"><span class="fa fa-times"></span></button>
+            </div>
+        </div>
+    </div>
 </div>
+
 <!-- First step of modal -->
 <div ng-show="step == 1">
-    <div class="modal-body">
+    <div class="modal-body an">
         <h4><strong>Datasets </strong><small><em ng-hide="datasets == 0"> Select one to start building your table</em><em ng-hide="datasets != 0">Must choose at least two datasets to create a table</em></small></h4>
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="d in datasets">
@@ -34,13 +55,13 @@
             </li>
         </ul>
     </div>
-    <div class=" modal-footer">
+    <div class=" modal-footer an">
         <button class="btn btn-info" type="button" ng-click="archiveDatasets(); next()" ng-disabled="selectedDatasets.length !=1">Next</button>
     </div>
 </div>
 <!-- Second step of modal -->
 <div ng-show="step==2">
-    <div class="modal-body">
+    <div class="modal-body an">
         <form>
             <div class="row">
                 <div class="col-md-6">
@@ -48,7 +69,7 @@
                     <ul class="list-group">
                         <li class="list-group-item" ng-repeat="d in datasets" ng-if="alreadyUsedDatasets.indexOf(d) == -1">
                             <checkbox ng-model="d.selected" ng-change="change(d, selectedDatasets)" ng-disabled="selectedDatasets.length == (numJoins+1) && !d.selected || d.db_table_name == null"></checkbox>
-                            <label>{{d.name}}<span class="fa fa-exclamation-triangle no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset"></span> </label>
+                            <label>{{d.name}}<span class="fa fa-exclamation-triangle no_data_warning" ng-if="d.db_table_name == null" uib-tooltip="There is no HDFS table associated with this dataset"></span></label>
                         </li>
                     </ul>
                 </div>
@@ -63,11 +84,8 @@
                     <h4 class="text-danger" ng-show="tags.length==0 && selectedDatasets[numJoins] != undefined">No joinable hooks for the selected datasets</h4> </div>
             </div>
         </form>
-        <!--
-        <label>Show selected tag in table</label>
-        <checkbox ng-model="addJoinColumn "></checkbox> -->
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer an">
         <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
         <button class="btn btn-primary" type="button" ng-click="addAnotherJoin()">Add Another Join</button>
         <button class="btn btn-info" type="button" ng-click="next()" ng-disabled="selectedTags.length != 1">Next</button>
@@ -75,7 +93,7 @@
 </div>
 <!-- Third step of modal -->
 <div ng-show="step==3">
-    <div class="modal-body">
+    <div class="modal-body an">
         <h4><strong>Columns  </strong><small><em>Select columns to show in table</em></small></h4>
         <ul>
             <li class="list-group-item " ng-repeat="d in selectedDatasets ">
@@ -85,50 +103,45 @@
                     <li class="list-group-item" ng-repeat="a in d.attributes">
                         <checkbox ng-model="a.selected" ng-change="changeColumns(a, selectedColumns, d)"></checkbox>
                         <label uib-tooltip="{{a.description}}">{{a.col_name}}</label>
-                        <div class="input-group col-md-5 form-inline pull-right" id="alias-item"> <span class="input-group-addon">Alias</span>
+                        <div class="input-group col-md-5 form-inline pull-right" id="alias-item"> <span class="input-group-addon">Rename</span>
                             <input type="text" ng-model="a.alias" class="form-control"> </div>
                     </li>
                 </ul>
             </li>
         </ul>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer an">
         <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
         <button class="btn btn-info" type="button" ng-click="next()" ng-disabled="selectedColumns.length < 1">Next</button>
     </div>
 </div>
 <!-- Fourth step of modal -->
 <div ng-show="step==4">
-    <div class="modal-body">
+    <div class="modal-body an">
         <h4>Constructed Query</h4> <pre>{{query[0]}}{{statement.text}}</pre>
         <uib-alert ng-repeat="alert in dataTypeCheck" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
         <div class="form-group">
             <label for="where">Manual WHERE clause</label><small>  Example Input: table.column > x</small>
-            <input type="text" class="form-control" id="where" ng-model="statement.where"> </div>
-        <br>
+            <input type="text" class="form-control" id="where" ng-model="queryWhereCondition">
+        </div>
         <div class="form-group">
             <label for="limit">Manual LIMIT clause</label><small>  Example Input: 100</small>
-            <input type="text" class="form-control" id="limit" ng-model="statement.limit"> </div>
-        <br>
-        <div class="row">
-            <div class="col-xs-3">
-                <button class="btn btn-primary pull-left" type="button" ng-click="addToQuery()">Add To Query</button>
-            </div>
+            <input type="text" class="form-control" id="limit" ng-model="queryResultsLimit">
         </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer an">
         <button class="btn btn-warning pull-left" type="button" ng-click="previous()">Back</button>
         <button class="btn btn-success" type="button" ng-click="next()">Run</button>
     </div>
 </div>
 <!-- Fifth step of modal -->
-<div ng-show="step==5 && !shouldShowNotifyDevsForm">
+<div ng-show="step==5 && contentToShow == 'QUERY_WIZARD_DEFAULT'">
     <!-- normal modal body -->
-    <div class="modal-body" ng-show="queryRanFine">
-        <h4>Preview of Results <small>after running Constructed Query</small></h4>
+    <div class="modal-body an" ng-show="queryRanFine">
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+        <h4>Preview of Results <small>after running constructed query</small></h4>
         <p><em>Note: Preview will only show up to 100 results.</em></p>
         <img id="loadingIcon" src="../../resources/rolling_loader.svg" ng-show="loadingPreview">
-        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
         <div id="queryResultsTable">
             <table class="table table-bordered ">
                 <thead>
@@ -142,7 +155,8 @@
         </div>
     </div>
     <!-- modal body when error -->
-    <div class="modal-body" ng-show="!queryRanFine">
+    <div class="modal-body an" ng-show="!queryRanFine">
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
         <h4>No Results </h4>
         <p ng-show="connectionFailed"> Failed to connect </p>
         <p ng-show="noResults"> The join query ran, but the resulting dataset was empty.
@@ -152,66 +166,70 @@
             <br> </p>
     </div>
     <!-- modal footer -->
-    <div class="modal-footer">
-        <button class="btn btn-warning pull-left" type="button" ng-click="previous()" ng-disabled="loadingPreview">Back</button>
-        <button class="btn btn-info pull-left" type="button" ng-click="isSaveCollapsed=!isSaveCollapsed" ng-disabled="loadingPreview">Save Query</button>
-        <button class="btn btn-success" type="button" ng-click="download=!download" ng-disabled="loadingPreview" uib-tooltip="Download the full results table" ng-show="queryRanFine">Download</button>
-        <button class="btn btn-success" type="button" ng-click="showNotifyDevsForm()" ng-show="!queryRanFine">Contact Developers</button>
-        <div uib-collapse="isSaveCollapsed">
-            <hr>
-            <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
-            <div class="well well-sm">
-                <form name="saveQueryAs">
-                    <div class="form-group">
-                        <label for="queryName" class="pull-left">Name</label>
-                        <input type="text " class="form-control" name="name" id="queryName" ng-model="newQuery.name" required> </div>
-                    <div class="form-group">
-                        <label for="queryDesc" class="pull-left">Description</label>
-                        <input type="text" class="form-control" id="description" ng-model="newQuery.description"> </div>
-                    <div class="form-group">
-                        <button class="btn btn-info" type="button" ng-disabled="name.$invalid" ng-click="save()">Save</button>
-                        <button class="btn btn-danger" type="button" ng-show="showExit" ng-click="cancel()" uib-tooltip="Close the wizard and return to Compare">Exit Wizard</button>
-                        <button class="btn btn-danger pull-left" type="button" ng-hide="showExit" ng-click="isSaveCollapsed=! isSaveCollapsed">Cancel Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div uib-collapse="!download">
-            <hr>
-            <div class="well well-sm">
-                <form name="downloadQueryAs">
-                    <div class="form-group">
-                        <label for="filename" class="pull-left">Filename</label>
-                        <input type="text" class="form-control" name="name" id="filename" ng-model="filename" required>.csv </div>
-                    <div class="form-group">
-                        <button class="btn btn-info" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="{{filename}}.csv">Save As CSV</button>
-                        <button class="btn btn-danger pull-left" type="button" ng-click="download=! download">Cancel Download</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <div class="modal-footer an">
+        <button class="btn btn-warning pull-left" type="button" ng-click="previous()" ng-disabled="loadingPreview">
+            Back
+        </button>
+        <button class="btn btn-info pull-left" type="button" ng-click="contentToShow = 'SAVE_QUERY'" ng-disabled="loadingPreview">
+            Save Query
+        </button>
+        <button class="btn btn-success" type="button" ng-click="contentToShow='DOWNLOAD_RESULTS'" ng-disabled="loadingPreview" uib-tooltip="Download the full results table" ng-show="queryRanFine">
+            Download
+        </button>
+        <button class="btn btn-success" type="button" ng-click="contentToShow = 'DEV_REPORT'" ng-show="!queryRanFine">
+            Contact Developers
+        </button>
     </div>
 </div>
+
 <!-- Report problem to dev form -->
-<div class="modal-body" ng-show="shouldShowNotifyDevsForm">
-    <div ng-show="!reportSubmitted">
-        <p>Here you can notify your developers that you are having a problem using Cliffhanger or joining datasets. This opens a discussion board where you and a developer can comment back and forth about the problem. This discussion board will remain open until the problem is resolved. </p>
-        <hr>
-        <form name="notifyDevsForm">
-            <div class="form-group">
-                <label for="subject">Subject <small><em>  This will appear as the title of the thread</em></small></label>
-                <textarea class="form-control" rows="1" name="subject" id="problemSubject" ng-model="newProblemInput.subject"> </textarea>
-            </div>
-            <div class="form-group">
-                <label for="msg">Message <small><em>  Add any information that will help the developer understand your problem</em></small></label>
-                <textarea class="form-control" rows="15" name="msg" id="problemMessage" ng-model="newProblemInput.body"></textarea>
-            </div>
-        </form>
-    </div>
-    <p ng-show="reportSubmitted">{{postReportSubmissionMessage}}</p>
+<div class="modal-body an" ng-show="contentToShow == 'DEV_REPORT'">
+    <p>Here you can notify your developers that you are having a problem using Cliffhanger or joining datasets. This opens a discussion board where you and a developer can comment back and forth about the problem. This discussion board will remain open until the problem is resolved. </p>
+    <hr>
+    <form name="notifyDevsForm">
+        <div class="form-group">
+            <label for="subject">Subject <small><em>  This will appear as the title of the thread</em></small></label>
+            <textarea class="form-control" rows="1" name="subject" id="problemSubject" ng-model="newProblemInput.subject"> </textarea>
+        </div>
+        <div class="form-group">
+            <label for="msg">Message <small><em>  Add any information that will help the developer understand your problem</em></small></label>
+            <textarea class="form-control" rows="15" name="msg" id="problemMessage" ng-model="newProblemInput.body"></textarea>
+        </div>
+    </form>
 </div>
-<div class="modal-footer" ng-show="shouldShowNotifyDevsForm">
-    <button class="btn btn-warning pull-left" ng-show="!reportSubmitted" type="button" ng-click="hideNotifyDevsForm()">Cancel</button>
-    <button class="btn btn-success" ng-show="!reportSubmitted" type="button" ng-click="reportProblem()" ng-disabled="newProblemInput.subject.length == 0">Send to Developers</button>
-    <button class="btn btn-success pull-right" type="button" ng-click="cancel()" ng-show="reportSubmitted">Ok</button>
+<div class="modal-footer an" ng-show="contentToShow == 'DEV_REPORT'">
+    <button class="btn btn-warning pull-left" type="button" ng-click="contentToShow = 'QUERY_WIZARD_DEFAULT'">Cancel</button>
+    <button class="btn btn-success" type="button" ng-click="reportProblem()" ng-disabled="newProblemInput.subject.length == 0">Send to Developers</button>
+</div>
+
+<!-- Save Query Form -->
+<div class="modal-body an" ng-show="contentToShow == 'SAVE_QUERY'">
+    <form name="saveQueryAs">
+        <div class="form-group">
+            <label for="queryName" class="pull-left">Name</label>
+            <input type="text " class="form-control" name="name" id="queryName" ng-model="newQuery.name" required>
+        </div>
+        <div class="form-group">
+            <label for="queryDesc" class="pull-left">Description</label>
+            <input type="text" class="form-control" id="description" ng-model="newQuery.description">
+        </div>
+    </form>
+</div>
+<div class="modal-footer an" ng-show="contentToShow == 'SAVE_QUERY'">
+    <button class="btn btn-info" type="button" ng-disabled="name.$invalid" ng-click="save()">Save</button>
+    <button class="btn btn-danger pull-left" type="button" ng-click="contentToShow = 'QUERY_WIZARD_DEFAULT'">Cancel Save</button>
+</div>
+
+<!-- Download Query Results Form -->
+<div class="modal-body an" ng-show="contentToShow == 'DOWNLOAD_RESULTS'">
+    <form name="downloadQueryAs">
+        <div class="form-group">
+            <label for="filename" class="pull-left">Filename</label>
+            <input type="text" class="form-control" name="name" id="filename" ng-model="filename" required>.csv
+        </div>
+    </form>
+</div>
+<div class="modal-footer an" ng-show="contentToShow == 'DOWNLOAD_RESULTS'">
+    <button class="btn btn-info" type="button" ng-csv="tableResult.rows" csv-header="tableResult.colNames" filename="{{filename}}.csv">Save As CSV</button>
+    <button class="btn btn-danger pull-left" type="button" ng-click="contentToShow = 'QUERY_WIZARD_DEFAULT'">Back</button>
 </div>
