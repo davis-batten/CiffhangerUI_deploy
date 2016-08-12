@@ -100,16 +100,14 @@ users.controller('UsersCtrl', function ($scope, $uibModal, $log, $location, user
                 userService.updateUser(nameTemp, input).then(
                     //success callback
                     function (resp) {
-                        if (resp.status == 'Success') {
-                            var updatedUser = resp.data;
-                            for (i in $scope.userList) {
-                                if (nameTemp == $scope.userList[i].username) {
-                                    $scope.userList[i].username = updatedUser.username;
-                                    //$scope.userList[i].password = updatedUser.password;
-                                    $scope.userList[i].hiveUser = updatedUser.hiveUser;
-                                    $scope.userList[i].hivePassword = updatedUser.hivePassword;
-                                    //$scope.userList[i].role = updatedUser.roles[0].authority;
-                                }
+                        var updatedUser = resp;
+                        for (i in $scope.userList) {
+                            if (nameTemp == $scope.userList[i].username) {
+                                $scope.userList[i].username = updatedUser.username;
+                                //$scope.userList[i].password = updatedUser.password;
+                                $scope.userList[i].hiveUser = updatedUser.hiveUser;
+                                $scope.userList[i].hivePassword = updatedUser.hivePassword;
+                                //$scope.userList[i].role = updatedUser.roles[0].authority;
                             }
                         }
 
