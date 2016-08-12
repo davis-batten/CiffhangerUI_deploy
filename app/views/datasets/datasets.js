@@ -436,7 +436,7 @@ datasets.controller('DatasetDeleteModalCtrl', function ($scope, $uibModalInstanc
     $scope.dataset = datasetToDelete;
     //complete modal
     $scope.delete = function () {
-        $uibModalInstance.close(dataset);
+        $uibModalInstance.close($scope.dataset);
     };
     //dismiss modal
     $scope.cancel = function () {

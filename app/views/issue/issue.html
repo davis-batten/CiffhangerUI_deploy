@@ -3,6 +3,8 @@
 <!-- Page Content -->
 <div class="container-fluid">
 
+    <a class="btn btn-default" href="#/messageboard">Return</a>
+
     <!-- Alerts area -->
     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" ng-show="alerts.length != 0">
         {{alert.msg}}

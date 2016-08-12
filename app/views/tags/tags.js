@@ -67,6 +67,7 @@ tags.controller('TagCtrl', function ($scope, $uibModal, $log, $location, tagServ
                 //success
                 function (response) {
                     //                    $scope.getAllTags();
+                    $log.log(response)
                     $scope.tags.push(response);
                 },
                 //error

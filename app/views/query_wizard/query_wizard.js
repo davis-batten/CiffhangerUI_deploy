@@ -82,7 +82,8 @@ query_wizard.controller('QueryWizardCtrl', function ($scope, $rootScope, $uibMod
         } else {
             for (var i = 0; i < selections.length; i++) {
                 $log.debug(selections[i]);
-                if (selections[i].name == column.name) {
+                $log.debug(column);
+                if (selections[i].col_name == column.col_name) {
                     selections.splice(i, 1);
                 }
             }
